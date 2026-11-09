@@ -1,12 +1,14 @@
 # Install Spaces
 
-For working with Spaces Driven Development, you need to install and configure the following:
+Spaces Driven Development uses the `specsmd` CLI. Install and configure it as follows.
 
-## Install spaces.md
+## Install Spaces (`specsmd`)
 
 ```bash
 npx specsmd@latest install
 ```
+
+The installer detects your coding tool (Cursor, Claude Code, or GitHub Copilot), installs agent definitions and skills, and creates slash commands.
 
 ## Check it installed
 
@@ -16,12 +18,11 @@ npx specsmd --version
 
 ## Select your flow
 
-```text
-Choose Ideation, Simple, FIRE, or AI-DLC based on your project needs
-```
+During install, choose a flow based on your project needs. This project uses **AI-DLC**.
 
-## Start building
+Available flows:
 
-```text
-Invoke your flow’s agent and describe what you want to build
-```
+- Ideation
+- Simple
+- FIRE
+- AI-DLC |
