@@ -39,6 +39,11 @@ class HomePage extends StatelessWidget {
             child: Text(l10n.manageInventory),
           ),
           const SizedBox(height: 12),
+          FilledButton(
+            onPressed: () => context.go('/ledger'),
+            child: Text(l10n.manageLedger),
+          ),
+          const SizedBox(height: 12),
           OutlinedButton(
             onPressed: () => context.go('/profile'),
             child: Text(l10n.profile),

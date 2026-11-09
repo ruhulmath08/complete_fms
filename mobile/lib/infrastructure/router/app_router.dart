@@ -19,6 +19,9 @@ import '../../presentation/crops/pages/crop_names_list_page.dart';
 import '../../presentation/inventory/pages/inventory_create_page.dart';
 import '../../presentation/inventory/pages/inventory_detail_page.dart';
 import '../../presentation/inventory/pages/inventory_list_page.dart';
+import '../../presentation/ledger/pages/ledger_create_page.dart';
+import '../../presentation/ledger/pages/ledger_detail_page.dart';
+import '../../presentation/ledger/pages/ledger_list_page.dart';
 import '../../presentation/poultry/pages/poultry_create_page.dart';
 import '../../presentation/poultry/pages/poultry_detail_page.dart';
 import '../../presentation/poultry/pages/poultry_list_page.dart';
@@ -112,6 +115,20 @@ GoRouter createRouter(SessionCubit sessionCubit) {
             path: '/inventory/:itemId',
             builder: (context, state) => InventoryDetailPage(
               itemId: state.pathParameters['itemId']!,
+            ),
+          ),
+          GoRoute(
+            path: '/ledger',
+            builder: (context, state) => const LedgerListPage(),
+          ),
+          GoRoute(
+            path: '/ledger/new',
+            builder: (context, state) => const LedgerCreatePage(),
+          ),
+          GoRoute(
+            path: '/ledger/:entryId',
+            builder: (context, state) => LedgerDetailPage(
+              entryId: state.pathParameters['entryId']!,
             ),
           ),
           GoRoute(

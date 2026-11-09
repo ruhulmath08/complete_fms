@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Manage cows, poultry, crops, inventory, profile, and farm settings on mobile.'**
+  /// **'Manage cows, poultry, crops, inventory, income and expenses, profile, and farm settings on mobile.'**
   String get welcomeBody;
 
   /// No description provided for @signInSubtitle.
@@ -1063,6 +1063,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reason'**
   String get reason;
+
+  /// No description provided for @ledgerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Income & expenses'**
+  String get ledgerTitle;
+
+  /// No description provided for @manageLedger.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage income & expenses'**
+  String get manageLedger;
+
+  /// No description provided for @addLedgerEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add entry'**
+  String get addLedgerEntry;
+
+  /// No description provided for @createLedgerEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Create entry'**
+  String get createLedgerEntry;
+
+  /// No description provided for @noLedgerEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No ledger entries in this range.'**
+  String get noLedgerEntries;
+
+  /// No description provided for @ledgerEntryType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get ledgerEntryType;
+
+  /// No description provided for @ledgerIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get ledgerIncome;
+
+  /// No description provided for @ledgerExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get ledgerExpense;
+
+  /// No description provided for @ledgerCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get ledgerCategory;
+
+  /// No description provided for @ledgerLabour.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour'**
+  String get ledgerLabour;
+
+  /// No description provided for @ledgerFeedOrSupplies.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed or supplies'**
+  String get ledgerFeedOrSupplies;
+
+  /// No description provided for @ledgerUtilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilities'**
+  String get ledgerUtilities;
+
+  /// No description provided for @ledgerTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get ledgerTransport;
+
+  /// No description provided for @ledgerEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get ledgerEquipment;
+
+  /// No description provided for @ledgerLivestockSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Livestock sale'**
+  String get ledgerLivestockSale;
+
+  /// No description provided for @ledgerProductSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Product sale'**
+  String get ledgerProductSale;
+
+  /// No description provided for @ledgerSubsidy.
+  ///
+  /// In en, this message translates to:
+  /// **'Subsidy'**
+  String get ledgerSubsidy;
+
+  /// No description provided for @ledgerOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get ledgerOther;
+
+  /// No description provided for @unitOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit (optional)'**
+  String get unitOptional;
+
+  /// No description provided for @archiveLedgerEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveLedgerEntry;
+
+  /// No description provided for @archiveLedgerEntryConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this ledger entry? It will leave the active list and totals.'**
+  String get archiveLedgerEntryConfirm;
+
+  /// No description provided for @ledgerArchivedReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This ledger entry is archived and cannot be modified.'**
+  String get ledgerArchivedReadOnly;
+
+  /// No description provided for @ledgerCropGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop-cycle costs belong in Crops, not this general ledger.'**
+  String get ledgerCropGuidance;
+
+  /// No description provided for @dateFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From (YYYY-MM-DD)'**
+  String get dateFrom;
+
+  /// No description provided for @dateTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To (YYYY-MM-DD)'**
+  String get dateTo;
+
+  /// No description provided for @applyDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply date range'**
+  String get applyDateRange;
+
+  /// No description provided for @totalIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Total income'**
+  String get totalIncome;
+
+  /// No description provided for @net.
+  ///
+  /// In en, this message translates to:
+  /// **'Net'**
+  String get net;
 }
 
 class _AppLocalizationsDelegate

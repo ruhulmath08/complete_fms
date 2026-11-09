@@ -2,7 +2,7 @@
 unit: 006-income-expenses
 intent: 001-farm-management-first-release
 created: 2026-11-09T13:13:23Z
-last_updated: 2026-11-09T13:28:23Z
+last_updated: 2026-11-09T13:32:58Z
 ---
 
 # Construction Log: income-expenses
@@ -27,9 +27,9 @@ last_updated: 2026-11-09T13:28:23Z
 
 | Bolt ID             | Stories | Status      | Changed |
 | ------------------- | ------- | ----------- | ------- |
-| 016-income-expenses | 001     | ✅ complete    | -       |
-| 017-income-expenses | 002     | ✅ complete    | -       |
-| 018-income-expenses | 003     | ⏳ in-progress | -       |
+| 016-income-expenses | 001     | ✅ complete | -       |
+| 017-income-expenses | 002     | ✅ complete | -       |
+| 018-income-expenses | 003     | ✅ complete | -       |
 
 ## Execution History
 
@@ -48,6 +48,10 @@ last_updated: 2026-11-09T13:28:23Z
 | 2026-11-09T13:26:46Z | 017-income-expenses | stage-complete | Implement → Test                         |
 | 2026-11-09T13:26:46Z | 017-income-expenses | completed      | Web story 002 done; 25/25 Vitest         |
 | 2026-11-09T13:28:23Z | 018-income-expenses | started        | Stage 1: Plan                            |
+| 2026-11-09T13:32:02Z | 018-income-expenses | stage-complete | Plan → Implement                         |
+| 2026-11-09T13:32:02Z | 018-income-expenses | implement-done | Mobile ledger feature + tests            |
+| 2026-11-09T13:32:58Z | 018-income-expenses | stage-complete | Implement → Test                         |
+| 2026-11-09T13:32:58Z | 018-income-expenses | completed      | Mobile story 003 done; 30/30             |
 
 ## Execution Summary
 
@@ -55,11 +59,11 @@ last_updated: 2026-11-09T13:28:23Z
 | ---------------------- | ----- |
 | Original bolts planned | 3     |
 | Current bolt count     | 3     |
-| Bolts completed        | 2     |
-| Bolts in progress      | 1     |
+| Bolts completed        | 3     |
+| Bolts in progress      | 0     |
 | Bolts remaining        | 0     |
 | Replanning events      | 0     |
 
 ## Notes
 
-Vertical order API → web → mobile. Mobile bolt `018-income-expenses` in progress.
+Unit `006-income-expenses` construction complete (API + Web + Mobile).

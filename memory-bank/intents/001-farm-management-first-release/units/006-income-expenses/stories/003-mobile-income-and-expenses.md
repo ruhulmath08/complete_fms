@@ -2,11 +2,11 @@
 id: 003-mobile-income-and-expenses
 unit: 006-income-expenses
 intent: 001-farm-management-first-release
-status: draft
+status: done
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 018-income-expenses
-implemented: false
+implemented: true
 ---
 
 # Story: 003-mobile-income-and-expenses
@@ -19,7 +19,7 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given ledger API exists, When I use mobile, Then entries, date views, and period totals work with localization
+- [x] Given ledger API exists, When I use mobile, Then entries, date views, and period totals work with localization
 
 ## Technical Notes
 
@@ -28,17 +28,19 @@ Follow project standards and document API contract before client screens for thi
 ## Dependencies
 
 ### Requires
+
 - Prior stories in this unit's API→web→mobile order as applicable; unit depends on `001-platform-and-auth` for domain units
 
 ### Enables
+
 - Subsequent stories in this unit and client bolts for the same slice
 
 ## Edge Cases
 
-| Scenario | Expected Behavior |
-|----------|-------------------|
-| Unauthorized access | Reject with consistent API error |
-| Validation failure | Stable `code` + user-facing `message` |
+| Scenario            | Expected Behavior                     |
+| ------------------- | ------------------------------------- |
+| Unauthorized access | Reject with consistent API error      |
+| Validation failure  | Stable `code` + user-facing `message` |
 
 ## Out of Scope
 

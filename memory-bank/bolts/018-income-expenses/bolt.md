@@ -3,16 +3,25 @@ id: 018-income-expenses
 unit: 006-income-expenses
 intent: 001-farm-management-first-release
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 003-mobile-income-and-expenses
 created: 2026-11-09T06:55:29Z
-started: null
-completed: null
+started: 2026-11-09T13:28:23Z
+completed: 2026-11-09T13:32:58Z
 current_stage: null
-stages_completed: []
+stages_completed:
+  - name: plan
+    completed: 2026-11-09T13:32:02Z
+    artifact: implementation-plan.md
+  - name: implement
+    completed: 2026-11-09T13:32:02Z
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: 2026-11-09T13:32:58Z
+    artifact: test-walkthrough.md
 
-requires_bolts: ['017-income-expenses']
+requires_bolts: ["017-income-expenses"]
 enables_bolts: []
 requires_units: []
 blocks: false
@@ -36,7 +45,7 @@ Mobile UI for Income and Expenses while keeping API contracts consistent across 
 
 ## Stories Included
 
-- [ ] **003-mobile-income-and-expenses**: Mobile income and expenses - Priority: Must
+- [x] **003-mobile-income-and-expenses**: Mobile income and expenses - Priority: Must
 
 ## Bolt Type
 
@@ -45,25 +54,27 @@ Mobile UI for Income and Expenses while keeping API contracts consistent across 
 
 ## Stages
 
-- [ ] **1. Spec/Plan**: Pending → implementation-plan.md
-- [ ] **2. Implement**: Pending → code
-- [ ] **3. Test**: Pending → test-report.md
+- [x] **1. Plan**: Complete → implementation-plan.md
+- [x] **2. Implement**: Complete → implementation-walkthrough.md
+- [x] **3. Test**: Complete → test-walkthrough.md
 
 ## Dependencies
 
 ### Requires
-- 017-income-expenses
+
+- 017-income-expenses (complete)
 
 ### Enables
-- None (last planned bolt)
+
+- None (last planned bolt for this unit)
 
 ## Success Criteria
 
-- [ ] All included stories implemented
-- [ ] All acceptance criteria met
-- [ ] Tests for critical paths passing
-- [ ] No feature scope beyond this slice
+- [x] All included stories implemented
+- [x] All acceptance criteria met
+- [x] Tests for critical paths passing
+- [x] No feature scope beyond this slice
 
 ## Notes
 
-Do not start Construction until Checkpoint 3/4 approvals. Hosting remains TBD.
+Construction started 2026-11-09T13:28:23Z. Completed 2026-11-09T13:32:58Z.

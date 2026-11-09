@@ -68,7 +68,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Manage cows, poultry, crops, inventory, profile, and farm settings on mobile.';
+      'Manage cows, poultry, crops, inventory, income and expenses, profile, and farm settings on mobile.';
 
   @override
   String get signInSubtitle => 'Access your farm records on this device.';
@@ -504,4 +504,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reason => 'Reason';
+
+  @override
+  String get ledgerTitle => 'Income & expenses';
+
+  @override
+  String get manageLedger => 'Manage income & expenses';
+
+  @override
+  String get addLedgerEntry => 'Add entry';
+
+  @override
+  String get createLedgerEntry => 'Create entry';
+
+  @override
+  String get noLedgerEntries => 'No ledger entries in this range.';
+
+  @override
+  String get ledgerEntryType => 'Type';
+
+  @override
+  String get ledgerIncome => 'Income';
+
+  @override
+  String get ledgerExpense => 'Expense';
+
+  @override
+  String get ledgerCategory => 'Category';
+
+  @override
+  String get ledgerLabour => 'Labour';
+
+  @override
+  String get ledgerFeedOrSupplies => 'Feed or supplies';
+
+  @override
+  String get ledgerUtilities => 'Utilities';
+
+  @override
+  String get ledgerTransport => 'Transport';
+
+  @override
+  String get ledgerEquipment => 'Equipment';
+
+  @override
+  String get ledgerLivestockSale => 'Livestock sale';
+
+  @override
+  String get ledgerProductSale => 'Product sale';
+
+  @override
+  String get ledgerSubsidy => 'Subsidy';
+
+  @override
+  String get ledgerOther => 'Other';
+
+  @override
+  String get unitOptional => 'Unit (optional)';
+
+  @override
+  String get archiveLedgerEntry => 'Archive';
+
+  @override
+  String get archiveLedgerEntryConfirm =>
+      'Archive this ledger entry? It will leave the active list and totals.';
+
+  @override
+  String get ledgerArchivedReadOnly =>
+      'This ledger entry is archived and cannot be modified.';
+
+  @override
+  String get ledgerCropGuidance =>
+      'Crop-cycle costs belong in Crops, not this general ledger.';
+
+  @override
+  String get dateFrom => 'From (YYYY-MM-DD)';
+
+  @override
+  String get dateTo => 'To (YYYY-MM-DD)';
+
+  @override
+  String get applyDateRange => 'Apply date range';
+
+  @override
+  String get totalIncome => 'Total income';
+
+  @override
+  String get net => 'Net';
 }

@@ -68,7 +68,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'মোবাইলে গরু, হাঁস-মুরগি, ফসল, মজুদ, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
+      'মোবাইলে গরু, হাঁস-মুরগি, ফসল, মজুদ, আয় ও ব্যয়, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
 
   @override
   String get signInSubtitle => 'এই ডিভাইসে আপনার ফার্ম রেকর্ড ব্যবহার করুন।';
@@ -353,7 +353,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get cycleSummary => 'সারাংশ';
 
   @override
-  String get totalExpenses => 'মোট খরচ';
+  String get totalExpenses => 'মোট ব্যয়';
 
   @override
   String get totalSaleIncome => 'বিক্রয় আয়';
@@ -503,4 +503,91 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get reason => 'কারণ';
+
+  @override
+  String get ledgerTitle => 'আয় ও ব্যয়';
+
+  @override
+  String get manageLedger => 'আয় ও ব্যয় পরিচালনা';
+
+  @override
+  String get addLedgerEntry => 'এন্ট্রি যোগ';
+
+  @override
+  String get createLedgerEntry => 'এন্ট্রি তৈরি';
+
+  @override
+  String get noLedgerEntries => 'এই সময়ে কোনো লেজার এন্ট্রি নেই।';
+
+  @override
+  String get ledgerEntryType => 'ধরন';
+
+  @override
+  String get ledgerIncome => 'আয়';
+
+  @override
+  String get ledgerExpense => 'ব্যয়';
+
+  @override
+  String get ledgerCategory => 'বিভাগ';
+
+  @override
+  String get ledgerLabour => 'শ্রম';
+
+  @override
+  String get ledgerFeedOrSupplies => 'খাদ্য বা সরবরাহ';
+
+  @override
+  String get ledgerUtilities => 'ইউটিলিটি';
+
+  @override
+  String get ledgerTransport => 'পরিবহন';
+
+  @override
+  String get ledgerEquipment => 'যন্ত্রপাতি';
+
+  @override
+  String get ledgerLivestockSale => 'পশু বিক্রয়';
+
+  @override
+  String get ledgerProductSale => 'পণ্য বিক্রয়';
+
+  @override
+  String get ledgerSubsidy => 'ভর্তুকি';
+
+  @override
+  String get ledgerOther => 'অন্যান্য';
+
+  @override
+  String get unitOptional => 'একক (ঐচ্ছিক)';
+
+  @override
+  String get archiveLedgerEntry => 'আর্কাইভ';
+
+  @override
+  String get archiveLedgerEntryConfirm =>
+      'এই লেজার এন্ট্রি আর্কাইভ করবেন? এটি সক্রিয় তালিকা ও মোট থেকে সরে যাবে।';
+
+  @override
+  String get ledgerArchivedReadOnly =>
+      'এই লেজার এন্ট্রি আর্কাইভড; পরিবর্তন করা যাবে না।';
+
+  @override
+  String get ledgerCropGuidance =>
+      'ফসল চক্রের খরচ ক্রপস মডিউলে রাখুন, এই সাধারণ লেজারে নয়।';
+
+  @override
+  String get dateFrom => 'থেকে (YYYY-MM-DD)';
+
+  @override
+  String get dateTo => 'পর্যন্ত (YYYY-MM-DD)';
+
+  @override
+  String get applyDateRange => 'তারিখ প্রয়োগ';
+
+  @override
+  String get totalIncome => 'মোট আয়';
+
+  @override
+  String get net => 'নীট';
 }
