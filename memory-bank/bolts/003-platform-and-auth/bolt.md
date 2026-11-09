@@ -3,20 +3,29 @@ id: 003-platform-and-auth
 unit: 001-platform-and-auth
 intent: 001-farm-management-first-release
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 006-mobile-auth-and-settings
-created: 2026-11-09T06:55:29Z
-started: null
-completed: null
+created: '2026-11-09T06:55:29Z'
+started: '2026-11-09T09:51:11Z'
+completed: '2026-11-09T09:58:06Z'
 current_stage: null
-stages_completed: []
-
-requires_bolts: ['002-platform-and-auth']
-enables_bolts: ['004-cows']
+stages_completed:
+  - name: plan
+    completed: '2026-11-09T09:53:04Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-11-09T09:57:12Z'
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: '2026-11-09T09:58:06Z'
+    artifact: test-walkthrough.md
+requires_bolts:
+  - 002-platform-and-auth
+enables_bolts:
+  - 004-cows
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 1
@@ -45,14 +54,14 @@ Mobile UI for Platform and Auth while keeping API contracts consistent across ba
 
 ## Stages
 
-- [ ] **1. Spec/Plan**: Pending → implementation-plan.md
-- [ ] **2. Implement**: Pending → code
-- [ ] **3. Test**: Pending → test-report.md
+- [x] **1. Plan**: Complete → implementation-plan.md
+- [x] **2. Implement**: Complete → code + implementation-walkthrough.md
+- [ ] **3. Test**: In progress → test-walkthrough.md
 
 ## Dependencies
 
 ### Requires
-- 002-platform-and-auth
+- 002-platform-and-auth (complete)
 
 ### Enables
 - 004-cows
@@ -66,4 +75,4 @@ Mobile UI for Platform and Auth while keeping API contracts consistent across ba
 
 ## Notes
 
-Do not start Construction until Checkpoint 3/4 approvals. Hosting remains TBD.
+Construction started 2026-11-09T09:51:11Z.

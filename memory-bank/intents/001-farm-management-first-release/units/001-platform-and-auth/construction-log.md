@@ -2,7 +2,7 @@
 unit: 001-platform-and-auth
 intent: 001-farm-management-first-release
 created: 2026-11-09T09:14:44Z
-last_updated: 2026-11-09T09:47:27Z
+last_updated: 2026-11-09T09:58:06Z
 ---
 
 # Construction Log: platform-and-auth
@@ -29,7 +29,7 @@ last_updated: 2026-11-09T09:47:27Z
 | --------------------- | ------- | ------------ | ------- |
 | 001-platform-and-auth | 001–004 | ✅ completed | -       |
 | 002-platform-and-auth | 005     | ✅ completed | -       |
-| 003-platform-and-auth | 006     | [ ] planned  | -       |
+| 003-platform-and-auth | 006     | ✅ completed | -       |
 
 ## Execution History
 
@@ -47,6 +47,11 @@ last_updated: 2026-11-09T09:47:27Z
 | 2026-11-09T09:46:18Z | 002-platform-and-auth | stage-complete | Implement → Test                        |
 | 2026-11-09T09:47:27Z | 002-platform-and-auth | stage-complete | Test → complete                         |
 | 2026-11-09T09:47:27Z | 002-platform-and-auth | completed      | All 3 stages done                       |
+| 2026-11-09T09:51:11Z | 003-platform-and-auth | started        | Stage 1: Plan                           |
+| 2026-11-09T09:53:04Z | 003-platform-and-auth | stage-complete | Plan → Implement                        |
+| 2026-11-09T09:57:12Z | 003-platform-and-auth | stage-complete | Implement → Test                        |
+| 2026-11-09T09:58:06Z | 003-platform-and-auth | stage-complete | Test → complete                         |
+| 2026-11-09T09:58:06Z | 003-platform-and-auth | completed      | All 3 stages done                       |
 
 ## Execution Summary
 
@@ -54,11 +59,11 @@ last_updated: 2026-11-09T09:47:27Z
 | ---------------------- | ----- |
 | Original bolts planned | 3     |
 | Current bolt count     | 3     |
-| Bolts completed        | 2     |
+| Bolts completed        | 3     |
 | Bolts in progress      | 0     |
-| Bolts remaining        | 1     |
+| Bolts remaining        | 0     |
 | Replanning events      | 0     |
 
 ## Notes
 
-Vertical order API → web → mobile. Hosting deferred. Next: `003-platform-and-auth` (Flutter).
+Unit `001-platform-and-auth` construction complete (API + Web + Mobile). Next vertical unit starts with bolt `004-cows`. Hosting remains TBD.
