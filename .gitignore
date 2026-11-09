@@ -1,0 +1,102 @@
+# OS
+.DS_Store
+.DS_Store?
+Thumbs.db
+Desktop.ini
+
+# Editors / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.iml
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+secrets/
+credentials.json
+
+# Python / FastAPI
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+*.log
+
+# Node / React (Vite)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+web/dist/
+web/build/
+web/.vite/
+coverage/
+*.tsbuildinfo
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/.packages
+mobile/.pub-cache/
+mobile/.pub/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/**/Generated.xcconfig
+mobile/**/flutter_export_environment.sh
+mobile/**/Podfile.lock
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/android/app/debug/
+mobile/android/app/profile/
+mobile/android/app/release/
+mobile/**/*.jks
+*.g.dart
+*.freezed.dart
+# Keep intentional generated files out of ignore if checked in later via negation
+
+# Local uploads (profile images, etc.)
+uploads/
+backend/uploads/
+**/uploads/
+
+# Databases / local data
+*.sqlite
+*.sqlite3
+*.db
+pgdata/
+postgres-data/
+*.dump
+*.sql.bak
+
+# Misc tooling caches
+.cache/
+.turbo/
+.parcel-cache/
+tmp/
+temp/
+*.tmp
