@@ -3,20 +3,29 @@ id: 002-platform-and-auth
 unit: 001-platform-and-auth
 intent: 001-farm-management-first-release
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 005-web-auth-and-settings
-created: 2026-11-09T06:55:29Z
-started: null
-completed: null
+created: '2026-11-09T06:55:29Z'
+started: '2026-11-09T09:39:06Z'
+completed: '2026-11-09T09:47:27Z'
 current_stage: null
-stages_completed: []
-
-requires_bolts: ['001-platform-and-auth']
-enables_bolts: ['003-platform-and-auth']
+stages_completed:
+  - name: plan
+    completed: '2026-11-09T09:40:47Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-11-09T09:46:18Z'
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: '2026-11-09T09:47:27Z'
+    artifact: test-walkthrough.md
+requires_bolts:
+  - 001-platform-and-auth
+enables_bolts:
+  - 003-platform-and-auth
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 1
@@ -45,14 +54,14 @@ Web UI for Platform and Auth while keeping API contracts consistent across backe
 
 ## Stages
 
-- [ ] **1. Spec/Plan**: Pending → implementation-plan.md
-- [ ] **2. Implement**: Pending → code
-- [ ] **3. Test**: Pending → test-report.md
+- [x] **1. Plan**: Complete → implementation-plan.md
+- [x] **2. Implement**: Complete → code + implementation-walkthrough.md
+- [ ] **3. Test**: In progress → test-walkthrough.md
 
 ## Dependencies
 
 ### Requires
-- 001-platform-and-auth
+- 001-platform-and-auth (complete)
 
 ### Enables
 - 003-platform-and-auth
@@ -66,4 +75,4 @@ Web UI for Platform and Auth while keeping API contracts consistent across backe
 
 ## Notes
 
-Do not start Construction until Checkpoint 3/4 approvals. Hosting remains TBD.
+Construction started 2026-11-09T09:39:06Z. Hosting remains TBD.
