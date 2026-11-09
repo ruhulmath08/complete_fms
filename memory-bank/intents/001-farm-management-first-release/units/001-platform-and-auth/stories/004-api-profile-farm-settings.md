@@ -2,11 +2,11 @@
 id: 004-api-profile-farm-settings
 unit: 001-platform-and-auth
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 001-platform-and-auth
-implemented: false
+implemented: true
 ---
 
 # Story: 004-api-profile-farm-settings
