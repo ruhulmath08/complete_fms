@@ -17,6 +17,9 @@ import { CropCyclesListPage } from './features/crops/pages/CropCyclesListPage'
 import { CropNameCreatePage } from './features/crops/pages/CropNameCreatePage'
 import { CropNameDetailPage } from './features/crops/pages/CropNameDetailPage'
 import { CropNamesListPage } from './features/crops/pages/CropNamesListPage'
+import { InventoryCreatePage } from './features/inventory/pages/InventoryCreatePage'
+import { InventoryDetailPage } from './features/inventory/pages/InventoryDetailPage'
+import { InventoryListPage } from './features/inventory/pages/InventoryListPage'
 import { PoultryCreatePage } from './features/poultry/pages/PoultryCreatePage'
 import { PoultryDetailPage } from './features/poultry/pages/PoultryDetailPage'
 import { PoultryListPage } from './features/poultry/pages/PoultryListPage'
@@ -46,6 +49,9 @@ export default function App() {
                 <Route path="/crops/names/:cropNameId" element={<CropNameDetailPage />} />
                 <Route path="/crops/cycles/new" element={<CropCycleCreatePage />} />
                 <Route path="/crops/cycles/:cycleId" element={<CropCycleDetailPage />} />
+                <Route path="/inventory" element={<InventoryListPage />} />
+                <Route path="/inventory/new" element={<InventoryCreatePage />} />
+                <Route path="/inventory/:itemId" element={<InventoryDetailPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/settings" element={<FarmSettingsPage />} />
               </Route>

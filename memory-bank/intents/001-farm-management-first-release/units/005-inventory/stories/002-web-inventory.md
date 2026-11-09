@@ -2,11 +2,11 @@
 id: 002-web-inventory
 unit: 005-inventory
 intent: 001-farm-management-first-release
-status: draft
+status: done
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 014-inventory
-implemented: false
+implemented: true
 ---
 
 # Story: 002-web-inventory
@@ -19,7 +19,7 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given inventory API exists, When I use web, Then items and stock updates work including below-zero prevention messaging
+- [x] Given inventory API exists, When I use web, Then items and stock updates work including below-zero prevention messaging
 
 ## Technical Notes
 
