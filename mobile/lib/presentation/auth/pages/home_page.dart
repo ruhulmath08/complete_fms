@@ -24,6 +24,11 @@ class HomePage extends StatelessWidget {
             child: Text(l10n.manageCows),
           ),
           const SizedBox(height: 12),
+          FilledButton(
+            onPressed: () => context.go('/poultry'),
+            child: Text(l10n.managePoultry),
+          ),
+          const SizedBox(height: 12),
           OutlinedButton(
             onPressed: () => context.go('/profile'),
             child: Text(l10n.profile),

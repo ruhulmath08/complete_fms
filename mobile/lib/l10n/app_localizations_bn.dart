@@ -68,7 +68,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'মোবাইলে গরু, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
+      'মোবাইলে গরু, হাঁস-মুরগি, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
 
   @override
   String get signInSubtitle => 'এই ডিভাইসে আপনার ফার্ম রেকর্ড ব্যবহার করুন।';
@@ -218,4 +218,57 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get archivedReadOnly => 'এই গরু আর্কাইভড; পরিবর্তন করা যাবে না।';
+
+  @override
+  String get poultryTitle => 'হাঁস-মুরগি';
+
+  @override
+  String get managePoultry => 'হাঁস-মুরগি পরিচালনা';
+
+  @override
+  String get addPoultryGroup => 'গ্রুপ যোগ';
+
+  @override
+  String get createPoultryGroup => 'গ্রুপ তৈরি';
+
+  @override
+  String get noPoultryGroups => 'এখনো কোনো হাঁস-মুরগির গ্রুপ নেই।';
+
+  @override
+  String get poultryGroupName => 'গ্রুপের নাম';
+
+  @override
+  String get poultryType => 'প্রজাতি';
+
+  @override
+  String get birdCount => 'পাখির সংখ্যা';
+
+  @override
+  String get birds => 'পাখি';
+
+  @override
+  String get dateAcquiredHint => 'অর্জনের তারিখ (YYYY-MM-DD)';
+
+  @override
+  String get archivePoultryGroup => 'আর্কাইভ';
+
+  @override
+  String get archivePoultryGroupConfirm =>
+      'এই গ্রুপ আর্কাইভ করবেন? এটি সক্রিয় তালিকা থেকে সরে যাবে।';
+
+  @override
+  String get eggProduction => 'ডিম উৎপাদন';
+
+  @override
+  String get eggsNotForBroiler => 'ব্রয়লার গ্রুপে ডিম রেকর্ড হয় না।';
+
+  @override
+  String get noEggEntries => 'এখনো কোনো ডিম এন্ট্রি নেই।';
+
+  @override
+  String get addEgg => 'ডিম এন্ট্রি যোগ';
+
+  @override
+  String get poultryArchivedReadOnly =>
+      'এই হাঁস-মুরগির গ্রুপ আর্কাইভড; পরিবর্তন করা যাবে না।';
 }

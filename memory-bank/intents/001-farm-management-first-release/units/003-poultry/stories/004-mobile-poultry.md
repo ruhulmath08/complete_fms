@@ -2,11 +2,11 @@
 id: 004-mobile-poultry
 unit: 003-poultry
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 009-poultry
-implemented: false
+implemented: true
 ---
 
 # Story: 004-mobile-poultry
@@ -19,7 +19,7 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given poultry API exists, When I use mobile, Then groups, counts, feeding, and applicable eggs work end-to-end with localization
+- [x] Given poultry API exists, When I use mobile, Then groups, counts, feeding, and applicable eggs work end-to-end with localization
 
 ## Technical Notes
 

@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Manage cows, profile, and farm settings on mobile.'**
+  /// **'Manage cows, poultry, profile, and farm settings on mobile.'**
   String get welcomeBody;
 
   /// No description provided for @signInSubtitle.
@@ -511,6 +511,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This cow is archived and cannot be modified.'**
   String get archivedReadOnly;
+
+  /// No description provided for @poultryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Poultry'**
+  String get poultryTitle;
+
+  /// No description provided for @managePoultry.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage poultry'**
+  String get managePoultry;
+
+  /// No description provided for @addPoultryGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Add group'**
+  String get addPoultryGroup;
+
+  /// No description provided for @createPoultryGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Create group'**
+  String get createPoultryGroup;
+
+  /// No description provided for @noPoultryGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'No poultry groups yet.'**
+  String get noPoultryGroups;
+
+  /// No description provided for @poultryGroupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get poultryGroupName;
+
+  /// No description provided for @poultryType.
+  ///
+  /// In en, this message translates to:
+  /// **'Poultry type'**
+  String get poultryType;
+
+  /// No description provided for @birdCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Bird count'**
+  String get birdCount;
+
+  /// No description provided for @birds.
+  ///
+  /// In en, this message translates to:
+  /// **'birds'**
+  String get birds;
+
+  /// No description provided for @dateAcquiredHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Date acquired (YYYY-MM-DD)'**
+  String get dateAcquiredHint;
+
+  /// No description provided for @archivePoultryGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archivePoultryGroup;
+
+  /// No description provided for @archivePoultryGroupConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this poultry group? It will leave the active list.'**
+  String get archivePoultryGroupConfirm;
+
+  /// No description provided for @eggProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg production'**
+  String get eggProduction;
+
+  /// No description provided for @eggsNotForBroiler.
+  ///
+  /// In en, this message translates to:
+  /// **'Broiler groups do not record egg production.'**
+  String get eggsNotForBroiler;
+
+  /// No description provided for @noEggEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No egg entries yet.'**
+  String get noEggEntries;
+
+  /// No description provided for @addEgg.
+  ///
+  /// In en, this message translates to:
+  /// **'Add egg entry'**
+  String get addEgg;
+
+  /// No description provided for @poultryArchivedReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This poultry group is archived and cannot be modified.'**
+  String get poultryArchivedReadOnly;
 }
 
 class _AppLocalizationsDelegate

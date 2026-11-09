@@ -21,6 +21,10 @@ class AppShell extends StatelessWidget {
             child: Text(l10n.cowsTitle),
           ),
           TextButton(
+            onPressed: () => context.go('/poultry'),
+            child: Text(l10n.poultryTitle),
+          ),
+          TextButton(
             onPressed: () => context.go('/profile'),
             child: Text(l10n.profile),
           ),

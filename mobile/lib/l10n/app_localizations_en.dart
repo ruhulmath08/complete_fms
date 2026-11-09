@@ -68,7 +68,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Manage cows, profile, and farm settings on mobile.';
+      'Manage cows, poultry, profile, and farm settings on mobile.';
 
   @override
   String get signInSubtitle => 'Access your farm records on this device.';
@@ -218,4 +218,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get archivedReadOnly => 'This cow is archived and cannot be modified.';
+
+  @override
+  String get poultryTitle => 'Poultry';
+
+  @override
+  String get managePoultry => 'Manage poultry';
+
+  @override
+  String get addPoultryGroup => 'Add group';
+
+  @override
+  String get createPoultryGroup => 'Create group';
+
+  @override
+  String get noPoultryGroups => 'No poultry groups yet.';
+
+  @override
+  String get poultryGroupName => 'Group name';
+
+  @override
+  String get poultryType => 'Poultry type';
+
+  @override
+  String get birdCount => 'Bird count';
+
+  @override
+  String get birds => 'birds';
+
+  @override
+  String get dateAcquiredHint => 'Date acquired (YYYY-MM-DD)';
+
+  @override
+  String get archivePoultryGroup => 'Archive';
+
+  @override
+  String get archivePoultryGroupConfirm =>
+      'Archive this poultry group? It will leave the active list.';
+
+  @override
+  String get eggProduction => 'Egg production';
+
+  @override
+  String get eggsNotForBroiler =>
+      'Broiler groups do not record egg production.';
+
+  @override
+  String get noEggEntries => 'No egg entries yet.';
+
+  @override
+  String get addEgg => 'Add egg entry';
+
+  @override
+  String get poultryArchivedReadOnly =>
+      'This poultry group is archived and cannot be modified.';
 }

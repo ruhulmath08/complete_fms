@@ -2,7 +2,7 @@
 unit: 003-poultry
 intent: 001-farm-management-first-release
 created: 2026-11-09T11:22:54Z
-last_updated: 2026-11-09T11:48:47Z
+last_updated: 2026-11-09T11:56:18Z
 ---
 
 # Construction Log: poultry
@@ -25,11 +25,11 @@ last_updated: 2026-11-09T11:48:47Z
 
 ## Current Bolt Structure
 
-| Bolt ID     | Stories | Status         | Changed |
-| ----------- | ------- | -------------- | ------- |
-| 007-poultry | 001–002 | ✅ complete    | -       |
-| 008-poultry | 003     | ✅ complete    | -       |
-| 009-poultry | 004     | ⏳ in-progress | -       |
+| Bolt ID     | Stories | Status      | Changed |
+| ----------- | ------- | ----------- | ------- |
+| 007-poultry | 001–002 | ✅ complete | -       |
+| 008-poultry | 003     | ✅ complete | -       |
+| 009-poultry | 004     | ✅ complete | -       |
 
 ## Execution History
 
@@ -50,6 +50,11 @@ last_updated: 2026-11-09T11:48:47Z
 | 2026-11-09T11:46:01Z | 008-poultry | test-done | 16/16 web tests; awaiting Stage 3 approval |
 | 2026-11-09T11:48:47Z | 008-poultry | completed      | Web story 003 done                 |
 | 2026-11-09T11:48:47Z | 009-poultry | started        | Stage 1: Plan                      |
+| 2026-11-09T11:54:11Z | 009-poultry | stage-complete | Plan → Implement                   |
+| 2026-11-09T11:54:11Z | 009-poultry | implement-done | Mobile feature + tests; awaiting Stage 2 approval |
+| 2026-11-09T11:55:42Z | 009-poultry | stage-complete | Implement → Test |
+| 2026-11-09T11:55:42Z | 009-poultry | test-done | 19/19 mobile tests; awaiting Stage 3 approval |
+| 2026-11-09T11:56:18Z | 009-poultry | completed      | Mobile story 004 done              |
 
 ## Execution Summary
 
@@ -57,11 +62,11 @@ last_updated: 2026-11-09T11:48:47Z
 | ---------------------- | ----- |
 | Original bolts planned | 3     |
 | Current bolt count     | 3     |
-| Bolts completed        | 2     |
-| Bolts in progress      | 1     |
+| Bolts completed        | 3     |
+| Bolts in progress      | 0     |
 | Bolts remaining        | 0     |
 | Replanning events      | 0     |
 
 ## Notes
 
-Depends on completed units `001-platform-and-auth` and `002-cows`. Vertical order API → web → mobile.
+Unit `003-poultry` construction complete (API + Web + Mobile). Next vertical unit starts with bolt `010-crops`.
