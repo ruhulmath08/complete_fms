@@ -2,11 +2,11 @@
 id: 004-mobile-cows
 unit: 002-cows
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 006-cows
-implemented: false
+implemented: true
 ---
 
 # Story: 004-mobile-cows

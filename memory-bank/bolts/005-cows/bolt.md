@@ -6,19 +6,19 @@ type: simple-construction-bolt
 status: complete
 stories:
   - 003-web-cows
-created: '2026-11-09T06:55:29Z'
-started: '2026-11-09T11:06:49Z'
-completed: '2026-11-09T11:11:39Z'
+created: "2026-11-09T06:55:29Z"
+started: "2026-11-09T11:06:49Z"
+completed: "2026-11-09T11:11:39Z"
 current_stage: null
 stages_completed:
   - name: plan
-    completed: '2026-11-09T11:08:03Z'
+    completed: "2026-11-09T11:08:03Z"
     artifact: implementation-plan.md
   - name: implement
-    completed: '2026-11-09T11:10:47Z'
+    completed: "2026-11-09T11:10:47Z"
     artifact: implementation-walkthrough.md
   - name: test
-    completed: '2026-11-09T11:11:22Z'
+    completed: "2026-11-09T11:11:22Z"
     artifact: test-walkthrough.md
 requires_bolts:
   - 004-cows
@@ -61,9 +61,11 @@ Web UI for Cows while keeping API contracts consistent across backend, React, an
 ## Dependencies
 
 ### Requires
+
 - 004-cows (complete)
 
 ### Enables
+
 - 006-cows
 
 ## Success Criteria

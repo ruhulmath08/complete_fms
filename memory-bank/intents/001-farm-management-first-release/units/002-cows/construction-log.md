@@ -2,7 +2,7 @@
 unit: 002-cows
 intent: 001-farm-management-first-release
 created: 2026-11-09T10:07:35Z
-last_updated: 2026-11-09T11:11:33Z
+last_updated: 2026-11-09T11:22:22Z
 ---
 
 # Construction Log: cows
@@ -29,7 +29,7 @@ last_updated: 2026-11-09T11:11:33Z
 |---------|---------|--------|---------|
 | 004-cows | 001–002 | ✅ completed | - |
 | 005-cows | 003 | ✅ completed | - |
-| 006-cows | 004 | [ ] planned | - |
+| 006-cows | 004 | ✅ completed | - |
 
 ## Execution History
 
@@ -47,6 +47,11 @@ last_updated: 2026-11-09T11:11:33Z
 | 2026-11-09T11:10:47Z | 005-cows | stage-complete | Implement → Test |
 | 2026-11-09T11:11:33Z | 005-cows | stage-complete | Test → complete |
 | 2026-11-09T11:11:33Z | 005-cows | completed | All 3 stages done |
+| 2026-11-09T11:12:56Z | 006-cows | started | Stage 1: Plan |
+| 2026-11-09T11:13:39Z | 006-cows | stage-complete | Plan → Implement |
+| 2026-11-09T11:17:42Z | 006-cows | stage-complete | Implement → Test |
+| 2026-11-09T11:22:22Z | 006-cows | stage-complete | Test → complete |
+| 2026-11-09T11:22:22Z | 006-cows | completed | All 3 stages done |
 
 ## Execution Summary
 
@@ -54,11 +59,11 @@ last_updated: 2026-11-09T11:11:33Z
 |--------|-------|
 | Original bolts planned | 3 |
 | Current bolt count | 3 |
-| Bolts completed | 2 |
+| Bolts completed | 3 |
 | Bolts in progress | 0 |
-| Bolts remaining | 1 |
+| Bolts remaining | 0 |
 | Replanning events | 0 |
 
 ## Notes
 
-API + Web cows complete. Next: `006-cows` (Flutter mobile cows UI).
+Unit `002-cows` construction complete (API + Web + Mobile). Next vertical unit starts with bolt `007-poultry`.

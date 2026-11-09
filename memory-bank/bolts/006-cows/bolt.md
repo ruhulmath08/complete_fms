@@ -3,20 +3,29 @@ id: 006-cows
 unit: 002-cows
 intent: 001-farm-management-first-release
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 004-mobile-cows
-created: 2026-11-09T06:55:29Z
-started: null
-completed: null
+created: '2026-11-09T06:55:29Z'
+started: '2026-11-09T11:12:56Z'
+completed: '2026-11-09T11:22:29Z'
 current_stage: null
-stages_completed: []
-
-requires_bolts: ['005-cows']
-enables_bolts: ['007-poultry']
+stages_completed:
+  - name: plan
+    completed: '2026-11-09T11:13:39Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-11-09T11:17:42Z'
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: '2026-11-09T11:22:22Z'
+    artifact: test-walkthrough.md
+requires_bolts:
+  - 005-cows
+enables_bolts:
+  - 007-poultry
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 1
@@ -36,7 +45,7 @@ Mobile UI for Cows while keeping API contracts consistent across backend, React,
 
 ## Stories Included
 
-- [ ] **004-mobile-cows**: Mobile cows workflows - Priority: Must
+- [x] **004-mobile-cows**: Mobile cows workflows - Priority: Must
 
 ## Bolt Type
 
@@ -45,25 +54,27 @@ Mobile UI for Cows while keeping API contracts consistent across backend, React,
 
 ## Stages
 
-- [ ] **1. Spec/Plan**: Pending → implementation-plan.md
-- [ ] **2. Implement**: Pending → code
-- [ ] **3. Test**: Pending → test-report.md
+- [x] **1. Plan**: Complete → implementation-plan.md
+- [x] **2. Implement**: Complete → code + implementation-walkthrough.md
+- [x] **3. Test**: Complete → test-walkthrough.md
 
 ## Dependencies
 
 ### Requires
-- 005-cows
+
+- 005-cows (complete)
 
 ### Enables
+
 - 007-poultry
 
 ## Success Criteria
 
-- [ ] All included stories implemented
-- [ ] All acceptance criteria met
-- [ ] Tests for critical paths passing
-- [ ] No feature scope beyond this slice
+- [x] All included stories implemented
+- [x] All acceptance criteria met
+- [x] Tests for critical paths passing
+- [x] No feature scope beyond this slice
 
 ## Notes
 
-Do not start Construction until Checkpoint 3/4 approvals. Hosting remains TBD.
+Construction started 2026-11-09T11:12:56Z. Completed 2026-11-09T11:22:22Z.

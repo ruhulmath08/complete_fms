@@ -200,6 +200,12 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get save;
 
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get saving;
+
   /// No description provided for @welcome.
   ///
   /// In en, this message translates to:
@@ -209,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Manage your owner profile and farm settings on mobile.'**
+  /// **'Manage cows, profile, and farm settings on mobile.'**
   String get welcomeBody;
 
   /// No description provided for @signInSubtitle.
@@ -271,6 +277,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong.'**
   String get genericError;
+
+  /// No description provided for @cowsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cows'**
+  String get cowsTitle;
+
+  /// No description provided for @manageCows.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage cows'**
+  String get manageCows;
+
+  /// No description provided for @addCow.
+  ///
+  /// In en, this message translates to:
+  /// **'Add cow'**
+  String get addCow;
+
+  /// No description provided for @createCow.
+  ///
+  /// In en, this message translates to:
+  /// **'Create cow'**
+  String get createCow;
+
+  /// No description provided for @includeArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Include archived'**
+  String get includeArchived;
+
+  /// No description provided for @noCows.
+  ///
+  /// In en, this message translates to:
+  /// **'No cows yet.'**
+  String get noCows;
+
+  /// No description provided for @archived.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get archived;
+
+  /// No description provided for @tagNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag number'**
+  String get tagNumber;
+
+  /// No description provided for @cowName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get cowName;
+
+  /// No description provided for @purpose.
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose'**
+  String get purpose;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
+
+  /// No description provided for @breed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get breed;
+
+  /// No description provided for @color.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get color;
+
+  /// No description provided for @dateOfBirthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth (YYYY-MM-DD)'**
+  String get dateOfBirthHint;
+
+  /// No description provided for @ageYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Age (years)'**
+  String get ageYears;
+
+  /// No description provided for @weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get weight;
+
+  /// No description provided for @acquiredBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Acquired by'**
+  String get acquiredBy;
+
+  /// No description provided for @bornOnFarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Born on farm'**
+  String get bornOnFarm;
+
+  /// No description provided for @purchased.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchased'**
+  String get purchased;
+
+  /// No description provided for @purchaseDateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase date (YYYY-MM-DD)'**
+  String get purchaseDateHint;
+
+  /// No description provided for @purchasePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase price'**
+  String get purchasePrice;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @archiveCow.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveCow;
+
+  /// No description provided for @archiveCowConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this cow? It will leave the active list.'**
+  String get archiveCowConfirm;
+
+  /// No description provided for @milkProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Milk production'**
+  String get milkProduction;
+
+  /// No description provided for @milkNotForMeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Meat-purpose cows do not record milk.'**
+  String get milkNotForMeat;
+
+  /// No description provided for @noMilkEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No milk entries yet.'**
+  String get noMilkEntries;
+
+  /// No description provided for @addMilk.
+  ///
+  /// In en, this message translates to:
+  /// **'Add milk entry'**
+  String get addMilk;
+
+  /// No description provided for @feeding.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding'**
+  String get feeding;
+
+  /// No description provided for @noFeedingEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No feeding entries yet.'**
+  String get noFeedingEntries;
+
+  /// No description provided for @addFeeding.
+  ///
+  /// In en, this message translates to:
+  /// **'Add feeding'**
+  String get addFeeding;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @unit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get unit;
+
+  /// No description provided for @pricePerUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per unit'**
+  String get pricePerUnit;
+
+  /// No description provided for @note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get note;
+
+  /// No description provided for @feedName.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed name'**
+  String get feedName;
+
+  /// No description provided for @archivedReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This cow is archived and cannot be modified.'**
+  String get archivedReadOnly;
 }
 
 class _AppLocalizationsDelegate

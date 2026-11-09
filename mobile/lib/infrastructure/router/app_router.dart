@@ -7,6 +7,9 @@ import '../../presentation/auth/pages/home_page.dart';
 import '../../presentation/auth/pages/profile_page.dart';
 import '../../presentation/auth/pages/sign_in_page.dart';
 import '../../presentation/auth/pages/sign_up_page.dart';
+import '../../presentation/cows/pages/cow_create_page.dart';
+import '../../presentation/cows/pages/cow_detail_page.dart';
+import '../../presentation/cows/pages/cows_list_page.dart';
 import '../../presentation/session/session_cubit.dart';
 import '../../presentation/shell/app_shell.dart';
 
@@ -29,6 +32,20 @@ GoRouter createRouter(SessionCubit sessionCubit) {
         builder: (context, state, child) => AppShell(child: child),
         routes: [
           GoRoute(path: '/home', builder: (context, state) => const HomePage()),
+          GoRoute(
+            path: '/cows',
+            builder: (context, state) => const CowsListPage(),
+          ),
+          GoRoute(
+            path: '/cows/new',
+            builder: (context, state) => const CowCreatePage(),
+          ),
+          GoRoute(
+            path: '/cows/:cowId',
+            builder: (context, state) => CowDetailPage(
+              cowId: state.pathParameters['cowId']!,
+            ),
+          ),
           GoRoute(
             path: '/profile',
             builder: (context, state) => const ProfilePage(),

@@ -61,11 +61,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
+  String get saving => 'Saving…';
+
+  @override
   String get welcome => 'Welcome';
 
   @override
   String get welcomeBody =>
-      'Manage your owner profile and farm settings on mobile.';
+      'Manage cows, profile, and farm settings on mobile.';
 
   @override
   String get signInSubtitle => 'Access your farm records on this device.';
@@ -97,4 +100,122 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get genericError => 'Something went wrong.';
+
+  @override
+  String get cowsTitle => 'Cows';
+
+  @override
+  String get manageCows => 'Manage cows';
+
+  @override
+  String get addCow => 'Add cow';
+
+  @override
+  String get createCow => 'Create cow';
+
+  @override
+  String get includeArchived => 'Include archived';
+
+  @override
+  String get noCows => 'No cows yet.';
+
+  @override
+  String get archived => 'Archived';
+
+  @override
+  String get tagNumber => 'Tag number';
+
+  @override
+  String get cowName => 'Name';
+
+  @override
+  String get purpose => 'Purpose';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get breed => 'Breed';
+
+  @override
+  String get color => 'Color';
+
+  @override
+  String get dateOfBirthHint => 'Date of birth (YYYY-MM-DD)';
+
+  @override
+  String get ageYears => 'Age (years)';
+
+  @override
+  String get weight => 'Weight';
+
+  @override
+  String get acquiredBy => 'Acquired by';
+
+  @override
+  String get bornOnFarm => 'Born on farm';
+
+  @override
+  String get purchased => 'Purchased';
+
+  @override
+  String get purchaseDateHint => 'Purchase date (YYYY-MM-DD)';
+
+  @override
+  String get purchasePrice => 'Purchase price';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get archiveCow => 'Archive';
+
+  @override
+  String get archiveCowConfirm =>
+      'Archive this cow? It will leave the active list.';
+
+  @override
+  String get milkProduction => 'Milk production';
+
+  @override
+  String get milkNotForMeat => 'Meat-purpose cows do not record milk.';
+
+  @override
+  String get noMilkEntries => 'No milk entries yet.';
+
+  @override
+  String get addMilk => 'Add milk entry';
+
+  @override
+  String get feeding => 'Feeding';
+
+  @override
+  String get noFeedingEntries => 'No feeding entries yet.';
+
+  @override
+  String get addFeeding => 'Add feeding';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get unit => 'Unit';
+
+  @override
+  String get pricePerUnit => 'Price per unit';
+
+  @override
+  String get note => 'Note';
+
+  @override
+  String get feedName => 'Feed name';
+
+  @override
+  String get archivedReadOnly => 'This cow is archived and cannot be modified.';
 }
