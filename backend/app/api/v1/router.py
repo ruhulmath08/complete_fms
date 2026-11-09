@@ -7,6 +7,7 @@ from app.modules.auth.presentation.routers import (
     me_router,
     settings_router,
 )
+from app.modules.cows.presentation.routers import cows_router
 
 api_v1_router = APIRouter(prefix="/api/v1")
 api_v1_router.include_router(health.router)
@@ -14,3 +15,4 @@ api_v1_router.include_router(auth_router)
 api_v1_router.include_router(me_router)
 api_v1_router.include_router(settings_router)
 api_v1_router.include_router(config_router)
+api_v1_router.include_router(cows_router)

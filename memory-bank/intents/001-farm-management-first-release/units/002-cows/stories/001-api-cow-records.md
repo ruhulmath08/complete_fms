@@ -2,11 +2,11 @@
 id: 001-api-cow-records
 unit: 002-cows
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 004-cows
-implemented: false
+implemented: true
 ---
 
 # Story: 001-api-cow-records

@@ -6,6 +6,7 @@ from sqlalchemy import engine_from_config, pool
 from app.core.config import get_settings
 from app.db.base import Base
 from app.modules.auth.infrastructure import models as _auth_models  # noqa: F401
+from app.modules.cows.infrastructure import models as _cows_models  # noqa: F401
 
 config = context.config
 if config.config_file_name is not None:
