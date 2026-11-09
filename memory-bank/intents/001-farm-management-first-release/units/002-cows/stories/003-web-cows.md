@@ -2,11 +2,11 @@
 id: 003-web-cows
 unit: 002-cows
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 005-cows
-implemented: false
+implemented: true
 ---
 
 # Story: 003-web-cows

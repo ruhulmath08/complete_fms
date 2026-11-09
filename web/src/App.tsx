@@ -8,6 +8,9 @@ import { HomePage } from './features/auth/pages/HomePage'
 import { ProfilePage } from './features/auth/pages/ProfilePage'
 import { SignInPage } from './features/auth/pages/SignInPage'
 import { SignUpPage } from './features/auth/pages/SignUpPage'
+import { CowCreatePage } from './features/cows/pages/CowCreatePage'
+import { CowDetailPage } from './features/cows/pages/CowDetailPage'
+import { CowsListPage } from './features/cows/pages/CowsListPage'
 
 const queryClient = new QueryClient()
 
@@ -22,6 +25,9 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<AppShell />}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/cows" element={<CowsListPage />} />
+                <Route path="/cows/new" element={<CowCreatePage />} />
+                <Route path="/cows/:cowId" element={<CowDetailPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/settings" element={<FarmSettingsPage />} />
               </Route>

@@ -11,6 +11,7 @@ export function AppShell() {
           Farm Manager
         </Link>
         <nav className="nav-links">
+          <NavLink to="/cows">Cows</NavLink>
           <NavLink to="/profile">Profile</NavLink>
           <NavLink to="/settings">Farm settings</NavLink>
           <button type="button" className="btn btn-ghost" onClick={() => void signOut()}>

@@ -216,3 +216,120 @@ textarea {
   border: 2px solid var(--color-border);
   background: #e8eee7;
 }
+
+.page-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.page-toolbar .lede {
+  margin-bottom: 0;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  color: var(--color-muted);
+}
+
+.record-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.record-card {
+  display: block;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: #fbfcfb;
+  color: inherit;
+}
+
+.record-card:hover {
+  border-color: var(--color-primary);
+  text-decoration: none;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-muted {
+  background: #e8eee7;
+  color: var(--color-muted);
+}
+
+.detail-grid {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .detail-grid .detail-span {
+    grid-column: 1 / -1;
+  }
+}
+
+.detail-grid dt {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-1);
+}
+
+.detail-grid dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.detail-section {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+.detail-section h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin: 0 0 var(--space-4);
+}
+
+.simple-list {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.simple-list li {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: #fbfcfb;
+}
