@@ -5,8 +5,8 @@ export function HomePage() {
     <div className="panel" style={{ margin: '0 auto' }}>
       <h1>Welcome</h1>
       <p className="lede">
-        Manage cows, poultry, crops, inventory, profile, and farm settings from the
-        web app.
+        Manage cows, poultry, crops, inventory, income &amp; expenses, profile, and
+        farm settings from the web app.
       </p>
       <div className="form-stack">
         <Link className="btn btn-primary" to="/cows" style={{ textAlign: 'center' }}>
@@ -20,6 +20,9 @@ export function HomePage() {
         </Link>
         <Link className="btn btn-primary" to="/inventory" style={{ textAlign: 'center' }}>
           Manage inventory
+        </Link>
+        <Link className="btn btn-primary" to="/ledger" style={{ textAlign: 'center' }}>
+          Manage income &amp; expenses
         </Link>
         <Link className="btn btn-ghost" to="/profile" style={{ textAlign: 'center' }}>
           Go to profile

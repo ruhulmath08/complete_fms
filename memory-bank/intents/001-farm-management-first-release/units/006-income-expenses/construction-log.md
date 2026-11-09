@@ -2,7 +2,7 @@
 unit: 006-income-expenses
 intent: 001-farm-management-first-release
 created: 2026-11-09T13:13:23Z
-last_updated: 2026-11-09T13:23:22Z
+last_updated: 2026-11-09T13:28:23Z
 ---
 
 # Construction Log: income-expenses
@@ -28,8 +28,8 @@ last_updated: 2026-11-09T13:23:22Z
 | Bolt ID             | Stories | Status      | Changed |
 | ------------------- | ------- | ----------- | ------- |
 | 016-income-expenses | 001     | ✅ complete    | -       |
-| 017-income-expenses | 002     | ⏳ in-progress | -       |
-| 018-income-expenses | 003     | planned        | -       |
+| 017-income-expenses | 002     | ✅ complete    | -       |
+| 018-income-expenses | 003     | ⏳ in-progress | -       |
 
 ## Execution History
 
@@ -43,6 +43,11 @@ last_updated: 2026-11-09T13:23:22Z
 | 2026-11-09T13:20:36Z | 016-income-expenses | stage-complete | Implement → Test                         |
 | 2026-11-09T13:21:48Z | 016-income-expenses | completed      | API story 001 done; 57/57                |
 | 2026-11-09T13:23:22Z | 017-income-expenses | started        | Stage 1: Plan                            |
+| 2026-11-09T13:25:55Z | 017-income-expenses | stage-complete | Plan → Implement                         |
+| 2026-11-09T13:25:55Z | 017-income-expenses | implement-done | Web ledger feature + Vitest              |
+| 2026-11-09T13:26:46Z | 017-income-expenses | stage-complete | Implement → Test                         |
+| 2026-11-09T13:26:46Z | 017-income-expenses | completed      | Web story 002 done; 25/25 Vitest         |
+| 2026-11-09T13:28:23Z | 018-income-expenses | started        | Stage 1: Plan                            |
 
 ## Execution Summary
 
@@ -50,11 +55,11 @@ last_updated: 2026-11-09T13:23:22Z
 | ---------------------- | ----- |
 | Original bolts planned | 3     |
 | Current bolt count     | 3     |
-| Bolts completed        | 1     |
+| Bolts completed        | 2     |
 | Bolts in progress      | 1     |
-| Bolts remaining        | 1     |
+| Bolts remaining        | 0     |
 | Replanning events      | 0     |
 
 ## Notes
 
-Vertical order API → web → mobile. Web bolt `017-income-expenses` in progress.
+Vertical order API → web → mobile. Mobile bolt `018-income-expenses` in progress.

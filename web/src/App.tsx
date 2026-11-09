@@ -17,6 +17,9 @@ import { CropCyclesListPage } from './features/crops/pages/CropCyclesListPage'
 import { CropNameCreatePage } from './features/crops/pages/CropNameCreatePage'
 import { CropNameDetailPage } from './features/crops/pages/CropNameDetailPage'
 import { CropNamesListPage } from './features/crops/pages/CropNamesListPage'
+import { LedgerCreatePage } from './features/income-expenses/pages/LedgerCreatePage'
+import { LedgerDetailPage } from './features/income-expenses/pages/LedgerDetailPage'
+import { LedgerListPage } from './features/income-expenses/pages/LedgerListPage'
 import { InventoryCreatePage } from './features/inventory/pages/InventoryCreatePage'
 import { InventoryDetailPage } from './features/inventory/pages/InventoryDetailPage'
 import { InventoryListPage } from './features/inventory/pages/InventoryListPage'
@@ -52,6 +55,9 @@ export default function App() {
                 <Route path="/inventory" element={<InventoryListPage />} />
                 <Route path="/inventory/new" element={<InventoryCreatePage />} />
                 <Route path="/inventory/:itemId" element={<InventoryDetailPage />} />
+                <Route path="/ledger" element={<LedgerListPage />} />
+                <Route path="/ledger/new" element={<LedgerCreatePage />} />
+                <Route path="/ledger/:entryId" element={<LedgerDetailPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/settings" element={<FarmSettingsPage />} />
               </Route>
