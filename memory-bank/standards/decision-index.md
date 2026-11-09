@@ -1,6 +1,6 @@
 ---
-last_updated: 2026-11-09T10:29:56Z
-total_decisions: 6
+last_updated: 2026-11-09T12:05:56Z
+total_decisions: 7
 ---
 
 # Decision Index
@@ -17,6 +17,14 @@ Use this to find relevant prior decisions when working on related features.
 ---
 
 ## Decisions
+
+### ADR-007: Crop Name Uniqueness Among Active Catalog Entries Only
+- **Status**: accepted
+- **Date**: 2026-11-09
+- **Bolt**: 010-crops (004-crops)
+- **Path**: `bolts/010-crops/adr-007-active-crop-name-uniqueness.md`
+- **Summary**: Soft-archived crop catalog rows keep their name. Enforce unique `(owner_id, name)` only among active crop names via a partial unique index; archived names may be reused; cycles always key by `crop_name_id`.
+- **Read when**: Implementing crop name create/update/archive, cycle crop_name_id validation, or catalog uniqueness rules
 
 ### ADR-006: Tag Uniqueness Among Active Cows Only
 - **Status**: accepted

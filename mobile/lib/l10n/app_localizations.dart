@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Manage cows, poultry, profile, and farm settings on mobile.'**
+  /// **'Manage cows, poultry, crops, profile, and farm settings on mobile.'**
   String get welcomeBody;
 
   /// No description provided for @signInSubtitle.
@@ -613,6 +613,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This poultry group is archived and cannot be modified.'**
   String get poultryArchivedReadOnly;
+
+  /// No description provided for @cropsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crops'**
+  String get cropsTitle;
+
+  /// No description provided for @manageCrops.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage crops'**
+  String get manageCrops;
+
+  /// No description provided for @cropNamesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop names'**
+  String get cropNamesTitle;
+
+  /// No description provided for @addCropName.
+  ///
+  /// In en, this message translates to:
+  /// **'Add crop name'**
+  String get addCropName;
+
+  /// No description provided for @createCropName.
+  ///
+  /// In en, this message translates to:
+  /// **'Create crop name'**
+  String get createCropName;
+
+  /// No description provided for @noCropNames.
+  ///
+  /// In en, this message translates to:
+  /// **'No crop names yet.'**
+  String get noCropNames;
+
+  /// No description provided for @noActiveCropNames.
+  ///
+  /// In en, this message translates to:
+  /// **'No active crop names yet. Add a crop name first.'**
+  String get noActiveCropNames;
+
+  /// No description provided for @cropNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop name'**
+  String get cropNameLabel;
+
+  /// No description provided for @cropLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop'**
+  String get cropLabel;
+
+  /// No description provided for @archiveCropName.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveCropName;
+
+  /// No description provided for @archiveCropNameConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this crop name? It will leave the active catalog.'**
+  String get archiveCropNameConfirm;
+
+  /// No description provided for @cropNameArchivedReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This crop name is archived and cannot be modified.'**
+  String get cropNameArchivedReadOnly;
+
+  /// No description provided for @addCropCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add cycle'**
+  String get addCropCycle;
+
+  /// No description provided for @createCropCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create cycle'**
+  String get createCropCycle;
+
+  /// No description provided for @noCropCycles.
+  ///
+  /// In en, this message translates to:
+  /// **'No crop cycles yet.'**
+  String get noCropCycles;
+
+  /// No description provided for @plantedPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Planted'**
+  String get plantedPrefix;
+
+  /// No description provided for @plantedAtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Planted at (YYYY-MM-DD)'**
+  String get plantedAtHint;
+
+  /// No description provided for @expectedHarvestHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected harvest (YYYY-MM-DD)'**
+  String get expectedHarvestHint;
+
+  /// No description provided for @plotName.
+  ///
+  /// In en, this message translates to:
+  /// **'Plot name'**
+  String get plotName;
+
+  /// No description provided for @area.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get area;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @archiveCropCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveCropCycle;
+
+  /// No description provided for @archiveCropCycleConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this crop cycle? It will leave the active list.'**
+  String get archiveCropCycleConfirm;
+
+  /// No description provided for @cropCycleArchivedReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This crop cycle is archived and cannot be modified.'**
+  String get cropCycleArchivedReadOnly;
+
+  /// No description provided for @cycleSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get cycleSummary;
+
+  /// No description provided for @totalExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Total expenses'**
+  String get totalExpenses;
+
+  /// No description provided for @totalSaleIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale income'**
+  String get totalSaleIncome;
+
+  /// No description provided for @cycleResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get cycleResult;
+
+  /// No description provided for @expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// No description provided for @noExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses yet.'**
+  String get noExpenses;
+
+  /// No description provided for @addExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Add expense'**
+  String get addExpense;
+
+  /// No description provided for @spentAtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Spent at (YYYY-MM-DD)'**
+  String get spentAtHint;
+
+  /// No description provided for @expenseCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get expenseCategory;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @expenseLabour.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour'**
+  String get expenseLabour;
+
+  /// No description provided for @expenseFertilizers.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertilizers'**
+  String get expenseFertilizers;
+
+  /// No description provided for @expensePesticides.
+  ///
+  /// In en, this message translates to:
+  /// **'Pesticides and chemicals'**
+  String get expensePesticides;
+
+  /// No description provided for @expenseSeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seeds'**
+  String get expenseSeeds;
+
+  /// No description provided for @expenseIrrigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Irrigation'**
+  String get expenseIrrigation;
+
+  /// No description provided for @expenseEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get expenseEquipment;
+
+  /// No description provided for @expenseOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get expenseOther;
+
+  /// No description provided for @harvests.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvests'**
+  String get harvests;
+
+  /// No description provided for @noHarvests.
+  ///
+  /// In en, this message translates to:
+  /// **'No harvests yet.'**
+  String get noHarvests;
+
+  /// No description provided for @addHarvest.
+  ///
+  /// In en, this message translates to:
+  /// **'Add harvest'**
+  String get addHarvest;
+
+  /// No description provided for @harvestedAtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvested at (YYYY-MM-DD)'**
+  String get harvestedAtHint;
+
+  /// No description provided for @saleAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'sale'**
+  String get saleAmount;
+
+  /// No description provided for @saleAmountOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale amount (optional)'**
+  String get saleAmountOptional;
 }
 
 class _AppLocalizationsDelegate

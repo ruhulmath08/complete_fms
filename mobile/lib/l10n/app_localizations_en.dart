@@ -68,7 +68,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Manage cows, poultry, profile, and farm settings on mobile.';
+      'Manage cows, poultry, crops, profile, and farm settings on mobile.';
 
   @override
   String get signInSubtitle => 'Access your farm records on this device.';
@@ -272,4 +272,150 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get poultryArchivedReadOnly =>
       'This poultry group is archived and cannot be modified.';
+
+  @override
+  String get cropsTitle => 'Crops';
+
+  @override
+  String get manageCrops => 'Manage crops';
+
+  @override
+  String get cropNamesTitle => 'Crop names';
+
+  @override
+  String get addCropName => 'Add crop name';
+
+  @override
+  String get createCropName => 'Create crop name';
+
+  @override
+  String get noCropNames => 'No crop names yet.';
+
+  @override
+  String get noActiveCropNames =>
+      'No active crop names yet. Add a crop name first.';
+
+  @override
+  String get cropNameLabel => 'Crop name';
+
+  @override
+  String get cropLabel => 'Crop';
+
+  @override
+  String get archiveCropName => 'Archive';
+
+  @override
+  String get archiveCropNameConfirm =>
+      'Archive this crop name? It will leave the active catalog.';
+
+  @override
+  String get cropNameArchivedReadOnly =>
+      'This crop name is archived and cannot be modified.';
+
+  @override
+  String get addCropCycle => 'Add cycle';
+
+  @override
+  String get createCropCycle => 'Create cycle';
+
+  @override
+  String get noCropCycles => 'No crop cycles yet.';
+
+  @override
+  String get plantedPrefix => 'Planted';
+
+  @override
+  String get plantedAtHint => 'Planted at (YYYY-MM-DD)';
+
+  @override
+  String get expectedHarvestHint => 'Expected harvest (YYYY-MM-DD)';
+
+  @override
+  String get plotName => 'Plot name';
+
+  @override
+  String get area => 'Area';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get archiveCropCycle => 'Archive';
+
+  @override
+  String get archiveCropCycleConfirm =>
+      'Archive this crop cycle? It will leave the active list.';
+
+  @override
+  String get cropCycleArchivedReadOnly =>
+      'This crop cycle is archived and cannot be modified.';
+
+  @override
+  String get cycleSummary => 'Summary';
+
+  @override
+  String get totalExpenses => 'Total expenses';
+
+  @override
+  String get totalSaleIncome => 'Sale income';
+
+  @override
+  String get cycleResult => 'Result';
+
+  @override
+  String get expenses => 'Expenses';
+
+  @override
+  String get noExpenses => 'No expenses yet.';
+
+  @override
+  String get addExpense => 'Add expense';
+
+  @override
+  String get spentAtHint => 'Spent at (YYYY-MM-DD)';
+
+  @override
+  String get expenseCategory => 'Category';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get expenseLabour => 'Labour';
+
+  @override
+  String get expenseFertilizers => 'Fertilizers';
+
+  @override
+  String get expensePesticides => 'Pesticides and chemicals';
+
+  @override
+  String get expenseSeeds => 'Seeds';
+
+  @override
+  String get expenseIrrigation => 'Irrigation';
+
+  @override
+  String get expenseEquipment => 'Equipment';
+
+  @override
+  String get expenseOther => 'Other';
+
+  @override
+  String get harvests => 'Harvests';
+
+  @override
+  String get noHarvests => 'No harvests yet.';
+
+  @override
+  String get addHarvest => 'Add harvest';
+
+  @override
+  String get harvestedAtHint => 'Harvested at (YYYY-MM-DD)';
+
+  @override
+  String get saleAmount => 'sale';
+
+  @override
+  String get saleAmountOptional => 'Sale amount (optional)';
 }

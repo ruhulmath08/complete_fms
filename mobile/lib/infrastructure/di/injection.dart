@@ -2,16 +2,20 @@ import 'package:get_it/get_it.dart';
 import '../../data/datasources/api_client.dart';
 import '../../data/datasources/auth_api.dart';
 import '../../data/datasources/cows_api.dart';
+import '../../data/datasources/crops_api.dart';
 import '../../data/datasources/poultry_api.dart';
 import '../../data/datasources/token_store.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../data/repositories/cows_repository_impl.dart';
+import '../../data/repositories/crops_repository_impl.dart';
 import '../../data/repositories/poultry_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/cows_repository.dart';
+import '../../domain/repositories/crops_repository.dart';
 import '../../domain/repositories/poultry_repository.dart';
 import '../../domain/usecases/auth_usecases.dart';
 import '../../domain/usecases/cows_usecases.dart';
+import '../../domain/usecases/crops_usecases.dart';
 import '../../domain/usecases/poultry_usecases.dart';
 import '../../presentation/locale/locale_cubit.dart';
 import '../../presentation/session/session_cubit.dart';
@@ -24,9 +28,11 @@ Future<void> configureDependencies() async {
   final authApi = AuthApi(apiClient);
   final cowsApi = CowsApi(apiClient);
   final poultryApi = PoultryApi(apiClient);
+  final cropsApi = CropsApi(apiClient);
   final authRepo = AuthRepositoryImpl(authApi, tokenStore);
   final cowsRepo = CowsRepositoryImpl(cowsApi);
   final poultryRepo = PoultryRepositoryImpl(poultryApi);
+  final cropsRepo = CropsRepositoryImpl(cropsApi);
 
   getIt
     ..registerSingleton<TokenStore>(tokenStore)
@@ -34,9 +40,11 @@ Future<void> configureDependencies() async {
     ..registerSingleton<AuthApi>(authApi)
     ..registerSingleton<CowsApi>(cowsApi)
     ..registerSingleton<PoultryApi>(poultryApi)
+    ..registerSingleton<CropsApi>(cropsApi)
     ..registerSingleton<AuthRepository>(authRepo)
     ..registerSingleton<CowsRepository>(cowsRepo)
     ..registerSingleton<PoultryRepository>(poultryRepo)
+    ..registerSingleton<CropsRepository>(cropsRepo)
     ..registerLazySingleton(() => SignUp(authRepo))
     ..registerLazySingleton(() => SignIn(authRepo))
     ..registerLazySingleton(() => SignOut(authRepo))
@@ -63,6 +71,21 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => AddEggProduction(poultryRepo))
     ..registerLazySingleton(() => ListPoultryFeedings(poultryRepo))
     ..registerLazySingleton(() => AddPoultryFeeding(poultryRepo))
+    ..registerLazySingleton(() => ListCropNames(cropsRepo))
+    ..registerLazySingleton(() => GetCropName(cropsRepo))
+    ..registerLazySingleton(() => CreateCropName(cropsRepo))
+    ..registerLazySingleton(() => UpdateCropName(cropsRepo))
+    ..registerLazySingleton(() => ArchiveCropName(cropsRepo))
+    ..registerLazySingleton(() => ListCropCycles(cropsRepo))
+    ..registerLazySingleton(() => GetCropCycle(cropsRepo))
+    ..registerLazySingleton(() => CreateCropCycle(cropsRepo))
+    ..registerLazySingleton(() => UpdateCropCycle(cropsRepo))
+    ..registerLazySingleton(() => ArchiveCropCycle(cropsRepo))
+    ..registerLazySingleton(() => GetCropCycleSummary(cropsRepo))
+    ..registerLazySingleton(() => ListCropExpenses(cropsRepo))
+    ..registerLazySingleton(() => AddCropExpense(cropsRepo))
+    ..registerLazySingleton(() => ListHarvests(cropsRepo))
+    ..registerLazySingleton(() => AddHarvest(cropsRepo))
     ..registerLazySingleton(() => LocaleCubit())
     ..registerLazySingleton(
       () => SessionCubit(getIt<IsSignedIn>(), getIt<SignOut>()),

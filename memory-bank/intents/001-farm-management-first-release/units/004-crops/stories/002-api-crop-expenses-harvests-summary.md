@@ -2,11 +2,11 @@
 id: 002-api-crop-expenses-harvests-summary
 unit: 004-crops
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 010-crops
-implemented: false
+implemented: true
 ---
 
 # Story: 002-api-crop-expenses-harvests-summary
@@ -19,9 +19,9 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given a crop cycle, When I add categorized expenses, Then they are listed for that cycle
-- [ ] Given a harvest with optional sale amount, When recorded, Then it appears on the cycle
-- [ ] Given expenses and sale income, When I fetch summary, Then totals and income-minus-expenses match entered records
+- [x] Given a crop cycle, When I add categorized expenses, Then they are listed for that cycle
+- [x] Given a harvest with optional sale amount, When recorded, Then it appears on the cycle
+- [x] Given expenses and sale income, When I fetch summary, Then totals and income-minus-expenses match entered records
 
 ## Technical Notes
 

@@ -11,6 +11,12 @@ import { SignUpPage } from './features/auth/pages/SignUpPage'
 import { CowCreatePage } from './features/cows/pages/CowCreatePage'
 import { CowDetailPage } from './features/cows/pages/CowDetailPage'
 import { CowsListPage } from './features/cows/pages/CowsListPage'
+import { CropCycleCreatePage } from './features/crops/pages/CropCycleCreatePage'
+import { CropCycleDetailPage } from './features/crops/pages/CropCycleDetailPage'
+import { CropCyclesListPage } from './features/crops/pages/CropCyclesListPage'
+import { CropNameCreatePage } from './features/crops/pages/CropNameCreatePage'
+import { CropNameDetailPage } from './features/crops/pages/CropNameDetailPage'
+import { CropNamesListPage } from './features/crops/pages/CropNamesListPage'
 import { PoultryCreatePage } from './features/poultry/pages/PoultryCreatePage'
 import { PoultryDetailPage } from './features/poultry/pages/PoultryDetailPage'
 import { PoultryListPage } from './features/poultry/pages/PoultryListPage'
@@ -34,6 +40,12 @@ export default function App() {
                 <Route path="/poultry" element={<PoultryListPage />} />
                 <Route path="/poultry/new" element={<PoultryCreatePage />} />
                 <Route path="/poultry/:groupId" element={<PoultryDetailPage />} />
+                <Route path="/crops" element={<CropCyclesListPage />} />
+                <Route path="/crops/names" element={<CropNamesListPage />} />
+                <Route path="/crops/names/new" element={<CropNameCreatePage />} />
+                <Route path="/crops/names/:cropNameId" element={<CropNameDetailPage />} />
+                <Route path="/crops/cycles/new" element={<CropCycleCreatePage />} />
+                <Route path="/crops/cycles/:cycleId" element={<CropCycleDetailPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/settings" element={<FarmSettingsPage />} />
               </Route>

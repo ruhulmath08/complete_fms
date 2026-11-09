@@ -10,6 +10,12 @@ import '../../presentation/auth/pages/sign_up_page.dart';
 import '../../presentation/cows/pages/cow_create_page.dart';
 import '../../presentation/cows/pages/cow_detail_page.dart';
 import '../../presentation/cows/pages/cows_list_page.dart';
+import '../../presentation/crops/pages/crop_cycle_create_page.dart';
+import '../../presentation/crops/pages/crop_cycle_detail_page.dart';
+import '../../presentation/crops/pages/crop_cycles_list_page.dart';
+import '../../presentation/crops/pages/crop_name_create_page.dart';
+import '../../presentation/crops/pages/crop_name_detail_page.dart';
+import '../../presentation/crops/pages/crop_names_list_page.dart';
 import '../../presentation/poultry/pages/poultry_create_page.dart';
 import '../../presentation/poultry/pages/poultry_detail_page.dart';
 import '../../presentation/poultry/pages/poultry_list_page.dart';
@@ -61,6 +67,34 @@ GoRouter createRouter(SessionCubit sessionCubit) {
             path: '/poultry/:groupId',
             builder: (context, state) => PoultryDetailPage(
               groupId: state.pathParameters['groupId']!,
+            ),
+          ),
+          GoRoute(
+            path: '/crops',
+            builder: (context, state) => const CropCyclesListPage(),
+          ),
+          GoRoute(
+            path: '/crops/names',
+            builder: (context, state) => const CropNamesListPage(),
+          ),
+          GoRoute(
+            path: '/crops/names/new',
+            builder: (context, state) => const CropNameCreatePage(),
+          ),
+          GoRoute(
+            path: '/crops/names/:cropNameId',
+            builder: (context, state) => CropNameDetailPage(
+              cropNameId: state.pathParameters['cropNameId']!,
+            ),
+          ),
+          GoRoute(
+            path: '/crops/cycles/new',
+            builder: (context, state) => const CropCycleCreatePage(),
+          ),
+          GoRoute(
+            path: '/crops/cycles/:cycleId',
+            builder: (context, state) => CropCycleDetailPage(
+              cycleId: state.pathParameters['cycleId']!,
             ),
           ),
           GoRoute(

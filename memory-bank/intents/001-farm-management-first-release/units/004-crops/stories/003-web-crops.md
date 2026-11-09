@@ -2,11 +2,11 @@
 id: 003-web-crops
 unit: 004-crops
 intent: 001-farm-management-first-release
-status: draft
+status: done
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 011-crops
-implemented: false
+implemented: true
 ---
 
 # Story: 003-web-crops
@@ -19,7 +19,7 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given crops API exists, When I use web, Then catalog, cycles, expenses, harvests, and summary work
+- [x] Given crops API exists, When I use web, Then catalog, cycles, expenses, harvests, and summary work
 
 ## Technical Notes
 

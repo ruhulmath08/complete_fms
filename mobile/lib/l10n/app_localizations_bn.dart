@@ -68,7 +68,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'মোবাইলে গরু, হাঁস-মুরগি, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
+      'মোবাইলে গরু, হাঁস-মুরগি, ফসল, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
 
   @override
   String get signInSubtitle => 'এই ডিভাইসে আপনার ফার্ম রেকর্ড ব্যবহার করুন।';
@@ -271,4 +271,150 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get poultryArchivedReadOnly =>
       'এই হাঁস-মুরগির গ্রুপ আর্কাইভড; পরিবর্তন করা যাবে না।';
+
+  @override
+  String get cropsTitle => 'ফসল';
+
+  @override
+  String get manageCrops => 'ফসল পরিচালনা';
+
+  @override
+  String get cropNamesTitle => 'ফসলের নাম';
+
+  @override
+  String get addCropName => 'ফসলের নাম যোগ';
+
+  @override
+  String get createCropName => 'ফসলের নাম তৈরি';
+
+  @override
+  String get noCropNames => 'এখনো কোনো ফসলের নাম নেই।';
+
+  @override
+  String get noActiveCropNames =>
+      'কোনো সক্রিয় ফসলের নাম নেই। আগে একটি নাম যোগ করুন।';
+
+  @override
+  String get cropNameLabel => 'ফসলের নাম';
+
+  @override
+  String get cropLabel => 'ফসল';
+
+  @override
+  String get archiveCropName => 'আর্কাইভ';
+
+  @override
+  String get archiveCropNameConfirm =>
+      'এই ফসলের নাম আর্কাইভ করবেন? এটি সক্রিয় ক্যাটালগ থেকে সরে যাবে।';
+
+  @override
+  String get cropNameArchivedReadOnly =>
+      'এই ফসলের নাম আর্কাইভড; পরিবর্তন করা যাবে না।';
+
+  @override
+  String get addCropCycle => 'সাইকেল যোগ';
+
+  @override
+  String get createCropCycle => 'সাইকেল তৈরি';
+
+  @override
+  String get noCropCycles => 'এখনো কোনো ফসল সাইকেল নেই।';
+
+  @override
+  String get plantedPrefix => 'রোপণ';
+
+  @override
+  String get plantedAtHint => 'রোপণের তারিখ (YYYY-MM-DD)';
+
+  @override
+  String get expectedHarvestHint => 'প্রত্যাশিত ফসল কাটা (YYYY-MM-DD)';
+
+  @override
+  String get plotName => 'প্লটের নাম';
+
+  @override
+  String get area => 'এলাকা';
+
+  @override
+  String get location => 'অবস্থান';
+
+  @override
+  String get archiveCropCycle => 'আর্কাইভ';
+
+  @override
+  String get archiveCropCycleConfirm =>
+      'এই ফসল সাইকেল আর্কাইভ করবেন? এটি সক্রিয় তালিকা থেকে সরে যাবে।';
+
+  @override
+  String get cropCycleArchivedReadOnly =>
+      'এই ফসল সাইকেল আর্কাইভড; পরিবর্তন করা যাবে না।';
+
+  @override
+  String get cycleSummary => 'সারাংশ';
+
+  @override
+  String get totalExpenses => 'মোট খরচ';
+
+  @override
+  String get totalSaleIncome => 'বিক্রয় আয়';
+
+  @override
+  String get cycleResult => 'ফলাফল';
+
+  @override
+  String get expenses => 'খরচ';
+
+  @override
+  String get noExpenses => 'এখনো কোনো খরচ নেই।';
+
+  @override
+  String get addExpense => 'খরচ যোগ';
+
+  @override
+  String get spentAtHint => 'খরচের তারিখ (YYYY-MM-DD)';
+
+  @override
+  String get expenseCategory => 'বিভাগ';
+
+  @override
+  String get amount => 'পরিমাণ';
+
+  @override
+  String get expenseLabour => 'শ্রম';
+
+  @override
+  String get expenseFertilizers => 'সার';
+
+  @override
+  String get expensePesticides => 'কীটনাশক ও রাসায়নিক';
+
+  @override
+  String get expenseSeeds => 'বীজ';
+
+  @override
+  String get expenseIrrigation => 'সেচ';
+
+  @override
+  String get expenseEquipment => 'যন্ত্রপাতি';
+
+  @override
+  String get expenseOther => 'অন্যান্য';
+
+  @override
+  String get harvests => 'ফসল কাটা';
+
+  @override
+  String get noHarvests => 'এখনো কোনো ফসল কাটা নেই।';
+
+  @override
+  String get addHarvest => 'ফসল কাটা যোগ';
+
+  @override
+  String get harvestedAtHint => 'কাটার তারিখ (YYYY-MM-DD)';
+
+  @override
+  String get saleAmount => 'বিক্রয়';
+
+  @override
+  String get saleAmountOptional => 'বিক্রয় মূল্য (ঐচ্ছিক)';
 }

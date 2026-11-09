@@ -3,18 +3,34 @@ id: 010-crops
 unit: 004-crops
 intent: 001-farm-management-first-release
 type: ddd-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-api-crop-names-and-cycles
   - 002-api-crop-expenses-harvests-summary
 created: 2026-11-09T06:55:29Z
-started: null
-completed: null
+started: 2026-11-09T11:59:40Z
+completed: 2026-11-09T12:14:33Z
 current_stage: null
-stages_completed: []
+stages_completed:
+  - name: model
+    completed: 2026-11-09T12:02:06Z
+    artifact: ddd-01-domain-model.md
+  - name: design
+    completed: 2026-11-09T12:03:54Z
+    artifact: ddd-02-technical-design.md
+  - name: adr-analysis
+    completed: 2026-11-09T12:07:28Z
+    artifacts:
+      - adr-007-active-crop-name-uniqueness.md
+  - name: implement
+    completed: 2026-11-09T12:12:00Z
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: 2026-11-09T12:14:33Z
+    artifact: ddd-03-test-report.md
 
-requires_bolts: ['009-poultry']
-enables_bolts: ['011-crops']
+requires_bolts: ["009-poultry"]
+enables_bolts: ["011-crops"]
 requires_units: []
 blocks: false
 
@@ -37,8 +53,8 @@ API for Crops while keeping API contracts consistent across backend, React, and 
 
 ## Stories Included
 
-- [ ] **001-api-crop-names-and-cycles**: API crop names and cycles - Priority: Must
-- [ ] **002-api-crop-expenses-harvests-summary**: API crop expenses harvests summary - Priority: Must
+- [x] **001-api-crop-names-and-cycles**: API crop names and cycles - Priority: Must
+- [x] **002-api-crop-expenses-harvests-summary**: API crop expenses harvests summary - Priority: Must
 
 ## Bolt Type
 
@@ -47,27 +63,29 @@ API for Crops while keeping API contracts consistent across backend, React, and 
 
 ## Stages
 
-- [ ] **1. Domain Model**: Pending → ddd-01-domain-model.md
-- [ ] **2. Technical Design**: Pending → ddd-02-technical-design.md
-- [ ] **3. ADR Analysis**: Optional
-- [ ] **4. Implement**: Pending → code
-- [ ] **5. Test**: Pending → ddd-03-test-report.md
+- [x] **1. Domain Model**: Complete → ddd-01-domain-model.md
+- [x] **2. Technical Design**: Complete → ddd-02-technical-design.md
+- [x] **3. ADR Analysis**: Complete → ADR-007
+- [x] **4. Implement**: Complete → implementation-walkthrough.md
+- [x] **5. Test**: Complete → ddd-03-test-report.md
 
 ## Dependencies
 
 ### Requires
-- 009-poultry
+
+- 009-poultry (complete)
 
 ### Enables
+
 - 011-crops
 
 ## Success Criteria
 
-- [ ] All included stories implemented
-- [ ] All acceptance criteria met
-- [ ] Tests for critical paths passing
-- [ ] No feature scope beyond this slice
+- [x] All included stories implemented
+- [x] All acceptance criteria met
+- [x] Tests for critical paths passing
+- [x] No feature scope beyond this slice
 
 ## Notes
 
-Do not start Construction until Checkpoint 3/4 approvals. Hosting remains TBD.
+Construction started 2026-11-09T11:59:40Z. Completed 2026-11-09T12:14:33Z.

@@ -2,11 +2,11 @@
 id: 004-mobile-crops
 unit: 004-crops
 intent: 001-farm-management-first-release
-status: draft
+status: done
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 012-crops
-implemented: false
+implemented: true
 ---
 
 # Story: 004-mobile-crops
@@ -19,7 +19,7 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given crops API exists, When I use mobile, Then catalog, cycles, expenses, harvests, and summary work with localization
+- [x] Given crops API exists, When I use mobile, Then catalog, cycles, expenses, harvests, and summary work with localization
 
 ## Technical Notes
 

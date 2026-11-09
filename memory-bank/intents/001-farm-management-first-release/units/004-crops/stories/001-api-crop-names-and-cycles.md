@@ -2,11 +2,11 @@
 id: 001-api-crop-names-and-cycles
 unit: 004-crops
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 010-crops
-implemented: false
+implemented: true
 ---
 
 # Story: 001-api-crop-names-and-cycles
@@ -19,9 +19,9 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given I am signed in, When I CRUD/archive crop names, Then the catalog updates
-- [ ] Given I create a crop cycle, When crop name is not from the catalog, Then the API rejects it
-- [ ] Given valid cycle fields, When I CRUD/archive cycles, Then they persist for my farm
+- [x] Given I am signed in, When I CRUD/archive crop names, Then the catalog updates
+- [x] Given I create a crop cycle, When crop name is not from the catalog, Then the API rejects it
+- [x] Given valid cycle fields, When I CRUD/archive cycles, Then they persist for my farm
 
 ## Technical Notes
 
