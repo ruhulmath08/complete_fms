@@ -3,17 +3,33 @@ id: 016-income-expenses
 unit: 006-income-expenses
 intent: 001-farm-management-first-release
 type: ddd-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-api-income-and-expenses
 created: 2026-11-09T06:55:29Z
-started: null
-completed: null
+started: 2026-11-09T13:13:23Z
+completed: 2026-11-09T13:21:48Z
 current_stage: null
-stages_completed: []
+stages_completed:
+  - name: model
+    completed: 2026-11-09T13:13:23Z
+    artifact: ddd-01-domain-model.md
+  - name: design
+    completed: 2026-11-09T13:15:17Z
+    artifact: ddd-02-technical-design.md
+  - name: adr
+    completed: 2026-11-09T13:16:58Z
+    artifact: null
+    notes: No ADR-worthy decisions; reuse ADR-004
+  - name: implement
+    completed: 2026-11-09T13:20:36Z
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: 2026-11-09T13:21:48Z
+    artifact: ddd-03-test-report.md
 
-requires_bolts: ['015-inventory']
-enables_bolts: ['017-income-expenses']
+requires_bolts: ["015-inventory"]
+enables_bolts: ["017-income-expenses"]
 requires_units: []
 blocks: false
 
@@ -36,7 +52,7 @@ API for Income and Expenses while keeping API contracts consistent across backen
 
 ## Stories Included
 
-- [ ] **001-api-income-and-expenses**: API income and expenses - Priority: Must
+- [x] **001-api-income-and-expenses**: API income and expenses - Priority: Must
 
 ## Bolt Type
 
@@ -45,27 +61,29 @@ API for Income and Expenses while keeping API contracts consistent across backen
 
 ## Stages
 
-- [ ] **1. Domain Model**: Pending → ddd-01-domain-model.md
-- [ ] **2. Technical Design**: Pending → ddd-02-technical-design.md
-- [ ] **3. ADR Analysis**: Optional
-- [ ] **4. Implement**: Pending → code
-- [ ] **5. Test**: Pending → ddd-03-test-report.md
+- [x] **1. Domain Model**: Complete → ddd-01-domain-model.md
+- [x] **2. Technical Design**: Complete → ddd-02-technical-design.md
+- [x] **3. ADR Analysis**: Skipped — no new ADR; reuse ADR-004
+- [x] **4. Implement**: Complete → implementation-walkthrough.md
+- [x] **5. Test**: Complete → ddd-03-test-report.md
 
 ## Dependencies
 
 ### Requires
-- 015-inventory
+
+- 015-inventory (complete)
 
 ### Enables
+
 - 017-income-expenses
 
 ## Success Criteria
 
-- [ ] All included stories implemented
-- [ ] All acceptance criteria met
-- [ ] Tests for critical paths passing
-- [ ] No feature scope beyond this slice
+- [x] All included stories implemented
+- [x] All acceptance criteria met
+- [x] Tests for critical paths passing
+- [x] No feature scope beyond this slice
 
 ## Notes
 
-Do not start Construction until Checkpoint 3/4 approvals. Hosting remains TBD.
+Construction started 2026-11-09T13:13:23Z. Completed 2026-11-09T13:21:48Z.
