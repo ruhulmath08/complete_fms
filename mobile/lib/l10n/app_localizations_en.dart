@@ -68,7 +68,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Manage cows, poultry, crops, profile, and farm settings on mobile.';
+      'Manage cows, poultry, crops, inventory, profile, and farm settings on mobile.';
 
   @override
   String get signInSubtitle => 'Access your farm records on this device.';
@@ -418,4 +418,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saleAmountOptional => 'Sale amount (optional)';
+
+  @override
+  String get inventoryTitle => 'Inventory';
+
+  @override
+  String get manageInventory => 'Manage inventory';
+
+  @override
+  String get addInventoryItem => 'Add item';
+
+  @override
+  String get createInventoryItem => 'Create item';
+
+  @override
+  String get noInventoryItems => 'No inventory items yet.';
+
+  @override
+  String get inventoryItemName => 'Item name';
+
+  @override
+  String get inventoryCategory => 'Category';
+
+  @override
+  String get inventoryFeed => 'Feed';
+
+  @override
+  String get inventoryFertilizer => 'Fertilizer';
+
+  @override
+  String get inventoryPesticide => 'Pesticide';
+
+  @override
+  String get inventorySeed => 'Seed';
+
+  @override
+  String get inventoryMedicine => 'Medicine';
+
+  @override
+  String get inventoryEquipment => 'Equipment';
+
+  @override
+  String get inventoryFuel => 'Fuel';
+
+  @override
+  String get inventoryOther => 'Other';
+
+  @override
+  String get archiveInventoryItem => 'Archive';
+
+  @override
+  String get archiveInventoryItemConfirm =>
+      'Archive this inventory item? It will leave the active list.';
+
+  @override
+  String get inventoryArchivedReadOnly =>
+      'This inventory item is archived and cannot be modified.';
+
+  @override
+  String get totalPrice => 'Total price';
+
+  @override
+  String get stockUpdates => 'Stock updates';
+
+  @override
+  String get noStockUpdates => 'No stock updates yet.';
+
+  @override
+  String get addStockUpdate => 'Add stock update';
+
+  @override
+  String get occurredAtHint => 'Occurred at (YYYY-MM-DD)';
+
+  @override
+  String get stockChangeType => 'Change type';
+
+  @override
+  String get stockAdd => 'Add';
+
+  @override
+  String get stockUse => 'Use';
+
+  @override
+  String get quantityChange => 'Quantity change';
+
+  @override
+  String get reason => 'Reason';
 }

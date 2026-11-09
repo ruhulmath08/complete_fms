@@ -2,7 +2,7 @@
 unit: 005-inventory
 intent: 001-farm-management-first-release
 created: 2026-11-09T12:37:00Z
-last_updated: 2026-11-09T13:06:00Z
+last_updated: 2026-11-09T13:11:56Z
 ---
 
 # Construction Log: inventory
@@ -25,11 +25,11 @@ last_updated: 2026-11-09T13:06:00Z
 
 ## Current Bolt Structure
 
-| Bolt ID       | Stories | Status         | Changed |
-| ------------- | ------- | -------------- | ------- |
-| 013-inventory | 001     | ✅ complete    | -       |
-| 014-inventory | 002     | ✅ complete    | -       |
-| 015-inventory | 003     | ⏳ in-progress | -       |
+| Bolt ID       | Stories | Status      | Changed |
+| ------------- | ------- | ----------- | ------- |
+| 013-inventory | 001     | ✅ complete | -       |
+| 014-inventory | 002     | ✅ complete | -       |
+| 015-inventory | 003     | ✅ complete | -       |
 
 ## Execution History
 
@@ -48,6 +48,10 @@ last_updated: 2026-11-09T13:06:00Z
 | 2026-11-09T13:06:00Z | 014-inventory | stage-complete | Implement → Test |
 | 2026-11-09T13:06:00Z | 014-inventory | completed      | Web story 002 done; 23/23 Vitest |
 | 2026-11-09T13:06:00Z | 015-inventory | started        | Stage 1: Plan |
+| 2026-11-09T13:10:31Z | 015-inventory | stage-complete | Plan → Implement |
+| 2026-11-09T13:10:31Z | 015-inventory | implement-done | Mobile inventory feature + tests |
+| 2026-11-09T13:11:56Z | 015-inventory | stage-complete | Implement → Test |
+| 2026-11-09T13:11:56Z | 015-inventory | completed      | Mobile story 003 done; 27/27 |
 
 ## Execution Summary
 
@@ -55,11 +59,11 @@ last_updated: 2026-11-09T13:06:00Z
 | ---------------------- | ----- |
 | Original bolts planned | 3     |
 | Current bolt count     | 3     |
-| Bolts completed        | 2     |
-| Bolts in progress      | 1     |
+| Bolts completed        | 3     |
+| Bolts in progress      | 0     |
 | Bolts remaining        | 0     |
 | Replanning events      | 0     |
 
 ## Notes
 
-Vertical order API → web → mobile. Depends on completed crops unit.
+Unit `005-inventory` construction complete (API + Web + Mobile). Next vertical unit starts with bolt `016-income-expenses`.

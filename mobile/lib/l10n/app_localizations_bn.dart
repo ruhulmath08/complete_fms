@@ -68,7 +68,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'মোবাইলে গরু, হাঁস-মুরগি, ফসল, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
+      'মোবাইলে গরু, হাঁস-মুরগি, ফসল, মজুদ, প্রোফাইল ও ফার্ম সেটিংস পরিচালনা করুন।';
 
   @override
   String get signInSubtitle => 'এই ডিভাইসে আপনার ফার্ম রেকর্ড ব্যবহার করুন।';
@@ -417,4 +417,90 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get saleAmountOptional => 'বিক্রয় মূল্য (ঐচ্ছিক)';
+
+  @override
+  String get inventoryTitle => 'মজুদ';
+
+  @override
+  String get manageInventory => 'মজুদ পরিচালনা';
+
+  @override
+  String get addInventoryItem => 'আইটেম যোগ';
+
+  @override
+  String get createInventoryItem => 'আইটেম তৈরি';
+
+  @override
+  String get noInventoryItems => 'এখনো কোনো মজুদ আইটেম নেই।';
+
+  @override
+  String get inventoryItemName => 'আইটেমের নাম';
+
+  @override
+  String get inventoryCategory => 'বিভাগ';
+
+  @override
+  String get inventoryFeed => 'খাদ্য';
+
+  @override
+  String get inventoryFertilizer => 'সার';
+
+  @override
+  String get inventoryPesticide => 'কীটনাশক';
+
+  @override
+  String get inventorySeed => 'বীজ';
+
+  @override
+  String get inventoryMedicine => 'ঔষধ';
+
+  @override
+  String get inventoryEquipment => 'যন্ত্রপাতি';
+
+  @override
+  String get inventoryFuel => 'জ্বালানি';
+
+  @override
+  String get inventoryOther => 'অন্যান্য';
+
+  @override
+  String get archiveInventoryItem => 'আর্কাইভ';
+
+  @override
+  String get archiveInventoryItemConfirm =>
+      'এই মজুদ আইটেম আর্কাইভ করবেন? এটি সক্রিয় তালিকা থেকে সরে যাবে।';
+
+  @override
+  String get inventoryArchivedReadOnly =>
+      'এই মজুদ আইটেম আর্কাইভড; পরিবর্তন করা যাবে না।';
+
+  @override
+  String get totalPrice => 'মোট মূল্য';
+
+  @override
+  String get stockUpdates => 'স্টক আপডেট';
+
+  @override
+  String get noStockUpdates => 'এখনো কোনো স্টক আপডেট নেই।';
+
+  @override
+  String get addStockUpdate => 'স্টক আপডেট যোগ';
+
+  @override
+  String get occurredAtHint => 'তারিখ (YYYY-MM-DD)';
+
+  @override
+  String get stockChangeType => 'পরিবর্তনের ধরন';
+
+  @override
+  String get stockAdd => 'যোগ';
+
+  @override
+  String get stockUse => 'ব্যবহার';
+
+  @override
+  String get quantityChange => 'পরিমাণ পরিবর্তন';
+
+  @override
+  String get reason => 'কারণ';
 }

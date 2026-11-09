@@ -16,6 +16,9 @@ import '../../presentation/crops/pages/crop_cycles_list_page.dart';
 import '../../presentation/crops/pages/crop_name_create_page.dart';
 import '../../presentation/crops/pages/crop_name_detail_page.dart';
 import '../../presentation/crops/pages/crop_names_list_page.dart';
+import '../../presentation/inventory/pages/inventory_create_page.dart';
+import '../../presentation/inventory/pages/inventory_detail_page.dart';
+import '../../presentation/inventory/pages/inventory_list_page.dart';
 import '../../presentation/poultry/pages/poultry_create_page.dart';
 import '../../presentation/poultry/pages/poultry_detail_page.dart';
 import '../../presentation/poultry/pages/poultry_list_page.dart';
@@ -95,6 +98,20 @@ GoRouter createRouter(SessionCubit sessionCubit) {
             path: '/crops/cycles/:cycleId',
             builder: (context, state) => CropCycleDetailPage(
               cycleId: state.pathParameters['cycleId']!,
+            ),
+          ),
+          GoRoute(
+            path: '/inventory',
+            builder: (context, state) => const InventoryListPage(),
+          ),
+          GoRoute(
+            path: '/inventory/new',
+            builder: (context, state) => const InventoryCreatePage(),
+          ),
+          GoRoute(
+            path: '/inventory/:itemId',
+            builder: (context, state) => InventoryDetailPage(
+              itemId: state.pathParameters['itemId']!,
             ),
           ),
           GoRoute(

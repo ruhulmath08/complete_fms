@@ -2,11 +2,11 @@
 id: 003-mobile-inventory
 unit: 005-inventory
 intent: 001-farm-management-first-release
-status: draft
+status: done
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 015-inventory
-implemented: false
+implemented: true
 ---
 
 # Story: 003-mobile-inventory
@@ -19,7 +19,7 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given inventory API exists, When I use mobile, Then items and stock updates work with localization
+- [x] Given inventory API exists, When I use mobile, Then items and stock updates work with localization
 
 ## Technical Notes
 

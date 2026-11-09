@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Manage cows, poultry, crops, profile, and farm settings on mobile.'**
+  /// **'Manage cows, poultry, crops, inventory, profile, and farm settings on mobile.'**
   String get welcomeBody;
 
   /// No description provided for @signInSubtitle.
@@ -895,6 +895,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sale amount (optional)'**
   String get saleAmountOptional;
+
+  /// No description provided for @inventoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get inventoryTitle;
+
+  /// No description provided for @manageInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage inventory'**
+  String get manageInventory;
+
+  /// No description provided for @addInventoryItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add item'**
+  String get addInventoryItem;
+
+  /// No description provided for @createInventoryItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Create item'**
+  String get createInventoryItem;
+
+  /// No description provided for @noInventoryItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No inventory items yet.'**
+  String get noInventoryItems;
+
+  /// No description provided for @inventoryItemName.
+  ///
+  /// In en, this message translates to:
+  /// **'Item name'**
+  String get inventoryItemName;
+
+  /// No description provided for @inventoryCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get inventoryCategory;
+
+  /// No description provided for @inventoryFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed'**
+  String get inventoryFeed;
+
+  /// No description provided for @inventoryFertilizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertilizer'**
+  String get inventoryFertilizer;
+
+  /// No description provided for @inventoryPesticide.
+  ///
+  /// In en, this message translates to:
+  /// **'Pesticide'**
+  String get inventoryPesticide;
+
+  /// No description provided for @inventorySeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed'**
+  String get inventorySeed;
+
+  /// No description provided for @inventoryMedicine.
+  ///
+  /// In en, this message translates to:
+  /// **'Medicine'**
+  String get inventoryMedicine;
+
+  /// No description provided for @inventoryEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get inventoryEquipment;
+
+  /// No description provided for @inventoryFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get inventoryFuel;
+
+  /// No description provided for @inventoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get inventoryOther;
+
+  /// No description provided for @archiveInventoryItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveInventoryItem;
+
+  /// No description provided for @archiveInventoryItemConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this inventory item? It will leave the active list.'**
+  String get archiveInventoryItemConfirm;
+
+  /// No description provided for @inventoryArchivedReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This inventory item is archived and cannot be modified.'**
+  String get inventoryArchivedReadOnly;
+
+  /// No description provided for @totalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Total price'**
+  String get totalPrice;
+
+  /// No description provided for @stockUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock updates'**
+  String get stockUpdates;
+
+  /// No description provided for @noStockUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'No stock updates yet.'**
+  String get noStockUpdates;
+
+  /// No description provided for @addStockUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Add stock update'**
+  String get addStockUpdate;
+
+  /// No description provided for @occurredAtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Occurred at (YYYY-MM-DD)'**
+  String get occurredAtHint;
+
+  /// No description provided for @stockChangeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Change type'**
+  String get stockChangeType;
+
+  /// No description provided for @stockAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get stockAdd;
+
+  /// No description provided for @stockUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use'**
+  String get stockUse;
+
+  /// No description provided for @quantityChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity change'**
+  String get quantityChange;
+
+  /// No description provided for @reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get reason;
 }
 
 class _AppLocalizationsDelegate
