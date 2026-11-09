@@ -3,13 +3,13 @@ id: 009-poultry
 unit: 003-poultry
 intent: 001-farm-management-first-release
 type: simple-construction-bolt
-status: planned
+status: in-progress
 stories:
   - 004-mobile-poultry
 created: 2026-11-09T06:55:29Z
-started: null
+started: 2026-11-09T11:48:47Z
 completed: null
-current_stage: null
+current_stage: plan
 stages_completed: []
 
 requires_bolts: ['008-poultry']
@@ -45,14 +45,14 @@ Mobile UI for Poultry while keeping API contracts consistent across backend, Rea
 
 ## Stages
 
-- [ ] **1. Spec/Plan**: Pending → implementation-plan.md
-- [ ] **2. Implement**: Pending → code
-- [ ] **3. Test**: Pending → test-report.md
+- [ ] **1. Plan**: In progress → implementation-plan.md
+- [ ] **2. Implement**: Pending → code + implementation-walkthrough.md
+- [ ] **3. Test**: Pending → test-walkthrough.md
 
 ## Dependencies
 
 ### Requires
-- 008-poultry
+- 008-poultry (complete)
 
 ### Enables
 - 010-crops
@@ -66,4 +66,4 @@ Mobile UI for Poultry while keeping API contracts consistent across backend, Rea
 
 ## Notes
 
-Do not start Construction until Checkpoint 3/4 approvals. Hosting remains TBD.
+Construction started 2026-11-09T11:48:47Z.

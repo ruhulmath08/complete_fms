@@ -28,17 +28,19 @@ Follow project standards and document API contract before client screens for thi
 ## Dependencies
 
 ### Requires
+
 - Prior stories in this unit's API→web→mobile order as applicable; unit depends on `001-platform-and-auth` for domain units
 
 ### Enables
+
 - Subsequent stories in this unit and client bolts for the same slice
 
 ## Edge Cases
 
-| Scenario | Expected Behavior |
-|----------|-------------------|
-| Unauthorized access | Reject with consistent API error |
-| Validation failure | Stable `code` + user-facing `message` |
+| Scenario            | Expected Behavior                     |
+| ------------------- | ------------------------------------- |
+| Unauthorized access | Reject with consistent API error      |
+| Validation failure  | Stable `code` + user-facing `message` |
 
 ## Out of Scope
 

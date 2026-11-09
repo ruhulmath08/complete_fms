@@ -2,11 +2,11 @@
 id: 003-web-poultry
 unit: 003-poultry
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 008-poultry
-implemented: false
+implemented: true
 ---
 
 # Story: 003-web-poultry
@@ -19,7 +19,7 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given poultry API exists, When I use web, Then groups, counts, feeding, and applicable eggs work end-to-end
+- [x] Given poultry API exists, When I use web, Then groups, counts, feeding, and applicable eggs work end-to-end
 
 ## Technical Notes
 
@@ -28,17 +28,19 @@ Follow project standards and document API contract before client screens for thi
 ## Dependencies
 
 ### Requires
+
 - Prior stories in this unit's API→web→mobile order as applicable; unit depends on `001-platform-and-auth` for domain units
 
 ### Enables
+
 - Subsequent stories in this unit and client bolts for the same slice
 
 ## Edge Cases
 
-| Scenario | Expected Behavior |
-|----------|-------------------|
-| Unauthorized access | Reject with consistent API error |
-| Validation failure | Stable `code` + user-facing `message` |
+| Scenario            | Expected Behavior                     |
+| ------------------- | ------------------------------------- |
+| Unauthorized access | Reject with consistent API error      |
+| Validation failure  | Stable `code` + user-facing `message` |
 
 ## Out of Scope
 

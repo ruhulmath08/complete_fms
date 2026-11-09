@@ -11,6 +11,9 @@ import { SignUpPage } from './features/auth/pages/SignUpPage'
 import { CowCreatePage } from './features/cows/pages/CowCreatePage'
 import { CowDetailPage } from './features/cows/pages/CowDetailPage'
 import { CowsListPage } from './features/cows/pages/CowsListPage'
+import { PoultryCreatePage } from './features/poultry/pages/PoultryCreatePage'
+import { PoultryDetailPage } from './features/poultry/pages/PoultryDetailPage'
+import { PoultryListPage } from './features/poultry/pages/PoultryListPage'
 
 const queryClient = new QueryClient()
 
@@ -28,6 +31,9 @@ export default function App() {
                 <Route path="/cows" element={<CowsListPage />} />
                 <Route path="/cows/new" element={<CowCreatePage />} />
                 <Route path="/cows/:cowId" element={<CowDetailPage />} />
+                <Route path="/poultry" element={<PoultryListPage />} />
+                <Route path="/poultry/new" element={<PoultryCreatePage />} />
+                <Route path="/poultry/:groupId" element={<PoultryDetailPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/settings" element={<FarmSettingsPage />} />
               </Route>

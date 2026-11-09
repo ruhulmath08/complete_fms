@@ -2,11 +2,11 @@
 id: 002-api-poultry-feeding-and-eggs
 unit: 003-poultry
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 007-poultry
-implemented: false
+implemented: true
 ---
 
 # Story: 002-api-poultry-feeding-and-eggs
@@ -19,9 +19,9 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given any poultry group, When I record feeding, Then I can review feeding entries
-- [ ] Given layer, duck, or local, When I record eggs, Then entries are stored and listable
-- [ ] Given a broiler group, When egg production is omitted, Then the group remains valid
+- [x] Given any poultry group, When I record feeding, Then I can review feeding entries
+- [x] Given layer, duck, or local, When I record eggs, Then entries are stored and listable
+- [x] Given a broiler group, When egg production is omitted, Then the group remains valid
 
 ## Technical Notes
 
@@ -30,17 +30,19 @@ Follow project standards and document API contract before client screens for thi
 ## Dependencies
 
 ### Requires
+
 - Prior stories in this unit's API→web→mobile order as applicable; unit depends on `001-platform-and-auth` for domain units
 
 ### Enables
+
 - Subsequent stories in this unit and client bolts for the same slice
 
 ## Edge Cases
 
-| Scenario | Expected Behavior |
-|----------|-------------------|
-| Unauthorized access | Reject with consistent API error |
-| Validation failure | Stable `code` + user-facing `message` |
+| Scenario            | Expected Behavior                     |
+| ------------------- | ------------------------------------- |
+| Unauthorized access | Reject with consistent API error      |
+| Validation failure  | Stable `code` + user-facing `message` |
 
 ## Out of Scope
 

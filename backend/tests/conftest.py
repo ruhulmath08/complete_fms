@@ -17,6 +17,7 @@ from app.db.session import get_db
 from app.main import create_app
 from app.modules.auth.infrastructure import models as _auth_models  # noqa: F401
 from app.modules.cows.infrastructure import models as _cows_models  # noqa: F401
+from app.modules.poultry.infrastructure import models as _poultry_models  # noqa: F401
 
 
 @pytest.fixture()
