@@ -30,3 +30,7 @@ The project has three parts:
 - Data: API calls, data models, data sources, mappers to convert between data models and entities, and repository implementations
 - The domain layer is pure Dart code. No API calls, no data models, no data sources, no mappers, no repository implementations.
 - Data and domain layers are saperate projects. They inside the mobile app project.
+
+## The details document is in the docs folder. Please follow the following links
+
+- 1 [Install Spaces](docs/01-install-spaces.md)

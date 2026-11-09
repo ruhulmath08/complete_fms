@@ -1,0 +1,186 @@
+# Global Story Index
+
+## Overview
+- **Total stories**: 24
+- **Generated**: 24
+- **Last updated**: 2026-11-09T06:55:29Z
+
+---
+
+## Stories by Intent
+
+### 001-farm-management-first-release
+
+### 001-api-platform-foundation.md ✅ GENERATED
+**Title**: API platform foundation
+**Unit**: `001-platform-and-auth`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/001-platform-and-auth/stories/001-api-platform-foundation.md`
+
+### 002-api-owner-signup.md ✅ GENERATED
+**Title**: API owner sign-up
+**Unit**: `001-platform-and-auth`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/001-platform-and-auth/stories/002-api-owner-signup.md`
+
+### 003-api-owner-signin-signout.md ✅ GENERATED
+**Title**: API owner sign-in and sign-out
+**Unit**: `001-platform-and-auth`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/001-platform-and-auth/stories/003-api-owner-signin-signout.md`
+
+### 004-api-profile-farm-settings.md ✅ GENERATED
+**Title**: API profile and farm settings
+**Unit**: `001-platform-and-auth`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/001-platform-and-auth/stories/004-api-profile-farm-settings.md`
+
+### 005-web-auth-and-settings.md ✅ GENERATED
+**Title**: Web auth and settings
+**Unit**: `001-platform-and-auth`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/001-platform-and-auth/stories/005-web-auth-and-settings.md`
+
+### 006-mobile-auth-and-settings.md ✅ GENERATED
+**Title**: Mobile auth and settings
+**Unit**: `001-platform-and-auth`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/001-platform-and-auth/stories/006-mobile-auth-and-settings.md`
+
+### 001-api-cow-records.md ✅ GENERATED
+**Title**: API cow records
+**Unit**: `002-cows`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/002-cows/stories/001-api-cow-records.md`
+
+### 002-api-cow-milk-and-feeding.md ✅ GENERATED
+**Title**: API cow milk and feeding
+**Unit**: `002-cows`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/002-cows/stories/002-api-cow-milk-and-feeding.md`
+
+### 003-web-cows.md ✅ GENERATED
+**Title**: Web cows workflows
+**Unit**: `002-cows`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/002-cows/stories/003-web-cows.md`
+
+### 004-mobile-cows.md ✅ GENERATED
+**Title**: Mobile cows workflows
+**Unit**: `002-cows`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/002-cows/stories/004-mobile-cows.md`
+
+### 001-api-poultry-groups.md ✅ GENERATED
+**Title**: API poultry groups
+**Unit**: `003-poultry`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/003-poultry/stories/001-api-poultry-groups.md`
+
+### 002-api-poultry-feeding-and-eggs.md ✅ GENERATED
+**Title**: API poultry feeding and eggs
+**Unit**: `003-poultry`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/003-poultry/stories/002-api-poultry-feeding-and-eggs.md`
+
+### 003-web-poultry.md ✅ GENERATED
+**Title**: Web poultry workflows
+**Unit**: `003-poultry`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/003-poultry/stories/003-web-poultry.md`
+
+### 004-mobile-poultry.md ✅ GENERATED
+**Title**: Mobile poultry workflows
+**Unit**: `003-poultry`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/003-poultry/stories/004-mobile-poultry.md`
+
+### 001-api-crop-names-and-cycles.md ✅ GENERATED
+**Title**: API crop names and cycles
+**Unit**: `004-crops`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/004-crops/stories/001-api-crop-names-and-cycles.md`
+
+### 002-api-crop-expenses-harvests-summary.md ✅ GENERATED
+**Title**: API crop expenses harvests summary
+**Unit**: `004-crops`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/004-crops/stories/002-api-crop-expenses-harvests-summary.md`
+
+### 003-web-crops.md ✅ GENERATED
+**Title**: Web crops workflows
+**Unit**: `004-crops`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/004-crops/stories/003-web-crops.md`
+
+### 004-mobile-crops.md ✅ GENERATED
+**Title**: Mobile crops workflows
+**Unit**: `004-crops`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/004-crops/stories/004-mobile-crops.md`
+
+### 001-api-inventory-and-stock.md ✅ GENERATED
+**Title**: API inventory and stock
+**Unit**: `005-inventory`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/005-inventory/stories/001-api-inventory-and-stock.md`
+
+### 002-web-inventory.md ✅ GENERATED
+**Title**: Web inventory workflows
+**Unit**: `005-inventory`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/005-inventory/stories/002-web-inventory.md`
+
+### 003-mobile-inventory.md ✅ GENERATED
+**Title**: Mobile inventory workflows
+**Unit**: `005-inventory`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/005-inventory/stories/003-mobile-inventory.md`
+
+### 001-api-income-and-expenses.md ✅ GENERATED
+**Title**: API income and expenses
+**Unit**: `006-income-expenses`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/006-income-expenses/stories/001-api-income-and-expenses.md`
+
+### 002-web-income-and-expenses.md ✅ GENERATED
+**Title**: Web income and expenses
+**Unit**: `006-income-expenses`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/006-income-expenses/stories/002-web-income-and-expenses.md`
+
+### 003-mobile-income-and-expenses.md ✅ GENERATED
+**Title**: Mobile income and expenses
+**Unit**: `006-income-expenses`
+**Priority**: must
+**Path**: `memory-bank/intents/001-farm-management-first-release/units/006-income-expenses/stories/003-mobile-income-and-expenses.md`
+
+---
+
+## Stories by Status
+
+- **Planned**: 0
+- **Generated**: 24
+- **In Progress**: 0
+- **Completed**: 0
+
+## Bolts Planned
+
+- `001-platform-and-auth` (ddd-construction-bolt): 001-api-platform-foundation, 002-api-owner-signup, 003-api-owner-signin-signout, 004-api-profile-farm-settings
+- `002-platform-and-auth` (simple-construction-bolt): 005-web-auth-and-settings
+- `003-platform-and-auth` (simple-construction-bolt): 006-mobile-auth-and-settings
+- `004-cows` (ddd-construction-bolt): 001-api-cow-records, 002-api-cow-milk-and-feeding
+- `005-cows` (simple-construction-bolt): 003-web-cows
+- `006-cows` (simple-construction-bolt): 004-mobile-cows
+- `007-poultry` (ddd-construction-bolt): 001-api-poultry-groups, 002-api-poultry-feeding-and-eggs
+- `008-poultry` (simple-construction-bolt): 003-web-poultry
+- `009-poultry` (simple-construction-bolt): 004-mobile-poultry
+- `010-crops` (ddd-construction-bolt): 001-api-crop-names-and-cycles, 002-api-crop-expenses-harvests-summary
+- `011-crops` (simple-construction-bolt): 003-web-crops
+- `012-crops` (simple-construction-bolt): 004-mobile-crops
+- `013-inventory` (ddd-construction-bolt): 001-api-inventory-and-stock
+- `014-inventory` (simple-construction-bolt): 002-web-inventory
+- `015-inventory` (simple-construction-bolt): 003-mobile-inventory
+- `016-income-expenses` (ddd-construction-bolt): 001-api-income-and-expenses
+- `017-income-expenses` (simple-construction-bolt): 002-web-income-and-expenses
+- `018-income-expenses` (simple-construction-bolt): 003-mobile-income-and-expenses
