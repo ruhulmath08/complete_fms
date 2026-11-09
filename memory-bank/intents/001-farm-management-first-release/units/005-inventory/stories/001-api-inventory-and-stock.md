@@ -2,11 +2,11 @@
 id: 001-api-inventory-and-stock
 unit: 005-inventory
 intent: 001-farm-management-first-release
-status: draft
+status: complete
 priority: must
 created: 2026-11-09T06:55:29Z
 assigned_bolt: 013-inventory
-implemented: false
+implemented: true
 ---
 
 # Story: 001-api-inventory-and-stock
@@ -19,13 +19,13 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] Given I am signed in, When I CRUD/archive items, Then they persist for my farm
-- [ ] Given a stock add/use update, When applied, Then displayed quantity reflects updates
-- [ ] Given an update that would go below zero, When submitted, Then it is rejected with a stable error code
+- [x] Given I am signed in, When I CRUD/archive items, Then they persist for my farm
+- [x] Given a stock add/use update, When applied, Then displayed quantity reflects updates
+- [x] Given an update that would go below zero, When submitted, Then it is rejected with a stable error code
 
 ## Technical Notes
 
-total_price stored vs computed remains an open implementation detail.
+`total_price` is computed on read as quantity × price_per_unit (not stored).
 
 ## Dependencies
 

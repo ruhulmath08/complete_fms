@@ -9,6 +9,7 @@ from app.modules.auth.infrastructure import models as _auth_models  # noqa: F401
 from app.modules.cows.infrastructure import models as _cows_models  # noqa: F401
 from app.modules.poultry.infrastructure import models as _poultry_models  # noqa: F401
 from app.modules.crops.infrastructure import models as _crops_models  # noqa: F401
+from app.modules.inventory.infrastructure import models as _inventory_models  # noqa: F401
 
 config = context.config
 if config.config_file_name is not None:
