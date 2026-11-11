@@ -3,8 +3,10 @@ import '../../../domain/entities/cow.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/cows_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/cow_form_fields.dart';
+import '../widgets/cow_image_panel.dart';
 
 class CowDetailPage extends StatefulWidget {
   const CowDetailPage({super.key, required this.cowId});
@@ -23,8 +25,8 @@ class _CowDetailPageState extends State<CowDetailPage> {
   bool _editing = false;
   bool _saving = false;
   String? _error;
+  String? _imagePath;
 
-  final _tagNumber = TextEditingController();
   final _name = TextEditingController();
   final _breed = TextEditingController();
   final _dateOfBirth = TextEditingController();
@@ -56,7 +58,6 @@ class _CowDetailPageState extends State<CowDetailPage> {
   @override
   void dispose() {
     for (final c in [
-      _tagNumber,
       _name,
       _breed,
       _dateOfBirth,
@@ -81,7 +82,6 @@ class _CowDetailPageState extends State<CowDetailPage> {
   }
 
   void _hydrateForm(Cow cow) {
-    _tagNumber.text = cow.tagNumber;
     _name.text = cow.name ?? '';
     _breed.text = cow.breed ?? '';
     _dateOfBirth.text = cow.dateOfBirth ?? '';
@@ -114,6 +114,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
         _milk = milk?.items ?? const [];
         _feedings = feedings.items;
         _loading = false;
+        _imagePath = null;
       });
     } on AppFailure catch (e) {
       if (!mounted) return;
@@ -125,33 +126,41 @@ class _CowDetailPageState extends State<CowDetailPage> {
   }
 
   Future<void> _save() async {
+    final l10n = AppLocalizations.of(context)!;
+    final params = buildCowWriteParams(
+      name: _name,
+      breed: _breed,
+      dateOfBirth: _dateOfBirth,
+      color: _color,
+      weight: _weight,
+      age: _age,
+      purchaseDate: _purchaseDate,
+      purchasePrice: _purchasePrice,
+      notes: _notes,
+      purpose: _purpose,
+      gender: _gender,
+      acquiredBy: _acquiredBy,
+    );
+    if (params == null) {
+      setState(() => _error = l10n.nameBreedRequired);
+      return;
+    }
+
     setState(() {
       _saving = true;
       _error = null;
     });
     try {
-      final cow = await getIt<UpdateCow>()(
-        widget.cowId,
-        buildCowWriteParams(
-          tagNumber: _tagNumber,
-          name: _name,
-          breed: _breed,
-          dateOfBirth: _dateOfBirth,
-          color: _color,
-          weight: _weight,
-          age: _age,
-          purchaseDate: _purchaseDate,
-          purchasePrice: _purchasePrice,
-          notes: _notes,
-          purpose: _purpose,
-          gender: _gender,
-          acquiredBy: _acquiredBy,
-        ),
-      );
+      var cow = await getIt<UpdateCow>()(widget.cowId, params);
+      final imagePath = _imagePath;
+      if (imagePath != null) {
+        cow = await getIt<UploadCowImage>()(widget.cowId, imagePath);
+      }
       if (!mounted) return;
       setState(() {
         _cow = cow;
         _editing = false;
+        _imagePath = null;
       });
       await _load();
     } on AppFailure catch (e) {
@@ -231,6 +240,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     if (_loading) return const Center(child: CircularProgressIndicator());
     final cow = _cow;
     if (cow == null) {
@@ -239,7 +249,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     final canWrite = !cow.isArchived;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(tokens.space4),
       children: [
         Text(
           cow.name == null || cow.name!.isEmpty
@@ -251,9 +261,17 @@ class _CowDetailPageState extends State<CowDetailPage> {
           '${cow.purpose.name} · ${cow.gender.name}'
           '${cow.isArchived ? ' · ${l10n.archived}' : ''}',
         ),
+        SizedBox(height: tokens.space3),
+        CowImagePanel(
+          cowId: cow.id,
+          hasRemoteImage: cow.imageUrl != null && cow.imageUrl!.isNotEmpty,
+          localPath: _editing ? _imagePath : null,
+          canPick: _editing && canWrite,
+          onLocalPathChanged: (path) => setState(() => _imagePath = path),
+        ),
         if (_error != null)
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: tokens.space2),
             child: Text(
               _error!,
               style: TextStyle(color: Theme.of(context).colorScheme.error),
@@ -263,7 +281,10 @@ class _CowDetailPageState extends State<CowDetailPage> {
           Row(
             children: [
               TextButton(
-                onPressed: () => setState(() => _editing = !_editing),
+                onPressed: () => setState(() {
+                  _editing = !_editing;
+                  _imagePath = null;
+                }),
                 child: Text(_editing ? l10n.cancel : l10n.edit),
               ),
               TextButton(onPressed: _archive, child: Text(l10n.archiveCow)),
@@ -271,7 +292,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
           ),
         if (_editing && canWrite) ...[
           CowFormFields(
-            tagNumber: _tagNumber,
+            displayTag: cow.tagNumber,
             name: _name,
             breed: _breed,
             dateOfBirth: _dateOfBirth,
@@ -294,6 +315,10 @@ class _CowDetailPageState extends State<CowDetailPage> {
           ),
         ] else ...[
           ListTile(title: Text(l10n.breed), subtitle: Text(cow.breed ?? '—')),
+          ListTile(
+            title: Text(l10n.weightKg),
+            subtitle: Text(cow.weight ?? '—'),
+          ),
           ListTile(title: Text(l10n.color), subtitle: Text(cow.color ?? '—')),
           ListTile(
             title: Text(l10n.notes),

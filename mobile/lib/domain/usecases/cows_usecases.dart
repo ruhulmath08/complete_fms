@@ -33,6 +33,19 @@ class ArchiveCow {
   Future<Cow> call(String cowId) => _repository.archiveCow(cowId);
 }
 
+class UploadCowImage {
+  UploadCowImage(this._repository);
+  final CowsRepository _repository;
+  Future<Cow> call(String cowId, String imagePath) =>
+      _repository.uploadCowImage(cowId, imagePath);
+}
+
+class GetCowImageBytes {
+  GetCowImageBytes(this._repository);
+  final CowsRepository _repository;
+  Future<List<int>> call(String cowId) => _repository.getCowImageBytes(cowId);
+}
+
 class ListMilkProductions {
   ListMilkProductions(this._repository);
   final CowsRepository _repository;

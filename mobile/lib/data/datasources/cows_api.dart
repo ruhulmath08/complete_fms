@@ -76,9 +76,36 @@ class CowsApi {
     }
   }
 
+  Future<Map<String, dynamic>> uploadCowImage(
+    String cowId,
+    FormData formData,
+  ) async {
+    try {
+      final response = await _dio.put<Map<String, dynamic>>(
+        '/api/v1/cows/$cowId/image',
+        data: formData,
+      );
+      return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
+  Future<List<int>> getCowImageBytes(String cowId) async {
+    try {
+      final response = await _dio.get<List<int>>(
+        '/api/v1/cows/$cowId/image',
+        options: Options(responseType: ResponseType.bytes),
+      );
+      return response.data ?? <int>[];
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
   Future<Map<String, dynamic>> listMilk(
     String cowId, {
-    int limit = 50,
+    int limit = 10,
     int offset = 0,
   }) async {
     try {
@@ -109,7 +136,7 @@ class CowsApi {
 
   Future<Map<String, dynamic>> listFeedings(
     String cowId, {
-    int limit = 50,
+    int limit = 10,
     int offset = 0,
   }) async {
     try {

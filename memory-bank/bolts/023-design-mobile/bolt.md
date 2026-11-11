@@ -3,21 +3,28 @@ id: 023-design-mobile
 unit: 003-design-mobile
 intent: 002-design-system-refresh
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 003-mobile-cow-create-refresh
   - 004-mobile-consume-auto-tag-and-image
-created: 2026-11-11T18:01:56Z
-started: null
-completed: null
+created: '2026-11-11T18:01:56Z'
+started: '2026-11-11T18:39:30Z'
+completed: '2026-11-11T18:48:54Z'
 current_stage: null
-stages_completed: []
-
-requires_bolts: ["019-design-api", "022-design-mobile"]
+stages_completed:
+  - name: plan
+    completed: '2026-11-11T18:45:48Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-11-11T18:47:19Z'
+    artifact: implementation-walkthrough.md
+requires_bolts:
+  - 019-design-api
+  - 022-design-mobile
 enables_bolts: []
-requires_units: ["001-design-api"]
+requires_units:
+  - 001-design-api
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 2

@@ -1,9 +1,9 @@
 ---
 intent: 002-design-system-refresh
 phase: inception
-status: inception-complete
-created: 2026-11-11T17:37:14Z
-updated: 2026-11-11T18:10:21Z
+status: complete
+created: '2026-11-11T17:37:14Z'
+updated: '2026-11-11T18:10:21Z'
 type: enhancement
 ---
 

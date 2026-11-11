@@ -74,6 +74,8 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => CreateCow(cowsRepo))
     ..registerLazySingleton(() => UpdateCow(cowsRepo))
     ..registerLazySingleton(() => ArchiveCow(cowsRepo))
+    ..registerLazySingleton(() => UploadCowImage(cowsRepo))
+    ..registerLazySingleton(() => GetCowImageBytes(cowsRepo))
     ..registerLazySingleton(() => ListMilkProductions(cowsRepo))
     ..registerLazySingleton(() => AddMilkProduction(cowsRepo))
     ..registerLazySingleton(() => ListCowFeedings(cowsRepo))

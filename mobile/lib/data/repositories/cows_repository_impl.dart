@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../../domain/entities/cow.dart';
 import '../../domain/repositories/cows_repository.dart';
 import '../datasources/cows_api.dart';
@@ -54,9 +56,21 @@ class CowsRepositoryImpl implements CowsRepository {
       mapCow(await _api.archiveCow(cowId));
 
   @override
+  Future<Cow> uploadCowImage(String cowId, String imagePath) async {
+    final form = FormData.fromMap({
+      'image': await MultipartFile.fromFile(imagePath),
+    });
+    return mapCow(await _api.uploadCowImage(cowId, form));
+  }
+
+  @override
+  Future<List<int>> getCowImageBytes(String cowId) =>
+      _api.getCowImageBytes(cowId);
+
+  @override
   Future<PagedResult<MilkProduction>> listMilk(
     String cowId, {
-    int limit = 50,
+    int limit = 10,
     int offset = 0,
   }) async {
     final json = await _api.listMilk(cowId, limit: limit, offset: offset);
@@ -85,7 +99,7 @@ class CowsRepositoryImpl implements CowsRepository {
   @override
   Future<PagedResult<CowFeeding>> listFeedings(
     String cowId, {
-    int limit = 50,
+    int limit = 10,
     int offset = 0,
   }) async {
     final json = await _api.listFeedings(cowId, limit: limit, offset: offset);

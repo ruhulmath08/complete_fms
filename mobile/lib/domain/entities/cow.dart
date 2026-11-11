@@ -23,6 +23,7 @@ class Cow {
     this.purchaseDate,
     this.purchasePrice,
     this.notes,
+    this.imageUrl,
   });
 
   final String id;
@@ -39,6 +40,7 @@ class Cow {
   final String? purchaseDate;
   final String? purchasePrice;
   final String? notes;
+  final String? imageUrl;
   final bool isArchived;
   final String createdAt;
   final String updatedAt;
@@ -107,12 +109,11 @@ class PagedResult<T> {
 
 class CowWriteParams {
   const CowWriteParams({
-    required this.tagNumber,
     required this.purpose,
     required this.gender,
     required this.acquiredBy,
-    this.name,
-    this.breed,
+    required this.name,
+    required this.breed,
     this.dateOfBirth,
     this.color,
     this.weight,
@@ -122,12 +123,11 @@ class CowWriteParams {
     this.notes,
   });
 
-  final String tagNumber;
   final CowPurpose purpose;
   final CowGender gender;
   final AcquisitionSource acquiredBy;
-  final String? name;
-  final String? breed;
+  final String name;
+  final String breed;
   final String? dateOfBirth;
   final String? color;
   final String? weight;

@@ -3,7 +3,7 @@ import 'package:mobile/data/mappers/cows_mappers.dart';
 import 'package:mobile/domain/entities/cow.dart';
 
 void main() {
-  test('maps cow JSON including acquired_by snake_case', () {
+  test('maps cow JSON including acquired_by and image_url', () {
     final cow = mapCow({
       'id': 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       'tag_number': 'C-100',
@@ -19,6 +19,7 @@ void main() {
       'purchase_date': null,
       'purchase_price': null,
       'notes': null,
+      'image_url': '/api/v1/cows/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/image',
       'is_archived': false,
       'created_at': '2026-11-09T10:00:00Z',
       'updated_at': '2026-11-09T10:00:00Z',
@@ -29,6 +30,10 @@ void main() {
     expect(cow.acquiredBy, AcquisitionSource.bornOnFarm);
     expect(cow.milkEligible, isTrue);
     expect(cow.weight, '120.5');
+    expect(
+      cow.imageUrl,
+      '/api/v1/cows/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/image',
+    );
   });
 
   test('meat purpose is not milk eligible', () {
@@ -47,6 +52,7 @@ void main() {
       'purchase_date': '2024-01-01',
       'purchase_price': '1000.00',
       'notes': null,
+      'image_url': null,
       'is_archived': false,
       'created_at': '2026-11-09T10:00:00Z',
       'updated_at': '2026-11-09T10:00:00Z',
@@ -54,20 +60,26 @@ void main() {
 
     expect(cow.milkEligible, isFalse);
     expect(cow.acquiredBy, AcquisitionSource.purchased);
+    expect(cow.imageUrl, isNull);
   });
 
-  test('cowWriteToJson clears purchase fields when born on farm', () {
+  test('cowWriteToJson omits tag_number and clears purchase when born on farm',
+      () {
     final json = cowWriteToJson(
       const CowWriteParams(
-        tagNumber: 'B-1',
         purpose: CowPurpose.both,
         gender: CowGender.female,
         acquiredBy: AcquisitionSource.bornOnFarm,
+        name: 'Daisy',
+        breed: 'Holstein',
         purchaseDate: '2024-01-01',
         purchasePrice: '99',
       ),
     );
 
+    expect(json.containsKey('tag_number'), isFalse);
+    expect(json['name'], 'Daisy');
+    expect(json['breed'], 'Holstein');
     expect(json['acquired_by'], 'born_on_farm');
     expect(json['purchase_date'], isNull);
     expect(json['purchase_price'], isNull);
@@ -76,15 +88,17 @@ void main() {
   test('cowWriteToJson keeps purchase fields when purchased', () {
     final json = cowWriteToJson(
       const CowWriteParams(
-        tagNumber: 'P-1',
         purpose: CowPurpose.milk,
         gender: CowGender.female,
         acquiredBy: AcquisitionSource.purchased,
+        name: 'Bella',
+        breed: 'Jersey',
         purchaseDate: '2024-06-01',
         purchasePrice: '25000.00',
       ),
     );
 
+    expect(json.containsKey('tag_number'), isFalse);
     expect(json['acquired_by'], 'purchased');
     expect(json['purchase_date'], '2024-06-01');
     expect(json['purchase_price'], '25000.00');

@@ -45,6 +45,7 @@ Cow mapCow(Map<String, dynamic> json) => Cow(
       purchaseDate: json['purchase_date'] as String?,
       purchasePrice: json['purchase_price']?.toString(),
       notes: json['notes'] as String?,
+      imageUrl: json['image_url'] as String?,
       isArchived: json['is_archived'] as bool? ?? false,
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
@@ -73,7 +74,6 @@ CowFeeding mapFeeding(Map<String, dynamic> json) => CowFeeding(
     );
 
 Map<String, dynamic> cowWriteToJson(CowWriteParams params) => {
-      'tag_number': params.tagNumber,
       'purpose': purposeToApi(params.purpose),
       'gender': genderToApi(params.gender),
       'acquired_by': acquiredByToApi(params.acquiredBy),

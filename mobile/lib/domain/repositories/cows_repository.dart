@@ -15,9 +15,13 @@ abstract class CowsRepository {
 
   Future<Cow> archiveCow(String cowId);
 
+  Future<Cow> uploadCowImage(String cowId, String imagePath);
+
+  Future<List<int>> getCowImageBytes(String cowId);
+
   Future<PagedResult<MilkProduction>> listMilk(
     String cowId, {
-    int limit = 50,
+    int limit = 10,
     int offset = 0,
   });
 
@@ -32,7 +36,7 @@ abstract class CowsRepository {
 
   Future<PagedResult<CowFeeding>> listFeedings(
     String cowId, {
-    int limit = 50,
+    int limit = 10,
     int offset = 0,
   });
 
