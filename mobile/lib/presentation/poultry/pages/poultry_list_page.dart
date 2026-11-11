@@ -4,7 +4,9 @@ import '../../../domain/entities/poultry.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/poultry_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/entity_list_card.dart';
 
 class PoultryListPage extends StatefulWidget {
   const PoultryListPage({super.key});
@@ -50,8 +52,9 @@ class _PoultryListPageState extends State<PoultryListPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(tokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -97,21 +100,14 @@ class _PoultryListPageState extends State<PoultryListPage> {
                 child: ListView.separated(
                   itemCount: _groups.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
+                      SizedBox(height: tokens.space2),
                   itemBuilder: (context, index) {
                     final group = _groups[index];
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                      title: Text(group.name),
-                      subtitle: Text(
-                        '${group.poultryType.name} · ${group.birdCount} ${l10n.birds}'
-                        '${group.isArchived ? ' · ${l10n.archived}' : ''}',
-                      ),
+                    return EntityListCard(
+                      title: group.name,
+                      subtitle:
+                          '${group.poultryType.name} · ${group.birdCount} ${l10n.birds}'
+                          '${group.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
                         await context.push('/poultry/${group.id}');
                         _load();

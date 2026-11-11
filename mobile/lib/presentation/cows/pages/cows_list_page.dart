@@ -4,7 +4,9 @@ import '../../../domain/entities/cow.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/cows_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/entity_list_card.dart';
 
 class CowsListPage extends StatefulWidget {
   const CowsListPage({super.key});
@@ -49,8 +51,9 @@ class _CowsListPageState extends State<CowsListPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(tokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -95,25 +98,17 @@ class _CowsListPageState extends State<CowsListPage> {
                 onRefresh: _load,
                 child: ListView.separated(
                   itemCount: _cows.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 8),
+                  separatorBuilder: (context, index) =>
+                      SizedBox(height: tokens.space2),
                   itemBuilder: (context, index) {
                     final cow = _cows[index];
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                      title: Text(
-                        cow.name == null || cow.name!.isEmpty
-                            ? cow.tagNumber
-                            : '${cow.tagNumber} · ${cow.name}',
-                      ),
-                      subtitle: Text(
-                        '${cow.purpose.name} · ${cow.gender.name}'
-                        '${cow.isArchived ? ' · ${l10n.archived}' : ''}',
-                      ),
+                    return EntityListCard(
+                      title: cow.name == null || cow.name!.isEmpty
+                          ? cow.tagNumber
+                          : '${cow.tagNumber} · ${cow.name}',
+                      subtitle:
+                          '${cow.purpose.name} · ${cow.gender.name}'
+                          '${cow.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
                         await context.push('/cows/${cow.id}');
                         _load();

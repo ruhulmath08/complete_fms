@@ -4,7 +4,9 @@ import '../../../domain/entities/crop.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/entity_list_card.dart';
 
 class CropNamesListPage extends StatefulWidget {
   const CropNamesListPage({super.key});
@@ -50,8 +52,9 @@ class _CropNamesListPageState extends State<CropNamesListPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(tokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -97,22 +100,14 @@ class _CropNamesListPageState extends State<CropNamesListPage> {
                 child: ListView.separated(
                   itemCount: _names.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
+                      SizedBox(height: tokens.space2),
                   itemBuilder: (context, index) {
                     final name = _names[index];
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                      title: Text(name.name),
-                      subtitle: Text(
-                        name.isArchived
-                            ? l10n.archived
-                            : (name.notes ?? ''),
-                      ),
+                    return EntityListCard(
+                      title: name.name,
+                      subtitle: name.isArchived
+                          ? l10n.archived
+                          : (name.notes ?? ''),
                       onTap: () async {
                         await context.push('/crops/names/${name.id}');
                         _load();

@@ -3,21 +3,26 @@ id: 022-design-mobile
 unit: 003-design-mobile
 intent: 002-design-system-refresh
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-mobile-list-cards
   - 002-mobile-design-tokens
-created: 2026-11-11T18:01:56Z
-started: null
-completed: null
+created: '2026-11-11T18:01:56Z'
+started: '2026-11-11T18:32:30Z'
+completed: '2026-11-11T18:39:03Z'
 current_stage: null
-stages_completed: []
-
+stages_completed:
+  - name: plan
+    completed: '2026-11-11T18:35:35Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-11-11T18:38:00Z'
+    artifact: implementation-walkthrough.md
 requires_bolts: []
-enables_bolts: ["023-design-mobile"]
+enables_bolts:
+  - 023-design-mobile
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 1

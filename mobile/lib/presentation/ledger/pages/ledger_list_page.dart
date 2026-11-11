@@ -4,7 +4,9 @@ import '../../../domain/entities/ledger.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/ledger_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/entity_list_card.dart';
 import '../widgets/ledger_entry_form_fields.dart';
 
 String _isoDate(DateTime d) {
@@ -84,9 +86,10 @@ class _LedgerListPageState extends State<LedgerListPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     final totals = _totals;
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(tokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -107,7 +110,7 @@ class _LedgerListPageState extends State<LedgerListPage> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: tokens.space2),
           Text(l10n.ledgerCropGuidance, style: Theme.of(context).textTheme.bodySmall),
           TextField(
             controller: _from,
@@ -134,7 +137,7 @@ class _LedgerListPageState extends State<LedgerListPage> {
             Text('${l10n.totalIncome}: ${totals.totalIncome}'),
             Text('${l10n.totalExpenses}: ${totals.totalExpenses}'),
             Text('${l10n.net}: ${totals.net}'),
-            const SizedBox(height: 8),
+            SizedBox(height: tokens.space2),
           ],
           if (_error != null)
             Text(
@@ -152,23 +155,15 @@ class _LedgerListPageState extends State<LedgerListPage> {
                 child: ListView.separated(
                   itemCount: _items.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
+                      SizedBox(height: tokens.space2),
                   itemBuilder: (context, index) {
                     final entry = _items[index];
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                      title: Text(
-                        '${ledgerEntryTypeLabel(l10n, entry.entryType)} · ${entry.amount}',
-                      ),
-                      subtitle: Text(
-                        '${entry.occurredAt} · ${ledgerCategoryLabel(l10n, entry.category)}'
-                        '${entry.isArchived ? ' · ${l10n.archived}' : ''}',
-                      ),
+                    return EntityListCard(
+                      title:
+                          '${ledgerEntryTypeLabel(l10n, entry.entryType)} · ${entry.amount}',
+                      subtitle:
+                          '${entry.occurredAt} · ${ledgerCategoryLabel(l10n, entry.category)}'
+                          '${entry.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
                         await context.push('/ledger/${entry.id}');
                         _load();

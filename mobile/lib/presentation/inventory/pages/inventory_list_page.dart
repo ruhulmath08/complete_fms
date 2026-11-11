@@ -4,7 +4,9 @@ import '../../../domain/entities/inventory.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/inventory_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/entity_list_card.dart';
 import '../widgets/inventory_item_form_fields.dart';
 
 class InventoryListPage extends StatefulWidget {
@@ -51,8 +53,9 @@ class _InventoryListPageState extends State<InventoryListPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(tokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -98,22 +101,15 @@ class _InventoryListPageState extends State<InventoryListPage> {
                 child: ListView.separated(
                   itemCount: _items.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
+                      SizedBox(height: tokens.space2),
                   itemBuilder: (context, index) {
                     final item = _items[index];
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                      title: Text(item.name),
-                      subtitle: Text(
-                        '${inventoryCategoryLabel(l10n, item.category)} · '
-                        '${item.quantity} ${item.unit}'
-                        '${item.isArchived ? ' · ${l10n.archived}' : ''}',
-                      ),
+                    return EntityListCard(
+                      title: item.name,
+                      subtitle:
+                          '${inventoryCategoryLabel(l10n, item.category)} · '
+                          '${item.quantity} ${item.unit}'
+                          '${item.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
                         await context.push('/inventory/${item.id}');
                         _load();

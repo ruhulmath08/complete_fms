@@ -2,11 +2,11 @@
 id: 002-mobile-design-tokens
 unit: 003-design-mobile
 intent: 002-design-system-refresh
-status: draft
+status: complete
 priority: should
-created: 2026-11-11T18:01:56Z
+created: '2026-11-11T18:01:56Z'
 assigned_bolt: 022-design-mobile
-implemented: false
+implemented: true
 ---
 
 # Story: 002-mobile-design-tokens

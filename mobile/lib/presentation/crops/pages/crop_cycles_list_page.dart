@@ -4,7 +4,9 @@ import '../../../domain/entities/crop.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/entity_list_card.dart';
 
 class CropCyclesListPage extends StatefulWidget {
   const CropCyclesListPage({super.key});
@@ -55,8 +57,9 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(tokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -109,7 +112,7 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
                 child: ListView.separated(
                   itemCount: _cycles.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
+                      SizedBox(height: tokens.space2),
                   itemBuilder: (context, index) {
                     final cycle = _cycles[index];
                     final cropLabel =
@@ -117,18 +120,11 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
                     final title = cycle.plotName == null || cycle.plotName!.isEmpty
                         ? cropLabel
                         : '$cropLabel · ${cycle.plotName}';
-                    return ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                        ),
-                      ),
-                      title: Text(title),
-                      subtitle: Text(
-                        '${l10n.plantedPrefix} ${cycle.plantedAt}'
-                        '${cycle.isArchived ? ' · ${l10n.archived}' : ''}',
-                      ),
+                    return EntityListCard(
+                      title: title,
+                      subtitle:
+                          '${l10n.plantedPrefix} ${cycle.plantedAt}'
+                          '${cycle.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
                         await context.push('/crops/cycles/${cycle.id}');
                         _load();
