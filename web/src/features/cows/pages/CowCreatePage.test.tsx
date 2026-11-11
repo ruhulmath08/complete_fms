@@ -7,9 +7,11 @@ import { ApiError } from '../../../shared/api/errors'
 import { CowCreatePage } from './CowCreatePage'
 
 const createCow = vi.fn()
+const uploadCowImage = vi.fn()
 
 vi.mock('../api/cowsApi', () => ({
   createCow: (...args: unknown[]) => createCow(...args),
+  uploadCowImage: (...args: unknown[]) => uploadCowImage(...args),
 }))
 
 function renderPage() {
@@ -28,26 +30,26 @@ function renderPage() {
 describe('CowCreatePage', () => {
   beforeEach(() => {
     createCow.mockReset()
+    uploadCowImage.mockReset()
   })
 
-  it('shows the API message when tag already exists', async () => {
+  it('shows the API message when create fails', async () => {
     const user = userEvent.setup()
     createCow.mockRejectedValue(
-      new ApiError(409, {
-        code: 'TAG_ALREADY_EXISTS',
-        message: 'An active cow with this tag number already exists.',
+      new ApiError(422, {
+        code: 'VALIDATION_ERROR',
+        message: 'Name is required.',
       }),
     )
 
     renderPage()
 
-    await user.type(screen.getByLabelText('Tag number'), 'C-100')
+    await user.type(screen.getByLabelText('Name'), 'Bella')
+    await user.type(screen.getByLabelText('Breed'), 'Holstein')
     await user.click(screen.getByRole('button', { name: 'Create cow' }))
 
     await waitFor(() => {
-      expect(screen.getByRole('alert')).toHaveTextContent(
-        'An active cow with this tag number already exists.',
-      )
+      expect(screen.getByRole('alert')).toHaveTextContent('Name is required.')
     })
     expect(createCow).toHaveBeenCalled()
   })

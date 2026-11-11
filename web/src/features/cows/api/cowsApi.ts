@@ -47,16 +47,26 @@ export async function archiveCow(cowId: string): Promise<Cow> {
   })
 }
 
+export async function uploadCowImage(cowId: string, image: File): Promise<Cow> {
+  const form = new FormData()
+  form.set('image', image)
+  return apiRequest<Cow>(`/api/v1/cows/${cowId}/image`, {
+    method: 'PUT',
+    body: form,
+    formData: true,
+  })
+}
+
 export async function listMilkProductions(
   cowId: string,
   params?: { limit?: number; offset?: number },
 ): Promise<Page<MilkProduction>> {
   const search = new URLSearchParams()
-  if (params?.limit != null) search.set('limit', String(params.limit))
+  search.set('limit', String(params?.limit ?? 10))
   if (params?.offset != null) search.set('offset', String(params.offset))
   const qs = search.toString()
   return apiRequest<Page<MilkProduction>>(
-    `/api/v1/cows/${cowId}/milk-productions${qs ? `?${qs}` : ''}`,
+    `/api/v1/cows/${cowId}/milk-productions?${qs}`,
   )
 }
 
@@ -75,12 +85,10 @@ export async function listFeedings(
   params?: { limit?: number; offset?: number },
 ): Promise<Page<CowFeeding>> {
   const search = new URLSearchParams()
-  if (params?.limit != null) search.set('limit', String(params.limit))
+  search.set('limit', String(params?.limit ?? 10))
   if (params?.offset != null) search.set('offset', String(params.offset))
   const qs = search.toString()
-  return apiRequest<Page<CowFeeding>>(
-    `/api/v1/cows/${cowId}/feedings${qs ? `?${qs}` : ''}`,
-  )
+  return apiRequest<Page<CowFeeding>>(`/api/v1/cows/${cowId}/feedings?${qs}`)
 }
 
 export async function addFeeding(

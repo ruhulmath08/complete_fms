@@ -2,9 +2,9 @@
 unit: 002-design-web
 intent: 002-design-system-refresh
 phase: inception
-status: ready
-created: 2026-11-11T18:01:56Z
-updated: 2026-11-11T18:01:56Z
+status: complete
+created: '2026-11-11T18:01:56Z'
+updated: '2026-11-11T18:01:56Z'
 unit_type: web
 default_bolt_type: simple-construction-bolt
 ---

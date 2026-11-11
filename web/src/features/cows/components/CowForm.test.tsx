@@ -19,22 +19,30 @@ describe('CowForm', () => {
     expect(screen.getByLabelText('Purchase price')).toBeInTheDocument()
   })
 
-  it('submits born-on-farm payload without purchase fields', async () => {
+  it('requires name and breed and omits client tag on create', async () => {
     const user = userEvent.setup()
     const onSubmit = vi.fn()
 
     render(<CowForm submitLabel="Save" onSubmit={onSubmit} />)
 
-    await user.type(screen.getByLabelText('Tag number'), 'B-1')
+    expect(screen.queryByLabelText('Tag number')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Weight (kg)')).toBeInTheDocument()
+    expect(screen.getByLabelText('Cow image')).toBeInTheDocument()
+
+    await user.type(screen.getByLabelText('Name'), 'Bella')
+    await user.type(screen.getByLabelText('Breed'), 'Holstein')
     await user.click(screen.getByRole('button', { name: 'Save' }))
 
     expect(onSubmit).toHaveBeenCalledWith(
       expect.objectContaining({
-        tag_number: 'B-1',
+        name: 'Bella',
+        breed: 'Holstein',
         acquired_by: 'born_on_farm',
         purchase_date: null,
         purchase_price: null,
       }),
+      null,
     )
+    expect(onSubmit.mock.calls[0][0]).not.toHaveProperty('tag_number')
   })
 })

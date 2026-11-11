@@ -2,11 +2,11 @@
 id: 005-web-tabular-lists
 unit: 002-design-web
 intent: 002-design-system-refresh
-status: draft
+status: complete
 priority: should
-created: 2026-11-11T18:01:56Z
+created: '2026-11-11T18:01:56Z'
 assigned_bolt: 021-design-web
-implemented: false
+implemented: true
 ---
 
 # Story: 005-web-tabular-lists

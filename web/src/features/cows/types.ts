@@ -17,6 +17,7 @@ export type Cow = {
   purchase_date: string | null
   purchase_price: string | null
   notes: string | null
+  image_url: string | null
   is_archived: boolean
   created_at: string
   updated_at: string
@@ -56,12 +57,11 @@ export type Page<T> = {
 }
 
 export type CowCreateInput = {
-  tag_number: string
   purpose: CowPurpose
   gender: CowGender
   acquired_by: AcquisitionSource
-  name?: string | null
-  breed?: string | null
+  name: string
+  breed: string
   date_of_birth?: string | null
   color?: string | null
   weight?: string | null

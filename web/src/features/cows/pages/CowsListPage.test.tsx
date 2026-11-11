@@ -47,6 +47,7 @@ describe('CowsListPage', () => {
           purchase_date: null,
           purchase_price: null,
           notes: null,
+          image_url: null,
           is_archived: false,
           created_at: '2024-01-01T00:00:00Z',
           updated_at: '2024-01-01T00:00:00Z',
@@ -58,9 +59,13 @@ describe('CowsListPage', () => {
     renderPage()
 
     await waitFor(() => {
-      expect(screen.getByText('C-100')).toBeInTheDocument()
+      expect(screen.getByRole('table')).toBeInTheDocument()
     })
-    expect(screen.getByText(/Bella/)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'C-100' })).toHaveAttribute(
+      'href',
+      '/cows/1',
+    )
+    expect(screen.getByText('Bella')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Add cow/i })).toHaveAttribute(
       'href',
       '/cows/new',

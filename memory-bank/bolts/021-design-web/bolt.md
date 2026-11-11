@@ -3,22 +3,29 @@ id: 021-design-web
 unit: 002-design-web
 intent: 002-design-system-refresh
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 003-web-add-cow-image-and-labels
   - 004-web-milk-feeding-tables
   - 005-web-tabular-lists
-created: 2026-11-11T18:01:56Z
-started: null
-completed: null
+created: '2026-11-11T18:01:56Z'
+started: '2026-11-11T18:27:24Z'
+completed: '2026-11-11T18:31:46Z'
 current_stage: null
-stages_completed: []
-
-requires_bolts: ["019-design-api", "020-design-web"]
+stages_completed:
+  - name: plan
+    completed: '2026-11-11T18:30:21Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-11-11T18:30:51Z'
+    artifact: implementation-walkthrough.md
+requires_bolts:
+  - 019-design-api
+  - 020-design-web
 enables_bolts: []
-requires_units: ["001-design-api"]
+requires_units:
+  - 001-design-api
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 2

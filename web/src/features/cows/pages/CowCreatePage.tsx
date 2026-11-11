@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createCow } from '../api/cowsApi'
+import { createCow, uploadCowImage } from '../api/cowsApi'
 import { CowForm } from '../components/CowForm'
 import type { CowCreateInput } from '../types'
 import { ApiError, getErrorMessage } from '../../../shared/api/errors'
@@ -13,7 +13,19 @@ export function CowCreatePage() {
   const [error, setError] = useState<string | null>(null)
 
   const mutation = useMutation({
-    mutationFn: createCow,
+    mutationFn: async ({
+      input,
+      imageFile,
+    }: {
+      input: CowCreateInput
+      imageFile: File | null
+    }) => {
+      const cow = await createCow(input)
+      if (imageFile) {
+        return uploadCowImage(cow.id, imageFile)
+      }
+      return cow
+    },
     onSuccess: async (cow) => {
       await queryClient.invalidateQueries({ queryKey: ['cows'] })
       navigate(`/cows/${cow.id}`)
@@ -24,9 +36,9 @@ export function CowCreatePage() {
     },
   })
 
-  function onSubmit(input: CowCreateInput) {
+  function onSubmit(input: CowCreateInput, imageFile: File | null) {
     setError(null)
-    mutation.mutate(input)
+    mutation.mutate({ input, imageFile })
   }
 
   return (

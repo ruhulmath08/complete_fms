@@ -41,24 +41,32 @@ export function CowsListPage() {
       ) : null}
 
       {query.data && query.data.items.length > 0 ? (
-        <ul className="record-list">
-          {query.data.items.map((cow) => (
-            <li key={cow.id}>
-              <Link to={`/cows/${cow.id}`} className="record-card">
-                <div>
-                  <strong>{cow.tag_number}</strong>
-                  {cow.name ? <span className="muted"> · {cow.name}</span> : null}
-                  {cow.is_archived ? (
-                    <span className="badge badge-muted">Archived</span>
-                  ) : null}
-                </div>
-                <div className="muted">
-                  {cow.purpose} · {cow.gender}
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="table-responsive">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Tag</th>
+                <th scope="col">Name</th>
+                <th scope="col">Purpose</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {query.data.items.map((cow) => (
+                <tr key={cow.id}>
+                  <td>
+                    <Link to={`/cows/${cow.id}`}>{cow.tag_number}</Link>
+                  </td>
+                  <td>{cow.name ?? '—'}</td>
+                  <td>{cow.purpose}</td>
+                  <td>{cow.gender}</td>
+                  <td>{cow.is_archived ? 'Archived' : 'Active'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : null}
     </div>
   )

@@ -10,11 +10,16 @@ import {
   listFeedings,
   listMilkProductions,
   updateCow,
+  uploadCowImage,
 } from '../api/cowsApi'
 import { CowForm } from '../components/CowForm'
+import { PaginationControls } from '../components/PaginationControls'
+import { useCowImageUrl } from '../hooks/useCowImageUrl'
 import type { CowCreateInput } from '../types'
 import { ApiError, getErrorMessage } from '../../../shared/api/errors'
 import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+
+const PAGE_SIZE = 10
 
 function toDateTimeLocalValue(iso: string): string {
   const date = new Date(iso)
@@ -27,6 +32,13 @@ function fromDateTimeLocalValue(value: string): string {
   return new Date(value).toISOString()
 }
 
+function milkTotal(quantity: string, pricePerUnit: string): string {
+  const qty = Number(quantity)
+  const price = Number(pricePerUnit)
+  if (Number.isNaN(qty) || Number.isNaN(price)) return '—'
+  return (qty * price).toFixed(2)
+}
+
 function MilkSection({
   cowId,
   canAdd,
@@ -36,6 +48,7 @@ function MilkSection({
 }) {
   const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
+  const [offset, setOffset] = useState(0)
   const [producedAt, setProducedAt] = useState(() =>
     toDateTimeLocalValue(new Date().toISOString()),
   )
@@ -45,8 +58,8 @@ function MilkSection({
   const [note, setNote] = useState('')
 
   const listQuery = useQuery({
-    queryKey: ['milk', cowId],
-    queryFn: () => listMilkProductions(cowId, { limit: 50 }),
+    queryKey: ['milk', cowId, offset],
+    queryFn: () => listMilkProductions(cowId, { limit: PAGE_SIZE, offset }),
   })
   const unitsQuery = useQuery({
     queryKey: ['suggested-units'],
@@ -66,6 +79,7 @@ function MilkSection({
       setQuantity('')
       setNote('')
       setError(null)
+      setOffset(0)
       await queryClient.invalidateQueries({ queryKey: ['milk', cowId] })
     },
     onError: (err) => {
@@ -80,30 +94,60 @@ function MilkSection({
     mutation.mutate()
   }
 
+  const items = listQuery.data?.items ?? []
+  const meta = listQuery.data?.meta
+
   return (
     <section className="detail-section">
       <h2>Milk production</h2>
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.data?.items.length ? (
-        <ul className="simple-list">
-          {listQuery.data.items.map((row) => (
-            <li key={row.id}>
-              <strong>
-                {row.quantity} {row.unit}
-              </strong>
-              <span className="muted">
-                {' '}
-                · {new Date(row.produced_at).toLocaleString()} · {row.price_per_unit}/unit
-              </span>
-              {row.note ? <div className="muted">{row.note}</div> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {listQuery.isLoading ? <p className="muted">Loading milk entries…</p> : null}
+      {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No milk entries yet.</p>
-      )}
+      ) : null}
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Date + time</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit price</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((row, index) => (
+                  <tr key={row.id}>
+                    <td>{offset + index + 1}</td>
+                    <td>{new Date(row.produced_at).toLocaleString()}</td>
+                    <td>
+                      {row.quantity} {row.unit}
+                    </td>
+                    <td>{row.price_per_unit}</td>
+                    <td>{milkTotal(row.quantity, row.price_per_unit)}</td>
+                    <td>{row.note ?? '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {meta ? (
+            <PaginationControls
+              label="Milk"
+              total={meta.total}
+              limit={meta.limit}
+              offset={meta.offset}
+              onOffsetChange={setOffset}
+            />
+          ) : null}
+        </>
+      ) : null}
 
       {canAdd ? (
         <>
@@ -175,6 +219,7 @@ function MilkSection({
 function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
   const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
+  const [offset, setOffset] = useState(0)
   const [fedAt, setFedAt] = useState(() => toDateTimeLocalValue(new Date().toISOString()))
   const [feedName, setFeedName] = useState('')
   const [quantity, setQuantity] = useState('')
@@ -182,8 +227,8 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
   const [note, setNote] = useState('')
 
   const listQuery = useQuery({
-    queryKey: ['feedings', cowId],
-    queryFn: () => listFeedings(cowId, { limit: 50 }),
+    queryKey: ['feedings', cowId, offset],
+    queryFn: () => listFeedings(cowId, { limit: PAGE_SIZE, offset }),
   })
   const unitsQuery = useQuery({
     queryKey: ['suggested-units'],
@@ -204,6 +249,7 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
       setQuantity('')
       setNote('')
       setError(null)
+      setOffset(0)
       await queryClient.invalidateQueries({ queryKey: ['feedings', cowId] })
     },
     onError: (err) => {
@@ -218,27 +264,58 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
     mutation.mutate()
   }
 
+  const items = listQuery.data?.items ?? []
+  const meta = listQuery.data?.meta
+
   return (
     <section className="detail-section">
       <h2>Feeding</h2>
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.data?.items.length ? (
-        <ul className="simple-list">
-          {listQuery.data.items.map((row) => (
-            <li key={row.id}>
-              <strong>
-                {row.feed_name}: {row.quantity} {row.unit}
-              </strong>
-              <span className="muted"> · {new Date(row.fed_at).toLocaleString()}</span>
-              {row.note ? <div className="muted">{row.note}</div> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {listQuery.isLoading ? <p className="muted">Loading feeding entries…</p> : null}
+      {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No feeding entries yet.</p>
-      )}
+      ) : null}
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Date + time</th>
+                  <th scope="col">Feed name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((row, index) => (
+                  <tr key={row.id}>
+                    <td>{offset + index + 1}</td>
+                    <td>{new Date(row.fed_at).toLocaleString()}</td>
+                    <td>{row.feed_name}</td>
+                    <td>{row.quantity}</td>
+                    <td>{row.unit}</td>
+                    <td>{row.note ?? '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {meta ? (
+            <PaginationControls
+              label="Feeding"
+              total={meta.total}
+              limit={meta.limit}
+              offset={meta.offset}
+              onOffsetChange={setOffset}
+            />
+          ) : null}
+        </>
+      ) : null}
 
       {canAdd ? (
         <>
@@ -319,8 +396,23 @@ export function CowDetailPage() {
     enabled: Boolean(cowId),
   })
 
+  const cow = cowQuery.data
+  const imageUrl = useCowImageUrl(cow?.id, cow?.image_url)
+
   const updateMutation = useMutation({
-    mutationFn: (input: CowCreateInput) => updateCow(cowId, input),
+    mutationFn: async ({
+      input,
+      imageFile,
+    }: {
+      input: CowCreateInput
+      imageFile: File | null
+    }) => {
+      const updated = await updateCow(cowId, input)
+      if (imageFile) {
+        return uploadCowImage(cowId, imageFile)
+      }
+      return updated
+    },
     onSuccess: async () => {
       setEditing(false)
       setError(null)
@@ -351,7 +443,6 @@ export function CowDetailPage() {
   if (cowQuery.isError) {
     return <ErrorBanner message={getErrorMessage(cowQuery.error)} />
   }
-  const cow = cowQuery.data
   if (!cow) return null
 
   const milkEligible = cow.purpose === 'milk' || cow.purpose === 'both'
@@ -400,13 +491,17 @@ export function CowDetailPage() {
 
       <ErrorBanner message={error} />
 
+      {!editing && imageUrl ? (
+        <img src={imageUrl} alt="" className="profile-preview" />
+      ) : null}
+
       {editing && canWrite ? (
         <CowForm
           key={cow.updated_at}
           initial={cow}
           submitLabel="Save changes"
           pending={updateMutation.isPending}
-          onSubmit={(input) => updateMutation.mutate(input)}
+          onSubmit={(input, imageFile) => updateMutation.mutate({ input, imageFile })}
         />
       ) : (
         <dl className="detail-grid">
@@ -427,7 +522,7 @@ export function CowDetailPage() {
             <dd>{cow.age ?? '—'}</dd>
           </div>
           <div>
-            <dt>Weight</dt>
+            <dt>Weight (kg)</dt>
             <dd>{cow.weight ?? '—'}</dd>
           </div>
           <div>

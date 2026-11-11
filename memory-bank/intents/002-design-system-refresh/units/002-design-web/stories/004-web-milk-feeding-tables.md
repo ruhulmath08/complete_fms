@@ -2,11 +2,11 @@
 id: 004-web-milk-feeding-tables
 unit: 002-design-web
 intent: 002-design-system-refresh
-status: draft
+status: complete
 priority: must
-created: 2026-11-11T18:01:56Z
+created: '2026-11-11T18:01:56Z'
 assigned_bolt: 021-design-web
-implemented: false
+implemented: true
 ---
 
 # Story: 004-web-milk-feeding-tables
