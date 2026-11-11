@@ -2,11 +2,11 @@
 id: 002-api-cow-image
 unit: 001-design-api
 intent: 002-design-system-refresh
-status: draft
+status: complete
 priority: must
-created: 2026-11-11T18:01:56Z
+created: '2026-11-11T18:01:56Z'
 assigned_bolt: 019-design-api
-implemented: false
+implemented: true
 ---
 
 # Story: 002-api-cow-image
