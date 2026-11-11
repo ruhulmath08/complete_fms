@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     refresh_token_ttl_seconds: int = 604800
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     max_profile_image_bytes: int = 5 * 1024 * 1024
+    max_cow_image_bytes: int = 5 * 1024 * 1024
 
     @property
     def cors_origin_list(self) -> list[str]:
@@ -40,6 +41,10 @@ class Settings(BaseSettings):
     @property
     def profile_images_path(self) -> Path:
         return self.upload_path / "profile_images"
+
+    @property
+    def cow_images_path(self) -> Path:
+        return self.upload_path / "cow_images"
 
 
 @lru_cache

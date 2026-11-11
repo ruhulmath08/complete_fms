@@ -56,6 +56,7 @@ class CowModel(Base):
     purchase_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     purchase_price: Mapped[Decimal | None] = mapped_column(Numeric(12, 2), nullable=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    image_path: Mapped[str | None] = mapped_column(Text, nullable=True)
     is_archived: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False

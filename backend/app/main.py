@@ -18,6 +18,7 @@ logging.basicConfig(
 async def lifespan(_: FastAPI):
     settings = get_settings()
     settings.profile_images_path.mkdir(parents=True, exist_ok=True)
+    settings.cow_images_path.mkdir(parents=True, exist_ok=True)
     yield
 
 

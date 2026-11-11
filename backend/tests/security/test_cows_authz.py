@@ -34,6 +34,9 @@ def test_cows_routes_require_auth(client: TestClient) -> None:
         ("GET", f"/api/v1/cows/{cow_id}"),
         ("PATCH", f"/api/v1/cows/{cow_id}"),
         ("POST", f"/api/v1/cows/{cow_id}/archive"),
+        ("GET", f"/api/v1/cows/{cow_id}/image"),
+        ("PUT", f"/api/v1/cows/{cow_id}/image"),
+        ("DELETE", f"/api/v1/cows/{cow_id}/image"),
         ("GET", f"/api/v1/cows/{cow_id}/milk-productions"),
         ("POST", f"/api/v1/cows/{cow_id}/milk-productions"),
         ("GET", f"/api/v1/cows/{cow_id}/feedings"),
@@ -55,7 +58,8 @@ def test_other_owner_cow_is_not_found(
         "/api/v1/cows",
         headers={"Authorization": f"Bearer {access_a}"},
         json={
-            "tag_number": "A-1",
+            "name": "Alpha",
+            "breed": "Local",
             "purpose": "milk",
             "gender": "female",
             "acquired_by": "born_on_farm",
@@ -73,6 +77,7 @@ def test_other_owner_cow_is_not_found(
         ("GET", f"/api/v1/cows/{cow_id}"),
         ("PATCH", f"/api/v1/cows/{cow_id}"),
         ("POST", f"/api/v1/cows/{cow_id}/archive"),
+        ("GET", f"/api/v1/cows/{cow_id}/image"),
         ("GET", f"/api/v1/cows/{cow_id}/milk-productions"),
         ("GET", f"/api/v1/cows/{cow_id}/feedings"),
     ):
@@ -81,7 +86,7 @@ def test_other_owner_cow_is_not_found(
             kwargs["json"] = {"name": "stolen"}
         response = client.request(method, path, **kwargs)
         assert response.status_code == 404, path
-        assert response.json()["code"] == "COW_NOT_FOUND"
+        assert response.json()["code"] in {"COW_NOT_FOUND", "COW_IMAGE_NOT_FOUND"}
 
     listed = client.get("/api/v1/cows", headers=headers_b)
     assert listed.status_code == 200

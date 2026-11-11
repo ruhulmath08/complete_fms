@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import secrets
 from decimal import Decimal
 from enum import StrEnum
 from typing import Any
 
 from app.core.errors import AppError
+
+TAG_DIGIT_LEN = 6
+TAG_MAX_LEN = 64
+TAG_GENERATION_MAX_ATTEMPTS = 10
 
 
 class CowPurpose(StrEnum):
@@ -70,6 +75,41 @@ def validate_tag_number(tag_number: str) -> str:
             details={"field": "tag_number"},
         )
     return cleaned
+
+
+def validate_required_name_breed(*, name: str | None, breed: str | None) -> tuple[str, str]:
+    cleaned_name = (name or "").strip()
+    cleaned_breed = (breed or "").strip()
+    if not cleaned_name:
+        raise AppError(
+            code="VALIDATION_ERROR",
+            message="Name is required.",
+            status_code=422,
+            details={"field": "name"},
+        )
+    if not cleaned_breed:
+        raise AppError(
+            code="VALIDATION_ERROR",
+            message="Breed is required.",
+            status_code=422,
+            details={"field": "breed"},
+        )
+    if len(cleaned_name) + len(cleaned_breed) + TAG_DIGIT_LEN > TAG_MAX_LEN:
+        raise AppError(
+            code="VALIDATION_ERROR",
+            message=(
+                "Name and breed are too long to generate a tag number "
+                f"(max combined length before digits is {TAG_MAX_LEN - TAG_DIGIT_LEN})."
+            ),
+            status_code=422,
+            details={"fields": ["name", "breed"]},
+        )
+    return cleaned_name, cleaned_breed
+
+
+def build_generated_tag(name: str, breed: str) -> str:
+    suffix = f"{secrets.randbelow(10**TAG_DIGIT_LEN):0{TAG_DIGIT_LEN}d}"
+    return f"{name}{breed}{suffix}"
 
 
 def validate_purchase_fields(

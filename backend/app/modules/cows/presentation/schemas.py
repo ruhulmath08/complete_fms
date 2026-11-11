@@ -8,12 +8,11 @@ from pydantic import BaseModel, Field
 
 
 class CowCreateRequest(BaseModel):
-    tag_number: str = Field(min_length=1, max_length=64)
     purpose: str
     gender: str
     acquired_by: str
-    name: str | None = None
-    breed: str | None = None
+    name: str = Field(min_length=1, max_length=255)
+    breed: str = Field(min_length=1, max_length=128)
     date_of_birth: date | None = None
     color: str | None = None
     weight: Decimal | None = None
@@ -24,12 +23,11 @@ class CowCreateRequest(BaseModel):
 
 
 class CowUpdateRequest(BaseModel):
-    tag_number: str | None = Field(default=None, min_length=1, max_length=64)
     purpose: str | None = None
     gender: str | None = None
     acquired_by: str | None = None
-    name: str | None = None
-    breed: str | None = None
+    name: str | None = Field(default=None, min_length=1, max_length=255)
+    breed: str | None = Field(default=None, min_length=1, max_length=128)
     date_of_birth: date | None = None
     color: str | None = None
     weight: Decimal | None = None
@@ -56,6 +54,7 @@ class CowResponse(BaseModel):
     purchase_date: date | None
     purchase_price: Decimal | None
     notes: str | None
+    image_url: str | None = None
     is_archived: bool
     created_at: datetime
     updated_at: datetime

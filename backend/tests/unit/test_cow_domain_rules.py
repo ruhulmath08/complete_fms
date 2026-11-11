@@ -8,6 +8,7 @@ from app.modules.cows.domain.rules import (
     AcquisitionSource,
     assert_milk_allowed,
     assert_not_archived,
+    build_generated_tag,
     parse_acquired_by,
     parse_gender,
     parse_purpose,
@@ -15,6 +16,7 @@ from app.modules.cows.domain.rules import (
     validate_non_negative_price,
     validate_positive_quantity,
     validate_purchase_fields,
+    validate_required_name_breed,
     validate_tag_number,
     validate_unit,
 )
@@ -103,3 +105,26 @@ def test_quantity_price_unit_tag() -> None:
 
     assert validate_unit(" L ") == "L"
     assert validate_feed_name(" Grass ") == "Grass"
+
+
+def test_generated_tag_and_required_name_breed() -> None:
+    name, breed = validate_required_name_breed(name=" Bella ", breed=" Holstein ")
+    assert name == "Bella"
+    assert breed == "Holstein"
+
+    with pytest.raises(AppError) as missing_name:
+        validate_required_name_breed(name="  ", breed="Holstein")
+    assert missing_name.value.code == "VALIDATION_ERROR"
+
+    with pytest.raises(AppError) as missing_breed:
+        validate_required_name_breed(name="Bella", breed=None)
+    assert missing_breed.value.code == "VALIDATION_ERROR"
+
+    with pytest.raises(AppError) as too_long:
+        validate_required_name_breed(name="A" * 40, breed="B" * 40)
+    assert too_long.value.code == "VALIDATION_ERROR"
+
+    tag = build_generated_tag("Bella", "Holstein")
+    assert tag.startswith("BellaHolstein")
+    assert tag[-6:].isdigit()
+    assert len(tag) == len("BellaHolstein") + 6

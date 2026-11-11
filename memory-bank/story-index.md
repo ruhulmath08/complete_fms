@@ -1,9 +1,9 @@
 # Global Story Index
 
 ## Overview
-- **Total stories**: 24
-- **Generated**: 24
-- **Last updated**: 2026-11-09T06:55:29Z
+- **Total stories**: 36
+- **Generated**: 36
+- **Last updated**: 2026-11-11T18:01:56Z
 
 ---
 
@@ -155,12 +155,86 @@
 **Priority**: must
 **Path**: `memory-bank/intents/001-farm-management-first-release/units/006-income-expenses/stories/003-mobile-income-and-expenses.md`
 
+### 002-design-system-refresh
+
+### 001-api-auto-tag-number.md ✅ GENERATED
+**Title**: API auto tag number
+**Unit**: `001-design-api`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/001-design-api/stories/001-api-auto-tag-number.md`
+
+### 002-api-cow-image.md ✅ GENERATED
+**Title**: API cow image
+**Unit**: `001-design-api`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/001-design-api/stories/002-api-cow-image.md`
+
+### 003-api-milk-feeding-pagination.md ✅ GENERATED
+**Title**: API milk/feeding pagination
+**Unit**: `001-design-api`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/001-design-api/stories/003-api-milk-feeding-pagination.md`
+
+### 001-web-app-shell.md ✅ GENERATED
+**Title**: Web app shell
+**Unit**: `002-design-web`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/002-design-web/stories/001-web-app-shell.md`
+
+### 002-web-design-tokens.md ✅ GENERATED
+**Title**: Web design tokens
+**Unit**: `002-design-web`
+**Priority**: should
+**Path**: `memory-bank/intents/002-design-system-refresh/units/002-design-web/stories/002-web-design-tokens.md`
+
+### 003-web-add-cow-image-and-labels.md ✅ GENERATED
+**Title**: Web add cow image and labels
+**Unit**: `002-design-web`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/002-design-web/stories/003-web-add-cow-image-and-labels.md`
+
+### 004-web-milk-feeding-tables.md ✅ GENERATED
+**Title**: Web milk and feeding tables
+**Unit**: `002-design-web`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/002-design-web/stories/004-web-milk-feeding-tables.md`
+
+### 005-web-tabular-lists.md ✅ GENERATED
+**Title**: Web tabular lists
+**Unit**: `002-design-web`
+**Priority**: should
+**Path**: `memory-bank/intents/002-design-system-refresh/units/002-design-web/stories/005-web-tabular-lists.md`
+
+### 001-mobile-list-cards.md ✅ GENERATED
+**Title**: Mobile list cards
+**Unit**: `003-design-mobile`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/003-design-mobile/stories/001-mobile-list-cards.md`
+
+### 002-mobile-design-tokens.md ✅ GENERATED
+**Title**: Mobile design tokens
+**Unit**: `003-design-mobile`
+**Priority**: should
+**Path**: `memory-bank/intents/002-design-system-refresh/units/003-design-mobile/stories/002-mobile-design-tokens.md`
+
+### 003-mobile-cow-create-refresh.md ✅ GENERATED
+**Title**: Mobile cow create refresh
+**Unit**: `003-design-mobile`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/003-design-mobile/stories/003-mobile-cow-create-refresh.md`
+
+### 004-mobile-consume-auto-tag-and-image.md ✅ GENERATED
+**Title**: Mobile consume auto tag and image
+**Unit**: `003-design-mobile`
+**Priority**: must
+**Path**: `memory-bank/intents/002-design-system-refresh/units/003-design-mobile/stories/004-mobile-consume-auto-tag-and-image.md`
+
 ---
 
 ## Stories by Status
 
 - **Planned**: 0
-- **Generated**: 24
+- **Generated**: 36
 - **In Progress**: 0
 - **Completed**: 0
 
@@ -184,3 +258,8 @@
 - `016-income-expenses` (ddd-construction-bolt): 001-api-income-and-expenses
 - `017-income-expenses` (simple-construction-bolt): 002-web-income-and-expenses
 - `018-income-expenses` (simple-construction-bolt): 003-mobile-income-and-expenses
+- `019-design-api` (ddd-construction-bolt): 001-api-auto-tag-number, 002-api-cow-image, 003-api-milk-feeding-pagination
+- `020-design-web` (simple-construction-bolt): 001-web-app-shell, 002-web-design-tokens
+- `021-design-web` (simple-construction-bolt): 003-web-add-cow-image-and-labels, 004-web-milk-feeding-tables, 005-web-tabular-lists
+- `022-design-mobile` (simple-construction-bolt): 001-mobile-list-cards, 002-mobile-design-tokens
+- `023-design-mobile` (simple-construction-bolt): 003-mobile-cow-create-refresh, 004-mobile-consume-auto-tag-and-image

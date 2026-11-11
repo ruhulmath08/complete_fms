@@ -5,15 +5,19 @@ from datetime import date, datetime
 from decimal import Decimal
 from uuid import UUID, uuid4
 
+from fastapi import UploadFile
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.core.config import Settings, get_settings
 from app.core.errors import AppError
 from app.modules.cows.domain.rules import (
+    TAG_GENERATION_MAX_ATTEMPTS,
     AcquisitionSource,
     assert_milk_allowed,
     assert_not_archived,
+    build_generated_tag,
     parse_acquired_by,
     parse_gender,
     parse_purpose,
@@ -21,9 +25,10 @@ from app.modules.cows.domain.rules import (
     validate_non_negative_price,
     validate_positive_quantity,
     validate_purchase_fields,
-    validate_tag_number,
+    validate_required_name_breed,
     validate_unit,
 )
+from app.modules.cows.infrastructure.image_store import CowImageStore
 from app.modules.cows.infrastructure.models import (
     CowFeedingModel,
     CowModel,
@@ -33,8 +38,13 @@ from app.modules.cows.infrastructure.models import (
 logger = logging.getLogger(__name__)
 
 
-def _clamp_paging(limit: int | None, offset: int | None) -> tuple[int, int]:
-    lim = 20 if limit is None else limit
+def _clamp_paging(
+    limit: int | None,
+    offset: int | None,
+    *,
+    default_limit: int = 20,
+) -> tuple[int, int]:
+    lim = default_limit if limit is None else limit
     off = 0 if offset is None else offset
     if lim < 1 or lim > 100:
         raise AppError(
@@ -54,19 +64,20 @@ def _clamp_paging(limit: int | None, offset: int | None) -> tuple[int, int]:
 
 
 class CowService:
-    def __init__(self, db: Session) -> None:
+    def __init__(self, db: Session, settings: Settings | None = None) -> None:
         self.db = db
+        self.settings = settings or get_settings()
+        self.images = CowImageStore(self.settings)
 
     def create(
         self,
         *,
         owner_id: UUID,
-        tag_number: str,
         purpose: str,
         gender: str,
         acquired_by: str,
-        name: str | None = None,
-        breed: str | None = None,
+        name: str,
+        breed: str,
         date_of_birth: date | None = None,
         color: str | None = None,
         weight: Decimal | None = None,
@@ -74,8 +85,11 @@ class CowService:
         purchase_date: date | None = None,
         purchase_price: Decimal | None = None,
         notes: str | None = None,
+        image: UploadFile | None = None,
     ) -> CowModel:
-        tag = validate_tag_number(tag_number)
+        cleaned_name, cleaned_breed = validate_required_name_breed(
+            name=name, breed=breed
+        )
         purpose_v = parse_purpose(purpose)
         gender_v = parse_gender(gender)
         acquired_v = parse_acquired_by(acquired_by)
@@ -84,14 +98,21 @@ class CowService:
             purchase_date=purchase_date,
             purchase_price=purchase_price,
         )
-        self._assert_tag_available(owner_id, tag)
+
+        cow_id = uuid4()
+        tag = self._generate_unique_tag(
+            owner_id=owner_id, name=cleaned_name, breed=cleaned_breed
+        )
+        image_path: str | None = None
+        if image is not None and image.filename:
+            image_path = self.images.save(image, str(owner_id), str(cow_id))
 
         cow = CowModel(
-            id=uuid4(),
+            id=cow_id,
             owner_id=owner_id,
             tag_number=tag,
-            name=name.strip() if name else None,
-            breed=breed.strip() if breed else None,
+            name=cleaned_name,
+            breed=cleaned_breed,
             date_of_birth=date_of_birth,
             purpose=purpose_v.value,
             gender=gender_v.value,
@@ -102,6 +123,7 @@ class CowService:
             purchase_date=purchase_date_v,
             purchase_price=purchase_price_v,
             notes=notes.strip() if notes else None,
+            image_path=image_path,
             is_archived=False,
         )
         self.db.add(cow)
@@ -109,13 +131,17 @@ class CowService:
             self.db.commit()
         except IntegrityError as exc:
             self.db.rollback()
+            if image_path:
+                self.images.delete(image_path)
             raise AppError(
                 code="TAG_ALREADY_EXISTS",
                 message="An active cow with this tag number already exists.",
                 status_code=409,
             ) from exc
         self.db.refresh(cow)
-        logger.info("Cow created cow_id=%s owner_id=%s", cow.id, owner_id)
+        logger.info(
+            "Cow created cow_id=%s owner_id=%s tag=%s", cow.id, owner_id, cow.tag_number
+        )
         return cow
 
     def list(
@@ -126,7 +152,7 @@ class CowService:
         offset: int | None = None,
         include_archived: bool = False,
     ) -> tuple[list[CowModel], int]:
-        lim, off = _clamp_paging(limit, offset)
+        lim, off = _clamp_paging(limit, offset, default_limit=20)
         filters = [CowModel.owner_id == owner_id]
         if not include_archived:
             filters.append(CowModel.is_archived.is_(False))
@@ -164,7 +190,6 @@ class CowService:
         *,
         owner_id: UUID,
         cow_id: UUID,
-        tag_number: str | None = None,
         purpose: str | None = None,
         gender: str | None = None,
         acquired_by: str | None = None,
@@ -182,11 +207,6 @@ class CowService:
         cow = self.get(owner_id=owner_id, cow_id=cow_id)
         assert_not_archived(cow.is_archived)
         set_fields = fields_set or set()
-
-        if tag_number is not None:
-            tag = validate_tag_number(tag_number)
-            self._assert_tag_available(owner_id, tag, exclude_cow_id=cow.id)
-            cow.tag_number = tag
 
         if purpose is not None:
             cow.purpose = parse_purpose(purpose).value
@@ -221,9 +241,23 @@ class CowService:
             cow.purchase_price = next_purchase_price
 
         if "name" in set_fields:
-            cow.name = name.strip() if name else None
+            if name is None or not name.strip():
+                raise AppError(
+                    code="VALIDATION_ERROR",
+                    message="Name is required.",
+                    status_code=422,
+                    details={"field": "name"},
+                )
+            cow.name = name.strip()
         if "breed" in set_fields:
-            cow.breed = breed.strip() if breed else None
+            if breed is None or not breed.strip():
+                raise AppError(
+                    code="VALIDATION_ERROR",
+                    message="Breed is required.",
+                    status_code=422,
+                    details={"field": "breed"},
+                )
+            cow.breed = breed.strip()
         if "date_of_birth" in set_fields:
             cow.date_of_birth = date_of_birth
         if "color" in set_fields:
@@ -236,15 +270,7 @@ class CowService:
             cow.notes = notes.strip() if notes else None
 
         self.db.add(cow)
-        try:
-            self.db.commit()
-        except IntegrityError as exc:
-            self.db.rollback()
-            raise AppError(
-                code="TAG_ALREADY_EXISTS",
-                message="An active cow with this tag number already exists.",
-                status_code=409,
-            ) from exc
+        self.db.commit()
         self.db.refresh(cow)
         logger.info("Cow updated cow_id=%s owner_id=%s", cow.id, owner_id)
         return cow
@@ -260,33 +286,69 @@ class CowService:
         logger.info("Cow archived cow_id=%s owner_id=%s", cow.id, owner_id)
         return cow
 
-    def _assert_tag_available(
-        self,
-        owner_id: UUID,
-        tag: str,
-        *,
-        exclude_cow_id: UUID | None = None,
-    ) -> None:
-        stmt = select(CowModel.id).where(
-            CowModel.owner_id == owner_id,
-            CowModel.tag_number == tag,
-            CowModel.is_archived.is_(False),
+    def attach_image(
+        self, *, owner_id: UUID, cow_id: UUID, image: UploadFile
+    ) -> CowModel:
+        cow = self.get(owner_id=owner_id, cow_id=cow_id)
+        assert_not_archived(cow.is_archived)
+        cow.image_path = self.images.replace(
+            image, str(owner_id), str(cow_id), cow.image_path
         )
-        if exclude_cow_id is not None:
-            stmt = stmt.where(CowModel.id != exclude_cow_id)
-        existing = self.db.scalar(stmt)
-        if existing is not None:
+        self.db.add(cow)
+        self.db.commit()
+        self.db.refresh(cow)
+        logger.info("Cow image attached cow_id=%s owner_id=%s", cow.id, owner_id)
+        return cow
+
+    def clear_image(self, *, owner_id: UUID, cow_id: UUID) -> CowModel:
+        cow = self.get(owner_id=owner_id, cow_id=cow_id)
+        assert_not_archived(cow.is_archived)
+        self.images.delete(cow.image_path)
+        cow.image_path = None
+        self.db.add(cow)
+        self.db.commit()
+        self.db.refresh(cow)
+        logger.info("Cow image cleared cow_id=%s owner_id=%s", cow.id, owner_id)
+        return cow
+
+    def resolve_image_path(self, *, owner_id: UUID, cow_id: UUID):
+        cow = self.get(owner_id=owner_id, cow_id=cow_id)
+        if not cow.image_path:
             raise AppError(
-                code="TAG_ALREADY_EXISTS",
-                message="An active cow with this tag number already exists.",
-                status_code=409,
+                code="COW_IMAGE_NOT_FOUND",
+                message="Cow image not found.",
+                status_code=404,
             )
+        return self.images.resolve(cow.image_path)
+
+    def _generate_unique_tag(
+        self, *, owner_id: UUID, name: str, breed: str
+    ) -> str:
+        for _ in range(TAG_GENERATION_MAX_ATTEMPTS):
+            candidate = build_generated_tag(name, breed)
+            if not self._active_tag_exists(owner_id, candidate):
+                return candidate
+        raise AppError(
+            code="TAG_GENERATION_FAILED",
+            message="Could not generate a unique tag number. Please try again.",
+            status_code=500,
+        )
+
+    def _active_tag_exists(self, owner_id: UUID, tag: str) -> bool:
+        existing = self.db.scalar(
+            select(CowModel.id).where(
+                CowModel.owner_id == owner_id,
+                CowModel.tag_number == tag,
+                CowModel.is_archived.is_(False),
+            )
+        )
+        return existing is not None
 
 
 class MilkProductionService:
-    def __init__(self, db: Session) -> None:
+    def __init__(self, db: Session, settings: Settings | None = None) -> None:
         self.db = db
-        self.cows = CowService(db)
+        self.cows = CowService(db, settings)
 
     def add(
         self,
@@ -336,7 +398,7 @@ class MilkProductionService:
         offset: int | None = None,
     ) -> tuple[list[MilkProductionModel], int]:
         self.cows.get(owner_id=owner_id, cow_id=cow_id)
-        lim, off = _clamp_paging(limit, offset)
+        lim, off = _clamp_paging(limit, offset, default_limit=10)
         filters = [
             MilkProductionModel.owner_id == owner_id,
             MilkProductionModel.cow_id == cow_id,
@@ -357,9 +419,9 @@ class MilkProductionService:
 
 
 class CowFeedingService:
-    def __init__(self, db: Session) -> None:
+    def __init__(self, db: Session, settings: Settings | None = None) -> None:
         self.db = db
-        self.cows = CowService(db)
+        self.cows = CowService(db, settings)
 
     def add(
         self,
@@ -408,7 +470,7 @@ class CowFeedingService:
         offset: int | None = None,
     ) -> tuple[list[CowFeedingModel], int]:
         self.cows.get(owner_id=owner_id, cow_id=cow_id)
-        lim, off = _clamp_paging(limit, offset)
+        lim, off = _clamp_paging(limit, offset, default_limit=10)
         filters = [
             CowFeedingModel.owner_id == owner_id,
             CowFeedingModel.cow_id == cow_id,

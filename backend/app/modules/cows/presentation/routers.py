@@ -2,17 +2,20 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, File, Query, UploadFile
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
-from app.api.v1.deps import get_current_owner, get_db_session
+from app.api.v1.deps import get_current_owner, get_db_session, get_settings_dep
 from app.api.v1.schemas_common import Page, PageMeta
+from app.core.config import Settings
 from app.modules.auth.infrastructure.models import OwnerModel
 from app.modules.cows.application.services import (
     CowFeedingService,
     CowService,
     MilkProductionService,
 )
+from app.modules.cows.infrastructure.models import CowModel
 from app.modules.cows.presentation.schemas import (
     CowCreateRequest,
     CowFeedingResponse,
@@ -26,15 +29,30 @@ from app.modules.cows.presentation.schemas import (
 cows_router = APIRouter(prefix="/cows", tags=["cows"])
 
 
+def _to_cow_response(cow: CowModel) -> CowResponse:
+    response = CowResponse.model_validate(cow)
+    return response.model_copy(
+        update={
+            "image_url": (
+                f"/api/v1/cows/{cow.id}/image" if cow.image_path else None
+            )
+        }
+    )
+
+
+def _cow_service(db: Session, settings: Settings) -> CowService:
+    return CowService(db, settings)
+
+
 @cows_router.post("", response_model=CowResponse, status_code=201)
 def create_cow(
     body: CowCreateRequest,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
 ) -> CowResponse:
-    cow = CowService(db).create(
+    cow = _cow_service(db, settings).create(
         owner_id=owner.id,
-        tag_number=body.tag_number,
         purpose=body.purpose,
         gender=body.gender,
         acquired_by=body.acquired_by,
@@ -48,25 +66,26 @@ def create_cow(
         purchase_price=body.purchase_price,
         notes=body.notes,
     )
-    return CowResponse.model_validate(cow)
+    return _to_cow_response(cow)
 
 
 @cows_router.get("", response_model=Page[CowResponse])
 def list_cows(
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
     include_archived: bool = Query(False),
 ) -> Page[CowResponse]:
-    items, total = CowService(db).list(
+    items, total = _cow_service(db, settings).list(
         owner_id=owner.id,
         limit=limit,
         offset=offset,
         include_archived=include_archived,
     )
     return Page(
-        items=[CowResponse.model_validate(c) for c in items],
+        items=[_to_cow_response(c) for c in items],
         meta=PageMeta(total=total, limit=limit, offset=offset),
     )
 
@@ -76,9 +95,10 @@ def get_cow(
     cow_id: UUID,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
 ) -> CowResponse:
-    cow = CowService(db).get(owner_id=owner.id, cow_id=cow_id)
-    return CowResponse.model_validate(cow)
+    cow = _cow_service(db, settings).get(owner_id=owner.id, cow_id=cow_id)
+    return _to_cow_response(cow)
 
 
 @cows_router.patch("/{cow_id}", response_model=CowResponse)
@@ -87,12 +107,12 @@ def update_cow(
     body: CowUpdateRequest,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
 ) -> CowResponse:
     fields_set = set(body.model_fields_set)
-    cow = CowService(db).update(
+    cow = _cow_service(db, settings).update(
         owner_id=owner.id,
         cow_id=cow_id,
-        tag_number=body.tag_number,
         purpose=body.purpose,
         gender=body.gender,
         acquired_by=body.acquired_by,
@@ -107,7 +127,7 @@ def update_cow(
         notes=body.notes,
         fields_set=fields_set,
     )
-    return CowResponse.model_validate(cow)
+    return _to_cow_response(cow)
 
 
 @cows_router.post("/{cow_id}/archive", response_model=CowResponse)
@@ -115,9 +135,48 @@ def archive_cow(
     cow_id: UUID,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
 ) -> CowResponse:
-    cow = CowService(db).archive(owner_id=owner.id, cow_id=cow_id)
-    return CowResponse.model_validate(cow)
+    cow = _cow_service(db, settings).archive(owner_id=owner.id, cow_id=cow_id)
+    return _to_cow_response(cow)
+
+
+@cows_router.put("/{cow_id}/image", response_model=CowResponse)
+def put_cow_image(
+    cow_id: UUID,
+    image: UploadFile = File(...),
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> CowResponse:
+    cow = _cow_service(db, settings).attach_image(
+        owner_id=owner.id, cow_id=cow_id, image=image
+    )
+    return _to_cow_response(cow)
+
+
+@cows_router.delete("/{cow_id}/image", response_model=CowResponse)
+def delete_cow_image(
+    cow_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> CowResponse:
+    cow = _cow_service(db, settings).clear_image(owner_id=owner.id, cow_id=cow_id)
+    return _to_cow_response(cow)
+
+
+@cows_router.get("/{cow_id}/image")
+def get_cow_image(
+    cow_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> FileResponse:
+    path = _cow_service(db, settings).resolve_image_path(
+        owner_id=owner.id, cow_id=cow_id
+    )
+    return FileResponse(path)
 
 
 @cows_router.post(
@@ -130,8 +189,9 @@ def add_milk_production(
     body: MilkCreateRequest,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
 ) -> MilkProductionResponse:
-    row = MilkProductionService(db).add(
+    row = MilkProductionService(db, settings).add(
         owner_id=owner.id,
         cow_id=cow_id,
         produced_at=body.produced_at,
@@ -151,10 +211,11 @@ def list_milk_productions(
     cow_id: UUID,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    settings: Settings = Depends(get_settings_dep),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ) -> Page[MilkProductionResponse]:
-    items, total = MilkProductionService(db).list(
+    items, total = MilkProductionService(db, settings).list(
         owner_id=owner.id, cow_id=cow_id, limit=limit, offset=offset
     )
     return Page(
@@ -173,8 +234,9 @@ def add_feeding(
     body: FeedingCreateRequest,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
 ) -> CowFeedingResponse:
-    row = CowFeedingService(db).add(
+    row = CowFeedingService(db, settings).add(
         owner_id=owner.id,
         cow_id=cow_id,
         fed_at=body.fed_at,
@@ -194,10 +256,11 @@ def list_feedings(
     cow_id: UUID,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    settings: Settings = Depends(get_settings_dep),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ) -> Page[CowFeedingResponse]:
-    items, total = CowFeedingService(db).list(
+    items, total = CowFeedingService(db, settings).list(
         owner_id=owner.id, cow_id=cow_id, limit=limit, offset=offset
     )
     return Page(
