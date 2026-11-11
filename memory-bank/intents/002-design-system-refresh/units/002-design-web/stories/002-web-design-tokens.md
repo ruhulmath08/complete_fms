@@ -2,11 +2,11 @@
 id: 002-web-design-tokens
 unit: 002-design-web
 intent: 002-design-system-refresh
-status: draft
+status: complete
 priority: should
-created: 2026-11-11T18:01:56Z
+created: '2026-11-11T18:01:56Z'
 assigned_bolt: 020-design-web
-implemented: false
+implemented: true
 ---
 
 # Story: 002-web-design-tokens

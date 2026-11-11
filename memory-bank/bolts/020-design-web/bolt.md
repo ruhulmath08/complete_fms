@@ -3,21 +3,29 @@ id: 020-design-web
 unit: 002-design-web
 intent: 002-design-system-refresh
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-web-app-shell
   - 002-web-design-tokens
-created: 2026-11-11T18:01:56Z
-started: null
-completed: null
+created: '2026-11-11T18:01:56Z'
+started: '2026-11-11T18:21:12Z'
+completed: '2026-11-11T18:26:32Z'
 current_stage: null
-stages_completed: []
-
+stages_completed:
+  - name: plan
+    completed: '2026-11-11T18:22:41Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-11-11T18:25:24Z'
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: '2026-11-11T18:26:32Z'
+    artifact: test-walkthrough.md
 requires_bolts: []
-enables_bolts: ["021-design-web"]
+enables_bolts:
+  - 021-design-web
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 1
