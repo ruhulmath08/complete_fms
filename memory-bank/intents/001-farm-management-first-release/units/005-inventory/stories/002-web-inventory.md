@@ -2,9 +2,9 @@
 id: 002-web-inventory
 unit: 005-inventory
 intent: 001-farm-management-first-release
-status: done
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 014-inventory
 implemented: true
 ---

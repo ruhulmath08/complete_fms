@@ -2,11 +2,11 @@
 id: 005-web-cow-detail-chrome
 unit: 002-design-web
 intent: 003-update-api-web-and-mobile-design
-status: draft
+status: complete
 priority: must
 created: "2026-11-12T07:34:21Z"
 assigned_bolt: 026-design-web
-implemented: false
+implemented: true
 ---
 
 # Story: 005-web-cow-detail-chrome

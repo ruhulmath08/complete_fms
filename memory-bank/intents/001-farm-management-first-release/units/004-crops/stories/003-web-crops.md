@@ -2,9 +2,9 @@
 id: 003-web-crops
 unit: 004-crops
 intent: 001-farm-management-first-release
-status: done
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 011-crops
 implemented: true
 ---

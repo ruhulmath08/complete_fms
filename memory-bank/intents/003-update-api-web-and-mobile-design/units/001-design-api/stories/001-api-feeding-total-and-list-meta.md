@@ -2,11 +2,11 @@
 id: 001-api-feeding-total-and-list-meta
 unit: 001-design-api
 intent: 003-update-api-web-and-mobile-design
-status: draft
+status: complete
 priority: must
 created: "2026-11-12T07:34:21Z"
 assigned_bolt: 024-design-api
-implemented: false
+implemented: true
 ---
 
 # Story: 001-api-feeding-total-and-list-meta

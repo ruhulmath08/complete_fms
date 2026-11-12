@@ -2,12 +2,12 @@
 id: 001-mobile-nav-chrome
 unit: 003-design-mobile
 intent: 003-update-api-web-and-mobile-design
-status: draft
+status: complete
 priority: must
 created: "2026-11-12T07:34:21Z"
 updated: "2026-11-12T08:36:33Z"
 assigned_bolt: 027-design-mobile
-implemented: false
+implemented: true
 ---
 
 # Story: 001-mobile-nav-chrome

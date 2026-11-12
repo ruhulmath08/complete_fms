@@ -2,9 +2,9 @@
 unit: 002-design-web
 intent: 003-update-api-web-and-mobile-design
 phase: inception
-status: ready
-created: "2026-11-12T07:34:21Z"
-updated: "2026-11-12T07:34:21Z"
+status: complete
+created: '2026-11-12T07:34:21Z'
+updated: '2026-11-12T07:34:21Z'
 unit_type: web
 default_bolt_type: simple-construction-bolt
 ---
@@ -84,12 +84,12 @@ Deliver a production-ready React web experience: polished shell, universal Milk-
 
 ### Stories
 
-- [ ] **001-web-tokens-and-shell-polish**: Tokens + shell polish - Must - Planned
-- [ ] **002-web-universal-paginated-tables**: Universal paginated tables - Must - Planned
-- [ ] **003-web-empty-loading-error**: Empty/loading/error - Must - Planned
-- [ ] **004-web-table-totals-and-actions**: Totals + Action column - Must - Planned
-- [ ] **005-web-cow-detail-chrome**: Cow layout, Back removal, Edit/Archive - Must - Planned
-- [ ] **006-web-forms-a11y-docs**: Forms, a11y, developer docs - Should - Planned
+- [x] **001-web-tokens-and-shell-polish**: Tokens + shell polish - Must - Planned
+- [x] **002-web-universal-paginated-tables**: Universal paginated tables - Must - Planned
+- [x] **003-web-empty-loading-error**: Empty/loading/error - Must - Planned
+- [x] **004-web-table-totals-and-actions**: Totals + Action column - Must - Planned
+- [x] **005-web-cow-detail-chrome**: Cow layout, Back removal, Edit/Archive - Must - Planned
+- [x] **006-web-forms-a11y-docs**: Forms, a11y, developer docs - Should - Planned
 
 ---
 

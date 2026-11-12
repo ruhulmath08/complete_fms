@@ -2,11 +2,11 @@
 id: 006-web-forms-a11y-docs
 unit: 002-design-web
 intent: 003-update-api-web-and-mobile-design
-status: draft
+status: complete
 priority: should
 created: "2026-11-12T07:34:21Z"
 assigned_bolt: 026-design-web
-implemented: false
+implemented: true
 ---
 
 # Story: 006-web-forms-a11y-docs

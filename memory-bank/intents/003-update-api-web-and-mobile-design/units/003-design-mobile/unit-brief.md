@@ -2,9 +2,9 @@
 unit: 003-design-mobile
 intent: 003-update-api-web-and-mobile-design
 phase: inception
-status: ready
-created: "2026-11-12T07:34:21Z"
-updated: "2026-11-12T08:36:33Z"
+status: complete
+created: '2026-11-12T07:34:21Z'
+updated: '2026-11-12T08:36:33Z'
 unit_type: mobile
 default_bolt_type: simple-construction-bolt
 ---
@@ -77,11 +77,11 @@ Deliver a production-ready Flutter mobile experience: navigation drawer + TitleB
 
 ### Stories
 
-- [ ] **001-mobile-nav-chrome**: Mobile navigation chrome - Must - Planned
-- [ ] **002-mobile-tokens-and-states**: Tokens + empty/loading/error - Must - Planned
-- [ ] **003-mobile-detail-history-pagination**: Detail/history + pagination - Must - Planned
-- [ ] **004-mobile-totals-actions-cow-layout**: Totals, actions, cow layout - Must - Planned
-- [ ] **005-mobile-forms-a11y**: Forms + a11y - Should - Planned
+- [x] **001-mobile-nav-chrome**: Mobile navigation chrome - Must - Planned
+- [x] **002-mobile-tokens-and-states**: Tokens + empty/loading/error - Must - Planned
+- [x] **003-mobile-detail-history-pagination**: Detail/history + pagination - Must - Planned
+- [x] **004-mobile-totals-actions-cow-layout**: Totals, actions, cow layout - Must - Planned
+- [x] **005-mobile-forms-a11y**: Forms + a11y - Should - Planned
 
 ---
 

@@ -2,9 +2,9 @@
 unit: 006-income-expenses
 intent: 001-farm-management-first-release
 phase: inception
-status: ready
-created: 2026-11-09T06:55:29Z
-updated: 2026-11-09T06:55:29Z
+status: complete
+created: '2026-11-09T06:55:29Z'
+updated: '2026-11-09T06:55:29Z'
 unit_type: vertical-slice
 default_bolt_type: ddd-construction-bolt
 ---

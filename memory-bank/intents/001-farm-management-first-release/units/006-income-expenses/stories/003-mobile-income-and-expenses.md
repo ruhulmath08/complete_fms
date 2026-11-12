@@ -2,9 +2,9 @@
 id: 003-mobile-income-and-expenses
 unit: 006-income-expenses
 intent: 001-farm-management-first-release
-status: done
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 018-income-expenses
 implemented: true
 ---

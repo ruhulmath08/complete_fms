@@ -2,11 +2,11 @@
 id: 003-mobile-detail-history-pagination
 unit: 003-design-mobile
 intent: 003-update-api-web-and-mobile-design
-status: draft
+status: complete
 priority: must
 created: "2026-11-12T07:34:21Z"
 assigned_bolt: 028-design-mobile
-implemented: false
+implemented: true
 ---
 
 # Story: 003-mobile-detail-history-pagination

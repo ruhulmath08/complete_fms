@@ -2,9 +2,9 @@
 id: 004-mobile-crops
 unit: 004-crops
 intent: 001-farm-management-first-release
-status: done
+status: complete
 priority: must
-created: 2026-11-09T06:55:29Z
+created: '2026-11-09T06:55:29Z'
 assigned_bolt: 012-crops
 implemented: true
 ---

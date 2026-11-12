@@ -2,9 +2,9 @@
 unit: 001-design-api
 intent: 003-update-api-web-and-mobile-design
 phase: inception
-status: ready
-created: "2026-11-12T07:34:21Z"
-updated: "2026-11-12T07:34:21Z"
+status: complete
+created: '2026-11-12T07:34:21Z'
+updated: '2026-11-12T07:34:21Z'
 unit_type: backend
 default_bolt_type: ddd-construction-bolt
 ---
@@ -72,9 +72,9 @@ Extend the FastAPI backend so redesigned web/mobile tables can show row **Total*
 
 ### Stories
 
-- [ ] **001-api-feeding-total-and-list-meta**: Feeding total + list pagination meta - Must - Planned
-- [ ] **002-api-milk-feeding-update-delete**: Milk/feeding update and delete - Must - Planned
-- [ ] **003-api-entity-list-pagination-parity**: Entity list pagination for tables - Must - Planned
+- [x] **001-api-feeding-total-and-list-meta**: Feeding total + list pagination meta - Must - Planned
+- [x] **002-api-milk-feeding-update-delete**: Milk/feeding update and delete - Must - Planned
+- [x] **003-api-entity-list-pagination-parity**: Entity list pagination for tables - Must - Planned
 
 ---
 

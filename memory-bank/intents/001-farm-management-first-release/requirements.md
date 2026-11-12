@@ -1,9 +1,9 @@
 ---
 intent: 001-farm-management-first-release
 phase: inception
-status: inception-complete
-created: 2026-11-09T06:34:30Z
-updated: 2026-11-09T06:59:56Z
+status: complete
+created: '2026-11-09T06:34:30Z'
+updated: '2026-11-09T06:59:56Z'
 ---
 
 # Requirements: Farm Management First Release

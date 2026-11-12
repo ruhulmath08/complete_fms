@@ -2,12 +2,12 @@
 id: 004-mobile-totals-actions-cow-layout
 unit: 003-design-mobile
 intent: 003-update-api-web-and-mobile-design
-status: draft
+status: complete
 priority: must
 created: "2026-11-12T07:34:21Z"
 updated: "2026-11-12T08:13:02Z"
 assigned_bolt: 028-design-mobile
-implemented: false
+implemented: true
 ---
 
 # Story: 004-mobile-totals-actions-cow-layout
