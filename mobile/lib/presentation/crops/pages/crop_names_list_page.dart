@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/crop.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
@@ -34,8 +36,9 @@ class _CropNamesListPageState extends State<CropNamesListPage> {
       _error = null;
     });
     try {
-      final page =
-          await getIt<ListCropNames>()(includeArchived: _includeArchived);
+      final page = await getIt<ListCropNames>()(
+        includeArchived: _includeArchived,
+      );
       if (!mounted) return;
       setState(() {
         _names = page.items;
@@ -69,7 +72,7 @@ class _CropNamesListPageState extends State<CropNamesListPage> {
               ),
               FilledButton(
                 onPressed: () async {
-                  await context.push('/crops/names/new');
+                  await context.push(AppRoutes.cropNamesNew);
                   _load();
                 },
                 child: Text(l10n.addCropName),
@@ -106,7 +109,7 @@ class _CropNamesListPageState extends State<CropNamesListPage> {
                           ? l10n.archived
                           : (name.notes ?? ''),
                       onTap: () async {
-                        await context.push('/crops/names/${name.id}');
+                        await context.push(AppRoutes.cropName(name.id));
                         _load();
                       },
                     );

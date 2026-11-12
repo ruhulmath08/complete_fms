@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/session/session_cubit.dart';
@@ -31,21 +32,21 @@ void main() {
 
   Future<void> pumpShell(WidgetTester tester) async {
     final router = GoRouter(
-      initialLocation: '/home',
+      initialLocation: AppRoutes.home,
       routes: [
         ShellRoute(
           builder: (context, state, child) => AppShell(child: child),
           routes: [
             GoRoute(
-              path: '/home',
+              path: AppRoutes.home,
               builder: (context, state) => const Text('Home body'),
             ),
             GoRoute(
-              path: '/cows',
+              path: AppRoutes.cows,
               builder: (context, state) => const Text('Cows body'),
             ),
             GoRoute(
-              path: '/profile',
+              path: AppRoutes.profile,
               builder: (context, state) => const Text('Profile body'),
             ),
           ],
@@ -99,10 +100,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Log out?'), findsOneWidget);
-    expect(
-      find.textContaining('signed out of Farm Manager'),
-      findsOneWidget,
-    );
+    expect(find.textContaining('signed out of Farm Manager'), findsOneWidget);
     expect(find.text('Cancel'), findsOneWidget);
     expect(find.text('Confirm'), findsOneWidget);
 

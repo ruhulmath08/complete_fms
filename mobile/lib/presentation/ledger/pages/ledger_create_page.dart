@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/ledger.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/ledger_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/ledger_entry_form_fields.dart';
 
@@ -57,7 +59,7 @@ class _LedgerCreatePageState extends State<LedgerCreatePage> {
         ),
       );
       if (!mounted) return;
-      context.go('/ledger/${entry.id}');
+      context.go(AppRoutes.ledgerEntry(entry.id));
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } finally {

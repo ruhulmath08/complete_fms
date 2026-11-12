@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/crop.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/crop_cycle_form_fields.dart';
 
@@ -94,7 +96,7 @@ class _CropCycleCreatePageState extends State<CropCycleCreatePage> {
         ),
       );
       if (!mounted) return;
-      context.go('/crops/cycles/${cycle.id}');
+      context.go(AppRoutes.cropCycle(cycle.id));
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } finally {

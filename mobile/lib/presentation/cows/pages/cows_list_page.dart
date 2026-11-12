@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/cow.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/cows_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
@@ -68,7 +70,7 @@ class _CowsListPageState extends State<CowsListPage> {
               ),
               FilledButton(
                 onPressed: () async {
-                  await context.push('/cows/new');
+                  await context.push(AppRoutes.cowsNew);
                   _load();
                 },
                 child: Text(l10n.addCow),
@@ -93,7 +95,7 @@ class _CowsListPageState extends State<CowsListPage> {
                 message: l10n.noCows,
                 action: FilledButton(
                   onPressed: () async {
-                    await context.push('/cows/new');
+                    await context.push(AppRoutes.cowsNew);
                     _load();
                   },
                   child: Text(l10n.addCow),
@@ -118,7 +120,7 @@ class _CowsListPageState extends State<CowsListPage> {
                           '${cow.purpose.name} · ${cow.gender.name}'
                           '${cow.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
-                        await context.push('/cows/${cow.id}');
+                        await context.push(AppRoutes.cow(cow.id));
                         _load();
                       },
                     );

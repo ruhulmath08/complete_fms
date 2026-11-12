@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/poultry.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/poultry_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
@@ -34,8 +36,9 @@ class _PoultryListPageState extends State<PoultryListPage> {
       _error = null;
     });
     try {
-      final page =
-          await getIt<ListPoultryGroups>()(includeArchived: _includeArchived);
+      final page = await getIt<ListPoultryGroups>()(
+        includeArchived: _includeArchived,
+      );
       if (!mounted) return;
       setState(() {
         _groups = page.items;
@@ -69,7 +72,7 @@ class _PoultryListPageState extends State<PoultryListPage> {
               ),
               FilledButton(
                 onPressed: () async {
-                  await context.push('/poultry/new');
+                  await context.push(AppRoutes.poultryNew);
                   _load();
                 },
                 child: Text(l10n.addPoultryGroup),
@@ -106,7 +109,7 @@ class _PoultryListPageState extends State<PoultryListPage> {
                           '${group.poultryType.name} · ${group.birdCount} ${l10n.birds}'
                           '${group.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
-                        await context.push('/poultry/${group.id}');
+                        await context.push(AppRoutes.poultryGroup(group.id));
                         _load();
                       },
                     );

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/inventory.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/inventory_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/inventory_item_form_fields.dart';
 
@@ -51,7 +53,7 @@ class _InventoryCreatePageState extends State<InventoryCreatePage> {
         ),
       );
       if (!mounted) return;
-      context.go('/inventory/${item.id}');
+      context.go(AppRoutes.inventoryItem(item.id));
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } finally {

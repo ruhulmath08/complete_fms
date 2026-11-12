@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/inventory.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/inventory_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
@@ -35,8 +37,9 @@ class _InventoryListPageState extends State<InventoryListPage> {
       _error = null;
     });
     try {
-      final page =
-          await getIt<ListInventoryItems>()(includeArchived: _includeArchived);
+      final page = await getIt<ListInventoryItems>()(
+        includeArchived: _includeArchived,
+      );
       if (!mounted) return;
       setState(() {
         _items = page.items;
@@ -70,7 +73,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
               ),
               FilledButton(
                 onPressed: () async {
-                  await context.push('/inventory/new');
+                  await context.push(AppRoutes.inventoryNew);
                   _load();
                 },
                 child: Text(l10n.addInventoryItem),
@@ -108,7 +111,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
                           '${item.quantity} ${item.unit}'
                           '${item.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
-                        await context.push('/inventory/${item.id}');
+                        await context.push(AppRoutes.inventoryItem(item.id));
                         _load();
                       },
                     );

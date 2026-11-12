@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/poultry.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/poultry_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/poultry_group_form_fields.dart';
 
@@ -57,7 +59,7 @@ class _PoultryCreatePageState extends State<PoultryCreatePage> {
         ),
       );
       if (!mounted) return;
-      context.go('/poultry/${group.id}');
+      context.go(AppRoutes.poultryGroup(group.id));
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } finally {

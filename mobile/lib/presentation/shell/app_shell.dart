@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../infrastructure/router/app_routes.dart';
 import '../../infrastructure/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
 import '../session/session_cubit.dart';
@@ -25,42 +27,42 @@ class AppShell extends StatelessWidget {
   final Widget child;
 
   List<_DrawerDestination> _destinations(AppLocalizations l10n) => [
-        _DrawerDestination(
-          path: '/cows',
-          label: l10n.cowsTitle,
-          icon: Icons.pets_outlined,
-        ),
-        _DrawerDestination(
-          path: '/poultry',
-          label: l10n.poultryTitle,
-          icon: Icons.egg_outlined,
-        ),
-        _DrawerDestination(
-          path: '/crops',
-          label: l10n.cropsTitle,
-          icon: Icons.grass_outlined,
-        ),
-        _DrawerDestination(
-          path: '/inventory',
-          label: l10n.inventoryTitle,
-          icon: Icons.inventory_2_outlined,
-        ),
-        _DrawerDestination(
-          path: '/ledger',
-          label: l10n.ledgerTitle,
-          icon: Icons.account_balance_wallet_outlined,
-        ),
-        _DrawerDestination(
-          path: '/profile',
-          label: l10n.profile,
-          icon: Icons.person_outline,
-        ),
-        _DrawerDestination(
-          path: '/settings',
-          label: l10n.farmSettings,
-          icon: Icons.settings_outlined,
-        ),
-      ];
+    _DrawerDestination(
+      path: AppRoutes.cows,
+      label: l10n.cowsTitle,
+      icon: Icons.pets_outlined,
+    ),
+    _DrawerDestination(
+      path: AppRoutes.poultry,
+      label: l10n.poultryTitle,
+      icon: Icons.egg_outlined,
+    ),
+    _DrawerDestination(
+      path: AppRoutes.crops,
+      label: l10n.cropsTitle,
+      icon: Icons.grass_outlined,
+    ),
+    _DrawerDestination(
+      path: AppRoutes.inventory,
+      label: l10n.inventoryTitle,
+      icon: Icons.inventory_2_outlined,
+    ),
+    _DrawerDestination(
+      path: AppRoutes.ledger,
+      label: l10n.ledgerTitle,
+      icon: Icons.account_balance_wallet_outlined,
+    ),
+    _DrawerDestination(
+      path: AppRoutes.profile,
+      label: l10n.profile,
+      icon: Icons.person_outline,
+    ),
+    _DrawerDestination(
+      path: AppRoutes.settings,
+      label: l10n.farmSettings,
+      icon: Icons.settings_outlined,
+    ),
+  ];
 
   bool _isSelected(String location, String path) {
     return location == path || location.startsWith('$path/');
@@ -119,7 +121,7 @@ class AppShell extends StatelessWidget {
             onSelected: (action) async {
               switch (action) {
                 case _OverflowAction.profile:
-                  context.go('/profile');
+                  context.go(AppRoutes.profile);
                 case _OverflowAction.logout:
                   await _confirmSignOut(context);
               }
@@ -134,10 +136,7 @@ class AppShell extends StatelessWidget {
               ),
               PopupMenuItem(
                 value: _OverflowAction.logout,
-                child: _menuRow(
-                  icon: Icons.logout,
-                  title: l10n.signOut,
-                ),
+                child: _menuRow(icon: Icons.logout, title: l10n.signOut),
               ),
             ],
           ),
@@ -158,9 +157,9 @@ class AppShell extends StatelessWidget {
                 child: Text(
                   l10n.appTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: tokens.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: tokens.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               for (final destination in destinations)

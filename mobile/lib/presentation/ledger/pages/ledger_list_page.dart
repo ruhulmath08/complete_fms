@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/ledger.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/ledger_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
@@ -105,7 +107,7 @@ class _LedgerListPageState extends State<LedgerListPage> {
               ),
               FilledButton(
                 onPressed: () async {
-                  await context.push('/ledger/new');
+                  await context.push(AppRoutes.ledgerNew);
                   _load();
                 },
                 child: Text(l10n.addLedgerEntry),
@@ -113,7 +115,10 @@ class _LedgerListPageState extends State<LedgerListPage> {
             ],
           ),
           SizedBox(height: tokens.space2),
-          Text(l10n.ledgerCropGuidance, style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            l10n.ledgerCropGuidance,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
           FormFieldColumn(
             children: [
               TextField(
@@ -128,7 +133,10 @@ class _LedgerListPageState extends State<LedgerListPage> {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: TextButton(onPressed: _load, child: Text(l10n.applyDateRange)),
+            child: TextButton(
+              onPressed: _load,
+              child: Text(l10n.applyDateRange),
+            ),
           ),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
@@ -167,7 +175,7 @@ class _LedgerListPageState extends State<LedgerListPage> {
                           '${entry.occurredAt} · ${ledgerCategoryLabel(l10n, entry.category)}'
                           '${entry.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
-                        await context.push('/ledger/${entry.id}');
+                        await context.push(AppRoutes.ledgerEntry(entry.id));
                         _load();
                       },
                     );

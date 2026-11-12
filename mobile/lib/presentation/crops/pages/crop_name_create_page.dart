@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/crop_name_form_fields.dart';
 
@@ -36,7 +38,7 @@ class _CropNameCreatePageState extends State<CropNameCreatePage> {
         buildCropNameWriteParams(name: _name, notes: _notes),
       );
       if (!mounted) return;
-      context.go('/crops/names/${cropName.id}');
+      context.go(AppRoutes.cropName(cropName.id));
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } finally {

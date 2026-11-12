@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/crop.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
@@ -36,13 +38,12 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
     });
     try {
       final names = await getIt<ListCropNames>()(includeArchived: true);
-      final cycles =
-          await getIt<ListCropCycles>()(includeArchived: _includeArchived);
+      final cycles = await getIt<ListCropCycles>()(
+        includeArchived: _includeArchived,
+      );
       if (!mounted) return;
       setState(() {
-        _nameById = {
-          for (final name in names.items) name.id: name.name,
-        };
+        _nameById = {for (final name in names.items) name.id: name.name};
         _cycles = cycles.items;
         _loading = false;
       });
@@ -74,14 +75,14 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
               ),
               TextButton(
                 onPressed: () async {
-                  await context.push('/crops/names');
+                  await context.push(AppRoutes.cropNames);
                   _load();
                 },
                 child: Text(l10n.cropNamesTitle),
               ),
               FilledButton(
                 onPressed: () async {
-                  await context.push('/crops/cycles/new');
+                  await context.push(AppRoutes.cropCyclesNew);
                   _load();
                 },
                 child: Text(l10n.addCropCycle),
@@ -114,7 +115,8 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
                     final cycle = _cycles[index];
                     final cropLabel =
                         _nameById[cycle.cropNameId] ?? l10n.cropLabel;
-                    final title = cycle.plotName == null || cycle.plotName!.isEmpty
+                    final title =
+                        cycle.plotName == null || cycle.plotName!.isEmpty
                         ? cropLabel
                         : '$cropLabel · ${cycle.plotName}';
                     return EntityListCard(
@@ -123,7 +125,7 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
                           '${l10n.plantedPrefix} ${cycle.plantedAt}'
                           '${cycle.isArchived ? ' · ${l10n.archived}' : ''}',
                       onTap: () async {
-                        await context.push('/crops/cycles/${cycle.id}');
+                        await context.push(AppRoutes.cropCycle(cycle.id));
                         _load();
                       },
                     );

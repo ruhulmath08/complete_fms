@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../../../domain/failures.dart';
 import '../../../domain/repositories/auth_repository.dart';
 import '../../../domain/usecases/auth_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/form_field_column.dart';
 
@@ -71,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       );
       if (!mounted) return;
-      context.go('/signin');
+      context.go(AppRoutes.signIn);
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
@@ -92,31 +94,73 @@ class _SignUpPageState extends State<SignUpPage> {
           Text(l10n.signUpSubtitle),
           if (_error != null) ...[
             const SizedBox(height: 12),
-            Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+            Text(
+              _error!,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ],
           const SizedBox(height: 12),
           FormFieldColumn(
             children: [
-              TextField(controller: _fullName, decoration: InputDecoration(labelText: l10n.fullName)),
-              TextField(controller: _email, decoration: InputDecoration(labelText: l10n.email)),
-              TextField(controller: _phone, decoration: InputDecoration(labelText: l10n.phone)),
-              TextField(controller: _address, decoration: InputDecoration(labelText: l10n.address)),
-              TextField(controller: _latitude, decoration: InputDecoration(labelText: l10n.latitude), keyboardType: TextInputType.number),
-              TextField(controller: _longitude, decoration: InputDecoration(labelText: l10n.longitude), keyboardType: TextInputType.number),
+              TextField(
+                controller: _fullName,
+                decoration: InputDecoration(labelText: l10n.fullName),
+              ),
+              TextField(
+                controller: _email,
+                decoration: InputDecoration(labelText: l10n.email),
+              ),
+              TextField(
+                controller: _phone,
+                decoration: InputDecoration(labelText: l10n.phone),
+              ),
+              TextField(
+                controller: _address,
+                decoration: InputDecoration(labelText: l10n.address),
+              ),
+              TextField(
+                controller: _latitude,
+                decoration: InputDecoration(labelText: l10n.latitude),
+                keyboardType: TextInputType.number,
+              ),
+              TextField(
+                controller: _longitude,
+                decoration: InputDecoration(labelText: l10n.longitude),
+                keyboardType: TextInputType.number,
+              ),
             ],
           ),
           const SizedBox(height: FormFieldColumn.gap),
-          OutlinedButton(onPressed: _pickImage, child: Text(_imagePath == null ? l10n.pickImage : l10n.profileImage)),
+          OutlinedButton(
+            onPressed: _pickImage,
+            child: Text(
+              _imagePath == null ? l10n.pickImage : l10n.profileImage,
+            ),
+          ),
           const SizedBox(height: FormFieldColumn.gap),
           FormFieldColumn(
             children: [
-              TextField(controller: _password, decoration: InputDecoration(labelText: l10n.password), obscureText: true),
-              TextField(controller: _confirm, decoration: InputDecoration(labelText: l10n.confirmPassword), obscureText: true),
+              TextField(
+                controller: _password,
+                decoration: InputDecoration(labelText: l10n.password),
+                obscureText: true,
+              ),
+              TextField(
+                controller: _confirm,
+                decoration: InputDecoration(labelText: l10n.confirmPassword),
+                obscureText: true,
+              ),
             ],
           ),
           const SizedBox(height: 16),
-          FilledButton(onPressed: _busy ? null : _submit, child: Text(l10n.signUp)),
-          TextButton(onPressed: () => context.go('/signin'), child: Text(l10n.alreadyRegistered)),
+          FilledButton(
+            onPressed: _busy ? null : _submit,
+            child: Text(l10n.signUp),
+          ),
+          TextButton(
+            onPressed: () => context.go(AppRoutes.signIn),
+            child: Text(l10n.alreadyRegistered),
+          ),
         ],
       ),
     );

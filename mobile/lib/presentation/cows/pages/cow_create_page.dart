@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/cow.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/cows_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/router/app_routes.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/cow_form_fields.dart';
@@ -80,7 +82,7 @@ class _CowCreatePageState extends State<CowCreatePage> {
         cow = await getIt<UploadCowImage>()(cow.id, imagePath);
       }
       if (!mounted) return;
-      context.go('/cows/${cow.id}');
+      context.go(AppRoutes.cow(cow.id));
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } finally {
