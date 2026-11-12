@@ -3,11 +3,15 @@ id: 029-poultry-actions-api
 unit: 001-poultry-actions-api
 intent: 004-poultry-history-actions-and-table-polish
 type: ddd-construction-bolt
-status: planned
+status: in-progress
 stories:
   - 001-api-egg-update-delete
   - 002-api-poultry-feeding-update-delete
 created: "2026-11-12T09:47:02Z"
+started: "2026-11-12T09:51:00Z"
+completed: null
+current_stage: domain-model
+stages_completed: []
 requires_bolts: []
 enables_bolts:
   - 030-poultry-actions-web
@@ -32,10 +36,13 @@ Deliver FastAPI PATCH/DELETE for poultry egg productions and poultry feedings wi
 - [ ] **001-api-egg-update-delete**: Egg update/delete - Priority: Must
 - [ ] **002-api-poultry-feeding-update-delete**: Feeding update/delete - Priority: Must
 
-## Expected Outputs
+## Stages
 
-- Domain/service/router mutations + tests
-- Hard-delete; archived group blocked
+- [x] **1. Domain model**: Done → `ddd-01-domain-model.md` (awaiting approval)
+- [ ] **2. Technical design**: Pending
+- [ ] **3. ADR analysis**: Pending
+- [ ] **4. Implement**: Pending
+- [ ] **5. Test report**: Pending
 
 ## Dependencies
 
