@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../domain/entities/inventory.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 
 String inventoryCategoryLabel(AppLocalizations l10n, InventoryCategory category) {
   return switch (category) {
@@ -40,7 +41,7 @@ class InventoryItemFormFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
+    return FormFieldColumn(
       children: [
         TextField(
           controller: name,

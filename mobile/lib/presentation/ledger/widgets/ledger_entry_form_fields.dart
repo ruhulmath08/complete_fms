@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../domain/entities/ledger.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 
 String ledgerEntryTypeLabel(AppLocalizations l10n, LedgerEntryType type) {
   return switch (type) {
@@ -48,7 +49,7 @@ class LedgerEntryFormFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
+    return FormFieldColumn(
       children: [
         DropdownButtonFormField<LedgerEntryType>(
           // ignore: deprecated_member_use

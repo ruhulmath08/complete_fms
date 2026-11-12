@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../domain/entities/crop.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 
 class CropNameFormFields extends StatelessWidget {
   const CropNameFormFields({
@@ -15,7 +16,7 @@ class CropNameFormFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
+    return FormFieldColumn(
       children: [
         TextField(
           controller: name,
