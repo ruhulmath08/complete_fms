@@ -112,6 +112,7 @@ void main() {
       'quantity': '12.500',
       'unit': 'L',
       'price_per_unit': '50.00',
+      'total': '625.00',
       'note': 'morning',
       'created_at': '2024-07-01T06:01:00Z',
     });
@@ -122,12 +123,17 @@ void main() {
       'feed_name': 'Hay',
       'quantity': '5',
       'unit': 'kg',
+      'unit_cost': '12.50',
+      'total': '62.50',
       'note': null,
       'created_at': '2024-07-01T08:01:00Z',
     });
 
     expect(milk.quantity, '12.500');
     expect(milk.unit, 'L');
+    expect(milk.total, '625.00');
     expect(feeding.feedName, 'Hay');
+    expect(feeding.unitCost, '12.50');
+    expect(feeding.total, '62.50');
   });
 }

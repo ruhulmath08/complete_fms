@@ -49,8 +49,12 @@ class GetCowImageBytes {
 class ListMilkProductions {
   ListMilkProductions(this._repository);
   final CowsRepository _repository;
-  Future<PagedResult<MilkProduction>> call(String cowId) =>
-      _repository.listMilk(cowId);
+  Future<PagedResult<MilkProduction>> call(
+    String cowId, {
+    int limit = 10,
+    int offset = 0,
+  }) =>
+      _repository.listMilk(cowId, limit: limit, offset: offset);
 }
 
 class AddMilkProduction {
@@ -74,11 +78,45 @@ class AddMilkProduction {
       );
 }
 
+class UpdateMilkProduction {
+  UpdateMilkProduction(this._repository);
+  final CowsRepository _repository;
+  Future<MilkProduction> call({
+    required String cowId,
+    required String milkId,
+    required String producedAt,
+    required String quantity,
+    required String unit,
+    required String pricePerUnit,
+    String? note,
+  }) =>
+      _repository.updateMilk(
+        cowId: cowId,
+        milkId: milkId,
+        producedAt: producedAt,
+        quantity: quantity,
+        unit: unit,
+        pricePerUnit: pricePerUnit,
+        note: note,
+      );
+}
+
+class DeleteMilkProduction {
+  DeleteMilkProduction(this._repository);
+  final CowsRepository _repository;
+  Future<void> call(String cowId, String milkId) =>
+      _repository.deleteMilk(cowId, milkId);
+}
+
 class ListCowFeedings {
   ListCowFeedings(this._repository);
   final CowsRepository _repository;
-  Future<PagedResult<CowFeeding>> call(String cowId) =>
-      _repository.listFeedings(cowId);
+  Future<PagedResult<CowFeeding>> call(
+    String cowId, {
+    int limit = 10,
+    int offset = 0,
+  }) =>
+      _repository.listFeedings(cowId, limit: limit, offset: offset);
 }
 
 class AddCowFeeding {
@@ -90,6 +128,7 @@ class AddCowFeeding {
     required String feedName,
     required String quantity,
     required String unit,
+    required String unitCost,
     String? note,
   }) =>
       _repository.addFeeding(
@@ -98,6 +137,39 @@ class AddCowFeeding {
         feedName: feedName,
         quantity: quantity,
         unit: unit,
+        unitCost: unitCost,
         note: note,
       );
+}
+
+class UpdateCowFeeding {
+  UpdateCowFeeding(this._repository);
+  final CowsRepository _repository;
+  Future<CowFeeding> call({
+    required String cowId,
+    required String feedingId,
+    required String fedAt,
+    required String feedName,
+    required String quantity,
+    required String unit,
+    required String unitCost,
+    String? note,
+  }) =>
+      _repository.updateFeeding(
+        cowId: cowId,
+        feedingId: feedingId,
+        fedAt: fedAt,
+        feedName: feedName,
+        quantity: quantity,
+        unit: unit,
+        unitCost: unitCost,
+        note: note,
+      );
+}
+
+class DeleteCowFeeding {
+  DeleteCowFeeding(this._repository);
+  final CowsRepository _repository;
+  Future<void> call(String cowId, String feedingId) =>
+      _repository.deleteFeeding(cowId, feedingId);
 }

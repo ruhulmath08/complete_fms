@@ -59,6 +59,7 @@ class MilkProduction {
     required this.pricePerUnit,
     required this.createdAt,
     this.note,
+    this.total,
   });
 
   final String id;
@@ -69,6 +70,7 @@ class MilkProduction {
   final String pricePerUnit;
   final String? note;
   final String createdAt;
+  final String? total;
 }
 
 class CowFeeding {
@@ -79,8 +81,10 @@ class CowFeeding {
     required this.feedName,
     required this.quantity,
     required this.unit,
+    required this.unitCost,
     required this.createdAt,
     this.note,
+    this.total,
   });
 
   final String id;
@@ -89,8 +93,10 @@ class CowFeeding {
   final String feedName;
   final String quantity;
   final String unit;
+  final String unitCost;
   final String? note;
   final String createdAt;
+  final String? total;
 }
 
 class PagedResult<T> {

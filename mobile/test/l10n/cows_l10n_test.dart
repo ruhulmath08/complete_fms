@@ -38,7 +38,13 @@ void main() {
     expect(en.cowsTitle, 'Cows');
     expect(en.manageCows, 'Manage cows');
     expect(en.archivedReadOnly, contains('archived'));
+    expect(en.total, 'Total');
+    expect(en.unitCost, 'Unit cost');
+    expect(en.deleteMilkConfirm, contains('milk'));
+    expect(en.paginationSummary(2, 5, 42), contains('2'));
     expect(bn.cowsTitle, 'গরু');
     expect(bn.manageCows, 'গরু পরিচালনা');
+    expect(bn.total, 'মোট');
+    expect(bn.unitCost, 'একক মূল্য');
   });
 }

@@ -60,6 +60,7 @@ MilkProduction mapMilk(Map<String, dynamic> json) => MilkProduction(
       pricePerUnit: json['price_per_unit'].toString(),
       note: json['note'] as String?,
       createdAt: json['created_at'] as String,
+      total: json['total']?.toString(),
     );
 
 CowFeeding mapFeeding(Map<String, dynamic> json) => CowFeeding(
@@ -69,8 +70,10 @@ CowFeeding mapFeeding(Map<String, dynamic> json) => CowFeeding(
       feedName: json['feed_name'] as String,
       quantity: json['quantity'].toString(),
       unit: json['unit'] as String,
+      unitCost: json['unit_cost'].toString(),
       note: json['note'] as String?,
       createdAt: json['created_at'] as String,
+      total: json['total']?.toString(),
     );
 
 Map<String, dynamic> cowWriteToJson(CowWriteParams params) => {

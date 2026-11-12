@@ -97,6 +97,30 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
+  Future<MilkProduction> updateMilk({
+    required String cowId,
+    required String milkId,
+    required String producedAt,
+    required String quantity,
+    required String unit,
+    required String pricePerUnit,
+    String? note,
+  }) async {
+    final json = await _api.updateMilk(cowId, milkId, {
+      'produced_at': producedAt,
+      'quantity': quantity,
+      'unit': unit,
+      'price_per_unit': pricePerUnit,
+      'note': note,
+    });
+    return mapMilk(json);
+  }
+
+  @override
+  Future<void> deleteMilk(String cowId, String milkId) =>
+      _api.deleteMilk(cowId, milkId);
+
+  @override
   Future<PagedResult<CowFeeding>> listFeedings(
     String cowId, {
     int limit = 10,
@@ -113,6 +137,7 @@ class CowsRepositoryImpl implements CowsRepository {
     required String feedName,
     required String quantity,
     required String unit,
+    required String unitCost,
     String? note,
   }) async {
     final json = await _api.addFeeding(cowId, {
@@ -120,8 +145,35 @@ class CowsRepositoryImpl implements CowsRepository {
       'feed_name': feedName,
       'quantity': quantity,
       'unit': unit,
+      'unit_cost': unitCost,
       'note': note,
     });
     return mapFeeding(json);
   }
+
+  @override
+  Future<CowFeeding> updateFeeding({
+    required String cowId,
+    required String feedingId,
+    required String fedAt,
+    required String feedName,
+    required String quantity,
+    required String unit,
+    required String unitCost,
+    String? note,
+  }) async {
+    final json = await _api.updateFeeding(cowId, feedingId, {
+      'fed_at': fedAt,
+      'feed_name': feedName,
+      'quantity': quantity,
+      'unit': unit,
+      'unit_cost': unitCost,
+      'note': note,
+    });
+    return mapFeeding(json);
+  }
+
+  @override
+  Future<void> deleteFeeding(String cowId, String feedingId) =>
+      _api.deleteFeeding(cowId, feedingId);
 }

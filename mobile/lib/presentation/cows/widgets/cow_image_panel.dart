@@ -18,6 +18,9 @@ class CowImagePanel extends StatefulWidget {
     this.localPath,
     this.onLocalPathChanged,
     this.canPick = true,
+    this.imageWidth,
+    this.imageHeight = 160,
+    this.semanticsLabel,
   });
 
   final String? cowId;
@@ -25,6 +28,9 @@ class CowImagePanel extends StatefulWidget {
   final String? localPath;
   final ValueChanged<String?>? onLocalPathChanged;
   final bool canPick;
+  final double? imageWidth;
+  final double imageHeight;
+  final String? semanticsLabel;
 
   @override
   State<CowImagePanel> createState() => _CowImagePanelState();
@@ -107,34 +113,45 @@ class _CowImagePanelState extends State<CowImagePanel> {
     final tokens = AppTokens.of(context);
     final localPath = widget.localPath;
 
+    final width = widget.imageWidth ?? double.infinity;
+    final height = widget.imageHeight;
+    final label = widget.semanticsLabel ?? l10n.cowImage;
+
     Widget preview;
     if (localPath != null) {
       preview = Image.file(
         File(localPath),
-        height: 160,
-        width: double.infinity,
+        height: height,
+        width: width,
         fit: BoxFit.cover,
       );
     } else if (_loadingRemote) {
-      preview = const SizedBox(
-        height: 160,
-        child: Center(child: CircularProgressIndicator()),
+      preview = SizedBox(
+        height: height,
+        width: width,
+        child: const Center(child: CircularProgressIndicator()),
       );
     } else if (_remoteBytes != null) {
       preview = Image.memory(
         _remoteBytes!,
-        height: 160,
-        width: double.infinity,
+        height: height,
+        width: width,
         fit: BoxFit.cover,
       );
     } else {
-      preview = Container(
-        height: 160,
-        alignment: Alignment.center,
-        color: tokens.border.withValues(alpha: 0.35),
-        child: Text(
-          _remoteFailed ? l10n.cowImageUnavailable : l10n.cowImage,
-          style: TextStyle(color: tokens.muted),
+      preview = Semantics(
+        label: l10n.cowNoPhoto,
+        image: true,
+        child: Container(
+          height: height,
+          width: width,
+          alignment: Alignment.center,
+          color: tokens.border.withValues(alpha: 0.35),
+          child: Text(
+            _remoteFailed ? l10n.cowImageUnavailable : l10n.cowNoPhoto,
+            style: TextStyle(color: tokens.muted),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }
@@ -144,7 +161,11 @@ class _CowImagePanelState extends State<CowImagePanel> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(tokens.radiusMd),
-          child: preview,
+          child: Semantics(
+            label: label,
+            image: true,
+            child: preview,
+          ),
         ),
         if (widget.canPick) ...[
           SizedBox(height: tokens.space2),

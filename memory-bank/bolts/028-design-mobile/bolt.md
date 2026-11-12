@@ -3,7 +3,7 @@ id: 028-design-mobile
 unit: 003-design-mobile
 intent: 003-update-api-web-and-mobile-design
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 003-mobile-detail-history-pagination
   - 004-mobile-totals-actions-cow-layout
@@ -32,9 +32,9 @@ Complete mobile production UX with **full web parity** for cow milk/feeding: pag
 
 ## Stories Included
 
-- [ ] **003-mobile-detail-history-pagination**: Detail/history + pagination - Priority: Must
-- [ ] **004-mobile-totals-actions-cow-layout**: Milk/feeding totals, unit cost, Edit/Delete, cow layout - Priority: Must
-- [ ] **005-mobile-forms-a11y**: Forms + a11y - Priority: Should
+- [x] **003-mobile-detail-history-pagination**: Detail/history + pagination - Priority: Must
+- [x] **004-mobile-totals-actions-cow-layout**: Milk/feeding totals, unit cost, Edit/Delete, cow layout - Priority: Must
+- [x] **005-mobile-forms-a11y**: Forms + a11y - Priority: Should
 
 ## Expected Outputs
 
