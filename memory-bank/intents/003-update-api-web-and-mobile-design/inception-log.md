@@ -53,9 +53,10 @@ status: complete
 
 ## Scope Changes
 
-| Date                 | Change                                          | Reason                                     | Impact                             |
-| -------------------- | ----------------------------------------------- | ------------------------------------------ | ---------------------------------- |
-| 2026-11-12T07:08:03Z | Added FR-12–FR-16; strengthened FR-4/FR-6/FR-10 | Product owner table/Action/layout requests | +5 FRs; API update/delete + totals |
+| Date                 | Change                                                                              | Reason                                      | Impact                                                          |
+| -------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------- |
+| 2026-11-12T07:08:03Z | Added FR-12–FR-16; strengthened FR-4/FR-6/FR-10                                     | Product owner table/Action/layout requests  | +5 FRs; API update/delete + totals                              |
+| 2026-11-12T08:13:02Z | FR-12/13/14 Must on mobile (milk/feeding Total, unit cost, Edit/Delete, cow layout) | Product owner: also implement in mobile app | Strengthened mobile story 004 + bolt 028; scope in-scope bullet |
 
 ## Ready for Construction
 

@@ -56,7 +56,7 @@ Decomposed by **layer** (API → web → mobile), matching `project.yaml`. API l
 **Default Bolt Type**: simple-construction-bolt  
 **Estimated Complexity**: M
 
-**Note**: Mobile delivers parity for FR-1, FR-5, FR-6, FR-8, FR-9, FR-12, FR-13, FR-14, FR-15 (where back links exist) so each FR keeps a single primary owner unit (web owns shared UI FRs; mobile owns FR-3/FR-7).
+**Note**: Mobile delivers parity for FR-1, FR-5, FR-6, FR-8, FR-9, FR-15 (where back links exist). **FR-12, FR-13, and FR-14 are Must on mobile as well** (cow milk/feeding Total + unit cost + Edit/Delete, and cow image/info layout)—delivered in `003-design-mobile` stories even when FR primary mapping lists web for indexing.
 
 ## Requirement-to-Unit Mapping
 
@@ -71,9 +71,9 @@ Decomposed by **layer** (API → web → mobile), matching `project.yaml`. API l
 - **FR-9** Practical a11y → `002-design-web` (mobile mirrors)
 - **FR-10** API updates for redesign → `001-design-api`
 - **FR-11** Developer docs → `002-design-web`
-- **FR-12** Row Total columns → `002-design-web` (API support via FR-10; mobile mirrors)
-- **FR-13** Action Edit/Delete → `002-design-web` (API via FR-10; mobile mirrors)
-- **FR-14** Cow image left / info right → `002-design-web` (mobile mirrors)
+- **FR-12** Row Total columns → `002-design-web` + **Must on** `003-design-mobile` (API via FR-10 / bolt 024)
+- **FR-13** Action Edit/Delete → `002-design-web` + **Must on** `003-design-mobile` (API via FR-10 / bolt 024)
+- **FR-14** Cow image left / info right → `002-design-web` + **Must on** `003-design-mobile`
 - **FR-15** Remove Back links → `002-design-web` (mobile if present)
 - **FR-16** Refresh Edit/Archive → `002-design-web`
 

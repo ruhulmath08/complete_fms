@@ -39,7 +39,9 @@ Deliver a production-ready Flutter mobile experience: usable navigation chrome, 
 | FR-3 | Mobile navigation chrome refresh        | Must     |
 | FR-7 | Mobile detail and history visual parity | Must     |
 
-**Parity stories (owned by web FRs, delivered here):** FR-1, FR-5, FR-6, FR-8, FR-9, FR-12, FR-13, FR-14, FR-15
+**Also delivered here (Must on mobile, not optional parity):** FR-12 (totals / feeding unit cost), FR-13 (Edit/Delete on milk & feeding), FR-14 (cow image left / info right)
+
+**Additional parity stories:** FR-1, FR-5, FR-6, FR-8, FR-9, FR-15
 
 ---
 
@@ -106,5 +108,6 @@ Deliver a production-ready Flutter mobile experience: usable navigation chrome, 
 
 - [ ] Phone-usable nav to all destinations in ≤ 2 taps
 - [ ] Detail/history feel production-ready with pagination
-- [ ] Totals + edit/delete + cow layout parity with web intent
+- [ ] Milk/feeding show Total (+ feeding unit cost) and Edit/Delete wired to bolt 024 APIs
+- [ ] Cow detail rectangular image + info layout matches production web intent
 - [ ] Shared empty/loading/error used on primary lists

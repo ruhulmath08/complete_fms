@@ -3,7 +3,7 @@ intent: 003-update-api-web-and-mobile-design
 phase: inception
 status: inception-complete
 created: "2026-11-12T06:32:03Z"
-updated: "2026-11-12T07:46:46Z"
+updated: "2026-11-12T08:13:02Z"
 type: enhancement
 ---
 
@@ -35,7 +35,8 @@ Completely update the web and mobile design of the Farm Management System so the
 - Universal paginated data tables (milk-production pattern) across the application
 - Row **Total** columns where a total is meaningful (including cow Feeding); API support as needed
 - Per-row **Action** column (Edit / Delete icons) on data tables after records exist; API update/delete as needed
-- Cow detail layout: rectangular image on the left, info on the right
+- **Mobile parity (Must)**: Flutter cow milk and feeding histories show **Total** (and feeding **unit cost**), plus **Edit/Delete** actions wired to the same API as web—not web-only
+- Cow detail layout: rectangular image on the left, info on the right (web and mobile)
 - Remove in-page “← Back to …” links; refresh **Edit** and **Archive** button treatment
 
 ### Out of Scope
@@ -177,37 +178,37 @@ Completely update the web and mobile design of the Farm Management System so the
 
 ### FR-12: Row Total column on data tables (including Feeding)
 
-- **Description**: Where a row has quantity and unit price (or another clear monetary/quantity total), the table shows a **Total** column. **Cow Feeding** must include **Total** (parity with Milk production). Apply the same rule to every other display-data table where a total is meaningful.
+- **Description**: Where a row has quantity and unit price/cost (or another clear monetary/quantity total), the UI shows a **Total**. **Cow Feeding** must include **Total** (and **unit cost**) with parity to Milk production. Apply on **web and mobile**. Apply the same rule to every other display-data table where a total is meaningful.
 - **Acceptance Criteria**:
-  - Cow Feeding table includes a **Total** column for each row
-  - Milk production retains its **Total** column
-  - Other tabular views that have computable totals (e.g. ledger amounts, harvest/sale lines) show **Total** when meaningful; tables without a natural total omit it
-  - API updated if total cannot be derived reliably from existing fields (FR-10)
+  - **Web**: Cow Feeding table includes **Unit cost** and **Total** per row; Milk retains **Total**
+  - **Mobile**: Cow feeding and milk history rows show **Total** when meaningful; feeding shows **unit cost** (or equivalent labeled field) so Total is understandable
+  - Other tabular views that have computable totals show **Total** when meaningful; tables without a natural total omit it
+  - API updated if total cannot be derived reliably from existing fields (FR-10) — already delivered via bolt `024` (`unit_cost`, response `total`)
 - **Priority**: Must
-- **Related Stories**: TBD
+- **Related Stories**: `004-web-table-totals-and-actions`, `004-mobile-totals-actions-cow-layout`
 
 ### FR-13: Table Action column — Edit and Delete
 
-- **Description**: After data is inserted, every display-data table includes an **Action** column with **Edit** and **Delete** icon controls per row (accessible names: Edit / Delete). Confirm before delete. Wire to API update/delete (FR-10).
+- **Description**: After data is inserted, display-data tables/lists include **Edit** and **Delete** controls per row. Confirm before delete. Wire to API update/delete (FR-10). Required on **web and mobile** for cow milk and feeding at minimum; extend to other in-scope data tables.
 - **Acceptance Criteria**:
-  - Column header label is **Action**
-  - Each data row shows edit and delete icons (not text-only links as the only affordance)
-  - Edit opens an edit flow for that row; Delete removes the row after confirmation and refreshes the table
-  - Actions respect archive/read-only rules (e.g. archived cow: actions disabled or hidden consistently)
-  - Applies to Milk, Feeding, and other application data tables in scope on web; mobile provides equivalent edit/delete affordances on corresponding history lists/tables
+  - **Web**: Column header **Action**; each row shows edit and delete icons; edit opens edit flow; delete confirms then removes and refreshes
+  - **Mobile**: Cow milk and feeding history rows expose Edit and Delete (icons or Material icon buttons) with accessible labels; edit opens an edit flow; delete confirms then removes and refreshes the list
+  - Actions respect archive/read-only rules on both clients (archived cow: actions disabled or hidden consistently)
+  - Both clients use the same PATCH/DELETE milk and feeding API contracts from bolt `024`
 - **Priority**: Must
-- **Related Stories**: TBD
+- **Related Stories**: `004-web-table-totals-and-actions`, `004-mobile-totals-actions-cow-layout`
 
 ### FR-14: Cow detail layout — rectangular image left, info right
 
-- **Description**: On cow detail (web required; mobile mirrored where practical), the cow image displays as a **rectangle on the left** with cow information on the **right** (not image stacked above with empty alt-only preview as the sole layout).
+- **Description**: On cow detail on **web and mobile**, the cow image displays as a **rectangle on the left** (or top-leading on narrow phones) with cow information on the **right**/following region (not circular avatar-only as the sole layout).
 - **Acceptance Criteria**:
-  - When an image exists, layout is horizontal: rectangular image left, identity/details right (responsive stack allowed only on narrow viewports)
+  - When an image exists, layout is two-region: rectangular image + identity/details (responsive stack allowed only on narrow viewports)
   - Image uses a rectangular aspect (not circular avatar-only styling for the cow photo)
   - Missing image shows a rectangular placeholder in the same layout slot
   - Image has a meaningful accessible name when content-bearing
+  - Behavior is required on web and on Flutter cow detail
 - **Priority**: Must
-- **Related Stories**: TBD
+- **Related Stories**: `005-web-cow-detail-chrome`, `004-mobile-totals-actions-cow-layout`
 
 ### FR-15: Remove in-page “← Back to …” links
 
