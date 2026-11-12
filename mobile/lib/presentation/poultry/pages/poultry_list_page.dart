@@ -6,6 +6,7 @@ import '../../../domain/usecases/poultry_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/async_state_views.dart';
 import '../../shared/widgets/entity_list_card.dart';
 
 class PoultryListPage extends StatefulWidget {
@@ -84,13 +85,9 @@ class _PoultryListPageState extends State<PoultryListPage> {
               _load();
             },
           ),
-          if (_error != null)
-            Text(
-              _error!,
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            ),
+          if (_error != null) ErrorView(message: _error!),
           if (_loading)
-            const Expanded(child: Center(child: CircularProgressIndicator()))
+            const Expanded(child: LoadingView())
           else if (_groups.isEmpty)
             Expanded(child: Center(child: Text(l10n.noPoultryGroups)))
           else

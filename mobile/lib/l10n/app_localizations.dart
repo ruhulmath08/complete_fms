@@ -122,6 +122,48 @@ abstract class AppLocalizations {
   /// **'Sign out'**
   String get signOut;
 
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @signOutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out?'**
+  String get signOutConfirmTitle;
+
+  /// No description provided for @signOutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be signed out of Farm Manager on this device. You can sign in again anytime.'**
+  String get signOutConfirmMessage;
+
+  /// No description provided for @moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// No description provided for @openNavigationMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Open navigation menu'**
+  String get openNavigationMenu;
+
+  /// No description provided for @loadingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get loadingLabel;
+
+  /// No description provided for @useMenuHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the menu to open Cows, Poultry, Crops, Inventory, Income & expenses, Profile, or Farm settings.'**
+  String get useMenuHint;
+
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
@@ -553,6 +595,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This cow is archived and cannot be modified.'**
   String get archivedReadOnly;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @unitCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit cost'**
+  String get unitCost;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @editEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit entry'**
+  String get editEntry;
+
+  /// No description provided for @deleteMilkConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this milk entry?'**
+  String get deleteMilkConfirm;
+
+  /// No description provided for @deleteFeedingConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this feeding entry?'**
+  String get deleteFeedingConfirm;
+
+  /// No description provided for @paginationPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get paginationPrevious;
+
+  /// No description provided for @paginationNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get paginationNext;
+
+  /// No description provided for @paginationSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {totalPages} · {total} total'**
+  String paginationSummary(int page, int totalPages, int total);
+
+  /// No description provided for @milkPaginationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Milk production pagination'**
+  String get milkPaginationLabel;
+
+  /// No description provided for @feedingPaginationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding pagination'**
+  String get feedingPaginationLabel;
+
+  /// No description provided for @updateMilkEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Update milk entry'**
+  String get updateMilkEntry;
+
+  /// No description provided for @updateFeedingEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Update feeding entry'**
+  String get updateFeedingEntry;
+
+  /// No description provided for @cancelEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel edit'**
+  String get cancelEdit;
+
+  /// No description provided for @producedAtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Produced at (ISO 8601)'**
+  String get producedAtHint;
+
+  /// No description provided for @fedAtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Fed at (ISO 8601)'**
+  String get fedAtHint;
+
+  /// No description provided for @cowNoPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'No cow photo'**
+  String get cowNoPhoto;
+
+  /// No description provided for @cowPhotoAlt.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo of {name} ({tag})'**
+  String cowPhotoAlt(String name, String tag);
+
+  /// No description provided for @cowPhotoAltNoName.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo of cow {tag}'**
+  String cowPhotoAltNoName(String tag);
+
+  /// No description provided for @rowNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'No.'**
+  String get rowNumber;
+
+  /// No description provided for @dateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Date + time'**
+  String get dateTime;
+
+  /// No description provided for @actions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actions;
 
   /// No description provided for @poultryTitle.
   ///

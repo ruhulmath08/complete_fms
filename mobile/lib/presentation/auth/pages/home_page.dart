@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../locale/locale_cubit.dart';
 
@@ -10,52 +10,25 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tokens = AppTokens.of(context);
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(tokens.space5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(l10n.welcome, style: Theme.of(context).textTheme.headlineMedium),
-          const SizedBox(height: 8),
+          SizedBox(height: tokens.space2),
           Text(l10n.welcomeBody),
-          const SizedBox(height: 24),
-          FilledButton(
-            onPressed: () => context.go('/cows'),
-            child: Text(l10n.manageCows),
+          SizedBox(height: tokens.space4),
+          Text(
+            l10n.useMenuHint,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: tokens.muted,
+                ),
           ),
-          const SizedBox(height: 12),
-          FilledButton(
-            onPressed: () => context.go('/poultry'),
-            child: Text(l10n.managePoultry),
-          ),
-          const SizedBox(height: 12),
-          FilledButton(
-            onPressed: () => context.go('/crops'),
-            child: Text(l10n.manageCrops),
-          ),
-          const SizedBox(height: 12),
-          FilledButton(
-            onPressed: () => context.go('/inventory'),
-            child: Text(l10n.manageInventory),
-          ),
-          const SizedBox(height: 12),
-          FilledButton(
-            onPressed: () => context.go('/ledger'),
-            child: Text(l10n.manageLedger),
-          ),
-          const SizedBox(height: 12),
-          OutlinedButton(
-            onPressed: () => context.go('/profile'),
-            child: Text(l10n.profile),
-          ),
-          const SizedBox(height: 12),
-          OutlinedButton(
-            onPressed: () => context.go('/settings'),
-            child: Text(l10n.farmSettings),
-          ),
-          const SizedBox(height: 24),
+          SizedBox(height: tokens.space5),
           Text(l10n.language, style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
+          SizedBox(height: tokens.space2),
           Wrap(
             spacing: 8,
             children: [

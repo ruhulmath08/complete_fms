@@ -4,6 +4,13 @@
   "signIn": "Sign in",
   "signUp": "Create account",
   "signOut": "Sign out",
+  "confirm": "Confirm",
+  "signOutConfirmTitle": "Log out?",
+  "signOutConfirmMessage": "You will be signed out of Farm Manager on this device. You can sign in again anytime.",
+  "moreOptions": "More options",
+  "openNavigationMenu": "Open navigation menu",
+  "loadingLabel": "Loading…",
+  "useMenuHint": "Use the menu to open Cows, Poultry, Crops, Inventory, Income & expenses, Profile, or Farm settings.",
   "email": "Email",
   "password": "Password",
   "confirmPassword": "Confirm password",
@@ -76,6 +83,46 @@
   "note": "Note",
   "feedName": "Feed name",
   "archivedReadOnly": "This cow is archived and cannot be modified.",
+  "total": "Total",
+  "unitCost": "Unit cost",
+  "delete": "Delete",
+  "editEntry": "Edit entry",
+  "deleteMilkConfirm": "Delete this milk entry?",
+  "deleteFeedingConfirm": "Delete this feeding entry?",
+  "paginationPrevious": "Previous",
+  "paginationNext": "Next",
+  "paginationSummary": "Page {page} of {totalPages} · {total} total",
+  "@paginationSummary": {
+    "placeholders": {
+      "page": {"type": "int"},
+      "totalPages": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "milkPaginationLabel": "Milk production pagination",
+  "feedingPaginationLabel": "Feeding pagination",
+  "updateMilkEntry": "Update milk entry",
+  "updateFeedingEntry": "Update feeding entry",
+  "cancelEdit": "Cancel edit",
+  "producedAtHint": "Produced at (ISO 8601)",
+  "fedAtHint": "Fed at (ISO 8601)",
+  "cowNoPhoto": "No cow photo",
+  "cowPhotoAlt": "Photo of {name} ({tag})",
+  "@cowPhotoAlt": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "tag": {"type": "String"}
+    }
+  },
+  "cowPhotoAltNoName": "Photo of cow {tag}",
+  "@cowPhotoAltNoName": {
+    "placeholders": {
+      "tag": {"type": "String"}
+    }
+  },
+  "rowNumber": "No.",
+  "dateTime": "Date + time",
+  "actions": "Actions",
   "poultryTitle": "Poultry",
   "managePoultry": "Manage poultry",
   "addPoultryGroup": "Add group",

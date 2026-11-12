@@ -22,6 +22,29 @@ class AppLocalizationsBn extends AppLocalizations {
   String get signOut => 'সাইন আউট';
 
   @override
+  String get confirm => 'নিশ্চিত';
+
+  @override
+  String get signOutConfirmTitle => 'লগ আউট করবেন?';
+
+  @override
+  String get signOutConfirmMessage =>
+      'এই ডিভাইস থেকে ফার্ম ম্যানেজার থেকে সাইন আউট হবে। যেকোনো সময় আবার সাইন ইন করতে পারবেন।';
+
+  @override
+  String get moreOptions => 'আরও অপশন';
+
+  @override
+  String get openNavigationMenu => 'নেভিগেশন মেনু খুলুন';
+
+  @override
+  String get loadingLabel => 'লোড হচ্ছে…';
+
+  @override
+  String get useMenuHint =>
+      'মেনু থেকে গরু, হাঁস-মুরগি, ফসল, মজুদ, আয় ও ব্যয়, প্রোফাইল বা ফার্ম সেটিংস খুলুন।';
+
+  @override
   String get email => 'ইমেইল';
 
   @override
@@ -241,6 +264,78 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get archivedReadOnly => 'এই গরু আর্কাইভড; পরিবর্তন করা যাবে না।';
+
+  @override
+  String get total => 'মোট';
+
+  @override
+  String get unitCost => 'একক মূল্য';
+
+  @override
+  String get delete => 'মুছুন';
+
+  @override
+  String get editEntry => 'সম্পাদনা';
+
+  @override
+  String get deleteMilkConfirm => 'এই দুধের এন্ট্রি মুছবেন?';
+
+  @override
+  String get deleteFeedingConfirm => 'এই খাদ্যের এন্ট্রি মুছবেন?';
+
+  @override
+  String get paginationPrevious => 'আগের';
+
+  @override
+  String get paginationNext => 'পরের';
+
+  @override
+  String paginationSummary(int page, int totalPages, int total) {
+    return 'পৃষ্ঠা $page / $totalPages · মোট $total';
+  }
+
+  @override
+  String get milkPaginationLabel => 'দুধ উৎপাদন পৃষ্ঠায়ন';
+
+  @override
+  String get feedingPaginationLabel => 'খাদ্য পৃষ্ঠায়ন';
+
+  @override
+  String get updateMilkEntry => 'দুধের এন্ট্রি আপডেট';
+
+  @override
+  String get updateFeedingEntry => 'খাদ্যের এন্ট্রি আপডেট';
+
+  @override
+  String get cancelEdit => 'সম্পাদনা বাতিল';
+
+  @override
+  String get producedAtHint => 'উৎপাদনের সময় (ISO 8601)';
+
+  @override
+  String get fedAtHint => 'খাওয়ানোর সময় (ISO 8601)';
+
+  @override
+  String get cowNoPhoto => 'গরুর ছবি নেই';
+
+  @override
+  String cowPhotoAlt(String name, String tag) {
+    return '$name ($tag) এর ছবি';
+  }
+
+  @override
+  String cowPhotoAltNoName(String tag) {
+    return 'গরু $tag এর ছবি';
+  }
+
+  @override
+  String get rowNumber => 'নং';
+
+  @override
+  String get dateTime => 'তারিখ ও সময়';
+
+  @override
+  String get actions => 'কর্ম';
 
   @override
   String get poultryTitle => 'হাঁস-মুরগি';

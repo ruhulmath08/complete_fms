@@ -4,6 +4,13 @@
   "signIn": "সাইন ইন",
   "signUp": "অ্যাকাউন্ট তৈরি",
   "signOut": "সাইন আউট",
+  "confirm": "নিশ্চিত",
+  "signOutConfirmTitle": "লগ আউট করবেন?",
+  "signOutConfirmMessage": "এই ডিভাইস থেকে ফার্ম ম্যানেজার থেকে সাইন আউট হবে। যেকোনো সময় আবার সাইন ইন করতে পারবেন।",
+  "moreOptions": "আরও অপশন",
+  "openNavigationMenu": "নেভিগেশন মেনু খুলুন",
+  "loadingLabel": "লোড হচ্ছে…",
+  "useMenuHint": "মেনু থেকে গরু, হাঁস-মুরগি, ফসল, মজুদ, আয় ও ব্যয়, প্রোফাইল বা ফার্ম সেটিংস খুলুন।",
   "email": "ইমেইল",
   "password": "পাসওয়ার্ড",
   "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন",
@@ -76,6 +83,46 @@
   "note": "নোট",
   "feedName": "খাদ্যের নাম",
   "archivedReadOnly": "এই গরু আর্কাইভড; পরিবর্তন করা যাবে না।",
+  "total": "মোট",
+  "unitCost": "একক মূল্য",
+  "delete": "মুছুন",
+  "editEntry": "সম্পাদনা",
+  "deleteMilkConfirm": "এই দুধের এন্ট্রি মুছবেন?",
+  "deleteFeedingConfirm": "এই খাদ্যের এন্ট্রি মুছবেন?",
+  "paginationPrevious": "আগের",
+  "paginationNext": "পরের",
+  "paginationSummary": "পৃষ্ঠা {page} / {totalPages} · মোট {total}",
+  "@paginationSummary": {
+    "placeholders": {
+      "page": {"type": "int"},
+      "totalPages": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "milkPaginationLabel": "দুধ উৎপাদন পৃষ্ঠায়ন",
+  "feedingPaginationLabel": "খাদ্য পৃষ্ঠায়ন",
+  "updateMilkEntry": "দুধের এন্ট্রি আপডেট",
+  "updateFeedingEntry": "খাদ্যের এন্ট্রি আপডেট",
+  "cancelEdit": "সম্পাদনা বাতিল",
+  "producedAtHint": "উৎপাদনের সময় (ISO 8601)",
+  "fedAtHint": "খাওয়ানোর সময় (ISO 8601)",
+  "cowNoPhoto": "গরুর ছবি নেই",
+  "cowPhotoAlt": "{name} ({tag}) এর ছবি",
+  "@cowPhotoAlt": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "tag": {"type": "String"}
+    }
+  },
+  "cowPhotoAltNoName": "গরু {tag} এর ছবি",
+  "@cowPhotoAltNoName": {
+    "placeholders": {
+      "tag": {"type": "String"}
+    }
+  },
+  "rowNumber": "নং",
+  "dateTime": "তারিখ ও সময়",
+  "actions": "কর্ম",
   "poultryTitle": "হাঁস-মুরগি",
   "managePoultry": "হাঁস-মুরগি পরিচালনা",
   "addPoultryGroup": "গ্রুপ যোগ",

@@ -3,11 +3,24 @@ id: 027-design-mobile
 unit: 003-design-mobile
 intent: 003-update-api-web-and-mobile-design
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-mobile-nav-chrome
   - 002-mobile-tokens-and-states
 created: "2026-11-12T07:34:21Z"
+started: "2026-11-12T08:46:00Z"
+completed: "2026-11-12T08:48:12Z"
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: "2026-11-12T08:46:00Z"
+    artifact: implementation-plan.md
+  - name: implement
+    completed: "2026-11-12T08:48:12Z"
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: "2026-11-12T08:48:12Z"
+    artifact: test-walkthrough.md
 requires_bolts: []
 enables_bolts:
   - 028-design-mobile
@@ -28,21 +41,11 @@ Ship mobile foundation: **navigation drawer** (Cows → Farm settings), TitleBar
 
 ## Stories Included
 
-- [ ] **001-mobile-nav-chrome**: Drawer + three-dot Profile/Logout dialog - Priority: Must
-- [ ] **002-mobile-tokens-and-states**: Tokens + empty/loading/error - Priority: Must
+- [x] **001-mobile-nav-chrome**: Drawer + three-dot Profile/Logout dialog - Priority: Must
+- [x] **002-mobile-tokens-and-states**: Tokens + empty/loading/error - Priority: Must
 
-## Expected Outputs
+## Stages
 
-- `AppShell` with drawer destinations and AppBar ⋮ menu
-- Logout alert dialog (title, message, Confirm, Cancel)
-- Shared state widgets + token alignment
-
-## Dependencies
-
-### Bolt Dependencies
-
-- None
-
-### Enables
-
-- 028-design-mobile
+- [x] **1. Plan**: Done → `implementation-plan.md`
+- [x] **2. Implement**: Done → `implementation-walkthrough.md`
+- [x] **3. Test**: Done → `test-walkthrough.md`

@@ -22,6 +22,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signOut => 'Sign out';
 
   @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get signOutConfirmTitle => 'Log out?';
+
+  @override
+  String get signOutConfirmMessage =>
+      'You will be signed out of Farm Manager on this device. You can sign in again anytime.';
+
+  @override
+  String get moreOptions => 'More options';
+
+  @override
+  String get openNavigationMenu => 'Open navigation menu';
+
+  @override
+  String get loadingLabel => 'Loading…';
+
+  @override
+  String get useMenuHint =>
+      'Use the menu to open Cows, Poultry, Crops, Inventory, Income & expenses, Profile, or Farm settings.';
+
+  @override
   String get email => 'Email';
 
   @override
@@ -241,6 +264,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get archivedReadOnly => 'This cow is archived and cannot be modified.';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get unitCost => 'Unit cost';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get editEntry => 'Edit entry';
+
+  @override
+  String get deleteMilkConfirm => 'Delete this milk entry?';
+
+  @override
+  String get deleteFeedingConfirm => 'Delete this feeding entry?';
+
+  @override
+  String get paginationPrevious => 'Previous';
+
+  @override
+  String get paginationNext => 'Next';
+
+  @override
+  String paginationSummary(int page, int totalPages, int total) {
+    return 'Page $page of $totalPages · $total total';
+  }
+
+  @override
+  String get milkPaginationLabel => 'Milk production pagination';
+
+  @override
+  String get feedingPaginationLabel => 'Feeding pagination';
+
+  @override
+  String get updateMilkEntry => 'Update milk entry';
+
+  @override
+  String get updateFeedingEntry => 'Update feeding entry';
+
+  @override
+  String get cancelEdit => 'Cancel edit';
+
+  @override
+  String get producedAtHint => 'Produced at (ISO 8601)';
+
+  @override
+  String get fedAtHint => 'Fed at (ISO 8601)';
+
+  @override
+  String get cowNoPhoto => 'No cow photo';
+
+  @override
+  String cowPhotoAlt(String name, String tag) {
+    return 'Photo of $name ($tag)';
+  }
+
+  @override
+  String cowPhotoAltNoName(String tag) {
+    return 'Photo of cow $tag';
+  }
+
+  @override
+  String get rowNumber => 'No.';
+
+  @override
+  String get dateTime => 'Date + time';
+
+  @override
+  String get actions => 'Actions';
 
   @override
   String get poultryTitle => 'Poultry';
