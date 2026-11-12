@@ -1,10 +1,10 @@
 ---
 unit: 002-poultry-actions-web
 intent: 004-poultry-history-actions-and-table-polish
-phase: inception
-status: stories-defined
-created: '2026-11-12T09:47:02Z'
-updated: '2026-11-12T09:47:02Z'
+phase: construction
+status: complete
+created: "2026-11-12T09:47:02Z"
+updated: "2026-11-12T10:12:00Z"
 unit_type: web
 default_bolt_type: simple-construction-bolt
 ---
@@ -42,8 +42,8 @@ Wire poultry Egg/Feeding Action columns on React poultry detail; rename history 
 
 ## Story Summary
 
-- [ ] **001-web-poultry-egg-feeding-actions**: Poultry Action columns - Must
-- [ ] **002-web-history-no-and-action-colors**: No. + Action colors - Must
+- [x] **001-web-poultry-egg-feeding-actions**: Poultry Action columns - Must
+- [x] **002-web-history-no-and-action-colors**: No. + Action colors - Must
 
 ## Dependencies
 
@@ -52,5 +52,5 @@ Wire poultry Egg/Feeding Action columns on React poultry detail; rename history 
 
 ## Success Criteria
 
-- [ ] Egg and feeding tables have Action Edit/Delete wired to API
-- [ ] History tables use **No.**; Edit primary / Delete danger
+- [x] Egg and feeding tables have Action Edit/Delete wired to API
+- [x] History tables use **No.**; Edit primary / Delete danger
