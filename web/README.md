@@ -19,3 +19,8 @@ Requires the backend at `VITE_API_BASE_URL` (default `http://localhost:8000`).
 - `npm run build` — typecheck + production build
 - `npm run test` — Vitest
 - `npm run lint` — oxlint
+
+## UI patterns
+
+Shared shell, table, pagination, and state primitives are documented in
+[`../memory-bank/standards/web-ui-patterns.md`](../memory-bank/standards/web-ui-patterns.md).

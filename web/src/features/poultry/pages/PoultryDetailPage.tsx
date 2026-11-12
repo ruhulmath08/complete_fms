@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState, type FormEvent } from "react";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addEggProduction,
   addPoultryFeeding,
@@ -10,42 +10,54 @@ import {
   listEggProductions,
   listPoultryFeedings,
   updatePoultryGroup,
-} from '../api/poultryApi'
-import { PoultryGroupForm } from '../components/PoultryGroupForm'
-import type { PoultryGroupCreateInput } from '../types'
-import { ApiError, getErrorMessage } from '../../../shared/api/errors'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+} from "../api/poultryApi";
+import { PoultryGroupForm } from "../components/PoultryGroupForm";
+import type { PoultryGroupCreateInput } from "../types";
+import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
+import { ApiError, getErrorMessage } from "../../../shared/api/errors";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
+import { LoadingState } from "../../../shared/ui/LoadingState";
+import { PaginationControls } from "../../../shared/ui/PaginationControls";
+
+function rowTotal(quantity: string, unitPrice: string): string {
+  const qty = Number(quantity);
+  const price = Number(unitPrice);
+  if (!Number.isFinite(qty) || !Number.isFinite(price)) return "—";
+  return (qty * price).toFixed(2);
+}
 
 function toDateTimeLocalValue(iso: string): string {
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return ''
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 function fromDateTimeLocalValue(value: string): string {
-  return new Date(value).toISOString()
+  return new Date(value).toISOString();
 }
 
 function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
   const [producedAt, setProducedAt] = useState(() =>
     toDateTimeLocalValue(new Date().toISOString()),
-  )
-  const [quantity, setQuantity] = useState('')
-  const [unit, setUnit] = useState('pcs')
-  const [pricePerUnit, setPricePerUnit] = useState('0')
-  const [note, setNote] = useState('')
+  );
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("pcs");
+  const [pricePerUnit, setPricePerUnit] = useState("0");
+  const [note, setNote] = useState("");
 
   const listQuery = useQuery({
-    queryKey: ['eggs', groupId],
-    queryFn: () => listEggProductions(groupId, { limit: 50 }),
-  })
+    queryKey: ["eggs", groupId, offset],
+    queryFn: () =>
+      listEggProductions(groupId, { limit: DEFAULT_PAGE_SIZE, offset }),
+  });
   const unitsQuery = useQuery({
-    queryKey: ['suggested-units'],
+    queryKey: ["suggested-units"],
     queryFn: getSuggestedUnits,
-  })
+  });
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -57,22 +69,26 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
         note: note.trim() || null,
       }),
     onSuccess: async () => {
-      setQuantity('')
-      setNote('')
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['eggs', groupId] })
+      setQuantity("");
+      setNote("");
+      setError(null);
+      setOffset(0);
+      await queryClient.invalidateQueries({ queryKey: ["eggs", groupId] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    mutation.mutate()
+    event.preventDefault();
+    setError(null);
+    mutation.mutate();
   }
+
+  const items = listQuery.data?.items ?? [];
+  const total = listQuery.data?.meta.total ?? 0;
 
   return (
     <section className="detail-section">
@@ -80,24 +96,51 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.data?.items.length ? (
-        <ul className="simple-list">
-          {listQuery.data.items.map((row) => (
-            <li key={row.id}>
-              <strong>
-                {row.quantity} {row.unit}
-              </strong>
-              <span className="muted">
-                {' '}
-                · {new Date(row.produced_at).toLocaleString()} · {row.price_per_unit}/unit
-              </span>
-              {row.note ? <div className="muted">{row.note}</div> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {listQuery.isLoading ? (
+        <LoadingState message="Loading egg entries…" />
+      ) : null}
+      {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No egg entries yet.</p>
-      )}
+      ) : null}
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Produced at</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Unit price</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((row, index) => (
+                  <tr key={row.id}>
+                    <td>{offset + index + 1}</td>
+                    <td>{new Date(row.produced_at).toLocaleString()}</td>
+                    <td>{row.quantity}</td>
+                    <td>{row.unit}</td>
+                    <td>{row.price_per_unit}</td>
+                    <td>{rowTotal(row.quantity, row.price_per_unit)}</td>
+                    <td>{row.note ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls
+            total={total}
+            limit={DEFAULT_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            label="Egg production"
+          />
+        </>
+      ) : null}
 
       {canAdd ? (
         <>
@@ -147,15 +190,23 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
             </div>
             <div className="field">
               <label htmlFor="egg_note">Note</label>
-              <input id="egg_note" value={note} onChange={(e) => setNote(e.target.value)} />
+              <input
+                id="egg_note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
             </div>
             <datalist id="egg-unit-suggestions">
               {(unitsQuery.data ?? []).map((u) => (
                 <option key={u} value={u} />
               ))}
             </datalist>
-            <button className="btn btn-primary" type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Saving…' : 'Add egg entry'}
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Saving…" : "Add egg entry"}
             </button>
           </form>
         </>
@@ -163,26 +214,36 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
         <p className="muted">Egg recording is unavailable for this group.</p>
       )}
     </section>
-  )
+  );
 }
 
-function FeedingSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [fedAt, setFedAt] = useState(() => toDateTimeLocalValue(new Date().toISOString()))
-  const [feedName, setFeedName] = useState('')
-  const [quantity, setQuantity] = useState('')
-  const [unit, setUnit] = useState('kg')
-  const [note, setNote] = useState('')
+function FeedingSection({
+  groupId,
+  canAdd,
+}: {
+  groupId: string;
+  canAdd: boolean;
+}) {
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [fedAt, setFedAt] = useState(() =>
+    toDateTimeLocalValue(new Date().toISOString()),
+  );
+  const [feedName, setFeedName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("kg");
+  const [note, setNote] = useState("");
 
   const listQuery = useQuery({
-    queryKey: ['poultry-feedings', groupId],
-    queryFn: () => listPoultryFeedings(groupId, { limit: 50 }),
-  })
+    queryKey: ["poultry-feedings", groupId, offset],
+    queryFn: () =>
+      listPoultryFeedings(groupId, { limit: DEFAULT_PAGE_SIZE, offset }),
+  });
   const unitsQuery = useQuery({
-    queryKey: ['suggested-units'],
+    queryKey: ["suggested-units"],
     queryFn: getSuggestedUnits,
-  })
+  });
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -194,23 +255,29 @@ function FeedingSection({ groupId, canAdd }: { groupId: string; canAdd: boolean 
         note: note.trim() || null,
       }),
     onSuccess: async () => {
-      setFeedName('')
-      setQuantity('')
-      setNote('')
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['poultry-feedings', groupId] })
+      setFeedName("");
+      setQuantity("");
+      setNote("");
+      setError(null);
+      setOffset(0);
+      await queryClient.invalidateQueries({
+        queryKey: ["poultry-feedings", groupId],
+      });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    mutation.mutate()
+    event.preventDefault();
+    setError(null);
+    mutation.mutate();
   }
+
+  const items = listQuery.data?.items ?? [];
+  const total = listQuery.data?.meta.total ?? 0;
 
   return (
     <section className="detail-section">
@@ -218,21 +285,49 @@ function FeedingSection({ groupId, canAdd }: { groupId: string; canAdd: boolean 
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.data?.items.length ? (
-        <ul className="simple-list">
-          {listQuery.data.items.map((row) => (
-            <li key={row.id}>
-              <strong>
-                {row.feed_name}: {row.quantity} {row.unit}
-              </strong>
-              <span className="muted"> · {new Date(row.fed_at).toLocaleString()}</span>
-              {row.note ? <div className="muted">{row.note}</div> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {listQuery.isLoading ? (
+        <LoadingState message="Loading feeding entries…" />
+      ) : null}
+      {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No feeding entries yet.</p>
-      )}
+      ) : null}
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Fed at</th>
+                  <th scope="col">Feed</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((row, index) => (
+                  <tr key={row.id}>
+                    <td>{offset + index + 1}</td>
+                    <td>{new Date(row.fed_at).toLocaleString()}</td>
+                    <td>{row.feed_name}</td>
+                    <td>{row.quantity}</td>
+                    <td>{row.unit}</td>
+                    <td>{row.note ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls
+            total={total}
+            limit={DEFAULT_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            label="Poultry feeding"
+          />
+        </>
+      ) : null}
 
       {canAdd ? (
         <>
@@ -282,111 +377,124 @@ function FeedingSection({ groupId, canAdd }: { groupId: string; canAdd: boolean 
             </div>
             <div className="field">
               <label htmlFor="feed_note">Note</label>
-              <input id="feed_note" value={note} onChange={(e) => setNote(e.target.value)} />
+              <input
+                id="feed_note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
             </div>
             <datalist id="poultry-feed-unit-suggestions">
               {(unitsQuery.data ?? []).map((u) => (
                 <option key={u} value={u} />
               ))}
             </datalist>
-            <button className="btn btn-primary" type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Saving…' : 'Add feeding'}
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Saving…" : "Add feeding"}
             </button>
           </form>
         </>
       ) : (
-        <p className="muted">Feeding cannot be added while this group is archived.</p>
+        <p className="muted">
+          Feeding cannot be added while this group is archived.
+        </p>
       )}
     </section>
-  )
+  );
 }
 
 export function PoultryDetailPage() {
-  const { groupId = '' } = useParams()
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [editing, setEditing] = useState(false)
+  const { groupId = "" } = useParams();
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
 
   const groupQuery = useQuery({
-    queryKey: ['poultry-group', groupId],
+    queryKey: ["poultry-group", groupId],
     queryFn: () => getPoultryGroup(groupId),
     enabled: Boolean(groupId),
-  })
+  });
 
   const updateMutation = useMutation({
-    mutationFn: (input: PoultryGroupCreateInput) => updatePoultryGroup(groupId, input),
+    mutationFn: (input: PoultryGroupCreateInput) =>
+      updatePoultryGroup(groupId, input),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['poultry-group', groupId] })
-      await queryClient.invalidateQueries({ queryKey: ['poultry-groups'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["poultry-group", groupId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["poultry-groups"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   const archiveMutation = useMutation({
     mutationFn: () => archivePoultryGroup(groupId),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['poultry-group', groupId] })
-      await queryClient.invalidateQueries({ queryKey: ['poultry-groups'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["poultry-group", groupId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["poultry-groups"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
-  if (groupQuery.isLoading) return <p className="muted">Loading poultry group…</p>
+  if (groupQuery.isLoading)
+    return <p className="muted">Loading poultry group…</p>;
   if (groupQuery.isError) {
-    return <ErrorBanner message={getErrorMessage(groupQuery.error)} />
+    return <ErrorBanner message={getErrorMessage(groupQuery.error)} />;
   }
-  const group = groupQuery.data
-  if (!group) return null
+  const group = groupQuery.data;
+  if (!group) return null;
 
   const eggsEligible =
-    group.poultry_type === 'duck' ||
-    group.poultry_type === 'layer' ||
-    group.poultry_type === 'local'
-  const canWrite = !group.is_archived
+    group.poultry_type === "duck" ||
+    group.poultry_type === "layer" ||
+    group.poultry_type === "local";
+  const canWrite = !group.is_archived;
 
   return (
-    <div className="panel panel-wide" style={{ margin: '0 auto' }}>
-      <p className="muted">
-        <Link to="/poultry">← Back to poultry</Link>
-      </p>
+    <div className="panel panel-wide" style={{ margin: "0 auto" }}>
       <div className="page-toolbar">
         <div>
           <h1>{group.name}</h1>
           <p className="lede">
             {group.poultry_type} · {group.bird_count} birds
-            {group.is_archived ? ' · Archived' : ''}
+            {group.is_archived ? " · Archived" : ""}
           </p>
         </div>
         {canWrite ? (
           <div className="toolbar-actions">
             <button
               type="button"
-              className="btn btn-ghost"
+              className={editing ? "btn btn-ghost" : "btn btn-primary"}
               onClick={() => setEditing((v) => !v)}
             >
-              {editing ? 'Cancel edit' : 'Edit'}
+              {editing ? "Cancel edit" : "Edit"}
             </button>
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-danger-ghost"
               disabled={archiveMutation.isPending}
               onClick={() => {
                 if (
                   window.confirm(
-                    'Archive this poultry group? It will leave the active list.',
+                    "Archive this poultry group? It will leave the active list.",
                   )
                 ) {
-                  archiveMutation.mutate()
+                  archiveMutation.mutate();
                 }
               }}
             >
@@ -418,27 +526,27 @@ export function PoultryDetailPage() {
           </div>
           <div>
             <dt>Date acquired</dt>
-            <dd>{group.date_acquired ?? '—'}</dd>
+            <dd>{group.date_acquired ?? "—"}</dd>
           </div>
           <div>
             <dt>Acquired by</dt>
             <dd>{group.acquired_by}</dd>
           </div>
-          {group.acquired_by === 'purchased' ? (
+          {group.acquired_by === "purchased" ? (
             <>
               <div>
                 <dt>Purchase date</dt>
-                <dd>{group.purchase_date ?? '—'}</dd>
+                <dd>{group.purchase_date ?? "—"}</dd>
               </div>
               <div>
                 <dt>Purchase price</dt>
-                <dd>{group.purchase_price ?? '—'}</dd>
+                <dd>{group.purchase_price ?? "—"}</dd>
               </div>
             </>
           ) : null}
           <div className="detail-span">
             <dt>Notes</dt>
-            <dd>{group.notes ?? '—'}</dd>
+            <dd>{group.notes ?? "—"}</dd>
           </div>
         </dl>
       )}
@@ -454,5 +562,5 @@ export function PoultryDetailPage() {
 
       <FeedingSection groupId={group.id} canAdd={canWrite} />
     </div>
-  )
+  );
 }

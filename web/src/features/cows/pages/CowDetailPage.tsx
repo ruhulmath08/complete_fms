@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState, type FormEvent } from "react";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addFeeding,
   addMilkProduction,
@@ -15,34 +15,38 @@ import {
   updateFeeding,
   updateMilkProduction,
   uploadCowImage,
-} from '../api/cowsApi'
-import type { CowFeeding, MilkProduction } from '../types'
-import { CowForm } from '../components/CowForm'
-import { PaginationControls } from '../components/PaginationControls'
-import { useCowImageUrl } from '../hooks/useCowImageUrl'
-import type { CowCreateInput } from '../types'
-import { ApiError, getErrorMessage } from '../../../shared/api/errors'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+} from "../api/cowsApi";
+import type { CowFeeding, MilkProduction } from "../types";
+import { CowForm } from "../components/CowForm";
+import { PaginationControls } from "../components/PaginationControls";
+import { useCowImageUrl } from "../hooks/useCowImageUrl";
+import type { CowCreateInput } from "../types";
+import { ApiError, getErrorMessage } from "../../../shared/api/errors";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 10;
 
 function toDateTimeLocalValue(iso: string): string {
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return ''
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 function fromDateTimeLocalValue(value: string): string {
-  return new Date(value).toISOString()
+  return new Date(value).toISOString();
 }
 
-function rowTotal(quantity: string, unitPrice: string, apiTotal?: string): string {
-  if (apiTotal != null && apiTotal !== '') return apiTotal
-  const qty = Number(quantity)
-  const price = Number(unitPrice)
-  if (Number.isNaN(qty) || Number.isNaN(price)) return '—'
-  return (qty * price).toFixed(2)
+function rowTotal(
+  quantity: string,
+  unitPrice: string,
+  apiTotal?: string,
+): string {
+  if (apiTotal != null && apiTotal !== "") return apiTotal;
+  const qty = Number(quantity);
+  const price = Number(unitPrice);
+  if (Number.isNaN(qty) || Number.isNaN(price)) return "—";
+  return (qty * price).toFixed(2);
 }
 
 function EditIcon() {
@@ -53,7 +57,7 @@ function EditIcon() {
         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.04a1.003 1.003 0 0 0 0-1.42l-2.5-2.5a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.999-1.66z"
       />
     </svg>
-  )
+  );
 }
 
 function DeleteIcon() {
@@ -64,54 +68,48 @@ function DeleteIcon() {
         d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
       />
     </svg>
-  )
+  );
 }
 
-function MilkSection({
-  cowId,
-  canAdd,
-}: {
-  cowId: string
-  canAdd: boolean
-}) {
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [offset, setOffset] = useState(0)
-  const [editingId, setEditingId] = useState<string | null>(null)
+function MilkSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [producedAt, setProducedAt] = useState(() =>
     toDateTimeLocalValue(new Date().toISOString()),
-  )
-  const [quantity, setQuantity] = useState('')
-  const [unit, setUnit] = useState('L')
-  const [pricePerUnit, setPricePerUnit] = useState('0')
-  const [note, setNote] = useState('')
+  );
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("L");
+  const [pricePerUnit, setPricePerUnit] = useState("0");
+  const [note, setNote] = useState("");
 
   const listQuery = useQuery({
-    queryKey: ['milk', cowId, offset],
+    queryKey: ["milk", cowId, offset],
     queryFn: () => listMilkProductions(cowId, { limit: PAGE_SIZE, offset }),
-  })
+  });
   const unitsQuery = useQuery({
-    queryKey: ['suggested-units'],
+    queryKey: ["suggested-units"],
     queryFn: getSuggestedUnits,
-  })
+  });
 
   function resetForm() {
-    setEditingId(null)
-    setProducedAt(toDateTimeLocalValue(new Date().toISOString()))
-    setQuantity('')
-    setUnit('L')
-    setPricePerUnit('0')
-    setNote('')
+    setEditingId(null);
+    setProducedAt(toDateTimeLocalValue(new Date().toISOString()));
+    setQuantity("");
+    setUnit("L");
+    setPricePerUnit("0");
+    setNote("");
   }
 
   function startEdit(row: MilkProduction) {
-    setEditingId(row.id)
-    setProducedAt(toDateTimeLocalValue(row.produced_at))
-    setQuantity(row.quantity)
-    setUnit(row.unit)
-    setPricePerUnit(row.price_per_unit)
-    setNote(row.note ?? '')
-    setError(null)
+    setEditingId(row.id);
+    setProducedAt(toDateTimeLocalValue(row.produced_at));
+    setQuantity(row.quantity);
+    setUnit(row.unit);
+    setPricePerUnit(row.price_per_unit);
+    setNote(row.note ?? "");
+    setError(null);
   }
 
   const saveMutation = useMutation({
@@ -122,48 +120,48 @@ function MilkSection({
         unit,
         price_per_unit: pricePerUnit,
         note: note.trim() || null,
-      }
-      if (editingId) return updateMilkProduction(cowId, editingId, payload)
-      return addMilkProduction(cowId, payload)
+      };
+      if (editingId) return updateMilkProduction(cowId, editingId, payload);
+      return addMilkProduction(cowId, payload);
     },
     onSuccess: async () => {
-      resetForm()
-      setError(null)
-      setOffset(0)
-      await queryClient.invalidateQueries({ queryKey: ['milk', cowId] })
+      resetForm();
+      setError(null);
+      setOffset(0);
+      await queryClient.invalidateQueries({ queryKey: ["milk", cowId] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   const deleteMutation = useMutation({
     mutationFn: (milkId: string) => deleteMilkProduction(cowId, milkId),
     onSuccess: async () => {
-      if (editingId) resetForm()
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['milk', cowId] })
+      if (editingId) resetForm();
+      setError(null);
+      await queryClient.invalidateQueries({ queryKey: ["milk", cowId] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    saveMutation.mutate()
+    event.preventDefault();
+    setError(null);
+    saveMutation.mutate();
   }
 
   function onDelete(row: MilkProduction) {
-    if (!window.confirm('Delete this milk entry?')) return
-    deleteMutation.mutate(row.id)
+    if (!window.confirm("Delete this milk entry?")) return;
+    deleteMutation.mutate(row.id);
   }
 
-  const items = listQuery.data?.items ?? []
-  const meta = listQuery.data?.meta
+  const items = listQuery.data?.items ?? [];
+  const meta = listQuery.data?.meta;
 
   return (
     <section className="detail-section">
@@ -171,7 +169,9 @@ function MilkSection({
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.isLoading ? <p className="muted">Loading milk entries…</p> : null}
+      {listQuery.isLoading ? (
+        <p className="muted">Loading milk entries…</p>
+      ) : null}
       {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No milk entries yet.</p>
       ) : null}
@@ -199,8 +199,10 @@ function MilkSection({
                       {row.quantity} {row.unit}
                     </td>
                     <td>{row.price_per_unit}</td>
-                    <td>{rowTotal(row.quantity, row.price_per_unit, row.total)}</td>
-                    <td>{row.note ?? '—'}</td>
+                    <td>
+                      {rowTotal(row.quantity, row.price_per_unit, row.total)}
+                    </td>
+                    <td>{row.note ?? "—"}</td>
                     {canAdd ? (
                       <td>
                         <div className="table-actions">
@@ -291,7 +293,11 @@ function MilkSection({
             </div>
             <div className="field">
               <label htmlFor="milk_note">Note</label>
-              <input id="milk_note" value={note} onChange={(e) => setNote(e.target.value)} />
+              <input
+                id="milk_note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
             </div>
             <datalist id="unit-suggestions">
               {(unitsQuery.data ?? []).map((u) => (
@@ -299,15 +305,23 @@ function MilkSection({
               ))}
             </datalist>
             <div className="toolbar-actions">
-              <button className="btn btn-primary" type="submit" disabled={saveMutation.isPending}>
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={saveMutation.isPending}
+              >
                 {saveMutation.isPending
-                  ? 'Saving…'
+                  ? "Saving…"
                   : editingId
-                    ? 'Update milk entry'
-                    : 'Add milk entry'}
+                    ? "Update milk entry"
+                    : "Add milk entry"}
               </button>
               {editingId ? (
-                <button type="button" className="btn btn-ghost" onClick={resetForm}>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={resetForm}
+                >
                   Cancel edit
                 </button>
               ) : null}
@@ -318,49 +332,51 @@ function MilkSection({
         <p className="muted">Milk recording is unavailable for this cow.</p>
       )}
     </section>
-  )
+  );
 }
 
 function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [offset, setOffset] = useState(0)
-  const [editingId, setEditingId] = useState<string | null>(null)
-  const [fedAt, setFedAt] = useState(() => toDateTimeLocalValue(new Date().toISOString()))
-  const [feedName, setFeedName] = useState('')
-  const [quantity, setQuantity] = useState('')
-  const [unit, setUnit] = useState('kg')
-  const [unitCost, setUnitCost] = useState('0')
-  const [note, setNote] = useState('')
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [fedAt, setFedAt] = useState(() =>
+    toDateTimeLocalValue(new Date().toISOString()),
+  );
+  const [feedName, setFeedName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("kg");
+  const [unitCost, setUnitCost] = useState("0");
+  const [note, setNote] = useState("");
 
   const listQuery = useQuery({
-    queryKey: ['feedings', cowId, offset],
+    queryKey: ["feedings", cowId, offset],
     queryFn: () => listFeedings(cowId, { limit: PAGE_SIZE, offset }),
-  })
+  });
   const unitsQuery = useQuery({
-    queryKey: ['suggested-units'],
+    queryKey: ["suggested-units"],
     queryFn: getSuggestedUnits,
-  })
+  });
 
   function resetForm() {
-    setEditingId(null)
-    setFedAt(toDateTimeLocalValue(new Date().toISOString()))
-    setFeedName('')
-    setQuantity('')
-    setUnit('kg')
-    setUnitCost('0')
-    setNote('')
+    setEditingId(null);
+    setFedAt(toDateTimeLocalValue(new Date().toISOString()));
+    setFeedName("");
+    setQuantity("");
+    setUnit("kg");
+    setUnitCost("0");
+    setNote("");
   }
 
   function startEdit(row: CowFeeding) {
-    setEditingId(row.id)
-    setFedAt(toDateTimeLocalValue(row.fed_at))
-    setFeedName(row.feed_name)
-    setQuantity(row.quantity)
-    setUnit(row.unit)
-    setUnitCost(row.unit_cost)
-    setNote(row.note ?? '')
-    setError(null)
+    setEditingId(row.id);
+    setFedAt(toDateTimeLocalValue(row.fed_at));
+    setFeedName(row.feed_name);
+    setQuantity(row.quantity);
+    setUnit(row.unit);
+    setUnitCost(row.unit_cost);
+    setNote(row.note ?? "");
+    setError(null);
   }
 
   const saveMutation = useMutation({
@@ -372,48 +388,48 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
         unit,
         unit_cost: unitCost,
         note: note.trim() || null,
-      }
-      if (editingId) return updateFeeding(cowId, editingId, payload)
-      return addFeeding(cowId, payload)
+      };
+      if (editingId) return updateFeeding(cowId, editingId, payload);
+      return addFeeding(cowId, payload);
     },
     onSuccess: async () => {
-      resetForm()
-      setError(null)
-      setOffset(0)
-      await queryClient.invalidateQueries({ queryKey: ['feedings', cowId] })
+      resetForm();
+      setError(null);
+      setOffset(0);
+      await queryClient.invalidateQueries({ queryKey: ["feedings", cowId] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   const deleteMutation = useMutation({
     mutationFn: (feedingId: string) => deleteFeeding(cowId, feedingId),
     onSuccess: async () => {
-      if (editingId) resetForm()
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['feedings', cowId] })
+      if (editingId) resetForm();
+      setError(null);
+      await queryClient.invalidateQueries({ queryKey: ["feedings", cowId] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    saveMutation.mutate()
+    event.preventDefault();
+    setError(null);
+    saveMutation.mutate();
   }
 
   function onDelete(row: CowFeeding) {
-    if (!window.confirm('Delete this feeding entry?')) return
-    deleteMutation.mutate(row.id)
+    if (!window.confirm("Delete this feeding entry?")) return;
+    deleteMutation.mutate(row.id);
   }
 
-  const items = listQuery.data?.items ?? []
-  const meta = listQuery.data?.meta
+  const items = listQuery.data?.items ?? [];
+  const meta = listQuery.data?.meta;
 
   return (
     <section className="detail-section">
@@ -421,7 +437,9 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.isLoading ? <p className="muted">Loading feeding entries…</p> : null}
+      {listQuery.isLoading ? (
+        <p className="muted">Loading feeding entries…</p>
+      ) : null}
       {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No feeding entries yet.</p>
       ) : null}
@@ -452,7 +470,7 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
                     <td>{row.unit}</td>
                     <td>{row.unit_cost}</td>
                     <td>{rowTotal(row.quantity, row.unit_cost, row.total)}</td>
-                    <td>{row.note ?? '—'}</td>
+                    <td>{row.note ?? "—"}</td>
                     {canAdd ? (
                       <td>
                         <div className="table-actions">
@@ -553,7 +571,11 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
               </div>
               <div className="field">
                 <label htmlFor="feed_note">Note</label>
-                <input id="feed_note" value={note} onChange={(e) => setNote(e.target.value)} />
+                <input
+                  id="feed_note"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
               </div>
             </div>
             <datalist id="feed-unit-suggestions">
@@ -562,15 +584,23 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
               ))}
             </datalist>
             <div className="toolbar-actions">
-              <button className="btn btn-primary" type="submit" disabled={saveMutation.isPending}>
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={saveMutation.isPending}
+              >
                 {saveMutation.isPending
-                  ? 'Saving…'
+                  ? "Saving…"
                   : editingId
-                    ? 'Update feeding'
-                    : 'Add feeding'}
+                    ? "Update feeding"
+                    : "Add feeding"}
               </button>
               {editingId ? (
-                <button type="button" className="btn btn-ghost" onClick={resetForm}>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={resetForm}
+                >
                   Cancel edit
                 </button>
               ) : null}
@@ -578,108 +608,115 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
           </form>
         </>
       ) : (
-        <p className="muted">Feeding cannot be added while this cow is archived.</p>
+        <p className="muted">
+          Feeding cannot be added while this cow is archived.
+        </p>
       )}
     </section>
-  )
+  );
 }
 
 export function CowDetailPage() {
-  const { cowId = '' } = useParams()
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [editing, setEditing] = useState(false)
+  const { cowId = "" } = useParams();
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
 
   const cowQuery = useQuery({
-    queryKey: ['cow', cowId],
+    queryKey: ["cow", cowId],
     queryFn: () => getCow(cowId),
     enabled: Boolean(cowId),
-  })
+  });
 
-  const cow = cowQuery.data
-  const imageUrl = useCowImageUrl(cow?.id, cow?.image_url)
+  const cow = cowQuery.data;
+  const imageUrl = useCowImageUrl(cow?.id, cow?.image_url);
 
   const updateMutation = useMutation({
     mutationFn: async ({
       input,
       imageFile,
     }: {
-      input: CowCreateInput
-      imageFile: File | null
+      input: CowCreateInput;
+      imageFile: File | null;
     }) => {
-      const updated = await updateCow(cowId, input)
+      const updated = await updateCow(cowId, input);
       if (imageFile) {
-        return uploadCowImage(cowId, imageFile)
+        return uploadCowImage(cowId, imageFile);
       }
-      return updated
+      return updated;
     },
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['cow', cowId] })
-      await queryClient.invalidateQueries({ queryKey: ['cows'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({ queryKey: ["cow", cowId] });
+      await queryClient.invalidateQueries({ queryKey: ["cows"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   const archiveMutation = useMutation({
     mutationFn: () => archiveCow(cowId),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['cow', cowId] })
-      await queryClient.invalidateQueries({ queryKey: ['cows'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({ queryKey: ["cow", cowId] });
+      await queryClient.invalidateQueries({ queryKey: ["cows"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
-  if (cowQuery.isLoading) return <p className="muted">Loading cow…</p>
+  if (cowQuery.isLoading) return <p className="muted">Loading cow…</p>;
   if (cowQuery.isError) {
-    return <ErrorBanner message={getErrorMessage(cowQuery.error)} />
+    return <ErrorBanner message={getErrorMessage(cowQuery.error)} />;
   }
-  if (!cow) return null
+  if (!cow) return null;
 
-  const milkEligible = cow.purpose === 'milk' || cow.purpose === 'both'
-  const canWrite = !cow.is_archived
+  const milkEligible = cow.purpose === "milk" || cow.purpose === "both";
+  const canWrite = !cow.is_archived;
+
+  const imageAlt = cow.name
+    ? `Photo of ${cow.name} (${cow.tag_number})`
+    : `Photo of cow ${cow.tag_number}`;
 
   return (
-    <div className="panel panel-wide" style={{ margin: '0 auto' }}>
-      <p className="muted">
-        <Link to="/cows">← Back to cows</Link>
-      </p>
+    <div className="panel panel-wide" style={{ margin: "0 auto" }}>
       <div className="page-toolbar">
         <div>
           <h1>
             {cow.tag_number}
-            {cow.name ? ` · ${cow.name}` : ''}
+            {cow.name ? ` · ${cow.name}` : ""}
           </h1>
           <p className="lede">
             {cow.purpose} · {cow.gender}
-            {cow.is_archived ? ' · Archived' : ''}
+            {cow.is_archived ? " · Archived" : ""}
           </p>
         </div>
         {canWrite ? (
           <div className="toolbar-actions">
             <button
               type="button"
-              className="btn btn-ghost"
+              className={editing ? "btn btn-ghost" : "btn btn-primary"}
               onClick={() => setEditing((v) => !v)}
             >
-              {editing ? 'Cancel edit' : 'Edit'}
+              {editing ? "Cancel edit" : "Edit"}
             </button>
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-danger-ghost"
               disabled={archiveMutation.isPending}
               onClick={() => {
-                if (window.confirm('Archive this cow? It will leave the active list.')) {
-                  archiveMutation.mutate()
+                if (
+                  window.confirm(
+                    "Archive this cow? It will leave the active list.",
+                  )
+                ) {
+                  archiveMutation.mutate();
                 }
               }}
             >
@@ -691,61 +728,78 @@ export function CowDetailPage() {
 
       <ErrorBanner message={error} />
 
-      {!editing && imageUrl ? (
-        <img src={imageUrl} alt="" className="profile-preview" />
-      ) : null}
-
       {editing && canWrite ? (
         <CowForm
           key={cow.updated_at}
           initial={cow}
           submitLabel="Save changes"
           pending={updateMutation.isPending}
-          onSubmit={(input, imageFile) => updateMutation.mutate({ input, imageFile })}
+          onSubmit={(input, imageFile) =>
+            updateMutation.mutate({ input, imageFile })
+          }
         />
       ) : (
-        <dl className="detail-grid">
-          <div>
-            <dt>Breed</dt>
-            <dd>{cow.breed ?? '—'}</dd>
-          </div>
-          <div>
-            <dt>Color</dt>
-            <dd>{cow.color ?? '—'}</dd>
-          </div>
-          <div>
-            <dt>Date of birth</dt>
-            <dd>{cow.date_of_birth ?? '—'}</dd>
-          </div>
-          <div>
-            <dt>Age</dt>
-            <dd>{cow.age ?? '—'}</dd>
-          </div>
-          <div>
-            <dt>Weight (kg)</dt>
-            <dd>{cow.weight ?? '—'}</dd>
-          </div>
-          <div>
-            <dt>Acquired by</dt>
-            <dd>{cow.acquired_by}</dd>
-          </div>
-          {cow.acquired_by === 'purchased' ? (
-            <>
-              <div>
-                <dt>Purchase date</dt>
-                <dd>{cow.purchase_date ?? '—'}</dd>
+        <div className="detail-chrome">
+          <div className="detail-chrome__media">
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={imageAlt}
+                className="detail-chrome__image"
+              />
+            ) : (
+              <div
+                className="detail-chrome__placeholder"
+                role="img"
+                aria-label="No cow photo"
+              >
+                No photo
               </div>
-              <div>
-                <dt>Purchase price</dt>
-                <dd>{cow.purchase_price ?? '—'}</dd>
-              </div>
-            </>
-          ) : null}
-          <div className="detail-span">
-            <dt>Notes</dt>
-            <dd>{cow.notes ?? '—'}</dd>
+            )}
           </div>
-        </dl>
+          <dl className="detail-grid detail-chrome__info">
+            <div>
+              <dt>Breed</dt>
+              <dd>{cow.breed ?? "—"}</dd>
+            </div>
+            <div>
+              <dt>Color</dt>
+              <dd>{cow.color ?? "—"}</dd>
+            </div>
+            <div>
+              <dt>Date of birth</dt>
+              <dd>{cow.date_of_birth ?? "—"}</dd>
+            </div>
+            <div>
+              <dt>Age</dt>
+              <dd>{cow.age ?? "—"}</dd>
+            </div>
+            <div>
+              <dt>Weight (kg)</dt>
+              <dd>{cow.weight ?? "—"}</dd>
+            </div>
+            <div>
+              <dt>Acquired by</dt>
+              <dd>{cow.acquired_by}</dd>
+            </div>
+            {cow.acquired_by === "purchased" ? (
+              <>
+                <div>
+                  <dt>Purchase date</dt>
+                  <dd>{cow.purchase_date ?? "—"}</dd>
+                </div>
+                <div>
+                  <dt>Purchase price</dt>
+                  <dd>{cow.purchase_price ?? "—"}</dd>
+                </div>
+              </>
+            ) : null}
+            <div className="detail-span">
+              <dt>Notes</dt>
+              <dd>{cow.notes ?? "—"}</dd>
+            </div>
+          </dl>
+        </div>
       )}
 
       {milkEligible ? (
@@ -759,5 +813,5 @@ export function CowDetailPage() {
 
       <FeedingSection cowId={cow.id} canAdd={canWrite} />
     </div>
-  )
+  );
 }

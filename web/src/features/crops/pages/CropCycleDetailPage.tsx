@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState, type FormEvent } from "react";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addCropExpense,
   addHarvest,
@@ -12,36 +12,40 @@ import {
   listCropNames,
   listHarvests,
   updateCropCycle,
-} from '../api/cropsApi'
-import { CropCycleForm } from '../components/CropCycleForm'
+} from "../api/cropsApi";
+import { CropCycleForm } from "../components/CropCycleForm";
 import {
   EXPENSE_CATEGORIES,
   type CropCycleCreateInput,
   type ExpenseCategory,
-} from '../types'
-import { ApiError, getErrorMessage } from '../../../shared/api/errors'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+} from "../types";
+import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
+import { ApiError, getErrorMessage } from "../../../shared/api/errors";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
+import { LoadingState } from "../../../shared/ui/LoadingState";
+import { PaginationControls } from "../../../shared/ui/PaginationControls";
 
 function categoryLabel(category: string): string {
   return (
-    EXPENSE_CATEGORIES.find((item) => item.value === category)?.label ?? category
-  )
+    EXPENSE_CATEGORIES.find((item) => item.value === category)?.label ??
+    category
+  );
 }
 
 function SummarySection({ cycleId }: { cycleId: string }) {
   const summaryQuery = useQuery({
-    queryKey: ['crop-cycle-summary', cycleId],
+    queryKey: ["crop-cycle-summary", cycleId],
     queryFn: () => getCropCycleSummary(cycleId),
-  })
+  });
 
   if (summaryQuery.isError) {
-    return <ErrorBanner message={getErrorMessage(summaryQuery.error)} />
+    return <ErrorBanner message={getErrorMessage(summaryQuery.error)} />;
   }
   if (summaryQuery.isLoading) {
-    return <p className="muted">Loading summary…</p>
+    return <p className="muted">Loading summary…</p>;
   }
-  const summary = summaryQuery.data
-  if (!summary) return null
+  const summary = summaryQuery.data;
+  if (!summary) return null;
 
   return (
     <dl className="detail-grid">
@@ -58,27 +62,31 @@ function SummarySection({ cycleId }: { cycleId: string }) {
         <dd>{summary.result}</dd>
       </div>
     </dl>
-  )
+  );
 }
 
 function ExpensesSection({
   cycleId,
   canAdd,
 }: {
-  cycleId: string
-  canAdd: boolean
+  cycleId: string;
+  canAdd: boolean;
 }) {
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [spentAt, setSpentAt] = useState(() => new Date().toISOString().slice(0, 10))
-  const [category, setCategory] = useState<ExpenseCategory>('labour')
-  const [amount, setAmount] = useState('')
-  const [note, setNote] = useState('')
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [spentAt, setSpentAt] = useState(() =>
+    new Date().toISOString().slice(0, 10),
+  );
+  const [category, setCategory] = useState<ExpenseCategory>("labour");
+  const [amount, setAmount] = useState("");
+  const [note, setNote] = useState("");
 
   const listQuery = useQuery({
-    queryKey: ['crop-expenses', cycleId],
-    queryFn: () => listCropExpenses(cycleId, { limit: 50 }),
-  })
+    queryKey: ["crop-expenses", cycleId, offset],
+    queryFn: () =>
+      listCropExpenses(cycleId, { limit: DEFAULT_PAGE_SIZE, offset }),
+  });
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -89,25 +97,31 @@ function ExpensesSection({
         note: note.trim() || null,
       }),
     onSuccess: async () => {
-      setAmount('')
-      setNote('')
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['crop-expenses', cycleId] })
+      setAmount("");
+      setNote("");
+      setError(null);
+      setOffset(0);
       await queryClient.invalidateQueries({
-        queryKey: ['crop-cycle-summary', cycleId],
-      })
+        queryKey: ["crop-expenses", cycleId],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["crop-cycle-summary", cycleId],
+      });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    mutation.mutate()
+    event.preventDefault();
+    setError(null);
+    mutation.mutate();
   }
+
+  const items = listQuery.data?.items ?? [];
+  const total = listQuery.data?.meta.total ?? 0;
 
   return (
     <section className="detail-section">
@@ -115,21 +129,47 @@ function ExpensesSection({
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.data?.items.length ? (
-        <ul className="simple-list">
-          {listQuery.data.items.map((row) => (
-            <li key={row.id}>
-              <strong>
-                {categoryLabel(row.category)} · {row.amount}
-              </strong>
-              <span className="muted"> · {row.spent_at}</span>
-              {row.note ? <div className="muted">{row.note}</div> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {listQuery.isLoading ? (
+        <LoadingState message="Loading expenses…" />
+      ) : null}
+      {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No expenses yet.</p>
-      )}
+      ) : null}
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((row, index) => (
+                  <tr key={row.id}>
+                    <td>{offset + index + 1}</td>
+                    <td>{row.spent_at}</td>
+                    <td>{categoryLabel(row.category)}</td>
+                    <td>{row.amount}</td>
+                    <td>{row.note ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls
+            total={total}
+            limit={DEFAULT_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            label="Crop expenses"
+          />
+        </>
+      ) : null}
 
       {canAdd ? (
         <>
@@ -151,7 +191,9 @@ function ExpensesSection({
                 <select
                   id="expense_category"
                   value={category}
-                  onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
+                  onChange={(e) =>
+                    setCategory(e.target.value as ExpenseCategory)
+                  }
                 >
                   {EXPENSE_CATEGORIES.map((item) => (
                     <option key={item.value} value={item.value}>
@@ -181,43 +223,50 @@ function ExpensesSection({
                 />
               </div>
             </div>
-            <button className="btn btn-primary" type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Saving…' : 'Add expense'}
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Saving…" : "Add expense"}
             </button>
           </form>
         </>
       ) : (
-        <p className="muted">Expenses cannot be added while this cycle is archived.</p>
+        <p className="muted">
+          Expenses cannot be added while this cycle is archived.
+        </p>
       )}
     </section>
-  )
+  );
 }
 
 function HarvestsSection({
   cycleId,
   canAdd,
 }: {
-  cycleId: string
-  canAdd: boolean
+  cycleId: string;
+  canAdd: boolean;
 }) {
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
   const [harvestedAt, setHarvestedAt] = useState(() =>
     new Date().toISOString().slice(0, 10),
-  )
-  const [quantity, setQuantity] = useState('')
-  const [unit, setUnit] = useState('kg')
-  const [saleAmount, setSaleAmount] = useState('')
-  const [note, setNote] = useState('')
+  );
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("kg");
+  const [saleAmount, setSaleAmount] = useState("");
+  const [note, setNote] = useState("");
 
   const listQuery = useQuery({
-    queryKey: ['harvests', cycleId],
-    queryFn: () => listHarvests(cycleId, { limit: 50 }),
-  })
+    queryKey: ["harvests", cycleId, offset],
+    queryFn: () => listHarvests(cycleId, { limit: DEFAULT_PAGE_SIZE, offset }),
+  });
   const unitsQuery = useQuery({
-    queryKey: ['suggested-units'],
+    queryKey: ["suggested-units"],
     queryFn: getSuggestedUnits,
-  })
+  });
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -229,26 +278,30 @@ function HarvestsSection({
         note: note.trim() || null,
       }),
     onSuccess: async () => {
-      setQuantity('')
-      setSaleAmount('')
-      setNote('')
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['harvests', cycleId] })
+      setQuantity("");
+      setSaleAmount("");
+      setNote("");
+      setError(null);
+      setOffset(0);
+      await queryClient.invalidateQueries({ queryKey: ["harvests", cycleId] });
       await queryClient.invalidateQueries({
-        queryKey: ['crop-cycle-summary', cycleId],
-      })
+        queryKey: ["crop-cycle-summary", cycleId],
+      });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    mutation.mutate()
+    event.preventDefault();
+    setError(null);
+    mutation.mutate();
   }
+
+  const items = listQuery.data?.items ?? [];
+  const total = listQuery.data?.meta.total ?? 0;
 
   return (
     <section className="detail-section">
@@ -256,25 +309,49 @@ function HarvestsSection({
       {listQuery.isError ? (
         <ErrorBanner message={getErrorMessage(listQuery.error)} />
       ) : null}
-      {listQuery.data?.items.length ? (
-        <ul className="simple-list">
-          {listQuery.data.items.map((row) => (
-            <li key={row.id}>
-              <strong>
-                {row.quantity} {row.unit}
-              </strong>
-              <span className="muted">
-                {' '}
-                · {row.harvested_at}
-                {row.sale_amount != null ? ` · sale ${row.sale_amount}` : ''}
-              </span>
-              {row.note ? <div className="muted">{row.note}</div> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {listQuery.isLoading ? (
+        <LoadingState message="Loading harvests…" />
+      ) : null}
+      {!listQuery.isLoading && items.length === 0 ? (
         <p className="muted">No harvests yet.</p>
-      )}
+      ) : null}
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Sale total</th>
+                  <th scope="col">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((row, index) => (
+                  <tr key={row.id}>
+                    <td>{offset + index + 1}</td>
+                    <td>{row.harvested_at}</td>
+                    <td>{row.quantity}</td>
+                    <td>{row.unit}</td>
+                    <td>{row.sale_amount ?? "—"}</td>
+                    <td>{row.note ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls
+            total={total}
+            limit={DEFAULT_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            label="Harvests"
+          />
+        </>
+      ) : null}
 
       {canAdd ? (
         <>
@@ -336,116 +413,128 @@ function HarvestsSection({
                 <option key={u} value={u} />
               ))}
             </datalist>
-            <button className="btn btn-primary" type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Saving…' : 'Add harvest'}
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Saving…" : "Add harvest"}
             </button>
           </form>
         </>
       ) : (
-        <p className="muted">Harvests cannot be added while this cycle is archived.</p>
+        <p className="muted">
+          Harvests cannot be added while this cycle is archived.
+        </p>
       )}
     </section>
-  )
+  );
 }
 
 export function CropCycleDetailPage() {
-  const { cycleId = '' } = useParams()
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [editing, setEditing] = useState(false)
+  const { cycleId = "" } = useParams();
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
 
   const cycleQuery = useQuery({
-    queryKey: ['crop-cycle', cycleId],
+    queryKey: ["crop-cycle", cycleId],
     queryFn: () => getCropCycle(cycleId),
     enabled: Boolean(cycleId),
-  })
+  });
 
   const namesQuery = useQuery({
-    queryKey: ['crop-names', { includeArchived: true }],
+    queryKey: ["crop-names", { includeArchived: true }],
     queryFn: () => listCropNames({ include_archived: true, limit: 100 }),
-  })
+  });
 
   const updateMutation = useMutation({
-    mutationFn: (input: CropCycleCreateInput) => updateCropCycle(cycleId, input),
+    mutationFn: (input: CropCycleCreateInput) =>
+      updateCropCycle(cycleId, input),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['crop-cycle', cycleId] })
-      await queryClient.invalidateQueries({ queryKey: ['crop-cycles'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["crop-cycle", cycleId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["crop-cycles"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   const archiveMutation = useMutation({
     mutationFn: () => archiveCropCycle(cycleId),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['crop-cycle', cycleId] })
-      await queryClient.invalidateQueries({ queryKey: ['crop-cycles'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["crop-cycle", cycleId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["crop-cycles"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
-  if (cycleQuery.isLoading) return <p className="muted">Loading crop cycle…</p>
+  if (cycleQuery.isLoading) return <p className="muted">Loading crop cycle…</p>;
   if (cycleQuery.isError) {
-    return <ErrorBanner message={getErrorMessage(cycleQuery.error)} />
+    return <ErrorBanner message={getErrorMessage(cycleQuery.error)} />;
   }
-  const cycle = cycleQuery.data
-  if (!cycle) return null
+  const cycle = cycleQuery.data;
+  if (!cycle) return null;
 
   const cropName =
-    namesQuery.data?.items.find((name) => name.id === cycle.crop_name_id)?.name ??
-    'Crop'
-  const canWrite = !cycle.is_archived
-  const activeNames = (namesQuery.data?.items ?? []).filter((name) => !name.is_archived)
+    namesQuery.data?.items.find((name) => name.id === cycle.crop_name_id)
+      ?.name ?? "Crop";
+  const canWrite = !cycle.is_archived;
+  const activeNames = (namesQuery.data?.items ?? []).filter(
+    (name) => !name.is_archived,
+  );
   const editNames =
     activeNames.length > 0
       ? activeNames
-      : (namesQuery.data?.items ?? []).filter((name) => name.id === cycle.crop_name_id)
+      : (namesQuery.data?.items ?? []).filter(
+          (name) => name.id === cycle.crop_name_id,
+        );
 
   return (
-    <div className="panel panel-wide" style={{ margin: '0 auto' }}>
-      <p className="muted">
-        <Link to="/crops">← Back to cycles</Link>
-      </p>
+    <div className="panel panel-wide" style={{ margin: "0 auto" }}>
       <div className="page-toolbar">
         <div>
           <h1>
             {cropName}
-            {cycle.plot_name ? ` · ${cycle.plot_name}` : ''}
+            {cycle.plot_name ? ` · ${cycle.plot_name}` : ""}
           </h1>
           <p className="lede">
             Planted {cycle.planted_at}
-            {cycle.is_archived ? ' · Archived' : ''}
+            {cycle.is_archived ? " · Archived" : ""}
           </p>
         </div>
         {canWrite ? (
           <div className="toolbar-actions">
             <button
               type="button"
-              className="btn btn-ghost"
+              className={editing ? "btn btn-ghost" : "btn btn-primary"}
               onClick={() => setEditing((v) => !v)}
             >
-              {editing ? 'Cancel edit' : 'Edit'}
+              {editing ? "Cancel edit" : "Edit"}
             </button>
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-danger-ghost"
               disabled={archiveMutation.isPending}
               onClick={() => {
                 if (
                   window.confirm(
-                    'Archive this crop cycle? It will leave the active list.',
+                    "Archive this crop cycle? It will leave the active list.",
                   )
                 ) {
-                  archiveMutation.mutate()
+                  archiveMutation.mutate();
                 }
               }}
             >
@@ -478,23 +567,23 @@ export function CropCycleDetailPage() {
           </div>
           <div>
             <dt>Expected harvest</dt>
-            <dd>{cycle.expected_harvest_at ?? '—'}</dd>
+            <dd>{cycle.expected_harvest_at ?? "—"}</dd>
           </div>
           <div>
             <dt>Plot</dt>
-            <dd>{cycle.plot_name ?? '—'}</dd>
+            <dd>{cycle.plot_name ?? "—"}</dd>
           </div>
           <div>
             <dt>Area</dt>
-            <dd>{cycle.area ?? '—'}</dd>
+            <dd>{cycle.area ?? "—"}</dd>
           </div>
           <div>
             <dt>Location</dt>
-            <dd>{cycle.location ?? '—'}</dd>
+            <dd>{cycle.location ?? "—"}</dd>
           </div>
           <div className="detail-span">
             <dt>Notes</dt>
-            <dd>{cycle.notes ?? '—'}</dd>
+            <dd>{cycle.notes ?? "—"}</dd>
           </div>
         </dl>
       )}
@@ -507,5 +596,5 @@ export function CropCycleDetailPage() {
       <ExpensesSection cycleId={cycle.id} canAdd={canWrite} />
       <HarvestsSection cycleId={cycle.id} canAdd={canWrite} />
     </div>
-  )
+  );
 }

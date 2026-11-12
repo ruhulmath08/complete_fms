@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from "react";
 import {
   ENTRY_CATEGORIES,
   ENTRY_TYPES,
@@ -7,23 +7,23 @@ import {
   type LedgerEntry,
   type LedgerEntryCreateInput,
   type LedgerEntryUpdateInput,
-} from '../types'
+} from "../types";
 
 type LedgerEntryFormProps = {
-  mode: 'create' | 'edit'
-  initial?: LedgerEntry
-  submitLabel: string
-  pending?: boolean
-  onSubmit: (input: LedgerEntryCreateInput | LedgerEntryUpdateInput) => void
-}
+  mode: "create" | "edit";
+  initial?: LedgerEntry;
+  submitLabel: string;
+  pending?: boolean;
+  onSubmit: (input: LedgerEntryCreateInput | LedgerEntryUpdateInput) => void;
+};
 
 function emptyOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed ? trimmed : null
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
 }
 
 function todayIsoDate(): string {
-  return new Date().toISOString().slice(0, 10)
+  return new Date().toISOString().slice(0, 10);
 }
 
 export function LedgerEntryForm({
@@ -34,20 +34,20 @@ export function LedgerEntryForm({
   onSubmit,
 }: LedgerEntryFormProps) {
   const [entryType, setEntryType] = useState<EntryType>(
-    initial?.entry_type ?? 'expense',
-  )
+    initial?.entry_type ?? "expense",
+  );
   const [occurredAt, setOccurredAt] = useState(
     initial?.occurred_at ?? todayIsoDate(),
-  )
+  );
   const [category, setCategory] = useState<EntryCategory>(
-    initial?.category ?? 'other',
-  )
-  const [amount, setAmount] = useState(initial?.amount ?? '')
-  const [unit, setUnit] = useState(initial?.unit ?? '')
-  const [note, setNote] = useState(initial?.note ?? '')
+    initial?.category ?? "other",
+  );
+  const [amount, setAmount] = useState(initial?.amount ?? "");
+  const [unit, setUnit] = useState(initial?.unit ?? "");
+  const [note, setNote] = useState(initial?.note ?? "");
 
   function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
     const payload = {
       entry_type: entryType,
       occurred_at: occurredAt,
@@ -55,8 +55,8 @@ export function LedgerEntryForm({
       amount,
       unit: emptyOrNull(unit),
       note: emptyOrNull(note),
-    }
-    onSubmit(payload)
+    };
+    onSubmit(payload);
   }
 
   return (
@@ -134,15 +134,15 @@ export function LedgerEntryForm({
         />
       </div>
 
-      {mode === 'create' ? (
+      {mode === "create" ? (
         <p className="muted">
           Crop-cycle costs belong in Crops, not this general ledger.
         </p>
       ) : null}
 
       <button className="btn btn-primary" type="submit" disabled={pending}>
-        {pending ? 'Saving…' : submitLabel}
+        {pending ? "Saving…" : submitLabel}
       </button>
     </form>
-  )
+  );
 }

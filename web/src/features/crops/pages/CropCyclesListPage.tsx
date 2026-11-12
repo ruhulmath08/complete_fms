@@ -1,36 +1,55 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { listCropCycles, listCropNames } from '../api/cropsApi'
-import { getErrorMessage } from '../../../shared/api/errors'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { listCropCycles, listCropNames } from "../api/cropsApi";
+import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
+import { getErrorMessage } from "../../../shared/api/errors";
+import { EmptyState } from "../../../shared/ui/EmptyState";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
+import { LoadingState } from "../../../shared/ui/LoadingState";
+import { PaginationControls } from "../../../shared/ui/PaginationControls";
 
 export function CropCyclesListPage() {
-  const [includeArchived, setIncludeArchived] = useState(false)
+  const [includeArchived, setIncludeArchived] = useState(false);
+  const [offset, setOffset] = useState(0);
   const cyclesQuery = useQuery({
-    queryKey: ['crop-cycles', { includeArchived }],
+    queryKey: ["crop-cycles", { includeArchived, offset }],
     queryFn: () =>
-      listCropCycles({ include_archived: includeArchived, limit: 100 }),
-  })
+      listCropCycles({
+        include_archived: includeArchived,
+        limit: DEFAULT_PAGE_SIZE,
+        offset,
+      }),
+  });
   const namesQuery = useQuery({
-    queryKey: ['crop-names', { includeArchived: true }],
+    queryKey: ["crop-names", { includeArchived: true }],
     queryFn: () => listCropNames({ include_archived: true, limit: 100 }),
-  })
+  });
 
   const nameById = useMemo(() => {
-    const map = new Map<string, string>()
+    const map = new Map<string, string>();
     for (const name of namesQuery.data?.items ?? []) {
-      map.set(name.id, name.name)
+      map.set(name.id, name.name);
     }
-    return map
-  }, [namesQuery.data])
+    return map;
+  }, [namesQuery.data]);
+
+  function onIncludeArchivedChange(checked: boolean) {
+    setIncludeArchived(checked);
+    setOffset(0);
+  }
+
+  const items = cyclesQuery.data?.items ?? [];
+  const total = cyclesQuery.data?.meta.total ?? 0;
 
   return (
-    <div className="panel panel-wide" style={{ margin: '0 auto' }}>
+    <div className="panel panel-wide" style={{ margin: "0 auto" }}>
       <div className="page-toolbar">
         <div>
           <h1>Crops</h1>
-          <p className="lede">Planting cycles, expenses, harvests, and results.</p>
+          <p className="lede">
+            Planting cycles, expenses, harvests, and results.
+          </p>
         </div>
         <div className="toolbar-actions">
           <Link className="btn btn-ghost" to="/crops/names">
@@ -46,7 +65,7 @@ export function CropCyclesListPage() {
         <input
           type="checkbox"
           checked={includeArchived}
-          onChange={(e) => setIncludeArchived(e.target.checked)}
+          onChange={(e) => onIncludeArchivedChange(e.target.checked)}
         />
         Include archived
       </label>
@@ -54,37 +73,60 @@ export function CropCyclesListPage() {
       {cyclesQuery.isError ? (
         <ErrorBanner message={getErrorMessage(cyclesQuery.error)} />
       ) : null}
-      {cyclesQuery.isLoading ? <p className="muted">Loading crop cycles…</p> : null}
-
-      {cyclesQuery.data && cyclesQuery.data.items.length === 0 ? (
-        <p className="muted">
-          No crop cycles yet. Add a crop name, then start your first cycle.
-        </p>
+      {cyclesQuery.isLoading ? (
+        <LoadingState message="Loading crop cycles…" />
       ) : null}
 
-      {cyclesQuery.data && cyclesQuery.data.items.length > 0 ? (
-        <ul className="record-list">
-          {cyclesQuery.data.items.map((cycle) => (
-            <li key={cycle.id}>
-              <Link to={`/crops/cycles/${cycle.id}`} className="record-card">
-                <div>
-                  <strong>
-                    {nameById.get(cycle.crop_name_id) ?? 'Crop'}
-                    {cycle.plot_name ? ` · ${cycle.plot_name}` : ''}
-                  </strong>
-                  {cycle.is_archived ? (
-                    <span className="badge badge-muted">Archived</span>
-                  ) : null}
-                </div>
-                <div className="muted">
-                  Planted {cycle.planted_at}
-                  {cycle.location ? ` · ${cycle.location}` : ''}
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {!cyclesQuery.isLoading && !cyclesQuery.isError && items.length === 0 ? (
+        <EmptyState
+          message="No crop cycles yet. Add a crop name, then start your first cycle."
+          action={
+            <Link className="btn btn-primary" to="/crops/cycles/new">
+              Add cycle
+            </Link>
+          }
+        />
+      ) : null}
+
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Crop</th>
+                  <th scope="col">Plot</th>
+                  <th scope="col">Planted</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((cycle) => (
+                  <tr key={cycle.id}>
+                    <td>
+                      <Link to={`/crops/cycles/${cycle.id}`}>
+                        {nameById.get(cycle.crop_name_id) ?? "Crop"}
+                      </Link>
+                    </td>
+                    <td>{cycle.plot_name ?? "—"}</td>
+                    <td>{cycle.planted_at}</td>
+                    <td>{cycle.location ?? "—"}</td>
+                    <td>{cycle.is_archived ? "Archived" : "Active"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls
+            total={total}
+            limit={DEFAULT_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            label="Crop cycles"
+          />
+        </>
       ) : null}
     </div>
-  )
+  );
 }

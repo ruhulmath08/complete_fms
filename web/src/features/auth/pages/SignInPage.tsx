@@ -1,34 +1,34 @@
-import { useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { ApiError, getErrorMessage } from '../../../shared/api/errors'
-import { useAuth } from '../../../shared/auth/useAuth'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+import { useState, type FormEvent } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { ApiError, getErrorMessage } from "../../../shared/api/errors";
+import { useAuth } from "../../../shared/auth/useAuth";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
 
 export function SignInPage() {
-  const { isSignedIn, signIn } = useAuth()
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [submitting, setSubmitting] = useState(false)
+  const { isSignedIn, signIn } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  if (isSignedIn) return <Navigate to="/profile" replace />
+  if (isSignedIn) return <Navigate to="/profile" replace />;
 
   async function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    setSubmitting(true)
+    event.preventDefault();
+    setError(null);
+    setSubmitting(true);
     try {
-      await signIn(email, password)
-      navigate('/profile')
+      await signIn(email, password);
+      navigate("/profile");
     } catch (err) {
-      if (err instanceof ApiError && err.code === 'INVALID_CREDENTIALS') {
-        setError(err.message)
+      if (err instanceof ApiError && err.code === "INVALID_CREDENTIALS") {
+        setError(err.message);
       } else {
-        setError(getErrorMessage(err))
+        setError(getErrorMessage(err));
       }
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
   }
 
@@ -64,14 +64,18 @@ export function SignInPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="btn btn-primary" type="submit" disabled={submitting}>
-            {submitting ? 'Signing in…' : 'Sign in'}
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={submitting}
+          >
+            {submitting ? "Signing in…" : "Sign in"}
           </button>
         </form>
-        <p className="muted" style={{ marginTop: '1.25rem' }}>
+        <p className="muted" style={{ marginTop: "1.25rem" }}>
           New here? <Link to="/signup">Create an account</Link>
         </p>
       </div>
     </div>
-  )
+  );
 }

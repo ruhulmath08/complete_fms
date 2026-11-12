@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap");
 
 :root {
   --color-bg: #f3f6f1;
@@ -19,6 +19,8 @@
   --shell-header-height: 3.75rem;
   --shell-footer-height: 3rem;
   --shadow-soft: 0 12px 40px rgba(28, 42, 31, 0.08);
+  --scrim-bg: rgba(28, 42, 31, 0.45);
+  --focus-ring: 2px solid var(--color-primary);
   --radius: 14px;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -26,12 +28,17 @@
   --space-4: 1rem;
   --space-5: 1.5rem;
   --space-6: 2rem;
-  --font-sans: 'DM Sans', sans-serif;
-  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
   --max-width: 28rem;
   --shell-width: 96rem;
   color: var(--color-ink);
-  background: radial-gradient(circle at top left, #e7efe4 0%, var(--color-bg) 45%, #eef2ea 100%);
+  background: radial-gradient(
+    circle at top left,
+    #e7efe4 0%,
+    var(--color-bg) 45%,
+    #eef2ea 100%
+  );
   font-family: var(--font-sans);
   line-height: 1.5;
   font-synthesis: none;
@@ -66,6 +73,35 @@ textarea {
 
 #root {
   min-height: 100vh;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: var(--space-3);
+  z-index: 100;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  transform: translateY(-200%);
+  transition: transform 0.15s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.app-topbar__icon-btn:focus-visible,
+.app-topbar__profile:focus-visible,
+.app-topbar__brand-link:focus-visible,
+.app-sidebar__link:focus-visible,
+.app-topbar__profile-menu-item:focus-visible,
+.btn:focus-visible,
+a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .app-shell {
@@ -383,9 +419,30 @@ textarea {
   flex-wrap: wrap;
 }
 
+.app-shell__scrim {
+  display: none;
+}
+
 @media (max-width: 800px) {
   .app-shell__body {
     grid-template-columns: 1fr;
+  }
+
+  .app-shell:not(.app-shell--collapsed) .app-shell__scrim {
+    display: block;
+    position: fixed;
+    inset: var(--shell-header-height) 0 0 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: var(--scrim-bg);
+    z-index: 15;
+    cursor: pointer;
+  }
+
+  .app-shell:not(.app-shell--collapsed) .app-shell__main {
+    pointer-events: none;
+    user-select: none;
   }
 
   .app-shell:not(.app-shell--collapsed) .app-sidebar {
@@ -395,6 +452,28 @@ textarea {
     z-index: 20;
     box-shadow: var(--shadow-soft);
   }
+}
+
+.loading-state {
+  color: var(--color-muted);
+  margin: var(--space-4) 0;
+}
+
+.empty-state {
+  margin: var(--space-5) 0;
+  padding: var(--space-5);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
+}
+
+.empty-state__message {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.empty-state__action {
+  margin-top: var(--space-3);
 }
 
 .auth-layout {
@@ -701,6 +780,58 @@ textarea {
 .btn-icon:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+.btn-danger-ghost {
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid
+    color-mix(in srgb, var(--color-danger) 35%, var(--color-border));
+}
+
+.btn-danger-ghost:hover:not(:disabled) {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+}
+
+.detail-chrome {
+  display: grid;
+  grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  margin: var(--space-4) 0 var(--space-5);
+}
+
+.detail-chrome__media {
+  min-width: 0;
+}
+
+.detail-chrome__image,
+.detail-chrome__placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-bg) 70%, var(--color-surface));
+}
+
+.detail-chrome__placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.detail-chrome__info {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .detail-chrome {
+    grid-template-columns: 1fr;
+  }
 }
 
 .btn-icon-danger:hover:not(:disabled) {

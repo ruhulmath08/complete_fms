@@ -1,16 +1,16 @@
-import { useState, type FormEvent } from 'react'
-import type { CropName, CropNameCreateInput } from '../types'
+import { useState, type FormEvent } from "react";
+import type { CropName, CropNameCreateInput } from "../types";
 
 type CropNameFormProps = {
-  initial?: CropName
-  submitLabel: string
-  pending?: boolean
-  onSubmit: (input: CropNameCreateInput) => void
-}
+  initial?: CropName;
+  submitLabel: string;
+  pending?: boolean;
+  onSubmit: (input: CropNameCreateInput) => void;
+};
 
 function emptyOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed ? trimmed : null
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
 }
 
 export function CropNameForm({
@@ -19,15 +19,15 @@ export function CropNameForm({
   pending,
   onSubmit,
 }: CropNameFormProps) {
-  const [name, setName] = useState(initial?.name ?? '')
-  const [notes, setNotes] = useState(initial?.notes ?? '')
+  const [name, setName] = useState(initial?.name ?? "");
+  const [notes, setNotes] = useState(initial?.notes ?? "");
 
   function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
     onSubmit({
       name: name.trim(),
       notes: emptyOrNull(notes),
-    })
+    });
   }
 
   return (
@@ -51,8 +51,8 @@ export function CropNameForm({
         />
       </div>
       <button className="btn btn-primary" type="submit" disabled={pending}>
-        {pending ? 'Saving…' : submitLabel}
+        {pending ? "Saving…" : submitLabel}
       </button>
     </form>
-  )
+  );
 }

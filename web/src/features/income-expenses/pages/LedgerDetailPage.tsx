@@ -1,85 +1,87 @@
-import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   archiveLedgerEntry,
   getLedgerEntry,
   updateLedgerEntry,
-} from '../api/ledgerApi'
-import { LedgerEntryForm } from '../components/LedgerEntryForm'
+} from "../api/ledgerApi";
+import { LedgerEntryForm } from "../components/LedgerEntryForm";
 import {
   ENTRY_CATEGORIES,
   ENTRY_TYPES,
   type LedgerEntryUpdateInput,
-} from '../types'
-import { ApiError, getErrorMessage } from '../../../shared/api/errors'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+} from "../types";
+import { ApiError, getErrorMessage } from "../../../shared/api/errors";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
 
 function typeLabel(value: string): string {
-  return ENTRY_TYPES.find((item) => item.value === value)?.label ?? value
+  return ENTRY_TYPES.find((item) => item.value === value)?.label ?? value;
 }
 
 function categoryLabel(value: string): string {
-  return ENTRY_CATEGORIES.find((item) => item.value === value)?.label ?? value
+  return ENTRY_CATEGORIES.find((item) => item.value === value)?.label ?? value;
 }
 
 export function LedgerDetailPage() {
-  const { entryId = '' } = useParams()
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [editing, setEditing] = useState(false)
+  const { entryId = "" } = useParams();
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
 
   const entryQuery = useQuery({
-    queryKey: ['ledger-entry', entryId],
+    queryKey: ["ledger-entry", entryId],
     queryFn: () => getLedgerEntry(entryId),
     enabled: Boolean(entryId),
-  })
+  });
 
   const updateMutation = useMutation({
     mutationFn: (input: LedgerEntryUpdateInput) =>
       updateLedgerEntry(entryId, input),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['ledger-entry', entryId] })
-      await queryClient.invalidateQueries({ queryKey: ['ledger-entries'] })
-      await queryClient.invalidateQueries({ queryKey: ['ledger-totals'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["ledger-entry", entryId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["ledger-entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["ledger-totals"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   const archiveMutation = useMutation({
     mutationFn: () => archiveLedgerEntry(entryId),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['ledger-entry', entryId] })
-      await queryClient.invalidateQueries({ queryKey: ['ledger-entries'] })
-      await queryClient.invalidateQueries({ queryKey: ['ledger-totals'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["ledger-entry", entryId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["ledger-entries"] });
+      await queryClient.invalidateQueries({ queryKey: ["ledger-totals"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
-  if (entryQuery.isLoading) return <p className="muted">Loading ledger entry…</p>
+  if (entryQuery.isLoading)
+    return <p className="muted">Loading ledger entry…</p>;
   if (entryQuery.isError) {
-    return <ErrorBanner message={getErrorMessage(entryQuery.error)} />
+    return <ErrorBanner message={getErrorMessage(entryQuery.error)} />;
   }
-  const entry = entryQuery.data
-  if (!entry) return null
+  const entry = entryQuery.data;
+  if (!entry) return null;
 
-  const canWrite = !entry.is_archived
+  const canWrite = !entry.is_archived;
 
   return (
-    <div className="panel panel-wide" style={{ margin: '0 auto' }}>
-      <p className="muted">
-        <Link to="/ledger">← Back to ledger</Link>
-      </p>
+    <div className="panel panel-wide" style={{ margin: "0 auto" }}>
       <div className="page-toolbar">
         <div>
           <h1>
@@ -87,29 +89,29 @@ export function LedgerDetailPage() {
           </h1>
           <p className="lede">
             {entry.occurred_at} · {categoryLabel(entry.category)}
-            {entry.is_archived ? ' · Archived' : ''}
+            {entry.is_archived ? " · Archived" : ""}
           </p>
         </div>
         {canWrite ? (
           <div className="toolbar-actions">
             <button
               type="button"
-              className="btn btn-ghost"
+              className={editing ? "btn btn-ghost" : "btn btn-primary"}
               onClick={() => setEditing((v) => !v)}
             >
-              {editing ? 'Cancel edit' : 'Edit'}
+              {editing ? "Cancel edit" : "Edit"}
             </button>
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-danger-ghost"
               disabled={archiveMutation.isPending}
               onClick={() => {
                 if (
                   window.confirm(
-                    'Archive this ledger entry? It will leave the active list and totals.',
+                    "Archive this ledger entry? It will leave the active list and totals.",
                   )
                 ) {
-                  archiveMutation.mutate()
+                  archiveMutation.mutate();
                 }
               }}
             >
@@ -156,11 +158,11 @@ export function LedgerDetailPage() {
           </div>
           <div>
             <dt>Unit</dt>
-            <dd>{entry.unit ?? '—'}</dd>
+            <dd>{entry.unit ?? "—"}</dd>
           </div>
           <div className="detail-span">
             <dt>Note</dt>
-            <dd>{entry.note ?? '—'}</dd>
+            <dd>{entry.note ?? "—"}</dd>
           </div>
         </dl>
       )}
@@ -169,5 +171,5 @@ export function LedgerDetailPage() {
         <p className="muted">This entry is archived and cannot be edited.</p>
       ) : null}
     </div>
-  )
+  );
 }

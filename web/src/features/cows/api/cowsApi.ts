@@ -1,4 +1,4 @@
-import { apiRequest } from '../../../shared/api/client'
+import { apiRequest } from "../../../shared/api/client";
 import type {
   Cow,
   CowCreateInput,
@@ -10,66 +10,69 @@ import type {
   MilkProduction,
   MilkUpdateInput,
   Page,
-} from '../types'
+} from "../types";
 
 export async function listCows(params?: {
-  limit?: number
-  offset?: number
-  include_archived?: boolean
+  limit?: number;
+  offset?: number;
+  include_archived?: boolean;
 }): Promise<Page<Cow>> {
-  const search = new URLSearchParams()
-  if (params?.limit != null) search.set('limit', String(params.limit))
-  if (params?.offset != null) search.set('offset', String(params.offset))
-  if (params?.include_archived) search.set('include_archived', 'true')
-  const qs = search.toString()
-  return apiRequest<Page<Cow>>(`/api/v1/cows${qs ? `?${qs}` : ''}`)
+  const search = new URLSearchParams();
+  if (params?.limit != null) search.set("limit", String(params.limit));
+  if (params?.offset != null) search.set("offset", String(params.offset));
+  if (params?.include_archived) search.set("include_archived", "true");
+  const qs = search.toString();
+  return apiRequest<Page<Cow>>(`/api/v1/cows${qs ? `?${qs}` : ""}`);
 }
 
 export async function getCow(cowId: string): Promise<Cow> {
-  return apiRequest<Cow>(`/api/v1/cows/${cowId}`)
+  return apiRequest<Cow>(`/api/v1/cows/${cowId}`);
 }
 
 export async function createCow(input: CowCreateInput): Promise<Cow> {
-  return apiRequest<Cow>('/api/v1/cows', {
-    method: 'POST',
+  return apiRequest<Cow>("/api/v1/cows", {
+    method: "POST",
     body: JSON.stringify(input),
-  })
+  });
 }
 
-export async function updateCow(cowId: string, input: CowUpdateInput): Promise<Cow> {
+export async function updateCow(
+  cowId: string,
+  input: CowUpdateInput,
+): Promise<Cow> {
   return apiRequest<Cow>(`/api/v1/cows/${cowId}`, {
-    method: 'PATCH',
+    method: "PATCH",
     body: JSON.stringify(input),
-  })
+  });
 }
 
 export async function archiveCow(cowId: string): Promise<Cow> {
   return apiRequest<Cow>(`/api/v1/cows/${cowId}/archive`, {
-    method: 'POST',
-  })
+    method: "POST",
+  });
 }
 
 export async function uploadCowImage(cowId: string, image: File): Promise<Cow> {
-  const form = new FormData()
-  form.set('image', image)
+  const form = new FormData();
+  form.set("image", image);
   return apiRequest<Cow>(`/api/v1/cows/${cowId}/image`, {
-    method: 'PUT',
+    method: "PUT",
     body: form,
     formData: true,
-  })
+  });
 }
 
 export async function listMilkProductions(
   cowId: string,
   params?: { limit?: number; offset?: number },
 ): Promise<Page<MilkProduction>> {
-  const search = new URLSearchParams()
-  search.set('limit', String(params?.limit ?? 10))
-  if (params?.offset != null) search.set('offset', String(params.offset))
-  const qs = search.toString()
+  const search = new URLSearchParams();
+  search.set("limit", String(params?.limit ?? 10));
+  if (params?.offset != null) search.set("offset", String(params.offset));
+  const qs = search.toString();
   return apiRequest<Page<MilkProduction>>(
     `/api/v1/cows/${cowId}/milk-productions?${qs}`,
-  )
+  );
 }
 
 export async function addMilkProduction(
@@ -77,9 +80,9 @@ export async function addMilkProduction(
   input: MilkCreateInput,
 ): Promise<MilkProduction> {
   return apiRequest<MilkProduction>(`/api/v1/cows/${cowId}/milk-productions`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(input),
-  })
+  });
 }
 
 export async function updateMilkProduction(
@@ -90,10 +93,10 @@ export async function updateMilkProduction(
   return apiRequest<MilkProduction>(
     `/api/v1/cows/${cowId}/milk-productions/${milkId}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(input),
     },
-  )
+  );
 }
 
 export async function deleteMilkProduction(
@@ -101,19 +104,19 @@ export async function deleteMilkProduction(
   milkId: string,
 ): Promise<void> {
   await apiRequest<void>(`/api/v1/cows/${cowId}/milk-productions/${milkId}`, {
-    method: 'DELETE',
-  })
+    method: "DELETE",
+  });
 }
 
 export async function listFeedings(
   cowId: string,
   params?: { limit?: number; offset?: number },
 ): Promise<Page<CowFeeding>> {
-  const search = new URLSearchParams()
-  search.set('limit', String(params?.limit ?? 10))
-  if (params?.offset != null) search.set('offset', String(params.offset))
-  const qs = search.toString()
-  return apiRequest<Page<CowFeeding>>(`/api/v1/cows/${cowId}/feedings?${qs}`)
+  const search = new URLSearchParams();
+  search.set("limit", String(params?.limit ?? 10));
+  if (params?.offset != null) search.set("offset", String(params.offset));
+  const qs = search.toString();
+  return apiRequest<Page<CowFeeding>>(`/api/v1/cows/${cowId}/feedings?${qs}`);
 }
 
 export async function addFeeding(
@@ -121,9 +124,9 @@ export async function addFeeding(
   input: FeedingCreateInput,
 ): Promise<CowFeeding> {
   return apiRequest<CowFeeding>(`/api/v1/cows/${cowId}/feedings`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(input),
-  })
+  });
 }
 
 export async function updateFeeding(
@@ -132,9 +135,9 @@ export async function updateFeeding(
   input: FeedingUpdateInput,
 ): Promise<CowFeeding> {
   return apiRequest<CowFeeding>(`/api/v1/cows/${cowId}/feedings/${feedingId}`, {
-    method: 'PATCH',
+    method: "PATCH",
     body: JSON.stringify(input),
-  })
+  });
 }
 
 export async function deleteFeeding(
@@ -142,13 +145,16 @@ export async function deleteFeeding(
   feedingId: string,
 ): Promise<void> {
   await apiRequest<void>(`/api/v1/cows/${cowId}/feedings/${feedingId}`, {
-    method: 'DELETE',
-  })
+    method: "DELETE",
+  });
 }
 
 export async function getSuggestedUnits(): Promise<string[]> {
-  const data = await apiRequest<{ items: string[] }>('/api/v1/config/suggested-units', {
-    auth: false,
-  })
-  return data.items
+  const data = await apiRequest<{ items: string[] }>(
+    "/api/v1/config/suggested-units",
+    {
+      auth: false,
+    },
+  );
+  return data.items;
 }

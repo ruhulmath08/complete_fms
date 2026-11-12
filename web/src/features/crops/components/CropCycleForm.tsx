@@ -1,17 +1,17 @@
-import { useState, type FormEvent } from 'react'
-import type { CropCycle, CropCycleCreateInput, CropName } from '../types'
+import { useState, type FormEvent } from "react";
+import type { CropCycle, CropCycleCreateInput, CropName } from "../types";
 
 type CropCycleFormProps = {
-  initial?: CropCycle
-  cropNames: CropName[]
-  submitLabel: string
-  pending?: boolean
-  onSubmit: (input: CropCycleCreateInput) => void
-}
+  initial?: CropCycle;
+  cropNames: CropName[];
+  submitLabel: string;
+  pending?: boolean;
+  onSubmit: (input: CropCycleCreateInput) => void;
+};
 
 function emptyOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed ? trimmed : null
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
 }
 
 export function CropCycleForm({
@@ -22,19 +22,19 @@ export function CropCycleForm({
   onSubmit,
 }: CropCycleFormProps) {
   const [cropNameId, setCropNameId] = useState(
-    initial?.crop_name_id ?? cropNames[0]?.id ?? '',
-  )
-  const [plantedAt, setPlantedAt] = useState(initial?.planted_at ?? '')
-  const [plotName, setPlotName] = useState(initial?.plot_name ?? '')
-  const [area, setArea] = useState(initial?.area ?? '')
-  const [location, setLocation] = useState(initial?.location ?? '')
+    initial?.crop_name_id ?? cropNames[0]?.id ?? "",
+  );
+  const [plantedAt, setPlantedAt] = useState(initial?.planted_at ?? "");
+  const [plotName, setPlotName] = useState(initial?.plot_name ?? "");
+  const [area, setArea] = useState(initial?.area ?? "");
+  const [location, setLocation] = useState(initial?.location ?? "");
   const [expectedHarvestAt, setExpectedHarvestAt] = useState(
-    initial?.expected_harvest_at ?? '',
-  )
-  const [notes, setNotes] = useState(initial?.notes ?? '')
+    initial?.expected_harvest_at ?? "",
+  );
+  const [notes, setNotes] = useState(initial?.notes ?? "");
 
   function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
     onSubmit({
       crop_name_id: cropNameId,
       planted_at: plantedAt,
@@ -43,7 +43,7 @@ export function CropCycleForm({
       location: emptyOrNull(location),
       expected_harvest_at: emptyOrNull(expectedHarvestAt),
       notes: emptyOrNull(notes),
-    })
+    });
   }
 
   return (
@@ -133,8 +133,8 @@ export function CropCycleForm({
         type="submit"
         disabled={pending || !cropNameId}
       >
-        {pending ? 'Saving…' : submitLabel}
+        {pending ? "Saving…" : submitLabel}
       </button>
     </form>
-  )
+  );
 }

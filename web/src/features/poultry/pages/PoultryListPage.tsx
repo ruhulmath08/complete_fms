@@ -1,24 +1,43 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { listPoultryGroups } from '../api/poultryApi'
-import { getErrorMessage } from '../../../shared/api/errors'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { listPoultryGroups } from "../api/poultryApi";
+import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
+import { getErrorMessage } from "../../../shared/api/errors";
+import { EmptyState } from "../../../shared/ui/EmptyState";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
+import { LoadingState } from "../../../shared/ui/LoadingState";
+import { PaginationControls } from "../../../shared/ui/PaginationControls";
 
 export function PoultryListPage() {
-  const [includeArchived, setIncludeArchived] = useState(false)
+  const [includeArchived, setIncludeArchived] = useState(false);
+  const [offset, setOffset] = useState(0);
   const query = useQuery({
-    queryKey: ['poultry-groups', { includeArchived }],
+    queryKey: ["poultry-groups", { includeArchived, offset }],
     queryFn: () =>
-      listPoultryGroups({ include_archived: includeArchived, limit: 100 }),
-  })
+      listPoultryGroups({
+        include_archived: includeArchived,
+        limit: DEFAULT_PAGE_SIZE,
+        offset,
+      }),
+  });
+
+  function onIncludeArchivedChange(checked: boolean) {
+    setIncludeArchived(checked);
+    setOffset(0);
+  }
+
+  const items = query.data?.items ?? [];
+  const total = query.data?.meta.total ?? 0;
 
   return (
-    <div className="panel panel-wide" style={{ margin: '0 auto' }}>
+    <div className="panel panel-wide" style={{ margin: "0 auto" }}>
       <div className="page-toolbar">
         <div>
           <h1>Poultry</h1>
-          <p className="lede">Groups for broilers, ducks, layers, and local birds.</p>
+          <p className="lede">
+            Groups for broilers, ducks, layers, and local birds.
+          </p>
         </div>
         <Link className="btn btn-primary" to="/poultry/new">
           Add group
@@ -29,37 +48,64 @@ export function PoultryListPage() {
         <input
           type="checkbox"
           checked={includeArchived}
-          onChange={(e) => setIncludeArchived(e.target.checked)}
+          onChange={(e) => onIncludeArchivedChange(e.target.checked)}
         />
         Include archived
       </label>
 
-      {query.isError ? <ErrorBanner message={getErrorMessage(query.error)} /> : null}
-      {query.isLoading ? <p className="muted">Loading poultry groups…</p> : null}
-
-      {query.data && query.data.items.length === 0 ? (
-        <p className="muted">No poultry groups yet. Add your first group to get started.</p>
+      {query.isError ? (
+        <ErrorBanner message={getErrorMessage(query.error)} />
+      ) : null}
+      {query.isLoading ? (
+        <LoadingState message="Loading poultry groups…" />
       ) : null}
 
-      {query.data && query.data.items.length > 0 ? (
-        <ul className="record-list">
-          {query.data.items.map((group) => (
-            <li key={group.id}>
-              <Link to={`/poultry/${group.id}`} className="record-card">
-                <div>
-                  <strong>{group.name}</strong>
-                  {group.is_archived ? (
-                    <span className="badge badge-muted">Archived</span>
-                  ) : null}
-                </div>
-                <div className="muted">
-                  {group.poultry_type} · {group.bird_count} birds
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {!query.isLoading && !query.isError && items.length === 0 ? (
+        <EmptyState
+          message="No poultry groups yet. Add your first group to get started."
+          action={
+            <Link className="btn btn-primary" to="/poultry/new">
+              Add group
+            </Link>
+          }
+        />
+      ) : null}
+
+      {items.length > 0 ? (
+        <>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Birds</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((group) => (
+                  <tr key={group.id}>
+                    <td>
+                      <Link to={`/poultry/${group.id}`}>{group.name}</Link>
+                    </td>
+                    <td>{group.poultry_type}</td>
+                    <td>{group.bird_count}</td>
+                    <td>{group.is_archived ? "Archived" : "Active"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls
+            total={total}
+            limit={DEFAULT_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            label="Poultry"
+          />
+        </>
       ) : null}
     </div>
-  )
+  );
 }

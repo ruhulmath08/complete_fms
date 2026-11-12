@@ -1,21 +1,21 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from "react";
 import type {
   AcquisitionSource,
   PoultryGroup,
   PoultryGroupCreateInput,
   PoultryType,
-} from '../types'
+} from "../types";
 
 type PoultryGroupFormProps = {
-  initial?: PoultryGroup
-  submitLabel: string
-  pending?: boolean
-  onSubmit: (input: PoultryGroupCreateInput) => void
-}
+  initial?: PoultryGroup;
+  submitLabel: string;
+  pending?: boolean;
+  onSubmit: (input: PoultryGroupCreateInput) => void;
+};
 
 function emptyOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed ? trimmed : null
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
 }
 
 export function PoultryGroupForm({
@@ -25,22 +25,28 @@ export function PoultryGroupForm({
   onSubmit,
 }: PoultryGroupFormProps) {
   const [poultryType, setPoultryType] = useState<PoultryType>(
-    initial?.poultry_type ?? 'layer',
-  )
-  const [name, setName] = useState(initial?.name ?? '')
+    initial?.poultry_type ?? "layer",
+  );
+  const [name, setName] = useState(initial?.name ?? "");
   const [birdCount, setBirdCount] = useState(
-    initial?.bird_count != null ? String(initial.bird_count) : '0',
-  )
-  const [dateAcquired, setDateAcquired] = useState(initial?.date_acquired ?? '')
+    initial?.bird_count != null ? String(initial.bird_count) : "0",
+  );
+  const [dateAcquired, setDateAcquired] = useState(
+    initial?.date_acquired ?? "",
+  );
   const [acquiredBy, setAcquiredBy] = useState<AcquisitionSource>(
-    initial?.acquired_by ?? 'born_on_farm',
-  )
-  const [purchaseDate, setPurchaseDate] = useState(initial?.purchase_date ?? '')
-  const [purchasePrice, setPurchasePrice] = useState(initial?.purchase_price ?? '')
-  const [notes, setNotes] = useState(initial?.notes ?? '')
+    initial?.acquired_by ?? "born_on_farm",
+  );
+  const [purchaseDate, setPurchaseDate] = useState(
+    initial?.purchase_date ?? "",
+  );
+  const [purchasePrice, setPurchasePrice] = useState(
+    initial?.purchase_price ?? "",
+  );
+  const [notes, setNotes] = useState(initial?.notes ?? "");
 
   function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
     const input: PoultryGroupCreateInput = {
       poultry_type: poultryType,
       name: name.trim(),
@@ -48,10 +54,12 @@ export function PoultryGroupForm({
       acquired_by: acquiredBy,
       date_acquired: emptyOrNull(dateAcquired),
       notes: emptyOrNull(notes),
-      purchase_date: acquiredBy === 'purchased' ? emptyOrNull(purchaseDate) : null,
-      purchase_price: acquiredBy === 'purchased' ? emptyOrNull(purchasePrice) : null,
-    }
-    onSubmit(input)
+      purchase_date:
+        acquiredBy === "purchased" ? emptyOrNull(purchaseDate) : null,
+      purchase_price:
+        acquiredBy === "purchased" ? emptyOrNull(purchasePrice) : null,
+    };
+    onSubmit(input);
   }
 
   return (
@@ -116,7 +124,7 @@ export function PoultryGroupForm({
         </select>
       </div>
 
-      {acquiredBy === 'purchased' ? (
+      {acquiredBy === "purchased" ? (
         <div className="row-2">
           <div className="field">
             <label htmlFor="purchase_date">Purchase date</label>
@@ -152,8 +160,8 @@ export function PoultryGroupForm({
       </div>
 
       <button className="btn btn-primary" type="submit" disabled={pending}>
-        {pending ? 'Saving…' : submitLabel}
+        {pending ? "Saving…" : submitLabel}
       </button>
     </form>
-  )
+  );
 }

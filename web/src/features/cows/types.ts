@@ -1,98 +1,98 @@
-export type CowPurpose = 'milk' | 'meat' | 'both'
-export type CowGender = 'female' | 'male' | 'unknown'
-export type AcquisitionSource = 'purchased' | 'born_on_farm'
+export type CowPurpose = "milk" | "meat" | "both";
+export type CowGender = "female" | "male" | "unknown";
+export type AcquisitionSource = "purchased" | "born_on_farm";
 
 export type Cow = {
-  id: string
-  tag_number: string
-  name: string | null
-  breed: string | null
-  date_of_birth: string | null
-  purpose: CowPurpose
-  gender: CowGender
-  color: string | null
-  weight: string | null
-  age: number | null
-  acquired_by: AcquisitionSource
-  purchase_date: string | null
-  purchase_price: string | null
-  notes: string | null
-  image_url: string | null
-  is_archived: boolean
-  created_at: string
-  updated_at: string
-}
+  id: string;
+  tag_number: string;
+  name: string | null;
+  breed: string | null;
+  date_of_birth: string | null;
+  purpose: CowPurpose;
+  gender: CowGender;
+  color: string | null;
+  weight: string | null;
+  age: number | null;
+  acquired_by: AcquisitionSource;
+  purchase_date: string | null;
+  purchase_price: string | null;
+  notes: string | null;
+  image_url: string | null;
+  is_archived: boolean;
+  created_at: string;
+  updated_at: string;
+};
 
 export type MilkProduction = {
-  id: string
-  cow_id: string
-  produced_at: string
-  quantity: string
-  unit: string
-  price_per_unit: string
-  total: string
-  note: string | null
-  created_at: string
-}
+  id: string;
+  cow_id: string;
+  produced_at: string;
+  quantity: string;
+  unit: string;
+  price_per_unit: string;
+  total: string;
+  note: string | null;
+  created_at: string;
+};
 
 export type CowFeeding = {
-  id: string
-  cow_id: string
-  fed_at: string
-  feed_name: string
-  quantity: string
-  unit: string
-  unit_cost: string
-  total: string
-  note: string | null
-  created_at: string
-}
+  id: string;
+  cow_id: string;
+  fed_at: string;
+  feed_name: string;
+  quantity: string;
+  unit: string;
+  unit_cost: string;
+  total: string;
+  note: string | null;
+  created_at: string;
+};
 
 export type PageMeta = {
-  total: number
-  limit: number
-  offset: number
-}
+  total: number;
+  limit: number;
+  offset: number;
+};
 
 export type Page<T> = {
-  items: T[]
-  meta: PageMeta
-}
+  items: T[];
+  meta: PageMeta;
+};
 
 export type CowCreateInput = {
-  purpose: CowPurpose
-  gender: CowGender
-  acquired_by: AcquisitionSource
-  name: string
-  breed: string
-  date_of_birth?: string | null
-  color?: string | null
-  weight?: string | null
-  age?: number | null
-  purchase_date?: string | null
-  purchase_price?: string | null
-  notes?: string | null
-}
+  purpose: CowPurpose;
+  gender: CowGender;
+  acquired_by: AcquisitionSource;
+  name: string;
+  breed: string;
+  date_of_birth?: string | null;
+  color?: string | null;
+  weight?: string | null;
+  age?: number | null;
+  purchase_date?: string | null;
+  purchase_price?: string | null;
+  notes?: string | null;
+};
 
-export type CowUpdateInput = Partial<CowCreateInput>
+export type CowUpdateInput = Partial<CowCreateInput>;
 
 export type MilkCreateInput = {
-  produced_at: string
-  quantity: string
-  unit: string
-  price_per_unit: string
-  note?: string | null
-}
+  produced_at: string;
+  quantity: string;
+  unit: string;
+  price_per_unit: string;
+  note?: string | null;
+};
 
-export type MilkUpdateInput = Partial<MilkCreateInput>
+export type MilkUpdateInput = Partial<MilkCreateInput>;
 
 export type FeedingCreateInput = {
-  fed_at: string
-  feed_name: string
-  quantity: string
-  unit: string
-  unit_cost: string
-  note?: string | null
-}
+  fed_at: string;
+  feed_name: string;
+  quantity: string;
+  unit: string;
+  unit_cost: string;
+  note?: string | null;
+};
 
-export type FeedingUpdateInput = Partial<FeedingCreateInput>
+export type FeedingUpdateInput = Partial<FeedingCreateInput>;

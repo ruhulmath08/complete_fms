@@ -1,23 +1,25 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from "react";
 import {
   INVENTORY_CATEGORIES,
   type InventoryCategory,
   type InventoryItem,
   type InventoryItemCreateInput,
   type InventoryItemUpdateInput,
-} from '../types'
+} from "../types";
 
 type InventoryItemFormProps = {
-  mode: 'create' | 'edit'
-  initial?: InventoryItem
-  submitLabel: string
-  pending?: boolean
-  onSubmit: (input: InventoryItemCreateInput | InventoryItemUpdateInput) => void
-}
+  mode: "create" | "edit";
+  initial?: InventoryItem;
+  submitLabel: string;
+  pending?: boolean;
+  onSubmit: (
+    input: InventoryItemCreateInput | InventoryItemUpdateInput,
+  ) => void;
+};
 
 function emptyOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed ? trimmed : null
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
 }
 
 export function InventoryItemForm({
@@ -27,18 +29,20 @@ export function InventoryItemForm({
   pending,
   onSubmit,
 }: InventoryItemFormProps) {
-  const [name, setName] = useState(initial?.name ?? '')
+  const [name, setName] = useState(initial?.name ?? "");
   const [category, setCategory] = useState<InventoryCategory>(
-    initial?.category ?? 'feed',
-  )
-  const [quantity, setQuantity] = useState(initial?.quantity ?? '0')
-  const [unit, setUnit] = useState(initial?.unit ?? 'kg')
-  const [pricePerUnit, setPricePerUnit] = useState(initial?.price_per_unit ?? '0')
-  const [note, setNote] = useState(initial?.note ?? '')
+    initial?.category ?? "feed",
+  );
+  const [quantity, setQuantity] = useState(initial?.quantity ?? "0");
+  const [unit, setUnit] = useState(initial?.unit ?? "kg");
+  const [pricePerUnit, setPricePerUnit] = useState(
+    initial?.price_per_unit ?? "0",
+  );
+  const [note, setNote] = useState(initial?.note ?? "");
 
   function handleSubmit(event: FormEvent) {
-    event.preventDefault()
-    if (mode === 'create') {
+    event.preventDefault();
+    if (mode === "create") {
       onSubmit({
         name: name.trim(),
         category,
@@ -46,8 +50,8 @@ export function InventoryItemForm({
         unit: unit.trim(),
         price_per_unit: pricePerUnit,
         note: emptyOrNull(note),
-      } satisfies InventoryItemCreateInput)
-      return
+      } satisfies InventoryItemCreateInput);
+      return;
     }
     onSubmit({
       name: name.trim(),
@@ -55,7 +59,7 @@ export function InventoryItemForm({
       unit: unit.trim(),
       price_per_unit: pricePerUnit,
       note: emptyOrNull(note),
-    } satisfies InventoryItemUpdateInput)
+    } satisfies InventoryItemUpdateInput);
   }
 
   return (
@@ -86,7 +90,7 @@ export function InventoryItemForm({
         </div>
       </div>
 
-      {mode === 'create' ? (
+      {mode === "create" ? (
         <div className="field">
           <label htmlFor="item_quantity">Quantity</label>
           <input
@@ -132,8 +136,8 @@ export function InventoryItemForm({
       </div>
 
       <button className="btn btn-primary" type="submit" disabled={pending}>
-        {pending ? 'Saving…' : submitLabel}
+        {pending ? "Saving…" : submitLabel}
       </button>
     </form>
-  )
+  );
 }

@@ -1,49 +1,49 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ApiError } from '../../../shared/api/errors'
-import { SignInPage } from './SignInPage'
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ApiError } from "../../../shared/api/errors";
+import { SignInPage } from "./SignInPage";
 
-const signIn = vi.fn()
+const signIn = vi.fn();
 
-vi.mock('../../../shared/auth/useAuth', () => ({
+vi.mock("../../../shared/auth/useAuth", () => ({
   useAuth: () => ({
     isSignedIn: false,
     signIn,
     signOut: vi.fn(),
     markSignedOut: vi.fn(),
   }),
-}))
+}));
 
-describe('SignInPage', () => {
+describe("SignInPage", () => {
   beforeEach(() => {
-    signIn.mockReset()
-  })
+    signIn.mockReset();
+  });
 
-  it('shows the API message when credentials are invalid', async () => {
-    const user = userEvent.setup()
+  it("shows the API message when credentials are invalid", async () => {
+    const user = userEvent.setup();
     signIn.mockRejectedValue(
       new ApiError(401, {
-        code: 'INVALID_CREDENTIALS',
-        message: 'Email or password is incorrect.',
+        code: "INVALID_CREDENTIALS",
+        message: "Email or password is incorrect.",
       }),
-    )
+    );
 
     render(
       <MemoryRouter>
         <SignInPage />
       </MemoryRouter>,
-    )
+    );
 
-    await user.type(screen.getByLabelText('Email'), 'owner@example.com')
-    await user.type(screen.getByLabelText('Password'), 'WrongPass1')
-    await user.click(screen.getByRole('button', { name: 'Sign in' }))
+    await user.type(screen.getByLabelText("Email"), "owner@example.com");
+    await user.type(screen.getByLabelText("Password"), "WrongPass1");
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
-      expect(screen.getByRole('alert')).toHaveTextContent(
-        'Email or password is incorrect.',
-      )
-    })
-  })
-})
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "Email or password is incorrect.",
+      );
+    });
+  });
+});

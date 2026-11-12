@@ -1,48 +1,49 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState, type FormEvent } from "react";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addStockUpdate,
   archiveInventoryItem,
   getInventoryItem,
   listStockUpdates,
   updateInventoryItem,
-} from '../api/inventoryApi'
-import { InventoryItemForm } from '../components/InventoryItemForm'
+} from "../api/inventoryApi";
+import { InventoryItemForm } from "../components/InventoryItemForm";
 import {
   INVENTORY_CATEGORIES,
   type InventoryItemUpdateInput,
   type StockChangeType,
-} from '../types'
-import { ApiError, getErrorMessage } from '../../../shared/api/errors'
-import { ErrorBanner } from '../../../shared/ui/ErrorBanner'
+} from "../types";
+import { ApiError, getErrorMessage } from "../../../shared/api/errors";
+import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
 
 function categoryLabel(category: string): string {
   return (
-    INVENTORY_CATEGORIES.find((item) => item.value === category)?.label ?? category
-  )
+    INVENTORY_CATEGORIES.find((item) => item.value === category)?.label ??
+    category
+  );
 }
 
 function StockUpdatesSection({
   itemId,
   canAdd,
 }: {
-  itemId: string
-  canAdd: boolean
+  itemId: string;
+  canAdd: boolean;
 }) {
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
   const [occurredAt, setOccurredAt] = useState(() =>
     new Date().toISOString().slice(0, 10),
-  )
-  const [changeType, setChangeType] = useState<StockChangeType>('add')
-  const [quantityChange, setQuantityChange] = useState('')
-  const [reason, setReason] = useState('')
+  );
+  const [changeType, setChangeType] = useState<StockChangeType>("add");
+  const [quantityChange, setQuantityChange] = useState("");
+  const [reason, setReason] = useState("");
 
   const listQuery = useQuery({
-    queryKey: ['stock-updates', itemId],
+    queryKey: ["stock-updates", itemId],
     queryFn: () => listStockUpdates(itemId, { limit: 50 }),
-  })
+  });
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -53,23 +54,27 @@ function StockUpdatesSection({
         reason: reason.trim() || null,
       }),
     onSuccess: async () => {
-      setQuantityChange('')
-      setReason('')
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['stock-updates', itemId] })
-      await queryClient.invalidateQueries({ queryKey: ['inventory-item', itemId] })
-      await queryClient.invalidateQueries({ queryKey: ['inventory-items'] })
+      setQuantityChange("");
+      setReason("");
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["stock-updates", itemId],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["inventory-item", itemId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["inventory-items"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   function onSubmit(event: FormEvent) {
-    event.preventDefault()
-    setError(null)
-    mutation.mutate()
+    event.preventDefault();
+    setError(null);
+    mutation.mutate();
   }
 
   return (
@@ -114,7 +119,9 @@ function StockUpdatesSection({
                 <select
                   id="change_type"
                   value={changeType}
-                  onChange={(e) => setChangeType(e.target.value as StockChangeType)}
+                  onChange={(e) =>
+                    setChangeType(e.target.value as StockChangeType)
+                  }
                 >
                   <option value="add">Add</option>
                   <option value="use">Use</option>
@@ -141,101 +148,109 @@ function StockUpdatesSection({
                 />
               </div>
             </div>
-            <button className="btn btn-primary" type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Saving…' : 'Add stock update'}
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Saving…" : "Add stock update"}
             </button>
           </form>
         </>
       ) : (
-        <p className="muted">Stock updates cannot be added while this item is archived.</p>
+        <p className="muted">
+          Stock updates cannot be added while this item is archived.
+        </p>
       )}
     </section>
-  )
+  );
 }
 
 export function InventoryDetailPage() {
-  const { itemId = '' } = useParams()
-  const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
-  const [editing, setEditing] = useState(false)
+  const { itemId = "" } = useParams();
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
 
   const itemQuery = useQuery({
-    queryKey: ['inventory-item', itemId],
+    queryKey: ["inventory-item", itemId],
     queryFn: () => getInventoryItem(itemId),
     enabled: Boolean(itemId),
-  })
+  });
 
   const updateMutation = useMutation({
     mutationFn: (input: InventoryItemUpdateInput) =>
       updateInventoryItem(itemId, input),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['inventory-item', itemId] })
-      await queryClient.invalidateQueries({ queryKey: ['inventory-items'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["inventory-item", itemId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["inventory-items"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
   const archiveMutation = useMutation({
     mutationFn: () => archiveInventoryItem(itemId),
     onSuccess: async () => {
-      setEditing(false)
-      setError(null)
-      await queryClient.invalidateQueries({ queryKey: ['inventory-item', itemId] })
-      await queryClient.invalidateQueries({ queryKey: ['inventory-items'] })
+      setEditing(false);
+      setError(null);
+      await queryClient.invalidateQueries({
+        queryKey: ["inventory-item", itemId],
+      });
+      await queryClient.invalidateQueries({ queryKey: ["inventory-items"] });
     },
     onError: (err) => {
-      if (err instanceof ApiError) setError(err.message)
-      else setError(getErrorMessage(err))
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
     },
-  })
+  });
 
-  if (itemQuery.isLoading) return <p className="muted">Loading inventory item…</p>
+  if (itemQuery.isLoading)
+    return <p className="muted">Loading inventory item…</p>;
   if (itemQuery.isError) {
-    return <ErrorBanner message={getErrorMessage(itemQuery.error)} />
+    return <ErrorBanner message={getErrorMessage(itemQuery.error)} />;
   }
-  const item = itemQuery.data
-  if (!item) return null
+  const item = itemQuery.data;
+  if (!item) return null;
 
-  const canWrite = !item.is_archived
+  const canWrite = !item.is_archived;
 
   return (
-    <div className="panel panel-wide" style={{ margin: '0 auto' }}>
-      <p className="muted">
-        <Link to="/inventory">← Back to inventory</Link>
-      </p>
+    <div className="panel panel-wide" style={{ margin: "0 auto" }}>
       <div className="page-toolbar">
         <div>
           <h1>{item.name}</h1>
           <p className="lede">
             {categoryLabel(item.category)} · {item.quantity} {item.unit}
-            {item.is_archived ? ' · Archived' : ''}
+            {item.is_archived ? " · Archived" : ""}
           </p>
         </div>
         {canWrite ? (
           <div className="toolbar-actions">
             <button
               type="button"
-              className="btn btn-ghost"
+              className={editing ? "btn btn-ghost" : "btn btn-primary"}
               onClick={() => setEditing((v) => !v)}
             >
-              {editing ? 'Cancel edit' : 'Edit'}
+              {editing ? "Cancel edit" : "Edit"}
             </button>
             <button
               type="button"
-              className="btn btn-ghost"
+              className="btn btn-danger-ghost"
               disabled={archiveMutation.isPending}
               onClick={() => {
                 if (
                   window.confirm(
-                    'Archive this inventory item? It will leave the active list.',
+                    "Archive this inventory item? It will leave the active list.",
                   )
                 ) {
-                  archiveMutation.mutate()
+                  archiveMutation.mutate();
                 }
               }}
             >
@@ -280,12 +295,12 @@ export function InventoryDetailPage() {
           </div>
           <div className="detail-span">
             <dt>Note</dt>
-            <dd>{item.note ?? '—'}</dd>
+            <dd>{item.note ?? "—"}</dd>
           </div>
         </dl>
       )}
 
       <StockUpdatesSection itemId={item.id} canAdd={canWrite} />
     </div>
-  )
+  );
 }
