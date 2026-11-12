@@ -52,7 +52,7 @@ class AppTokens extends ThemeExtension<AppTokens> {
     accent: Color(0xFFC4A35A),
     danger: Color(0xFF9B2C2C),
     dangerBg: Color(0xFFFDECEC),
-    radiusMd: 12,
+    radiusMd: 10,
     space1: 4,
     space2: 8,
     space3: 12,
@@ -167,6 +167,22 @@ class AppTheme {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(tokens.radiusMd),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(tokens.radiusMd),
+          borderSide: BorderSide(color: tokens.border),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(tokens.radiusMd),
+          borderSide: BorderSide(color: tokens.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(tokens.radiusMd),
+          borderSide: BorderSide(color: tokens.danger),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(tokens.radiusMd),
+          borderSide: BorderSide(color: tokens.danger, width: 2),
+        ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
@@ -177,7 +193,36 @@ class AppTheme {
             horizontal: tokens.space3 + 6,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(999),
+            borderRadius: BorderRadius.circular(tokens.radiusMd),
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            vertical: tokens.space3 + 2,
+            horizontal: tokens.space3 + 6,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(tokens.radiusMd),
+          ),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            vertical: tokens.space3 + 2,
+            horizontal: tokens.space3 + 6,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(tokens.radiusMd),
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(tokens.radiusMd),
           ),
         ),
       ),

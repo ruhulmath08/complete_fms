@@ -49,6 +49,6 @@ void main() {
 
     expect(tokens.primary, const Color(0xFF2F6A3A));
     expect(tokens.border, const Color(0xFFD5DDD4));
-    expect(tokens.radiusMd, 12);
+    expect(tokens.radiusMd, 10);
   });
 }
