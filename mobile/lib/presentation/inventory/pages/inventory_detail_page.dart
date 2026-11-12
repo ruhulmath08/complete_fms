@@ -4,6 +4,7 @@ import '../../../domain/failures.dart';
 import '../../../domain/usecases/inventory_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 import '../widgets/inventory_item_form_fields.dart';
 
 String _todayDate() {
@@ -259,37 +260,42 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
         ),
         if (_updates.isEmpty) Text(l10n.noStockUpdates),
         if (canWrite) ...[
-          TextField(
-            controller: _occurredAt,
-            decoration: InputDecoration(labelText: l10n.occurredAtHint),
-          ),
-          DropdownButtonFormField<StockChangeType>(
-            // ignore: deprecated_member_use
-            value: _changeType,
-            decoration: InputDecoration(labelText: l10n.stockChangeType),
-            items: [
-              DropdownMenuItem(
-                value: StockChangeType.add,
-                child: Text(l10n.stockAdd),
+          FormFieldColumn(
+            children: [
+              TextField(
+                controller: _occurredAt,
+                decoration: InputDecoration(labelText: l10n.occurredAtHint),
               ),
-              DropdownMenuItem(
-                value: StockChangeType.use,
-                child: Text(l10n.stockUse),
+              DropdownButtonFormField<StockChangeType>(
+                // ignore: deprecated_member_use
+                value: _changeType,
+                decoration: InputDecoration(labelText: l10n.stockChangeType),
+                items: [
+                  DropdownMenuItem(
+                    value: StockChangeType.add,
+                    child: Text(l10n.stockAdd),
+                  ),
+                  DropdownMenuItem(
+                    value: StockChangeType.use,
+                    child: Text(l10n.stockUse),
+                  ),
+                ],
+                onChanged: (v) {
+                  if (v != null) setState(() => _changeType = v);
+                },
+              ),
+              TextField(
+                controller: _quantityChange,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(labelText: l10n.quantityChange),
+              ),
+              TextField(
+                controller: _reason,
+                decoration: InputDecoration(labelText: l10n.reason),
               ),
             ],
-            onChanged: (v) {
-              if (v != null) setState(() => _changeType = v);
-            },
           ),
-          TextField(
-            controller: _quantityChange,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: InputDecoration(labelText: l10n.quantityChange),
-          ),
-          TextField(
-            controller: _reason,
-            decoration: InputDecoration(labelText: l10n.reason),
-          ),
+          const SizedBox(height: FormFieldColumn.gap),
           FilledButton(onPressed: _addStock, child: Text(l10n.addStockUpdate)),
         ] else
           Text(l10n.inventoryArchivedReadOnly),

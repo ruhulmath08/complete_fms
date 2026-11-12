@@ -4,6 +4,7 @@ import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 import '../widgets/crop_cycle_form_fields.dart';
 
 String _todayDate() {
@@ -365,35 +366,40 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
         ),
         if (_expenses.isEmpty) Text(l10n.noExpenses),
         if (canWrite) ...[
-          TextField(
-            controller: _spentAt,
-            decoration: InputDecoration(labelText: l10n.spentAtHint),
+          FormFieldColumn(
+            children: [
+              TextField(
+                controller: _spentAt,
+                decoration: InputDecoration(labelText: l10n.spentAtHint),
+              ),
+              DropdownButtonFormField<ExpenseCategory>(
+                // ignore: deprecated_member_use
+                value: _expenseCategory,
+                decoration: InputDecoration(labelText: l10n.expenseCategory),
+                items: ExpenseCategory.values
+                    .map(
+                      (c) => DropdownMenuItem(
+                        value: c,
+                        child: Text(_categoryLabel(l10n, c)),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) {
+                  if (v != null) setState(() => _expenseCategory = v);
+                },
+              ),
+              TextField(
+                controller: _expenseAmount,
+                decoration: InputDecoration(labelText: l10n.amount),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              ),
+              TextField(
+                controller: _expenseNote,
+                decoration: InputDecoration(labelText: l10n.note),
+              ),
+            ],
           ),
-          DropdownButtonFormField<ExpenseCategory>(
-            // ignore: deprecated_member_use
-            value: _expenseCategory,
-            decoration: InputDecoration(labelText: l10n.expenseCategory),
-            items: ExpenseCategory.values
-                .map(
-                  (c) => DropdownMenuItem(
-                    value: c,
-                    child: Text(_categoryLabel(l10n, c)),
-                  ),
-                )
-                .toList(),
-            onChanged: (v) {
-              if (v != null) setState(() => _expenseCategory = v);
-            },
-          ),
-          TextField(
-            controller: _expenseAmount,
-            decoration: InputDecoration(labelText: l10n.amount),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          ),
-          TextField(
-            controller: _expenseNote,
-            decoration: InputDecoration(labelText: l10n.note),
-          ),
+          const SizedBox(height: FormFieldColumn.gap),
           FilledButton(onPressed: _addExpense, child: Text(l10n.addExpense)),
         ],
         const Divider(height: 32),
@@ -410,28 +416,33 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
         ),
         if (_harvests.isEmpty) Text(l10n.noHarvests),
         if (canWrite) ...[
-          TextField(
-            controller: _harvestedAt,
-            decoration: InputDecoration(labelText: l10n.harvestedAtHint),
+          FormFieldColumn(
+            children: [
+              TextField(
+                controller: _harvestedAt,
+                decoration: InputDecoration(labelText: l10n.harvestedAtHint),
+              ),
+              TextField(
+                controller: _harvestQty,
+                decoration: InputDecoration(labelText: l10n.quantity),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              ),
+              TextField(
+                controller: _harvestUnit,
+                decoration: InputDecoration(labelText: l10n.unit),
+              ),
+              TextField(
+                controller: _saleAmount,
+                decoration: InputDecoration(labelText: l10n.saleAmountOptional),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              ),
+              TextField(
+                controller: _harvestNote,
+                decoration: InputDecoration(labelText: l10n.note),
+              ),
+            ],
           ),
-          TextField(
-            controller: _harvestQty,
-            decoration: InputDecoration(labelText: l10n.quantity),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          ),
-          TextField(
-            controller: _harvestUnit,
-            decoration: InputDecoration(labelText: l10n.unit),
-          ),
-          TextField(
-            controller: _saleAmount,
-            decoration: InputDecoration(labelText: l10n.saleAmountOptional),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          ),
-          TextField(
-            controller: _harvestNote,
-            decoration: InputDecoration(labelText: l10n.note),
-          ),
+          const SizedBox(height: FormFieldColumn.gap),
           FilledButton(onPressed: _addHarvest, child: Text(l10n.addHarvest)),
         ] else
           Text(l10n.cropCycleArchivedReadOnly),

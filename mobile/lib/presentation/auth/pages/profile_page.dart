@@ -8,6 +8,7 @@ import '../../../domain/repositories/auth_repository.dart';
 import '../../../domain/usecases/auth_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -117,12 +118,17 @@ class _ProfilePageState extends State<ProfilePage> {
         if (_saved) Text(l10n.saved),
         if (_imageBytes != null)
           CircleAvatar(radius: 48, backgroundImage: MemoryImage(_imageBytes!)),
-        TextField(controller: _fullName, decoration: InputDecoration(labelText: l10n.fullName)),
-        TextField(controller: _email, decoration: InputDecoration(labelText: l10n.email)),
-        TextField(controller: _phone, decoration: InputDecoration(labelText: l10n.phone)),
-        TextField(controller: _address, decoration: InputDecoration(labelText: l10n.address)),
-        TextField(controller: _latitude, decoration: InputDecoration(labelText: l10n.latitude)),
-        TextField(controller: _longitude, decoration: InputDecoration(labelText: l10n.longitude)),
+        FormFieldColumn(
+          children: [
+            TextField(controller: _fullName, decoration: InputDecoration(labelText: l10n.fullName)),
+            TextField(controller: _email, decoration: InputDecoration(labelText: l10n.email)),
+            TextField(controller: _phone, decoration: InputDecoration(labelText: l10n.phone)),
+            TextField(controller: _address, decoration: InputDecoration(labelText: l10n.address)),
+            TextField(controller: _latitude, decoration: InputDecoration(labelText: l10n.latitude)),
+            TextField(controller: _longitude, decoration: InputDecoration(labelText: l10n.longitude)),
+          ],
+        ),
+        const SizedBox(height: FormFieldColumn.gap),
         OutlinedButton(
           onPressed: () async {
             final file = await ImagePicker().pickImage(source: ImageSource.gallery);

@@ -5,6 +5,7 @@ import '../../../domain/usecases/cows_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 import '../../shared/widgets/offset_pagination_controls.dart';
 import '../widgets/cow_form_fields.dart';
 import '../widgets/cow_image_panel.dart';
@@ -480,26 +481,31 @@ class _CowDetailPageState extends State<CowDetailPage> {
             nextLabel: l10n.paginationNext,
           ),
           if (canWrite) ...[
-            TextField(
-              controller: _milkProducedAt,
-              decoration: InputDecoration(labelText: l10n.producedAtHint),
+            FormFieldColumn(
+              children: [
+                TextField(
+                  controller: _milkProducedAt,
+                  decoration: InputDecoration(labelText: l10n.producedAtHint),
+                ),
+                TextField(
+                  controller: _milkQty,
+                  decoration: InputDecoration(labelText: l10n.quantity),
+                ),
+                TextField(
+                  controller: _milkUnit,
+                  decoration: InputDecoration(labelText: l10n.unit),
+                ),
+                TextField(
+                  controller: _milkPrice,
+                  decoration: InputDecoration(labelText: l10n.pricePerUnit),
+                ),
+                TextField(
+                  controller: _milkNote,
+                  decoration: InputDecoration(labelText: l10n.note),
+                ),
+              ],
             ),
-            TextField(
-              controller: _milkQty,
-              decoration: InputDecoration(labelText: l10n.quantity),
-            ),
-            TextField(
-              controller: _milkUnit,
-              decoration: InputDecoration(labelText: l10n.unit),
-            ),
-            TextField(
-              controller: _milkPrice,
-              decoration: InputDecoration(labelText: l10n.pricePerUnit),
-            ),
-            TextField(
-              controller: _milkNote,
-              decoration: InputDecoration(labelText: l10n.note),
-            ),
+            const SizedBox(height: FormFieldColumn.gap),
             FilledButton(
               onPressed: _saveMilk,
               child: Text(
@@ -597,32 +603,37 @@ class _CowDetailPageState extends State<CowDetailPage> {
           nextLabel: l10n.paginationNext,
         ),
         if (canWrite) ...[
-          TextField(
-            controller: _feedFedAt,
-            decoration: InputDecoration(labelText: l10n.fedAtHint),
+          FormFieldColumn(
+            children: [
+              TextField(
+                controller: _feedFedAt,
+                decoration: InputDecoration(labelText: l10n.fedAtHint),
+              ),
+              TextField(
+                controller: _feedName,
+                decoration: InputDecoration(labelText: l10n.feedName),
+              ),
+              TextField(
+                controller: _feedQty,
+                decoration: InputDecoration(labelText: l10n.quantity),
+              ),
+              TextField(
+                controller: _feedUnit,
+                decoration: InputDecoration(labelText: l10n.unit),
+              ),
+              TextField(
+                controller: _feedUnitCost,
+                decoration: InputDecoration(
+                  labelText: l10n.unitCost,
+                ),
+              ),
+              TextField(
+                controller: _feedNote,
+                decoration: InputDecoration(labelText: l10n.note),
+              ),
+            ],
           ),
-          TextField(
-            controller: _feedName,
-            decoration: InputDecoration(labelText: l10n.feedName),
-          ),
-          TextField(
-            controller: _feedQty,
-            decoration: InputDecoration(labelText: l10n.quantity),
-          ),
-          TextField(
-            controller: _feedUnit,
-            decoration: InputDecoration(labelText: l10n.unit),
-          ),
-          TextField(
-            controller: _feedUnitCost,
-            decoration: InputDecoration(
-              labelText: l10n.unitCost,
-            ),
-          ),
-          TextField(
-            controller: _feedNote,
-            decoration: InputDecoration(labelText: l10n.note),
-          ),
+          const SizedBox(height: FormFieldColumn.gap),
           FilledButton(
             onPressed: _saveFeeding,
             child: Text(

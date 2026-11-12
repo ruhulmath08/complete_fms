@@ -5,6 +5,7 @@ import '../../../domain/usecases/poultry_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../shared/widgets/form_field_column.dart';
 import '../widgets/poultry_group_form_fields.dart';
 
 String _rowTotal(String quantity, String unitPrice) {
@@ -18,7 +19,7 @@ String _formatHistoryDate(String iso) {
   final parsed = DateTime.tryParse(iso);
   if (parsed == null) return iso;
   final local = parsed.toLocal();
-  String two(int n) => n.toString().padStart(2, '0');
+  String two(int n) => n.toString().padLeft(2, '0');
   return '${local.year}-${two(local.month)}-${two(local.day)} '
       '${two(local.hour)}:${two(local.minute)}';
 }
@@ -534,26 +535,31 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
               ),
             ),
           if (canWrite) ...[
-            TextField(
-              controller: _eggProducedAt,
-              decoration: InputDecoration(labelText: l10n.producedAtHint),
+            FormFieldColumn(
+              children: [
+                TextField(
+                  controller: _eggProducedAt,
+                  decoration: InputDecoration(labelText: l10n.producedAtHint),
+                ),
+                TextField(
+                  controller: _eggQty,
+                  decoration: InputDecoration(labelText: l10n.quantity),
+                ),
+                TextField(
+                  controller: _eggUnit,
+                  decoration: InputDecoration(labelText: l10n.unit),
+                ),
+                TextField(
+                  controller: _eggPrice,
+                  decoration: InputDecoration(labelText: l10n.pricePerUnit),
+                ),
+                TextField(
+                  controller: _eggNote,
+                  decoration: InputDecoration(labelText: l10n.note),
+                ),
+              ],
             ),
-            TextField(
-              controller: _eggQty,
-              decoration: InputDecoration(labelText: l10n.quantity),
-            ),
-            TextField(
-              controller: _eggUnit,
-              decoration: InputDecoration(labelText: l10n.unit),
-            ),
-            TextField(
-              controller: _eggPrice,
-              decoration: InputDecoration(labelText: l10n.pricePerUnit),
-            ),
-            TextField(
-              controller: _eggNote,
-              decoration: InputDecoration(labelText: l10n.note),
-            ),
+            const SizedBox(height: FormFieldColumn.gap),
             FilledButton(
               onPressed: _saveEgg,
               child: Text(
@@ -590,26 +596,31 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
             ),
           ),
         if (canWrite) ...[
-          TextField(
-            controller: _feedFedAt,
-            decoration: InputDecoration(labelText: l10n.fedAtHint),
+          FormFieldColumn(
+            children: [
+              TextField(
+                controller: _feedFedAt,
+                decoration: InputDecoration(labelText: l10n.fedAtHint),
+              ),
+              TextField(
+                controller: _feedName,
+                decoration: InputDecoration(labelText: l10n.feedName),
+              ),
+              TextField(
+                controller: _feedQty,
+                decoration: InputDecoration(labelText: l10n.quantity),
+              ),
+              TextField(
+                controller: _feedUnit,
+                decoration: InputDecoration(labelText: l10n.unit),
+              ),
+              TextField(
+                controller: _feedNote,
+                decoration: InputDecoration(labelText: l10n.note),
+              ),
+            ],
           ),
-          TextField(
-            controller: _feedName,
-            decoration: InputDecoration(labelText: l10n.feedName),
-          ),
-          TextField(
-            controller: _feedQty,
-            decoration: InputDecoration(labelText: l10n.quantity),
-          ),
-          TextField(
-            controller: _feedUnit,
-            decoration: InputDecoration(labelText: l10n.unit),
-          ),
-          TextField(
-            controller: _feedNote,
-            decoration: InputDecoration(labelText: l10n.note),
-          ),
+          const SizedBox(height: FormFieldColumn.gap),
           FilledButton(
             onPressed: _saveFeeding,
             child: Text(

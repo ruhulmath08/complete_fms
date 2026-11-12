@@ -6,6 +6,7 @@ import '../../../domain/usecases/auth_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../session/session_cubit.dart';
+import '../../shared/widgets/form_field_column.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -73,16 +74,19 @@ class _SignInPageState extends State<SignInPage> {
                     Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
                   ],
                   const SizedBox(height: 16),
-                  TextField(
-                    controller: _email,
-                    decoration: InputDecoration(labelText: l10n.email),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: _password,
-                    decoration: InputDecoration(labelText: l10n.password),
-                    obscureText: true,
+                  FormFieldColumn(
+                    children: [
+                      TextField(
+                        controller: _email,
+                        decoration: InputDecoration(labelText: l10n.email),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      TextField(
+                        controller: _password,
+                        decoration: InputDecoration(labelText: l10n.password),
+                        obscureText: true,
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   FilledButton(

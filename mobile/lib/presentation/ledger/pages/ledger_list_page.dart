@@ -8,6 +8,7 @@ import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
 import '../../shared/widgets/entity_list_card.dart';
+import '../../shared/widgets/form_field_column.dart';
 import '../widgets/ledger_entry_form_fields.dart';
 
 String _isoDate(DateTime d) {
@@ -113,13 +114,17 @@ class _LedgerListPageState extends State<LedgerListPage> {
           ),
           SizedBox(height: tokens.space2),
           Text(l10n.ledgerCropGuidance, style: Theme.of(context).textTheme.bodySmall),
-          TextField(
-            controller: _from,
-            decoration: InputDecoration(labelText: l10n.dateFrom),
-          ),
-          TextField(
-            controller: _to,
-            decoration: InputDecoration(labelText: l10n.dateTo),
+          FormFieldColumn(
+            children: [
+              TextField(
+                controller: _from,
+                decoration: InputDecoration(labelText: l10n.dateFrom),
+              ),
+              TextField(
+                controller: _to,
+                decoration: InputDecoration(labelText: l10n.dateTo),
+              ),
+            ],
           ),
           Align(
             alignment: Alignment.centerLeft,
