@@ -70,6 +70,8 @@ export type EggCreateInput = {
   note?: string | null;
 };
 
+export type EggUpdateInput = Partial<EggCreateInput>;
+
 export type FeedingCreateInput = {
   fed_at: string;
   feed_name: string;
@@ -77,3 +79,5 @@ export type FeedingCreateInput = {
   unit: string;
   note?: string | null;
 };
+
+export type FeedingUpdateInput = Partial<FeedingCreateInput>;

@@ -141,7 +141,7 @@ function ExpensesSection({
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
+                  <th scope="col">No.</th>
                   <th scope="col">Date</th>
                   <th scope="col">Category</th>
                   <th scope="col">Total</th>
@@ -321,7 +321,7 @@ function HarvestsSection({
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
+                  <th scope="col">No.</th>
                   <th scope="col">Date</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Unit</th>

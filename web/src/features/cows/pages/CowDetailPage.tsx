@@ -181,7 +181,7 @@ function MilkSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">No</th>
+                  <th scope="col">No.</th>
                   <th scope="col">Date + time</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Unit price</th>
@@ -208,7 +208,7 @@ function MilkSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
                         <div className="table-actions">
                           <button
                             type="button"
-                            className="btn-icon"
+                            className="btn-icon btn-icon-primary"
                             aria-label="Edit milk entry"
                             title="Edit"
                             onClick={() => startEdit(row)}
@@ -449,7 +449,7 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">No</th>
+                  <th scope="col">No.</th>
                   <th scope="col">Date + time</th>
                   <th scope="col">Feed name</th>
                   <th scope="col">Quantity</th>
@@ -476,7 +476,7 @@ function FeedingSection({ cowId, canAdd }: { cowId: string; canAdd: boolean }) {
                         <div className="table-actions">
                           <button
                             type="button"
-                            className="btn-icon"
+                            className="btn-icon btn-icon-primary"
                             aria-label="Edit feeding entry"
                             title="Edit"
                             onClick={() => startEdit(row)}

@@ -5,14 +5,22 @@ import {
   addEggProduction,
   addPoultryFeeding,
   archivePoultryGroup,
+  deleteEggProduction,
+  deletePoultryFeeding,
   getPoultryGroup,
   getSuggestedUnits,
   listEggProductions,
   listPoultryFeedings,
+  updateEggProduction,
+  updatePoultryFeeding,
   updatePoultryGroup,
 } from "../api/poultryApi";
 import { PoultryGroupForm } from "../components/PoultryGroupForm";
-import type { PoultryGroupCreateInput } from "../types";
+import type {
+  EggProduction,
+  PoultryFeeding,
+  PoultryGroupCreateInput,
+} from "../types";
 import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
 import { ApiError, getErrorMessage } from "../../../shared/api/errors";
 import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
@@ -37,10 +45,33 @@ function fromDateTimeLocalValue(value: string): string {
   return new Date(value).toISOString();
 }
 
+function EditIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.04a1.003 1.003 0 0 0 0-1.42l-2.5-2.5a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.999-1.66z"
+      />
+    </svg>
+  );
+}
+
+function DeleteIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+      />
+    </svg>
+  );
+}
+
 function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [producedAt, setProducedAt] = useState(() =>
     toDateTimeLocalValue(new Date().toISOString()),
   );
@@ -59,20 +90,54 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
     queryFn: getSuggestedUnits,
   });
 
-  const mutation = useMutation({
-    mutationFn: () =>
-      addEggProduction(groupId, {
+  function resetForm() {
+    setEditingId(null);
+    setProducedAt(toDateTimeLocalValue(new Date().toISOString()));
+    setQuantity("");
+    setUnit("pcs");
+    setPricePerUnit("0");
+    setNote("");
+  }
+
+  function startEdit(row: EggProduction) {
+    setEditingId(row.id);
+    setProducedAt(toDateTimeLocalValue(row.produced_at));
+    setQuantity(row.quantity);
+    setUnit(row.unit);
+    setPricePerUnit(row.price_per_unit);
+    setNote(row.note ?? "");
+    setError(null);
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      const payload = {
         produced_at: fromDateTimeLocalValue(producedAt),
         quantity,
         unit,
         price_per_unit: pricePerUnit,
         note: note.trim() || null,
-      }),
+      };
+      if (editingId) return updateEggProduction(groupId, editingId, payload);
+      return addEggProduction(groupId, payload);
+    },
     onSuccess: async () => {
-      setQuantity("");
-      setNote("");
+      resetForm();
       setError(null);
       setOffset(0);
+      await queryClient.invalidateQueries({ queryKey: ["eggs", groupId] });
+    },
+    onError: (err) => {
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (eggId: string) => deleteEggProduction(groupId, eggId),
+    onSuccess: async () => {
+      if (editingId) resetForm();
+      setError(null);
       await queryClient.invalidateQueries({ queryKey: ["eggs", groupId] });
     },
     onError: (err) => {
@@ -84,7 +149,12 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
   function onSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
-    mutation.mutate();
+    saveMutation.mutate();
+  }
+
+  function onDelete(row: EggProduction) {
+    if (!window.confirm("Delete this egg entry?")) return;
+    deleteMutation.mutate(row.id);
   }
 
   const items = listQuery.data?.items ?? [];
@@ -108,13 +178,14 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
+                  <th scope="col">No.</th>
                   <th scope="col">Produced at</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Unit</th>
                   <th scope="col">Unit price</th>
                   <th scope="col">Total</th>
                   <th scope="col">Note</th>
+                  {canAdd ? <th scope="col">Action</th> : null}
                 </tr>
               </thead>
               <tbody>
@@ -127,6 +198,31 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
                     <td>{row.price_per_unit}</td>
                     <td>{rowTotal(row.quantity, row.price_per_unit)}</td>
                     <td>{row.note ?? "—"}</td>
+                    {canAdd ? (
+                      <td>
+                        <div className="table-actions">
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-primary"
+                            aria-label="Edit egg entry"
+                            title="Edit"
+                            onClick={() => startEdit(row)}
+                          >
+                            <EditIcon />
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-danger"
+                            aria-label="Delete egg entry"
+                            title="Delete"
+                            disabled={deleteMutation.isPending}
+                            onClick={() => onDelete(row)}
+                          >
+                            <DeleteIcon />
+                          </button>
+                        </div>
+                      </td>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>
@@ -201,13 +297,28 @@ function EggSection({ groupId, canAdd }: { groupId: string; canAdd: boolean }) {
                 <option key={u} value={u} />
               ))}
             </datalist>
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? "Saving…" : "Add egg entry"}
-            </button>
+            <div className="toolbar-actions">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={saveMutation.isPending}
+              >
+                {saveMutation.isPending
+                  ? "Saving…"
+                  : editingId
+                    ? "Update egg entry"
+                    : "Add egg entry"}
+              </button>
+              {editingId ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={resetForm}
+                >
+                  Cancel edit
+                </button>
+              ) : null}
+            </div>
           </form>
         </>
       ) : (
@@ -227,6 +338,7 @@ function FeedingSection({
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [fedAt, setFedAt] = useState(() =>
     toDateTimeLocalValue(new Date().toISOString()),
   );
@@ -245,21 +357,57 @@ function FeedingSection({
     queryFn: getSuggestedUnits,
   });
 
-  const mutation = useMutation({
-    mutationFn: () =>
-      addPoultryFeeding(groupId, {
+  function resetForm() {
+    setEditingId(null);
+    setFedAt(toDateTimeLocalValue(new Date().toISOString()));
+    setFeedName("");
+    setQuantity("");
+    setUnit("kg");
+    setNote("");
+  }
+
+  function startEdit(row: PoultryFeeding) {
+    setEditingId(row.id);
+    setFedAt(toDateTimeLocalValue(row.fed_at));
+    setFeedName(row.feed_name);
+    setQuantity(row.quantity);
+    setUnit(row.unit);
+    setNote(row.note ?? "");
+    setError(null);
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      const payload = {
         fed_at: fromDateTimeLocalValue(fedAt),
         feed_name: feedName,
         quantity,
         unit,
         note: note.trim() || null,
-      }),
+      };
+      if (editingId) return updatePoultryFeeding(groupId, editingId, payload);
+      return addPoultryFeeding(groupId, payload);
+    },
     onSuccess: async () => {
-      setFeedName("");
-      setQuantity("");
-      setNote("");
+      resetForm();
       setError(null);
       setOffset(0);
+      await queryClient.invalidateQueries({
+        queryKey: ["poultry-feedings", groupId],
+      });
+    },
+    onError: (err) => {
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (feedingId: string) =>
+      deletePoultryFeeding(groupId, feedingId),
+    onSuccess: async () => {
+      if (editingId) resetForm();
+      setError(null);
       await queryClient.invalidateQueries({
         queryKey: ["poultry-feedings", groupId],
       });
@@ -273,7 +421,12 @@ function FeedingSection({
   function onSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
-    mutation.mutate();
+    saveMutation.mutate();
+  }
+
+  function onDelete(row: PoultryFeeding) {
+    if (!window.confirm("Delete this feeding entry?")) return;
+    deleteMutation.mutate(row.id);
   }
 
   const items = listQuery.data?.items ?? [];
@@ -297,12 +450,13 @@ function FeedingSection({
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
+                  <th scope="col">No.</th>
                   <th scope="col">Fed at</th>
                   <th scope="col">Feed</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Unit</th>
                   <th scope="col">Note</th>
+                  {canAdd ? <th scope="col">Action</th> : null}
                 </tr>
               </thead>
               <tbody>
@@ -314,6 +468,31 @@ function FeedingSection({
                     <td>{row.quantity}</td>
                     <td>{row.unit}</td>
                     <td>{row.note ?? "—"}</td>
+                    {canAdd ? (
+                      <td>
+                        <div className="table-actions">
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-primary"
+                            aria-label="Edit feeding entry"
+                            title="Edit"
+                            onClick={() => startEdit(row)}
+                          >
+                            <EditIcon />
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-danger"
+                            aria-label="Delete feeding entry"
+                            title="Delete"
+                            disabled={deleteMutation.isPending}
+                            onClick={() => onDelete(row)}
+                          >
+                            <DeleteIcon />
+                          </button>
+                        </div>
+                      </td>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>
@@ -388,13 +567,28 @@ function FeedingSection({
                 <option key={u} value={u} />
               ))}
             </datalist>
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? "Saving…" : "Add feeding"}
-            </button>
+            <div className="toolbar-actions">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={saveMutation.isPending}
+              >
+                {saveMutation.isPending
+                  ? "Saving…"
+                  : editingId
+                    ? "Update feeding"
+                    : "Add feeding"}
+              </button>
+              {editingId ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={resetForm}
+                >
+                  Cancel edit
+                </button>
+              ) : null}
+            </div>
           </form>
         </>
       ) : (

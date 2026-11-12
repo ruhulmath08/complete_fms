@@ -2,7 +2,9 @@ import { apiRequest } from "../../../shared/api/client";
 import type {
   EggCreateInput,
   EggProduction,
+  EggUpdateInput,
   FeedingCreateInput,
+  FeedingUpdateInput,
   Page,
   PoultryFeeding,
   PoultryGroup,
@@ -82,6 +84,32 @@ export async function addEggProduction(
   );
 }
 
+export async function updateEggProduction(
+  groupId: string,
+  eggId: string,
+  input: EggUpdateInput,
+): Promise<EggProduction> {
+  return apiRequest<EggProduction>(
+    `/api/v1/poultry-groups/${groupId}/egg-productions/${eggId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+}
+
+export async function deleteEggProduction(
+  groupId: string,
+  eggId: string,
+): Promise<void> {
+  await apiRequest<void>(
+    `/api/v1/poultry-groups/${groupId}/egg-productions/${eggId}`,
+    {
+      method: "DELETE",
+    },
+  );
+}
+
 export async function listPoultryFeedings(
   groupId: string,
   params?: { limit?: number; offset?: number },
@@ -104,6 +132,32 @@ export async function addPoultryFeeding(
     {
       method: "POST",
       body: JSON.stringify(input),
+    },
+  );
+}
+
+export async function updatePoultryFeeding(
+  groupId: string,
+  feedingId: string,
+  input: FeedingUpdateInput,
+): Promise<PoultryFeeding> {
+  return apiRequest<PoultryFeeding>(
+    `/api/v1/poultry-groups/${groupId}/feedings/${feedingId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+}
+
+export async function deletePoultryFeeding(
+  groupId: string,
+  feedingId: string,
+): Promise<void> {
+  await apiRequest<void>(
+    `/api/v1/poultry-groups/${groupId}/feedings/${feedingId}`,
+    {
+      method: "DELETE",
     },
   );
 }

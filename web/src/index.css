@@ -782,6 +782,22 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
+.btn-icon-primary {
+  color: var(--color-primary);
+  border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+}
+
+.btn-icon-primary:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 8%, #fff);
+}
+
+.btn-icon-danger {
+  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 35%, var(--color-border));
+}
+
 .btn-danger-ghost {
   background: transparent;
   color: var(--color-danger);
