@@ -11,8 +11,11 @@ stories:
 created: "2026-11-12T07:34:21Z"
 started: "2026-11-12T07:46:46Z"
 completed: null
-current_stage: domain-model
-stages_completed: []
+current_stage: technical-design
+stages_completed:
+  - name: domain-model
+    completed: "2026-11-12T07:52:07Z"
+    artifact: ddd-01-domain-model.md
 requires_bolts: []
 enables_bolts:
   - 026-design-web
@@ -44,9 +47,9 @@ Deliver API support for Feeding Total, milk/feeding update/delete, and entity li
 
 ## Stages
 
-- [x] **1. Domain model**: Done → `ddd-01-domain-model.md` (awaiting approval)
-- [ ] **2. Technical design**: Pending → `ddd-02-technical-design.md`
-- [ ] **3. ADR analysis**: Optional
+- [x] **1. Domain model**: Done → `ddd-01-domain-model.md`
+- [x] **2. Technical design**: Done → `ddd-02-technical-design.md` (awaiting approval)
+- [ ] **3. ADR analysis**: Optional — skip planned
 - [ ] **4. Implement**: Pending
 - [ ] **5. Test report**: Pending → `ddd-03-test-report.md`
 
