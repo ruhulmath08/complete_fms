@@ -30,6 +30,7 @@ export type MilkProduction = {
   quantity: string
   unit: string
   price_per_unit: string
+  total: string
   note: string | null
   created_at: string
 }
@@ -41,6 +42,8 @@ export type CowFeeding = {
   feed_name: string
   quantity: string
   unit: string
+  unit_cost: string
+  total: string
   note: string | null
   created_at: string
 }
@@ -81,10 +84,15 @@ export type MilkCreateInput = {
   note?: string | null
 }
 
+export type MilkUpdateInput = Partial<MilkCreateInput>
+
 export type FeedingCreateInput = {
   fed_at: string
   feed_name: string
   quantity: string
   unit: string
+  unit_cost: string
   note?: string | null
 }
+
+export type FeedingUpdateInput = Partial<FeedingCreateInput>

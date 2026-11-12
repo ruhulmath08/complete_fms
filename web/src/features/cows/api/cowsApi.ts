@@ -5,8 +5,10 @@ import type {
   CowFeeding,
   CowUpdateInput,
   FeedingCreateInput,
+  FeedingUpdateInput,
   MilkCreateInput,
   MilkProduction,
+  MilkUpdateInput,
   Page,
 } from '../types'
 
@@ -80,6 +82,29 @@ export async function addMilkProduction(
   })
 }
 
+export async function updateMilkProduction(
+  cowId: string,
+  milkId: string,
+  input: MilkUpdateInput,
+): Promise<MilkProduction> {
+  return apiRequest<MilkProduction>(
+    `/api/v1/cows/${cowId}/milk-productions/${milkId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify(input),
+    },
+  )
+}
+
+export async function deleteMilkProduction(
+  cowId: string,
+  milkId: string,
+): Promise<void> {
+  await apiRequest<void>(`/api/v1/cows/${cowId}/milk-productions/${milkId}`, {
+    method: 'DELETE',
+  })
+}
+
 export async function listFeedings(
   cowId: string,
   params?: { limit?: number; offset?: number },
@@ -98,6 +123,26 @@ export async function addFeeding(
   return apiRequest<CowFeeding>(`/api/v1/cows/${cowId}/feedings`, {
     method: 'POST',
     body: JSON.stringify(input),
+  })
+}
+
+export async function updateFeeding(
+  cowId: string,
+  feedingId: string,
+  input: FeedingUpdateInput,
+): Promise<CowFeeding> {
+  return apiRequest<CowFeeding>(`/api/v1/cows/${cowId}/feedings/${feedingId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(input),
+  })
+}
+
+export async function deleteFeeding(
+  cowId: string,
+  feedingId: string,
+): Promise<void> {
+  await apiRequest<void>(`/api/v1/cows/${cowId}/feedings/${feedingId}`, {
+    method: 'DELETE',
   })
 }
 
