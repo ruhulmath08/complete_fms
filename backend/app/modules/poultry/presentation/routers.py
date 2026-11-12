@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session
 
 from app.api.v1.deps import get_current_owner, get_db_session
@@ -16,8 +16,10 @@ from app.modules.poultry.application.services import (
 from app.modules.poultry.presentation.schemas import (
     EggProductionCreateRequest,
     EggProductionResponse,
+    EggProductionUpdateRequest,
     PoultryFeedingCreateRequest,
     PoultryFeedingResponse,
+    PoultryFeedingUpdateRequest,
     PoultryGroupCreateRequest,
     PoultryGroupResponse,
     PoultryGroupUpdateRequest,
@@ -153,6 +155,47 @@ def list_poultry_feedings(
     )
 
 
+@poultry_groups_router.patch(
+    "/{group_id}/feedings/{feeding_id}",
+    response_model=PoultryFeedingResponse,
+)
+def update_poultry_feeding(
+    group_id: UUID,
+    feeding_id: UUID,
+    body: PoultryFeedingUpdateRequest,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> PoultryFeedingResponse:
+    row = PoultryFeedingService(db).update(
+        owner_id=owner.id,
+        group_id=group_id,
+        feeding_id=feeding_id,
+        fed_at=body.fed_at,
+        feed_name=body.feed_name,
+        quantity=body.quantity,
+        unit=body.unit,
+        note=body.note,
+        fields_set=set(body.model_fields_set),
+    )
+    return PoultryFeedingResponse.model_validate(row)
+
+
+@poultry_groups_router.delete(
+    "/{group_id}/feedings/{feeding_id}",
+    status_code=204,
+)
+def delete_poultry_feeding(
+    group_id: UUID,
+    feeding_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> Response:
+    PoultryFeedingService(db).delete(
+        owner_id=owner.id, group_id=group_id, feeding_id=feeding_id
+    )
+    return Response(status_code=204)
+
+
 @poultry_groups_router.post(
     "/{group_id}/egg-productions",
     response_model=EggProductionResponse,
@@ -194,3 +237,44 @@ def list_egg_productions(
         items=[EggProductionResponse.model_validate(i) for i in items],
         meta=PageMeta(total=total, limit=limit, offset=offset),
     )
+
+
+@poultry_groups_router.patch(
+    "/{group_id}/egg-productions/{egg_id}",
+    response_model=EggProductionResponse,
+)
+def update_egg_production(
+    group_id: UUID,
+    egg_id: UUID,
+    body: EggProductionUpdateRequest,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> EggProductionResponse:
+    row = EggProductionService(db).update(
+        owner_id=owner.id,
+        group_id=group_id,
+        egg_id=egg_id,
+        produced_at=body.produced_at,
+        quantity=body.quantity,
+        unit=body.unit,
+        price_per_unit=body.price_per_unit,
+        note=body.note,
+        fields_set=set(body.model_fields_set),
+    )
+    return EggProductionResponse.model_validate(row)
+
+
+@poultry_groups_router.delete(
+    "/{group_id}/egg-productions/{egg_id}",
+    status_code=204,
+)
+def delete_egg_production(
+    group_id: UUID,
+    egg_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> Response:
+    EggProductionService(db).delete(
+        owner_id=owner.id, group_id=group_id, egg_id=egg_id
+    )
+    return Response(status_code=204)

@@ -2,9 +2,9 @@
 unit: 003-poultry-actions-mobile
 intent: 004-poultry-history-actions-and-table-polish
 phase: inception
-status: ready
-created: "2026-11-12T09:47:02Z"
-updated: "2026-11-12T09:47:02Z"
+status: stories-defined
+created: '2026-11-12T09:47:02Z'
+updated: '2026-11-12T09:47:02Z'
 unit_type: mobile
 default_bolt_type: simple-construction-bolt
 ---

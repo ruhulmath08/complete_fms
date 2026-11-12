@@ -2,11 +2,11 @@
 id: 001-api-egg-update-delete
 unit: 001-poultry-actions-api
 intent: 004-poultry-history-actions-and-table-polish
-status: draft
+status: complete
 priority: must
 created: "2026-11-12T09:47:02Z"
 assigned_bolt: 029-poultry-actions-api
-implemented: false
+implemented: true
 ---
 
 # Story: 001-api-egg-update-delete
@@ -19,10 +19,10 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] **Given** an active poultry group I own, **When** I PATCH an egg production, **Then** allowed fields update and the response returns the row
-- [ ] **Given** an egg row I own, **When** I DELETE it, **Then** I get `204` and the row is gone (hard-delete)
-- [ ] **Given** an archived group or missing/cross-owner id, **When** I mutate, **Then** the API rejects consistently with cows module conventions
-- [ ] **Given** no bearer token, **When** I call PATCH/DELETE, **Then** I am unauthorized
+- [x] **Given** an active poultry group I own, **When** I PATCH an egg production, **Then** allowed fields update and the response returns the row
+- [x] **Given** an egg row I own, **When** I DELETE it, **Then** I get `204` and the row is gone (hard-delete)
+- [x] **Given** an archived group or missing/cross-owner id, **When** I mutate, **Then** the API rejects consistently with cows module conventions
+- [x] **Given** no bearer token, **When** I call PATCH/DELETE, **Then** I am unauthorized
 
 ## Technical Notes
 

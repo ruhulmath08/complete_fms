@@ -54,6 +54,14 @@ class PoultryFeedingCreateRequest(BaseModel):
     note: str | None = None
 
 
+class PoultryFeedingUpdateRequest(BaseModel):
+    fed_at: datetime | None = None
+    feed_name: str | None = Field(default=None, min_length=1, max_length=255)
+    quantity: Decimal | None = None
+    unit: str | None = Field(default=None, min_length=1, max_length=32)
+    note: str | None = None
+
+
 class PoultryFeedingResponse(BaseModel):
     model_config = {"from_attributes": True}
 
@@ -72,6 +80,14 @@ class EggProductionCreateRequest(BaseModel):
     quantity: Decimal
     unit: str = Field(min_length=1, max_length=32)
     price_per_unit: Decimal
+    note: str | None = None
+
+
+class EggProductionUpdateRequest(BaseModel):
+    produced_at: datetime | None = None
+    quantity: Decimal | None = None
+    unit: str | None = Field(default=None, min_length=1, max_length=32)
+    price_per_unit: Decimal | None = None
     note: str | None = None
 
 

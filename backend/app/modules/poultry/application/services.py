@@ -287,6 +287,78 @@ class PoultryFeedingService:
         )
         return items, total
 
+    def get(
+        self, *, owner_id: UUID, group_id: UUID, feeding_id: UUID
+    ) -> PoultryFeedingModel:
+        self.groups.get(owner_id=owner_id, group_id=group_id)
+        row = self.db.scalar(
+            select(PoultryFeedingModel).where(
+                PoultryFeedingModel.id == feeding_id,
+                PoultryFeedingModel.poultry_group_id == group_id,
+                PoultryFeedingModel.owner_id == owner_id,
+            )
+        )
+        if row is None:
+            raise AppError(
+                code="POULTRY_FEEDING_NOT_FOUND",
+                message="Poultry feeding entry not found.",
+                status_code=404,
+            )
+        return row
+
+    def update(
+        self,
+        *,
+        owner_id: UUID,
+        group_id: UUID,
+        feeding_id: UUID,
+        fed_at: datetime | None = None,
+        feed_name: str | None = None,
+        quantity: Decimal | None = None,
+        unit: str | None = None,
+        note: str | None = None,
+        fields_set: set[str] | None = None,
+    ) -> PoultryFeedingModel:
+        group = self.groups.get(owner_id=owner_id, group_id=group_id)
+        assert_not_archived(group.is_archived)
+        row = self.get(owner_id=owner_id, group_id=group_id, feeding_id=feeding_id)
+        set_fields = fields_set or set()
+
+        if "fed_at" in set_fields and fed_at is not None:
+            row.fed_at = fed_at
+        if "feed_name" in set_fields and feed_name is not None:
+            row.feed_name = validate_feed_name(feed_name)
+        if "quantity" in set_fields and quantity is not None:
+            row.quantity = validate_positive_quantity(quantity)
+        if "unit" in set_fields and unit is not None:
+            row.unit = validate_unit(unit)
+        if "note" in set_fields:
+            row.note = note.strip() if note else None
+
+        self.db.add(row)
+        self.db.commit()
+        self.db.refresh(row)
+        logger.info(
+            "Poultry feeding updated id=%s group_id=%s owner_id=%s",
+            row.id,
+            group_id,
+            owner_id,
+        )
+        return row
+
+    def delete(self, *, owner_id: UUID, group_id: UUID, feeding_id: UUID) -> None:
+        group = self.groups.get(owner_id=owner_id, group_id=group_id)
+        assert_not_archived(group.is_archived)
+        row = self.get(owner_id=owner_id, group_id=group_id, feeding_id=feeding_id)
+        self.db.delete(row)
+        self.db.commit()
+        logger.info(
+            "Poultry feeding deleted id=%s group_id=%s owner_id=%s",
+            feeding_id,
+            group_id,
+            owner_id,
+        )
+
 
 class EggProductionService:
     def __init__(self, db: Session) -> None:
@@ -359,3 +431,76 @@ class EggProductionService:
             ).all()
         )
         return items, total
+
+    def get(
+        self, *, owner_id: UUID, group_id: UUID, egg_id: UUID
+    ) -> EggProductionModel:
+        self.groups.get(owner_id=owner_id, group_id=group_id)
+        row = self.db.scalar(
+            select(EggProductionModel).where(
+                EggProductionModel.id == egg_id,
+                EggProductionModel.poultry_group_id == group_id,
+                EggProductionModel.owner_id == owner_id,
+            )
+        )
+        if row is None:
+            raise AppError(
+                code="EGG_NOT_FOUND",
+                message="Egg production entry not found.",
+                status_code=404,
+            )
+        return row
+
+    def update(
+        self,
+        *,
+        owner_id: UUID,
+        group_id: UUID,
+        egg_id: UUID,
+        produced_at: datetime | None = None,
+        quantity: Decimal | None = None,
+        unit: str | None = None,
+        price_per_unit: Decimal | None = None,
+        note: str | None = None,
+        fields_set: set[str] | None = None,
+    ) -> EggProductionModel:
+        group = self.groups.get(owner_id=owner_id, group_id=group_id)
+        assert_not_archived(group.is_archived)
+        assert_eggs_allowed(group.poultry_type)
+        row = self.get(owner_id=owner_id, group_id=group_id, egg_id=egg_id)
+        set_fields = fields_set or set()
+
+        if "produced_at" in set_fields and produced_at is not None:
+            row.produced_at = produced_at
+        if "quantity" in set_fields and quantity is not None:
+            row.quantity = validate_positive_quantity(quantity)
+        if "unit" in set_fields and unit is not None:
+            row.unit = validate_unit(unit)
+        if "price_per_unit" in set_fields and price_per_unit is not None:
+            row.price_per_unit = validate_non_negative_price(price_per_unit)
+        if "note" in set_fields:
+            row.note = note.strip() if note else None
+
+        self.db.add(row)
+        self.db.commit()
+        self.db.refresh(row)
+        logger.info(
+            "Egg production updated id=%s group_id=%s owner_id=%s",
+            row.id,
+            group_id,
+            owner_id,
+        )
+        return row
+
+    def delete(self, *, owner_id: UUID, group_id: UUID, egg_id: UUID) -> None:
+        group = self.groups.get(owner_id=owner_id, group_id=group_id)
+        assert_not_archived(group.is_archived)
+        row = self.get(owner_id=owner_id, group_id=group_id, egg_id=egg_id)
+        self.db.delete(row)
+        self.db.commit()
+        logger.info(
+            "Egg production deleted id=%s group_id=%s owner_id=%s",
+            egg_id,
+            group_id,
+            owner_id,
+        )

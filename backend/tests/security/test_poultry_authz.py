@@ -36,8 +36,12 @@ def test_poultry_routes_require_auth(client: TestClient) -> None:
         ("POST", f"/api/v1/poultry-groups/{group_id}/archive"),
         ("GET", f"/api/v1/poultry-groups/{group_id}/feedings"),
         ("POST", f"/api/v1/poultry-groups/{group_id}/feedings"),
+        ("PATCH", f"/api/v1/poultry-groups/{group_id}/feedings/{group_id}"),
+        ("DELETE", f"/api/v1/poultry-groups/{group_id}/feedings/{group_id}"),
         ("GET", f"/api/v1/poultry-groups/{group_id}/egg-productions"),
         ("POST", f"/api/v1/poultry-groups/{group_id}/egg-productions"),
+        ("PATCH", f"/api/v1/poultry-groups/{group_id}/egg-productions/{group_id}"),
+        ("DELETE", f"/api/v1/poultry-groups/{group_id}/egg-productions/{group_id}"),
     ]
     for method, path in paths:
         response = client.request(method, path, json={})
