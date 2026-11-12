@@ -1,10 +1,10 @@
 ---
 unit: 003-poultry-actions-mobile
 intent: 004-poultry-history-actions-and-table-polish
-phase: inception
-status: stories-defined
-created: '2026-11-12T09:47:02Z'
-updated: '2026-11-12T09:47:02Z'
+phase: construction
+status: complete
+created: "2026-11-12T09:47:02Z"
+updated: "2026-11-12T10:18:00Z"
 unit_type: mobile
 default_bolt_type: simple-construction-bolt
 ---
@@ -43,8 +43,8 @@ Flutter poultry detail: Edit/Delete egg and feeding with confirm; **No.** labeli
 
 ## Story Summary
 
-- [ ] **001-mobile-poultry-egg-feeding-actions**: Mobile Edit/Delete - Must
-- [ ] **002-mobile-history-no-and-action-colors**: No. + colors - Must
+- [x] **001-mobile-poultry-egg-feeding-actions**: Mobile Edit/Delete - Must
+- [x] **002-mobile-history-no-and-action-colors**: No. + colors - Must
 
 ## Dependencies
 
@@ -53,5 +53,5 @@ Flutter poultry detail: Edit/Delete egg and feeding with confirm; **No.** labeli
 
 ## Success Criteria
 
-- [ ] Farm owner can add/edit/delete egg and feeding on mobile
-- [ ] Confirm on delete; BN/EN strings; No. + color polish
+- [x] Farm owner can add/edit/delete egg and feeding on mobile
+- [x] Confirm on delete; BN/EN strings; No. + color polish

@@ -2,11 +2,11 @@
 id: 002-mobile-history-no-and-action-colors
 unit: 003-poultry-actions-mobile
 intent: 004-poultry-history-actions-and-table-polish
-status: draft
+status: complete
 priority: must
 created: "2026-11-12T09:47:02Z"
 assigned_bolt: 031-poultry-actions-mobile
-implemented: false
+implemented: true
 ---
 
 # Story: 002-mobile-history-no-and-action-colors
@@ -19,9 +19,9 @@ implemented: false
 
 ## Acceptance Criteria
 
-- [ ] **Given** history UIs that show a row index, **When** labeled, **Then** they use **No.** / `rowNumber` (BN equivalent)—not `#`
-- [ ] **Given** Edit/Delete actions on poultry (and cow histories if shown with icons), **When** rendered, **Then** Edit uses primary color and Delete uses danger/red
-- [ ] **Given** EN and BN, **When** viewing labels, **Then** localized strings appear
+- [x] **Given** history UIs that show a row index, **When** labeled, **Then** they use **No.** / `rowNumber` (BN equivalent)—not `#`
+- [x] **Given** Edit/Delete actions on poultry (and cow histories if shown with icons), **When** rendered, **Then** Edit uses primary color and Delete uses danger/red
+- [x] **Given** EN and BN, **When** viewing labels, **Then** localized strings appear
 
 ## Technical Notes
 

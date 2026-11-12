@@ -44,3 +44,13 @@
 | intents/004-poultry-history-actions-and-table-polish/requirements.md | inception-complete | units-defined | Intent has 3 units (1/3 complete) |
 
 ---
+
+## 2026-11-12T10:17:05.913Z - Status Sync
+
+**Triggered by**: status-integrity script
+
+| Artifact | Old Status | New Status | Reason |
+|----------|------------|------------|--------|
+| intents/004-poultry-history-actions-and-table-polish/requirements.md | units-defined | complete | Intent has 3 units (3/3 complete) |
+
+---

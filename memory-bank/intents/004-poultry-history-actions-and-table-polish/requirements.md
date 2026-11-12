@@ -1,7 +1,7 @@
 ---
 intent: 004-poultry-history-actions-and-table-polish
 phase: inception
-status: units-defined
+status: complete
 created: '2026-11-12T09:35:38Z'
 updated: '2026-11-12T09:49:18Z'
 type: enhancement
