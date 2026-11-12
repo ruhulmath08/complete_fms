@@ -3,7 +3,7 @@ intent: 003-update-api-web-and-mobile-design
 phase: inception
 status: inception-complete
 created: "2026-11-12T06:32:03Z"
-updated: "2026-11-12T08:13:02Z"
+updated: "2026-11-12T08:36:33Z"
 type: enhancement
 ---
 
@@ -36,6 +36,7 @@ Completely update the web and mobile design of the Farm Management System so the
 - Row **Total** columns where a total is meaningful (including cow Feeding); API support as needed
 - Per-row **Action** column (Edit / Delete icons) on data tables after records exist; API update/delete as needed
 - **Mobile parity (Must)**: Flutter cow milk and feeding histories show **Total** (and feeding **unit cost**), plus **Edit/Delete** actions wired to the same API as web—not web-only
+- **Mobile navigation (Must)**: Landing/signed-in shell uses a **navigation drawer** for Cows, Poultry, Crops, Inventory, Income & expenses, Profile, Farm settings; TitleBar shows a **three-dot** overflow with Profile and Logout (icon+title); Logout opens a confirm/cancel alert dialog
 - Cow detail layout: rectangular image on the left, info on the right (web and mobile)
 - Remove in-page “← Back to …” links; refresh **Edit** and **Archive** button treatment
 
@@ -77,15 +78,19 @@ Completely update the web and mobile design of the Farm Management System so the
 
 ### FR-3: Mobile navigation chrome refresh
 
-- **Description**: Replace the crowded multi-`TextButton` mobile `AppBar` navigation with a production-ready navigation pattern suitable for phones (e.g. drawer, bottom nav, or equivalent Material 3 pattern) while preserving access to Cows, Poultry, Crops, Inventory, Income & expenses, Profile, Farm settings, and Sign out.
+- **Description**: Replace the crowded multi-`TextButton` mobile `AppBar` navigation with a **navigation drawer** on the signed-in landing/shell, plus a TitleBar **three-dot (⋮) overflow** for Profile and Logout. Drawer destinations: **Cows**, **Poultry**, **Crops**, **Inventory**, **Income & expenses**, **Profile**, **Farm settings**.
 - **Acceptance Criteria**:
-  - All listed destinations remain reachable in ≤ 2 taps from the signed-in shell
-  - Navigation is usable on a typical phone width without horizontal overflow of destination labels
-  - Active destination is visually indicated
-  - Sign-out remains available from the shell
+  - Signed-in landing/shell presents a **navigation drawer** listing exactly: Cows, Poultry, Crops, Inventory, Income & expenses, Profile, Farm settings (labels may be localized BN/EN)
+  - Drawer items are tappable and navigate to the corresponding screens; active destination is visually indicated
+  - TitleBar (AppBar) shows a **three-dot icon** on the **right**
+  - Tapping the three-dot icon opens a menu/list of items each showing **icon + title** for **Profile** and **Logout**
+  - Choosing **Profile** navigates to the profile screen
+  - Choosing **Logout** opens an **alert dialog** with a clear **title**, **message**, **Confirm** (or equivalent affirmative) button, and **Cancel** button
+  - Confirming logout signs the owner out; Cancel dismisses the dialog without signing out
+  - No horizontal overflow of crowded TextButton destinations in the AppBar
   - Navigation chrome uses shared tokens (FR-1)
 - **Priority**: Must
-- **Related Stories**: TBD
+- **Related Stories**: `001-mobile-nav-chrome`
 
 ### FR-4: Shared page layout and universal data tables (web)
 
@@ -303,6 +308,6 @@ Completely update the web and mobile design of the Farm Management System so the
 | Question                                                                            | Owner         | Due Date                    | Resolution                                                                                      |
 | ----------------------------------------------------------------------------------- | ------------- | --------------------------- | ----------------------------------------------------------------------------------------------- |
 | Default page size for primary entity lists (10 vs 20)?                              | Product owner | Checkpoint 2                | **Resolved: 10** (parity with Milk production)                                                  |
-| Mobile nav pattern preference (drawer vs bottom navigation vs other)?               | Product owner | Checkpoint 2 / construction | Pending — construction may propose Material 3 drawer if unspecified                             |
+| Mobile nav pattern preference (drawer vs bottom navigation vs other)?               | Product owner | Checkpoint 2 / construction | **Resolved: navigation drawer** + TitleBar ⋮ (Profile, Logout with confirm dialog)              |
 | Feeding Total formula (e.g. quantity × unit cost) when API fields differ from milk? | Developer     | During construction         | Pending — align with stored feeding fields; extend API if unit cost missing                     |
 | Soft-delete vs hard-delete for table row Delete?                                    | Product owner | Checkpoint 2 / construction | Pending — default hard-delete for sub-records (milk/feeding) unless owner specifies soft-delete |

@@ -4,7 +4,7 @@ intent: 003-update-api-web-and-mobile-design
 phase: inception
 status: ready
 created: "2026-11-12T07:34:21Z"
-updated: "2026-11-12T07:34:21Z"
+updated: "2026-11-12T08:36:33Z"
 unit_type: mobile
 default_bolt_type: simple-construction-bolt
 ---
@@ -13,13 +13,14 @@ default_bolt_type: simple-construction-bolt
 
 ## Purpose
 
-Deliver a production-ready Flutter mobile experience: usable navigation chrome, mirrored tokens/states, detail/history visual parity with pagination, totals/actions/cow layout parity, and practical forms/a11y.
+Deliver a production-ready Flutter mobile experience: navigation drawer + TitleBar ⋮ (Profile/Logout dialog), mirrored tokens/states, detail/history visual parity with pagination, totals/actions/cow layout parity, and practical forms/a11y.
 
 ## Scope
 
 ### In Scope
 
-- Replace crowded AppBar nav with phone-ready pattern
+- **Navigation drawer** on landing/shell: Cows, Poultry, Crops, Inventory, Income & expenses, Profile, Farm settings
+- TitleBar **three-dot** overflow: Profile and Logout (icon+title); Logout confirm/cancel alert dialog
 - Mirror visual tokens and empty/loading/error primitives
 - Detail/history visual system + pagination for milk/feeding and similar
 - Totals, edit/delete affordances, cow image/info layout parity
@@ -100,13 +101,13 @@ Deliver a production-ready Flutter mobile experience: usable navigation chrome, 
 
 - Material 3 + existing `AppTokens`
 - BN/EN l10n for new strings
-- Prefer drawer if owner unspecified
+- Navigation pattern is **drawer + AppBar overflow** (not bottom-nav-primary)
 
 ---
 
 ## Success Criteria
 
-- [ ] Phone-usable nav to all destinations in ≤ 2 taps
+- [ ] Drawer lists required destinations; TitleBar ⋮ offers Profile + Logout with confirm dialog
 - [ ] Detail/history feel production-ready with pagination
 - [ ] Milk/feeding show Total (+ feeding unit cost) and Edit/Delete wired to bolt 024 APIs
 - [ ] Cow detail rectangular image + info layout matches production web intent

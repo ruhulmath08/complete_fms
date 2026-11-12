@@ -24,16 +24,17 @@ complexity:
 
 ## Objective
 
-Ship mobile foundation: production navigation chrome and mirrored tokens with shared empty/loading/error states.
+Ship mobile foundation: **navigation drawer** (Cows → Farm settings), TitleBar **three-dot** overflow (Profile + Logout with confirm dialog), and mirrored tokens with shared empty/loading/error states.
 
 ## Stories Included
 
-- [ ] **001-mobile-nav-chrome**: Mobile navigation chrome - Priority: Must
+- [ ] **001-mobile-nav-chrome**: Drawer + three-dot Profile/Logout dialog - Priority: Must
 - [ ] **002-mobile-tokens-and-states**: Tokens + empty/loading/error - Priority: Must
 
 ## Expected Outputs
 
-- New nav pattern in AppShell
+- `AppShell` with drawer destinations and AppBar ⋮ menu
+- Logout alert dialog (title, message, Confirm, Cancel)
 - Shared state widgets + token alignment
 
 ## Dependencies
