@@ -626,6 +626,12 @@ abstract class AppLocalizations {
   /// **'Delete this milk entry?'**
   String get deleteMilkConfirm;
 
+  /// No description provided for @deleteEggConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this egg entry?'**
+  String get deleteEggConfirm;
+
   /// No description provided for @deleteFeedingConfirm.
   ///
   /// In en, this message translates to:
@@ -667,6 +673,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update milk entry'**
   String get updateMilkEntry;
+
+  /// No description provided for @updateEggEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Update egg entry'**
+  String get updateEggEntry;
 
   /// No description provided for @updateFeedingEntry.
   ///

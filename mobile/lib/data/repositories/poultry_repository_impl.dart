@@ -89,6 +89,30 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
+  Future<EggProduction> updateEgg({
+    required String groupId,
+    required String eggId,
+    required String producedAt,
+    required String quantity,
+    required String unit,
+    required String pricePerUnit,
+    String? note,
+  }) async {
+    final json = await _api.updateEgg(groupId, eggId, {
+      'produced_at': producedAt,
+      'quantity': quantity,
+      'unit': unit,
+      'price_per_unit': pricePerUnit,
+      'note': note,
+    });
+    return mapEgg(json);
+  }
+
+  @override
+  Future<void> deleteEgg(String groupId, String eggId) =>
+      _api.deleteEgg(groupId, eggId);
+
+  @override
   Future<PagedResult<PoultryFeeding>> listFeedings(
     String groupId, {
     int limit = 50,
@@ -116,4 +140,28 @@ class PoultryRepositoryImpl implements PoultryRepository {
     });
     return mapPoultryFeeding(json);
   }
+
+  @override
+  Future<PoultryFeeding> updateFeeding({
+    required String groupId,
+    required String feedingId,
+    required String fedAt,
+    required String feedName,
+    required String quantity,
+    required String unit,
+    String? note,
+  }) async {
+    final json = await _api.updateFeeding(groupId, feedingId, {
+      'fed_at': fedAt,
+      'feed_name': feedName,
+      'quantity': quantity,
+      'unit': unit,
+      'note': note,
+    });
+    return mapPoultryFeeding(json);
+  }
+
+  @override
+  Future<void> deleteFeeding(String groupId, String feedingId) =>
+      _api.deleteFeeding(groupId, feedingId);
 }

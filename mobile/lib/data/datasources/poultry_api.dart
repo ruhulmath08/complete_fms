@@ -108,6 +108,32 @@ class PoultryApi {
     }
   }
 
+  Future<Map<String, dynamic>> updateEgg(
+    String groupId,
+    String eggId,
+    Map<String, dynamic> body,
+  ) async {
+    try {
+      final response = await _dio.patch<Map<String, dynamic>>(
+        '/api/v1/poultry-groups/$groupId/egg-productions/$eggId',
+        data: body,
+      );
+      return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
+  Future<void> deleteEgg(String groupId, String eggId) async {
+    try {
+      await _dio.delete<void>(
+        '/api/v1/poultry-groups/$groupId/egg-productions/$eggId',
+      );
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
   Future<Map<String, dynamic>> listFeedings(
     String groupId, {
     int limit = 50,
@@ -134,6 +160,32 @@ class PoultryApi {
         data: body,
       );
       return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> updateFeeding(
+    String groupId,
+    String feedingId,
+    Map<String, dynamic> body,
+  ) async {
+    try {
+      final response = await _dio.patch<Map<String, dynamic>>(
+        '/api/v1/poultry-groups/$groupId/feedings/$feedingId',
+        data: body,
+      );
+      return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
+  Future<void> deleteFeeding(String groupId, String feedingId) async {
+    try {
+      await _dio.delete<void>(
+        '/api/v1/poultry-groups/$groupId/feedings/$feedingId',
+      );
     } on DioException catch (e) {
       _client.throwDio(e);
     }

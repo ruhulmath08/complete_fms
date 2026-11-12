@@ -38,7 +38,12 @@ void main() {
     expect(en.poultryTitle, 'Poultry');
     expect(en.managePoultry, 'Manage poultry');
     expect(en.eggsNotForBroiler, contains('Broiler'));
+    expect(en.rowNumber, 'No.');
+    expect(en.deleteEggConfirm, contains('egg'));
+    expect(en.updateEggEntry, contains('egg'));
     expect(bn.poultryTitle, 'হাঁস-মুরগি');
     expect(bn.managePoultry, 'হাঁস-মুরগি পরিচালনা');
+    expect(bn.rowNumber, 'নং');
+    expect(bn.deleteEggConfirm, isNotEmpty);
   });
 }

@@ -281,6 +281,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteMilkConfirm => 'Delete this milk entry?';
 
   @override
+  String get deleteEggConfirm => 'Delete this egg entry?';
+
+  @override
   String get deleteFeedingConfirm => 'Delete this feeding entry?';
 
   @override
@@ -302,6 +305,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateMilkEntry => 'Update milk entry';
+
+  @override
+  String get updateEggEntry => 'Update egg entry';
 
   @override
   String get updateFeedingEntry => 'Update feeding entry';

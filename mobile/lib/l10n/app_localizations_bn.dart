@@ -281,6 +281,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get deleteMilkConfirm => 'এই দুধের এন্ট্রি মুছবেন?';
 
   @override
+  String get deleteEggConfirm => 'এই ডিমের এন্ট্রি মুছবেন?';
+
+  @override
   String get deleteFeedingConfirm => 'এই খাদ্যের এন্ট্রি মুছবেন?';
 
   @override
@@ -302,6 +305,9 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get updateMilkEntry => 'দুধের এন্ট্রি আপডেট';
+
+  @override
+  String get updateEggEntry => 'ডিমের এন্ট্রি আপডেট';
 
   @override
   String get updateFeedingEntry => 'খাদ্যের এন্ট্রি আপডেট';

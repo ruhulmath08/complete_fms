@@ -3,8 +3,27 @@ import '../../../domain/entities/poultry.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/poultry_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../widgets/poultry_group_form_fields.dart';
+
+String _rowTotal(String quantity, String unitPrice) {
+  final qty = double.tryParse(quantity);
+  final price = double.tryParse(unitPrice);
+  if (qty == null || price == null) return '—';
+  return (qty * price).toStringAsFixed(2);
+}
+
+String _formatHistoryDate(String iso) {
+  final parsed = DateTime.tryParse(iso);
+  if (parsed == null) return iso;
+  final local = parsed.toLocal();
+  String two(int n) => n.toString().padStart(2, '0');
+  return '${local.year}-${two(local.month)}-${two(local.day)} '
+      '${two(local.hour)}:${two(local.minute)}';
+}
+
+String _nowIso() => DateTime.now().toUtc().toIso8601String();
 
 class PoultryDetailPage extends StatefulWidget {
   const PoultryDetailPage({super.key, required this.groupId});
@@ -19,6 +38,8 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
   PoultryGroup? _group;
   List<EggProduction> _eggs = const [];
   List<PoultryFeeding> _feedings = const [];
+  String? _editingEggId;
+  String? _editingFeedingId;
   bool _loading = true;
   bool _editing = false;
   bool _saving = false;
@@ -33,10 +54,12 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
   PoultryType _poultryType = PoultryType.layer;
   AcquisitionSource _acquiredBy = AcquisitionSource.bornOnFarm;
 
+  final _eggProducedAt = TextEditingController();
   final _eggQty = TextEditingController();
   final _eggUnit = TextEditingController(text: 'pcs');
   final _eggPrice = TextEditingController(text: '0');
   final _eggNote = TextEditingController();
+  final _feedFedAt = TextEditingController();
   final _feedName = TextEditingController();
   final _feedQty = TextEditingController();
   final _feedUnit = TextEditingController(text: 'kg');
@@ -45,6 +68,8 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
   @override
   void initState() {
     super.initState();
+    _resetEggForm();
+    _resetFeedingForm();
     _load();
   }
 
@@ -57,10 +82,12 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
       _purchaseDate,
       _purchasePrice,
       _notes,
+      _eggProducedAt,
       _eggQty,
       _eggUnit,
       _eggPrice,
       _eggNote,
+      _feedFedAt,
       _feedName,
       _feedQty,
       _feedUnit,
@@ -80,6 +107,24 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
     _notes.text = group.notes ?? '';
     _poultryType = group.poultryType;
     _acquiredBy = group.acquiredBy;
+  }
+
+  void _resetEggForm() {
+    _editingEggId = null;
+    _eggProducedAt.text = _nowIso();
+    _eggQty.clear();
+    _eggUnit.text = 'pcs';
+    _eggPrice.text = '0';
+    _eggNote.clear();
+  }
+
+  void _resetFeedingForm() {
+    _editingFeedingId = null;
+    _feedFedAt.text = _nowIso();
+    _feedName.clear();
+    _feedQty.clear();
+    _feedUnit.text = 'kg';
+    _feedNote.clear();
   }
 
   Future<void> _load() async {
@@ -170,43 +215,223 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
     }
   }
 
-  Future<void> _addEgg() async {
+  void _startEditEgg(EggProduction row) {
+    setState(() {
+      _editingEggId = row.id;
+      _eggProducedAt.text = row.producedAt;
+      _eggQty.text = row.quantity;
+      _eggUnit.text = row.unit;
+      _eggPrice.text = row.pricePerUnit;
+      _eggNote.text = row.note ?? '';
+      _error = null;
+    });
+  }
+
+  void _startEditFeeding(PoultryFeeding row) {
+    setState(() {
+      _editingFeedingId = row.id;
+      _feedFedAt.text = row.fedAt;
+      _feedName.text = row.feedName;
+      _feedQty.text = row.quantity;
+      _feedUnit.text = row.unit;
+      _feedNote.text = row.note ?? '';
+      _error = null;
+    });
+  }
+
+  Future<void> _saveEgg() async {
     setState(() => _error = null);
+    final note = _eggNote.text.trim();
     try {
-      await getIt<AddEggProduction>()(
-        groupId: widget.groupId,
-        producedAt: DateTime.now().toUtc().toIso8601String(),
-        quantity: _eggQty.text.trim(),
-        unit: _eggUnit.text.trim(),
-        pricePerUnit: _eggPrice.text.trim(),
-        note: _eggNote.text.trim().isEmpty ? null : _eggNote.text.trim(),
-      );
-      _eggQty.clear();
-      _eggNote.clear();
+      if (_editingEggId != null) {
+        await getIt<UpdateEggProduction>()(
+          groupId: widget.groupId,
+          eggId: _editingEggId!,
+          producedAt: _eggProducedAt.text.trim(),
+          quantity: _eggQty.text.trim(),
+          unit: _eggUnit.text.trim(),
+          pricePerUnit: _eggPrice.text.trim(),
+          note: note.isEmpty ? null : note,
+        );
+      } else {
+        await getIt<AddEggProduction>()(
+          groupId: widget.groupId,
+          producedAt: _eggProducedAt.text.trim(),
+          quantity: _eggQty.text.trim(),
+          unit: _eggUnit.text.trim(),
+          pricePerUnit: _eggPrice.text.trim(),
+          note: note.isEmpty ? null : note,
+        );
+      }
+      setState(_resetEggForm);
       await _load();
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  Future<void> _addFeeding() async {
-    setState(() => _error = null);
+  Future<void> _deleteEgg(EggProduction row) async {
+    final l10n = AppLocalizations.of(context)!;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(l10n.deleteEggConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok != true) return;
     try {
-      await getIt<AddPoultryFeeding>()(
-        groupId: widget.groupId,
-        fedAt: DateTime.now().toUtc().toIso8601String(),
-        feedName: _feedName.text.trim(),
-        quantity: _feedQty.text.trim(),
-        unit: _feedUnit.text.trim(),
-        note: _feedNote.text.trim().isEmpty ? null : _feedNote.text.trim(),
-      );
-      _feedName.clear();
-      _feedQty.clear();
-      _feedNote.clear();
+      await getIt<DeleteEggProduction>()(widget.groupId, row.id);
+      if (_editingEggId == row.id) _resetEggForm();
       await _load();
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     }
+  }
+
+  Future<void> _saveFeeding() async {
+    setState(() => _error = null);
+    final note = _feedNote.text.trim();
+    try {
+      if (_editingFeedingId != null) {
+        await getIt<UpdatePoultryFeeding>()(
+          groupId: widget.groupId,
+          feedingId: _editingFeedingId!,
+          fedAt: _feedFedAt.text.trim(),
+          feedName: _feedName.text.trim(),
+          quantity: _feedQty.text.trim(),
+          unit: _feedUnit.text.trim(),
+          note: note.isEmpty ? null : note,
+        );
+      } else {
+        await getIt<AddPoultryFeeding>()(
+          groupId: widget.groupId,
+          fedAt: _feedFedAt.text.trim(),
+          feedName: _feedName.text.trim(),
+          quantity: _feedQty.text.trim(),
+          unit: _feedUnit.text.trim(),
+          note: note.isEmpty ? null : note,
+        );
+      }
+      setState(_resetFeedingForm);
+      await _load();
+    } on AppFailure catch (e) {
+      setState(() => _error = e.message);
+    }
+  }
+
+  Future<void> _deleteFeeding(PoultryFeeding row) async {
+    final l10n = AppLocalizations.of(context)!;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(l10n.deleteFeedingConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok != true) return;
+    try {
+      await getIt<DeletePoultryFeeding>()(widget.groupId, row.id);
+      if (_editingFeedingId == row.id) _resetFeedingForm();
+      await _load();
+    } on AppFailure catch (e) {
+      setState(() => _error = e.message);
+    }
+  }
+
+  DataRow _eggRow(
+    EggProduction row,
+    int index,
+    bool canWrite,
+    AppLocalizations l10n,
+  ) {
+    final tokens = AppTokens.of(context);
+    return DataRow(
+      cells: [
+        DataCell(Text('$index')),
+        DataCell(Text(_formatHistoryDate(row.producedAt))),
+        DataCell(Text('${row.quantity} ${row.unit}')),
+        DataCell(Text(row.pricePerUnit)),
+        DataCell(Text(_rowTotal(row.quantity, row.pricePerUnit))),
+        DataCell(Text(row.note ?? '—')),
+        if (canWrite)
+          DataCell(
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  tooltip: l10n.editEntry,
+                  onPressed: () => _startEditEgg(row),
+                  color: tokens.primary,
+                  icon: const Icon(Icons.edit_outlined),
+                ),
+                IconButton(
+                  tooltip: l10n.delete,
+                  onPressed: () => _deleteEgg(row),
+                  color: tokens.danger,
+                  icon: const Icon(Icons.delete_outline),
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
+  DataRow _feedingRow(
+    PoultryFeeding row,
+    int index,
+    bool canWrite,
+    AppLocalizations l10n,
+  ) {
+    final tokens = AppTokens.of(context);
+    return DataRow(
+      cells: [
+        DataCell(Text('$index')),
+        DataCell(Text(_formatHistoryDate(row.fedAt))),
+        DataCell(Text(row.feedName)),
+        DataCell(Text('${row.quantity} ${row.unit}')),
+        DataCell(Text(row.note ?? '—')),
+        if (canWrite)
+          DataCell(
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  tooltip: l10n.editEntry,
+                  onPressed: () => _startEditFeeding(row),
+                  color: tokens.primary,
+                  icon: const Icon(Icons.edit_outlined),
+                ),
+                IconButton(
+                  tooltip: l10n.delete,
+                  onPressed: () => _deleteFeeding(row),
+                  color: tokens.danger,
+                  icon: const Icon(Icons.delete_outline),
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
   }
 
   @override
@@ -287,14 +512,32 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
         if (!group.eggsEligible)
           Text(l10n.eggsNotForBroiler)
         else ...[
-          ..._eggs.map(
-            (row) => ListTile(
-              title: Text('${row.quantity} ${row.unit}'),
-              subtitle: Text(row.producedAt),
+          if (_eggs.isEmpty)
+            Text(l10n.noEggEntries)
+          else
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text(l10n.rowNumber)),
+                  DataColumn(label: Text(l10n.dateTime)),
+                  DataColumn(label: Text(l10n.quantity)),
+                  DataColumn(label: Text(l10n.pricePerUnit)),
+                  DataColumn(label: Text(l10n.total)),
+                  DataColumn(label: Text(l10n.note)),
+                  if (canWrite) DataColumn(label: Text(l10n.actions)),
+                ],
+                rows: [
+                  for (var i = 0; i < _eggs.length; i++)
+                    _eggRow(_eggs[i], i + 1, canWrite, l10n),
+                ],
+              ),
             ),
-          ),
-          if (_eggs.isEmpty) Text(l10n.noEggEntries),
           if (canWrite) ...[
+            TextField(
+              controller: _eggProducedAt,
+              decoration: InputDecoration(labelText: l10n.producedAtHint),
+            ),
             TextField(
               controller: _eggQty,
               decoration: InputDecoration(labelText: l10n.quantity),
@@ -311,19 +554,46 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
               controller: _eggNote,
               decoration: InputDecoration(labelText: l10n.note),
             ),
-            FilledButton(onPressed: _addEgg, child: Text(l10n.addEgg)),
+            FilledButton(
+              onPressed: _saveEgg,
+              child: Text(
+                _editingEggId != null ? l10n.updateEggEntry : l10n.addEgg,
+              ),
+            ),
+            if (_editingEggId != null)
+              TextButton(
+                onPressed: () => setState(_resetEggForm),
+                child: Text(l10n.cancelEdit),
+              ),
           ],
         ],
         const Divider(height: 32),
         Text(l10n.feeding, style: Theme.of(context).textTheme.titleLarge),
-        ..._feedings.map(
-          (row) => ListTile(
-            title: Text('${row.feedName}: ${row.quantity} ${row.unit}'),
-            subtitle: Text(row.fedAt),
+        if (_feedings.isEmpty)
+          Text(l10n.noFeedingEntries)
+        else
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columns: [
+                DataColumn(label: Text(l10n.rowNumber)),
+                DataColumn(label: Text(l10n.dateTime)),
+                DataColumn(label: Text(l10n.feedName)),
+                DataColumn(label: Text(l10n.quantity)),
+                DataColumn(label: Text(l10n.note)),
+                if (canWrite) DataColumn(label: Text(l10n.actions)),
+              ],
+              rows: [
+                for (var i = 0; i < _feedings.length; i++)
+                  _feedingRow(_feedings[i], i + 1, canWrite, l10n),
+              ],
+            ),
           ),
-        ),
-        if (_feedings.isEmpty) Text(l10n.noFeedingEntries),
         if (canWrite) ...[
+          TextField(
+            controller: _feedFedAt,
+            decoration: InputDecoration(labelText: l10n.fedAtHint),
+          ),
           TextField(
             controller: _feedName,
             decoration: InputDecoration(labelText: l10n.feedName),
@@ -340,7 +610,19 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
             controller: _feedNote,
             decoration: InputDecoration(labelText: l10n.note),
           ),
-          FilledButton(onPressed: _addFeeding, child: Text(l10n.addFeeding)),
+          FilledButton(
+            onPressed: _saveFeeding,
+            child: Text(
+              _editingFeedingId != null
+                  ? l10n.updateFeedingEntry
+                  : l10n.addFeeding,
+            ),
+          ),
+          if (_editingFeedingId != null)
+            TextButton(
+              onPressed: () => setState(_resetFeedingForm),
+              child: Text(l10n.cancelEdit),
+            ),
         ] else
           Text(l10n.poultryArchivedReadOnly),
       ],

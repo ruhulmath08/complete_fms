@@ -539,11 +539,13 @@ class _CowDetailPageState extends State<CowDetailPage> {
                 IconButton(
                   tooltip: l10n.editEntry,
                   onPressed: () => _startEditMilk(row),
+                  color: AppTokens.of(context).primary,
                   icon: const Icon(Icons.edit_outlined),
                 ),
                 IconButton(
                   tooltip: l10n.delete,
                   onPressed: () => _deleteMilk(row),
+                  color: AppTokens.of(context).danger,
                   icon: const Icon(Icons.delete_outline),
                 ),
               ],
@@ -661,11 +663,13 @@ class _CowDetailPageState extends State<CowDetailPage> {
                 IconButton(
                   tooltip: l10n.editEntry,
                   onPressed: () => _startEditFeeding(row),
+                  color: AppTokens.of(context).primary,
                   icon: const Icon(Icons.edit_outlined),
                 ),
                 IconButton(
                   tooltip: l10n.delete,
                   onPressed: () => _deleteFeeding(row),
+                  color: AppTokens.of(context).danger,
                   icon: const Icon(Icons.delete_outline),
                 ),
               ],

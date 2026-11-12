@@ -62,6 +62,36 @@ class AddEggProduction {
       );
 }
 
+class UpdateEggProduction {
+  UpdateEggProduction(this._repository);
+  final PoultryRepository _repository;
+  Future<EggProduction> call({
+    required String groupId,
+    required String eggId,
+    required String producedAt,
+    required String quantity,
+    required String unit,
+    required String pricePerUnit,
+    String? note,
+  }) =>
+      _repository.updateEgg(
+        groupId: groupId,
+        eggId: eggId,
+        producedAt: producedAt,
+        quantity: quantity,
+        unit: unit,
+        pricePerUnit: pricePerUnit,
+        note: note,
+      );
+}
+
+class DeleteEggProduction {
+  DeleteEggProduction(this._repository);
+  final PoultryRepository _repository;
+  Future<void> call(String groupId, String eggId) =>
+      _repository.deleteEgg(groupId, eggId);
+}
+
 class ListPoultryFeedings {
   ListPoultryFeedings(this._repository);
   final PoultryRepository _repository;
@@ -88,4 +118,34 @@ class AddPoultryFeeding {
         unit: unit,
         note: note,
       );
+}
+
+class UpdatePoultryFeeding {
+  UpdatePoultryFeeding(this._repository);
+  final PoultryRepository _repository;
+  Future<PoultryFeeding> call({
+    required String groupId,
+    required String feedingId,
+    required String fedAt,
+    required String feedName,
+    required String quantity,
+    required String unit,
+    String? note,
+  }) =>
+      _repository.updateFeeding(
+        groupId: groupId,
+        feedingId: feedingId,
+        fedAt: fedAt,
+        feedName: feedName,
+        quantity: quantity,
+        unit: unit,
+        note: note,
+      );
+}
+
+class DeletePoultryFeeding {
+  DeletePoultryFeeding(this._repository);
+  final PoultryRepository _repository;
+  Future<void> call(String groupId, String feedingId) =>
+      _repository.deleteFeeding(groupId, feedingId);
 }

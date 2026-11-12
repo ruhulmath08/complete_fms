@@ -30,6 +30,18 @@ abstract class PoultryRepository {
     String? note,
   });
 
+  Future<EggProduction> updateEgg({
+    required String groupId,
+    required String eggId,
+    required String producedAt,
+    required String quantity,
+    required String unit,
+    required String pricePerUnit,
+    String? note,
+  });
+
+  Future<void> deleteEgg(String groupId, String eggId);
+
   Future<PagedResult<PoultryFeeding>> listFeedings(
     String groupId, {
     int limit = 50,
@@ -44,4 +56,16 @@ abstract class PoultryRepository {
     required String unit,
     String? note,
   });
+
+  Future<PoultryFeeding> updateFeeding({
+    required String groupId,
+    required String feedingId,
+    required String fedAt,
+    required String feedName,
+    required String quantity,
+    required String unit,
+    String? note,
+  });
+
+  Future<void> deleteFeeding(String groupId, String feedingId);
 }
