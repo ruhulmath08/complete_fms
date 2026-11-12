@@ -47,7 +47,7 @@ def create_inventory_item(
 def list_inventory_items(
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
     include_archived: bool = Query(False),
 ) -> Page[InventoryItemResponse]:
@@ -134,7 +134,7 @@ def list_stock_updates(
     item_id: UUID,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ) -> Page[StockUpdateResponse]:
     items, total = StockUpdateService(db).list_by_item(

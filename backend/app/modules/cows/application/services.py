@@ -152,7 +152,7 @@ class CowService:
         offset: int | None = None,
         include_archived: bool = False,
     ) -> tuple[list[CowModel], int]:
-        lim, off = _clamp_paging(limit, offset, default_limit=20)
+        lim, off = _clamp_paging(limit, offset, default_limit=10)
         filters = [CowModel.owner_id == owner_id]
         if not include_archived:
             filters.append(CowModel.is_archived.is_(False))
@@ -417,6 +417,79 @@ class MilkProductionService:
         )
         return items, total
 
+    def get(
+        self, *, owner_id: UUID, cow_id: UUID, milk_id: UUID
+    ) -> MilkProductionModel:
+        self.cows.get(owner_id=owner_id, cow_id=cow_id)
+        row = self.db.scalar(
+            select(MilkProductionModel).where(
+                MilkProductionModel.id == milk_id,
+                MilkProductionModel.cow_id == cow_id,
+                MilkProductionModel.owner_id == owner_id,
+            )
+        )
+        if row is None:
+            raise AppError(
+                code="MILK_NOT_FOUND",
+                message="Milk production entry not found.",
+                status_code=404,
+            )
+        return row
+
+    def update(
+        self,
+        *,
+        owner_id: UUID,
+        cow_id: UUID,
+        milk_id: UUID,
+        produced_at: datetime | None = None,
+        quantity: Decimal | None = None,
+        unit: str | None = None,
+        price_per_unit: Decimal | None = None,
+        note: str | None = None,
+        fields_set: set[str] | None = None,
+    ) -> MilkProductionModel:
+        cow = self.cows.get(owner_id=owner_id, cow_id=cow_id)
+        assert_not_archived(cow.is_archived)
+        assert_milk_allowed(cow.purpose)
+        row = self.get(owner_id=owner_id, cow_id=cow_id, milk_id=milk_id)
+        set_fields = fields_set or set()
+
+        if "produced_at" in set_fields and produced_at is not None:
+            row.produced_at = produced_at
+        if "quantity" in set_fields and quantity is not None:
+            row.quantity = validate_positive_quantity(quantity)
+        if "unit" in set_fields and unit is not None:
+            row.unit = validate_unit(unit)
+        if "price_per_unit" in set_fields and price_per_unit is not None:
+            row.price_per_unit = validate_non_negative_price(price_per_unit)
+        if "note" in set_fields:
+            row.note = note.strip() if note else None
+
+        self.db.add(row)
+        self.db.commit()
+        self.db.refresh(row)
+        logger.info(
+            "Milk production updated id=%s cow_id=%s owner_id=%s",
+            row.id,
+            cow_id,
+            owner_id,
+        )
+        return row
+
+    def delete(self, *, owner_id: UUID, cow_id: UUID, milk_id: UUID) -> None:
+        cow = self.cows.get(owner_id=owner_id, cow_id=cow_id)
+        assert_not_archived(cow.is_archived)
+        row = self.get(owner_id=owner_id, cow_id=cow_id, milk_id=milk_id)
+        self.db.delete(row)
+        self.db.commit()
+        logger.info(
+            "Milk production deleted id=%s cow_id=%s owner_id=%s",
+            milk_id,
+            cow_id,
+            owner_id,
+        )
+
 
 class CowFeedingService:
     def __init__(self, db: Session, settings: Settings | None = None) -> None:
@@ -432,6 +505,7 @@ class CowFeedingService:
         feed_name: str,
         quantity: Decimal,
         unit: str,
+        unit_cost: Decimal,
         note: str | None = None,
     ) -> CowFeedingModel:
         cow = self.cows.get(owner_id=owner_id, cow_id=cow_id)
@@ -439,6 +513,7 @@ class CowFeedingService:
         qty = validate_positive_quantity(quantity)
         unit_v = validate_unit(unit)
         feed = validate_feed_name(feed_name)
+        cost = validate_non_negative_price(unit_cost, field="unit_cost")
 
         row = CowFeedingModel(
             id=uuid4(),
@@ -448,6 +523,7 @@ class CowFeedingService:
             feed_name=feed,
             quantity=qty,
             unit=unit_v,
+            unit_cost=cost,
             note=note.strip() if note else None,
         )
         self.db.add(row)
@@ -488,3 +564,78 @@ class CowFeedingService:
             ).all()
         )
         return items, total
+
+    def get(
+        self, *, owner_id: UUID, cow_id: UUID, feeding_id: UUID
+    ) -> CowFeedingModel:
+        self.cows.get(owner_id=owner_id, cow_id=cow_id)
+        row = self.db.scalar(
+            select(CowFeedingModel).where(
+                CowFeedingModel.id == feeding_id,
+                CowFeedingModel.cow_id == cow_id,
+                CowFeedingModel.owner_id == owner_id,
+            )
+        )
+        if row is None:
+            raise AppError(
+                code="FEEDING_NOT_FOUND",
+                message="Feeding entry not found.",
+                status_code=404,
+            )
+        return row
+
+    def update(
+        self,
+        *,
+        owner_id: UUID,
+        cow_id: UUID,
+        feeding_id: UUID,
+        fed_at: datetime | None = None,
+        feed_name: str | None = None,
+        quantity: Decimal | None = None,
+        unit: str | None = None,
+        unit_cost: Decimal | None = None,
+        note: str | None = None,
+        fields_set: set[str] | None = None,
+    ) -> CowFeedingModel:
+        cow = self.cows.get(owner_id=owner_id, cow_id=cow_id)
+        assert_not_archived(cow.is_archived)
+        row = self.get(owner_id=owner_id, cow_id=cow_id, feeding_id=feeding_id)
+        set_fields = fields_set or set()
+
+        if "fed_at" in set_fields and fed_at is not None:
+            row.fed_at = fed_at
+        if "feed_name" in set_fields and feed_name is not None:
+            row.feed_name = validate_feed_name(feed_name)
+        if "quantity" in set_fields and quantity is not None:
+            row.quantity = validate_positive_quantity(quantity)
+        if "unit" in set_fields and unit is not None:
+            row.unit = validate_unit(unit)
+        if "unit_cost" in set_fields and unit_cost is not None:
+            row.unit_cost = validate_non_negative_price(unit_cost, field="unit_cost")
+        if "note" in set_fields:
+            row.note = note.strip() if note else None
+
+        self.db.add(row)
+        self.db.commit()
+        self.db.refresh(row)
+        logger.info(
+            "Cow feeding updated id=%s cow_id=%s owner_id=%s",
+            row.id,
+            cow_id,
+            owner_id,
+        )
+        return row
+
+    def delete(self, *, owner_id: UUID, cow_id: UUID, feeding_id: UUID) -> None:
+        cow = self.cows.get(owner_id=owner_id, cow_id=cow_id)
+        assert_not_archived(cow.is_archived)
+        row = self.get(owner_id=owner_id, cow_id=cow_id, feeding_id=feeding_id)
+        self.db.delete(row)
+        self.db.commit()
+        logger.info(
+            "Cow feeding deleted id=%s cow_id=%s owner_id=%s",
+            feeding_id,
+            cow_id,
+            owner_id,
+        )

@@ -172,15 +172,21 @@ def validate_positive_quantity(quantity: Decimal) -> Decimal:
     return quantity
 
 
-def validate_non_negative_price(price: Decimal) -> Decimal:
+def validate_non_negative_price(
+    price: Decimal, *, field: str = "price_per_unit"
+) -> Decimal:
     if price < 0:
         raise AppError(
             code="VALIDATION_ERROR",
             message="Price must be greater than or equal to zero.",
             status_code=422,
-            details={"field": "price_per_unit"},
+            details={"field": field},
         )
     return price
+
+
+def compute_row_total(quantity: Decimal, unit_price: Decimal) -> Decimal:
+    return (quantity * unit_price).quantize(Decimal("0.01"))
 
 
 def validate_unit(unit: str) -> str:

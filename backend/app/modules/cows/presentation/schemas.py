@@ -68,6 +68,14 @@ class MilkCreateRequest(BaseModel):
     note: str | None = None
 
 
+class MilkUpdateRequest(BaseModel):
+    produced_at: datetime | None = None
+    quantity: Decimal | None = None
+    unit: str | None = Field(default=None, min_length=1, max_length=32)
+    price_per_unit: Decimal | None = None
+    note: str | None = None
+
+
 class MilkProductionResponse(BaseModel):
     model_config = {"from_attributes": True}
 
@@ -77,6 +85,7 @@ class MilkProductionResponse(BaseModel):
     quantity: Decimal
     unit: str
     price_per_unit: Decimal
+    total: Decimal
     note: str | None
     created_at: datetime
 
@@ -86,6 +95,16 @@ class FeedingCreateRequest(BaseModel):
     feed_name: str = Field(min_length=1, max_length=255)
     quantity: Decimal
     unit: str = Field(min_length=1, max_length=32)
+    unit_cost: Decimal
+    note: str | None = None
+
+
+class FeedingUpdateRequest(BaseModel):
+    fed_at: datetime | None = None
+    feed_name: str | None = Field(default=None, min_length=1, max_length=255)
+    quantity: Decimal | None = None
+    unit: str | None = Field(default=None, min_length=1, max_length=32)
+    unit_cost: Decimal | None = None
     note: str | None = None
 
 
@@ -98,5 +117,7 @@ class CowFeedingResponse(BaseModel):
     feed_name: str
     quantity: Decimal
     unit: str
+    unit_cost: Decimal
+    total: Decimal
     note: str | None
     created_at: datetime

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, File, Query, UploadFile
+from fastapi import APIRouter, Depends, File, Query, Response, UploadFile
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
@@ -15,15 +15,22 @@ from app.modules.cows.application.services import (
     CowService,
     MilkProductionService,
 )
-from app.modules.cows.infrastructure.models import CowModel
+from app.modules.cows.domain.rules import compute_row_total
+from app.modules.cows.infrastructure.models import (
+    CowFeedingModel,
+    CowModel,
+    MilkProductionModel,
+)
 from app.modules.cows.presentation.schemas import (
     CowCreateRequest,
     CowFeedingResponse,
     CowResponse,
     CowUpdateRequest,
     FeedingCreateRequest,
+    FeedingUpdateRequest,
     MilkCreateRequest,
     MilkProductionResponse,
+    MilkUpdateRequest,
 )
 
 cows_router = APIRouter(prefix="/cows", tags=["cows"])
@@ -37,6 +44,35 @@ def _to_cow_response(cow: CowModel) -> CowResponse:
                 f"/api/v1/cows/{cow.id}/image" if cow.image_path else None
             )
         }
+    )
+
+
+def _to_milk_response(row: MilkProductionModel) -> MilkProductionResponse:
+    return MilkProductionResponse(
+        id=row.id,
+        cow_id=row.cow_id,
+        produced_at=row.produced_at,
+        quantity=row.quantity,
+        unit=row.unit,
+        price_per_unit=row.price_per_unit,
+        total=compute_row_total(row.quantity, row.price_per_unit),
+        note=row.note,
+        created_at=row.created_at,
+    )
+
+
+def _to_feeding_response(row: CowFeedingModel) -> CowFeedingResponse:
+    return CowFeedingResponse(
+        id=row.id,
+        cow_id=row.cow_id,
+        fed_at=row.fed_at,
+        feed_name=row.feed_name,
+        quantity=row.quantity,
+        unit=row.unit,
+        unit_cost=row.unit_cost,
+        total=compute_row_total(row.quantity, row.unit_cost),
+        note=row.note,
+        created_at=row.created_at,
     )
 
 
@@ -74,7 +110,7 @@ def list_cows(
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
     settings: Settings = Depends(get_settings_dep),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
     include_archived: bool = Query(False),
 ) -> Page[CowResponse]:
@@ -200,7 +236,7 @@ def add_milk_production(
         price_per_unit=body.price_per_unit,
         note=body.note,
     )
-    return MilkProductionResponse.model_validate(row)
+    return _to_milk_response(row)
 
 
 @cows_router.get(
@@ -219,9 +255,52 @@ def list_milk_productions(
         owner_id=owner.id, cow_id=cow_id, limit=limit, offset=offset
     )
     return Page(
-        items=[MilkProductionResponse.model_validate(i) for i in items],
+        items=[_to_milk_response(i) for i in items],
         meta=PageMeta(total=total, limit=limit, offset=offset),
     )
+
+
+@cows_router.patch(
+    "/{cow_id}/milk-productions/{milk_id}",
+    response_model=MilkProductionResponse,
+)
+def update_milk_production(
+    cow_id: UUID,
+    milk_id: UUID,
+    body: MilkUpdateRequest,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> MilkProductionResponse:
+    row = MilkProductionService(db, settings).update(
+        owner_id=owner.id,
+        cow_id=cow_id,
+        milk_id=milk_id,
+        produced_at=body.produced_at,
+        quantity=body.quantity,
+        unit=body.unit,
+        price_per_unit=body.price_per_unit,
+        note=body.note,
+        fields_set=set(body.model_fields_set),
+    )
+    return _to_milk_response(row)
+
+
+@cows_router.delete(
+    "/{cow_id}/milk-productions/{milk_id}",
+    status_code=204,
+)
+def delete_milk_production(
+    cow_id: UUID,
+    milk_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> Response:
+    MilkProductionService(db, settings).delete(
+        owner_id=owner.id, cow_id=cow_id, milk_id=milk_id
+    )
+    return Response(status_code=204)
 
 
 @cows_router.post(
@@ -243,9 +322,10 @@ def add_feeding(
         feed_name=body.feed_name,
         quantity=body.quantity,
         unit=body.unit,
+        unit_cost=body.unit_cost,
         note=body.note,
     )
-    return CowFeedingResponse.model_validate(row)
+    return _to_feeding_response(row)
 
 
 @cows_router.get(
@@ -264,6 +344,50 @@ def list_feedings(
         owner_id=owner.id, cow_id=cow_id, limit=limit, offset=offset
     )
     return Page(
-        items=[CowFeedingResponse.model_validate(i) for i in items],
+        items=[_to_feeding_response(i) for i in items],
         meta=PageMeta(total=total, limit=limit, offset=offset),
     )
+
+
+@cows_router.patch(
+    "/{cow_id}/feedings/{feeding_id}",
+    response_model=CowFeedingResponse,
+)
+def update_feeding(
+    cow_id: UUID,
+    feeding_id: UUID,
+    body: FeedingUpdateRequest,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> CowFeedingResponse:
+    row = CowFeedingService(db, settings).update(
+        owner_id=owner.id,
+        cow_id=cow_id,
+        feeding_id=feeding_id,
+        fed_at=body.fed_at,
+        feed_name=body.feed_name,
+        quantity=body.quantity,
+        unit=body.unit,
+        unit_cost=body.unit_cost,
+        note=body.note,
+        fields_set=set(body.model_fields_set),
+    )
+    return _to_feeding_response(row)
+
+
+@cows_router.delete(
+    "/{cow_id}/feedings/{feeding_id}",
+    status_code=204,
+)
+def delete_feeding(
+    cow_id: UUID,
+    feeding_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> Response:
+    CowFeedingService(db, settings).delete(
+        owner_id=owner.id, cow_id=cow_id, feeding_id=feeding_id
+    )
+    return Response(status_code=204)

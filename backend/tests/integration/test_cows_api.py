@@ -240,9 +240,13 @@ def test_milk_and_feeding_rules_and_pagination(
                 "feed_name": "Hay",
                 "quantity": "5",
                 "unit": "kg",
+                "unit_cost": "20.00",
             },
         )
         assert feeding.status_code == 201, feeding.text
+        if i == 0:
+            assert feeding.json()["unit_cost"] == "20.00"
+            assert feeding.json()["total"] == "100.00"
 
     feed_list = client.get(
         f"/api/v1/cows/{meat_cow['id']}/feedings", headers=headers
@@ -269,3 +273,83 @@ def test_milk_and_feeding_rules_and_pagination(
     )
     assert blocked_milk.status_code == 409
     assert blocked_milk.json()["code"] == "COW_ARCHIVED"
+
+
+def test_milk_and_feeding_update_delete_and_totals(
+    client: TestClient, sample_image: tuple[str, io.BytesIO, str]
+) -> None:
+    headers = _auth_headers(client, sample_image, email="edit@example.com", phone="+8801733333333")
+    cow = _create_cow(client, headers, name="Edit", breed="Cow", purpose="milk")
+    produced_at = datetime(2024, 8, 1, 6, 0, tzinfo=UTC)
+
+    milk = client.post(
+        f"/api/v1/cows/{cow['id']}/milk-productions",
+        headers=headers,
+        json={
+            "produced_at": produced_at.isoformat(),
+            "quantity": "10",
+            "unit": "L",
+            "price_per_unit": "5.00",
+        },
+    )
+    assert milk.status_code == 201, milk.text
+    milk_body = milk.json()
+    assert milk_body["total"] == "50.00"
+    milk_id = milk_body["id"]
+
+    patched = client.patch(
+        f"/api/v1/cows/{cow['id']}/milk-productions/{milk_id}",
+        headers=headers,
+        json={"quantity": "12", "price_per_unit": "5.00"},
+    )
+    assert patched.status_code == 200, patched.text
+    assert patched.json()["total"] == "60.00"
+
+    feeding = client.post(
+        f"/api/v1/cows/{cow['id']}/feedings",
+        headers=headers,
+        json={
+            "fed_at": produced_at.isoformat(),
+            "feed_name": "Pellet",
+            "quantity": "2",
+            "unit": "kg",
+            "unit_cost": "15.50",
+        },
+    )
+    assert feeding.status_code == 201, feeding.text
+    feeding_body = feeding.json()
+    assert feeding_body["unit_cost"] == "15.50"
+    assert feeding_body["total"] == "31.00"
+    feeding_id = feeding_body["id"]
+
+    feeding_patched = client.patch(
+        f"/api/v1/cows/{cow['id']}/feedings/{feeding_id}",
+        headers=headers,
+        json={"unit_cost": "20.00"},
+    )
+    assert feeding_patched.status_code == 200, feeding_patched.text
+    assert feeding_patched.json()["total"] == "40.00"
+
+    deleted_milk = client.delete(
+        f"/api/v1/cows/{cow['id']}/milk-productions/{milk_id}",
+        headers=headers,
+    )
+    assert deleted_milk.status_code == 204
+    listed_milk = client.get(
+        f"/api/v1/cows/{cow['id']}/milk-productions", headers=headers
+    )
+    assert listed_milk.json()["meta"]["total"] == 0
+
+    deleted_feeding = client.delete(
+        f"/api/v1/cows/{cow['id']}/feedings/{feeding_id}",
+        headers=headers,
+    )
+    assert deleted_feeding.status_code == 204
+    listed_feed = client.get(
+        f"/api/v1/cows/{cow['id']}/feedings", headers=headers
+    )
+    assert listed_feed.json()["meta"]["total"] == 0
+
+    cows_list = client.get("/api/v1/cows", headers=headers)
+    assert cows_list.status_code == 200
+    assert cows_list.json()["meta"]["limit"] == 10

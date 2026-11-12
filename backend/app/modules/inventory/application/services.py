@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 def _clamp_paging(limit: int | None, offset: int | None) -> tuple[int, int]:
-    lim = 20 if limit is None else limit
+    lim = 10 if limit is None else limit
     off = 0 if offset is None else offset
     if lim < 1 or lim > 100:
         raise AppError(

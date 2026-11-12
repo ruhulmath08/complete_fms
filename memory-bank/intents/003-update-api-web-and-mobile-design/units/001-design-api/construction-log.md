@@ -2,7 +2,7 @@
 unit: 001-design-api
 intent: 003-update-api-web-and-mobile-design
 created: "2026-11-12T07:46:46Z"
-last_updated: "2026-11-12T07:46:46Z"
+last_updated: "2026-11-12T07:59:21Z"
 ---
 
 # Construction Log: 001-design-api
@@ -23,16 +23,18 @@ last_updated: "2026-11-12T07:46:46Z"
 
 ## Current Bolt Structure
 
-| Bolt ID        | Stories       | Status                        | Changed |
-| -------------- | ------------- | ----------------------------- | ------- |
-| 024-design-api | 001, 002, 003 | ⏳ in-progress (domain-model) | -       |
+| Bolt ID        | Stories       | Status                                              | Changed |
+| -------------- | ------------- | --------------------------------------------------- | ------- |
+| 024-design-api | 001, 002, 003 | ⏳ in-progress (implement done — awaiting approval) | -       |
 
 ## Execution History
 
-| Date                 | Bolt           | Event    | Details                                              |
-| -------------------- | -------------- | -------- | ---------------------------------------------------- |
-| 2026-11-12T07:46:46Z | 024-design-api | started  | Stage 1: domain-model                                |
-| 2026-11-12T07:46:46Z | 024-design-api | artifact | ddd-01-domain-model.md drafted — awaiting checkpoint |
+| Date                 | Bolt           | Event          | Details                                                         |
+| -------------------- | -------------- | -------------- | --------------------------------------------------------------- |
+| 2026-11-12T07:46:46Z | 024-design-api | started        | Stage 1: domain-model                                           |
+| 2026-11-12T07:52:07Z | 024-design-api | stage-complete | domain-model → technical-design                                 |
+| 2026-11-12T07:54:00Z | 024-design-api | stage-complete | technical-design → adr-analysis (skipped) → implement           |
+| 2026-11-12T07:59:21Z | 024-design-api | artifact       | implementation complete; pytest 60 passed — awaiting checkpoint |
 
 ## Execution Summary
 

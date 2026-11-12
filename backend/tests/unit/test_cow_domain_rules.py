@@ -9,6 +9,7 @@ from app.modules.cows.domain.rules import (
     assert_milk_allowed,
     assert_not_archived,
     build_generated_tag,
+    compute_row_total,
     parse_acquired_by,
     parse_gender,
     parse_purpose,
@@ -102,6 +103,12 @@ def test_quantity_price_unit_tag() -> None:
     assert validate_non_negative_price(Decimal("0")) == Decimal("0")
     with pytest.raises(AppError):
         validate_non_negative_price(Decimal("-1"))
+    with pytest.raises(AppError) as unit_cost_err:
+        validate_non_negative_price(Decimal("-1"), field="unit_cost")
+    assert unit_cost_err.value.details["field"] == "unit_cost"
+
+    assert compute_row_total(Decimal("12.5"), Decimal("50.00")) == Decimal("625.00")
+    assert compute_row_total(Decimal("0"), Decimal("10")) == Decimal("0.00")
 
     assert validate_unit(" L ") == "L"
     assert validate_feed_name(" Grass ") == "Grass"

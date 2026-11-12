@@ -48,7 +48,7 @@ def create_crop_name(
 def list_crop_names(
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
     include_archived: bool = Query(False),
 ) -> Page[CropNameResponse]:
@@ -124,7 +124,7 @@ def create_crop_cycle(
 def list_crop_cycles(
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
     include_archived: bool = Query(False),
 ) -> Page[CropCycleResponse]:
@@ -222,7 +222,7 @@ def list_crop_expenses(
     cycle_id: UUID,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ) -> Page[CropExpenseResponse]:
     items, total = CropExpenseService(db).list(
@@ -265,7 +265,7 @@ def list_harvests(
     cycle_id: UUID,
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
-    limit: int = Query(20, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ) -> Page[HarvestResponse]:
     items, total = HarvestService(db).list(
