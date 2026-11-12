@@ -10,11 +10,11 @@ updated: "2026-11-12T10:23:28Z"
 
 ## Status
 
-| Environment | Status |
-|-------------|--------|
+| Environment         | Status                          |
+| ------------------- | ------------------------------- |
 | Local (dev machine) | ✅ Build verified; ready to run |
-| Staging | ⏭ Skipped (local-only) |
-| Production | ⏭ Skipped (local-only) |
+| Staging             | ⏭ Skipped (local-only)         |
+| Production          | ⏭ Skipped (local-only)         |
 
 ## Smoke checklist (manual)
 
