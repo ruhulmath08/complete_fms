@@ -72,10 +72,21 @@ describe('AppShell', () => {
     expect(screen.getByRole('link', { name: 'Farm settings' })).toBeInTheDocument()
 
     expect(screen.getByRole('button', { name: 'Notifications' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Open profile' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Open profile menu' })).toBeInTheDocument()
     expect(await screen.findByText('AO')).toBeInTheDocument()
     expect(screen.getByText('Home body')).toBeInTheDocument()
     expect(screen.getByText('Single-farm record keeping')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Sign out' })).not.toBeInTheDocument()
+  })
+
+  it('opens profile menu with Profile and Logout', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    await user.click(await screen.findByRole('button', { name: 'Open profile menu' }))
+    expect(screen.getByRole('menuitem', { name: 'Profile' })).toBeInTheDocument()
+    expect(screen.getByRole('menuitem', { name: 'Logout' })).toBeInTheDocument()
+    expect(screen.getByText('Ada Owner')).toBeInTheDocument()
   })
 
   it('toggles the sidebar menu', async () => {
