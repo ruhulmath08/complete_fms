@@ -26,6 +26,23 @@ uvicorn app.main:app --reload --port 8000
 - OpenAPI: `http://localhost:8000/docs`
 - Uploads root: `backend/uploads/` (gitignored). Profile images: `backend/uploads/profile_images/{owner_id}/`. Cow images: `backend/uploads/cow_images/{owner_id}/{cow_id}/`
 
+## Demo data (presentations / manual testing)
+
+Seeds a full farm (cows, milk, poultry, eggs, crops, fertilizer stock, ledger) spanning the last ~2–3 weeks so Dashboard week/month charts look populated.
+
+```bash
+cd backend
+source .venv/bin/activate
+alembic upgrade head
+python scripts/seed_demo_data.py          # first time
+python scripts/seed_demo_data.py --reset  # wipe & reseed demo owner
+```
+
+| Field | Value |
+|-------|-------|
+| Email | `demo@completefms.local` |
+| Password | `Password1` |
+
 ## Main endpoints
 
 | Method | Path | Auth |
