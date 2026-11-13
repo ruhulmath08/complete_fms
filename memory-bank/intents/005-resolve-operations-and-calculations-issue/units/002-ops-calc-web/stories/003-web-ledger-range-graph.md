@@ -2,11 +2,11 @@
 id: 003-web-ledger-range-graph
 unit: 002-ops-calc-web
 intent: 005-resolve-operations-and-calculations-issue
-status: draft
+status: complete
 priority: must
 created: '2026-11-13T07:00:00Z'
 assigned_bolt: 033-ops-calc-web
-implemented: false
+implemented: true
 ---
 
 # Story: 003-web-ledger-range-graph
