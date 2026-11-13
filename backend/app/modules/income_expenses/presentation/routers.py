@@ -6,8 +6,11 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.api.v1.deps import get_current_owner, get_db_session
+from app.api.v1.deps import get_current_owner, get_db_session, get_settings_dep
 from app.api.v1.schemas_common import Page, PageMeta
+from app.core.config import Settings
+from app.core.farm_clock import assert_not_future
+from app.modules.auth.application.services import AuthService
 from app.modules.auth.infrastructure.models import OwnerModel
 from app.modules.income_expenses.application.services import (
     LedgerEntryService,
@@ -17,6 +20,7 @@ from app.modules.income_expenses.presentation.schemas import (
     LedgerEntryCreateRequest,
     LedgerEntryResponse,
     LedgerEntryUpdateRequest,
+    LedgerSeriesResponse,
     PeriodTotalsResponse,
 )
 
@@ -73,13 +77,36 @@ def get_period_totals(
     to_date: date = Query(..., alias="to"),
     owner: OwnerModel = Depends(get_current_owner),
     db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
 ) -> PeriodTotalsResponse:
+    farm = AuthService(db, settings).get_farm_settings(owner.id)
+    assert_not_future(to_date, timezone_name=farm.timezone)
     totals = PeriodTotalsService(db).get_totals(
         owner_id=owner.id,
         from_date=from_date,
         to_date=to_date,
     )
     return PeriodTotalsResponse.model_validate(totals)
+
+
+@ledger_entries_router.get("/series", response_model=LedgerSeriesResponse)
+def get_ledger_series(
+    from_date: date = Query(..., alias="from"),
+    to_date: date = Query(..., alias="to"),
+    grain: str = Query("day"),
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    settings: Settings = Depends(get_settings_dep),
+) -> LedgerSeriesResponse:
+    farm = AuthService(db, settings).get_farm_settings(owner.id)
+    data = PeriodTotalsService(db).get_series(
+        owner_id=owner.id,
+        from_date=from_date,
+        to_date=to_date,
+        grain=grain,
+        timezone_name=farm.timezone,
+    )
+    return LedgerSeriesResponse.model_validate(data)
 
 
 @ledger_entries_router.get("/{entry_id}", response_model=LedgerEntryResponse)

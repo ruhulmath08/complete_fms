@@ -43,8 +43,12 @@ def test_crops_routes_require_auth(client: TestClient) -> None:
         ("GET", f"/api/v1/crop-cycles/{cycle_id}/summary"),
         ("GET", f"/api/v1/crop-cycles/{cycle_id}/expenses"),
         ("POST", f"/api/v1/crop-cycles/{cycle_id}/expenses"),
+        ("PATCH", f"/api/v1/crop-cycles/{cycle_id}/expenses/{uuid4()}"),
+        ("DELETE", f"/api/v1/crop-cycles/{cycle_id}/expenses/{uuid4()}"),
         ("GET", f"/api/v1/crop-cycles/{cycle_id}/harvests"),
         ("POST", f"/api/v1/crop-cycles/{cycle_id}/harvests"),
+        ("PATCH", f"/api/v1/crop-cycles/{cycle_id}/harvests/{uuid4()}"),
+        ("DELETE", f"/api/v1/crop-cycles/{cycle_id}/harvests/{uuid4()}"),
     ]
     for method, path in paths:
         response = client.request(method, path, json={})

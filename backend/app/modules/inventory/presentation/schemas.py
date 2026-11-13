@@ -63,3 +63,16 @@ class StockUpdateResponse(BaseModel):
     quantity_change: Decimal
     reason: str | None
     created_at: datetime
+
+
+class StockUpdateListItemResponse(BaseModel):
+    id: UUID
+    inventory_item_id: UUID
+    item_name: str
+    item_unit: str
+    item_category: str
+    occurred_at: date
+    change_type: str
+    quantity_change: Decimal
+    reason: str | None
+    created_at: datetime

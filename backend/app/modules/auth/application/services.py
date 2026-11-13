@@ -26,6 +26,7 @@ from app.modules.auth.domain.rules import (
     validate_currency_code,
     validate_email,
     validate_password,
+    validate_timezone,
 )
 from app.modules.auth.infrastructure.image_store import ProfileImageStore
 from app.modules.auth.infrastructure.models import (
@@ -278,11 +279,19 @@ class AuthService:
         return settings
 
     def update_farm_settings(
-        self, *, owner_id: UUID, currency_code: str
+        self,
+        *,
+        owner_id: UUID,
+        currency_code: str | None = None,
+        timezone: str | None = None,
+        fields_set: set[str] | None = None,
     ) -> FarmSettingsModel:
-        code = validate_currency_code(currency_code)
+        set_fields = fields_set or set()
         settings = self.get_farm_settings(owner_id)
-        settings.currency_code = code
+        if "currency_code" in set_fields and currency_code is not None:
+            settings.currency_code = validate_currency_code(currency_code)
+        if "timezone" in set_fields and timezone is not None:
+            settings.timezone = validate_timezone(timezone)
         self.db.add(settings)
         self.db.commit()
         self.db.refresh(settings)

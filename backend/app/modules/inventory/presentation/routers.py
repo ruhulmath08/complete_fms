@@ -17,10 +17,14 @@ from app.modules.inventory.presentation.schemas import (
     InventoryItemResponse,
     InventoryItemUpdateRequest,
     StockUpdateCreateRequest,
+    StockUpdateListItemResponse,
     StockUpdateResponse,
 )
 
 inventory_items_router = APIRouter(prefix="/inventory-items", tags=["inventory"])
+inventory_stock_updates_router = APIRouter(
+    prefix="/inventory-stock-updates", tags=["inventory"]
+)
 
 
 @inventory_items_router.post(
@@ -145,5 +149,42 @@ def list_stock_updates(
     )
     return Page(
         items=[StockUpdateResponse.model_validate(i) for i in items],
+        meta=PageMeta(total=total, limit=limit, offset=offset),
+    )
+
+
+@inventory_stock_updates_router.get(
+    "", response_model=Page[StockUpdateListItemResponse]
+)
+def list_inventory_stock_updates(
+    category: str = Query(..., min_length=1),
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+    limit: int = Query(10, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+) -> Page[StockUpdateListItemResponse]:
+    rows, total = StockUpdateService(db).list_by_category(
+        owner_id=owner.id,
+        category=category,
+        limit=limit,
+        offset=offset,
+    )
+    items = [
+        StockUpdateListItemResponse(
+            id=update.id,
+            inventory_item_id=item.id,
+            item_name=item.name,
+            item_unit=item.unit,
+            item_category=item.category,
+            occurred_at=update.occurred_at,
+            change_type=update.change_type,
+            quantity_change=update.quantity_change,
+            reason=update.reason,
+            created_at=update.created_at,
+        )
+        for update, item in rows
+    ]
+    return Page(
+        items=items,
         meta=PageMeta(total=total, limit=limit, offset=offset),
     )

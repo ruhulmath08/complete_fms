@@ -156,3 +156,57 @@ def test_stock_updates_adjust_quantity_and_reject_negative(
     )
     assert listed.status_code == 200
     assert listed.json()["meta"]["total"] == 2
+
+
+def test_fertilizer_category_stock_updates_list(
+    client: TestClient, sample_image: tuple[str, io.BytesIO, str]
+) -> None:
+    headers = _auth_headers(client, sample_image)
+
+    feed = _create_item(client, headers, name="Feed A")
+    fertilizer = client.post(
+        "/api/v1/inventory-items",
+        headers=headers,
+        json={
+            "name": "Urea",
+            "category": "fertilizer",
+            "quantity": "50",
+            "unit": "kg",
+            "price_per_unit": "30.00",
+        },
+    )
+    assert fertilizer.status_code == 201, fertilizer.text
+    fert_id = fertilizer.json()["id"]
+
+    client.post(
+        f"/api/v1/inventory-items/{feed['id']}/stock-updates",
+        headers=headers,
+        json={
+            "occurred_at": "2024-06-01",
+            "change_type": "add",
+            "quantity_change": "1",
+        },
+    )
+    fert_update = client.post(
+        f"/api/v1/inventory-items/{fert_id}/stock-updates",
+        headers=headers,
+        json={
+            "occurred_at": "2024-06-02",
+            "change_type": "add",
+            "quantity_change": "10",
+            "reason": "soil",
+        },
+    )
+    assert fert_update.status_code == 201, fert_update.text
+
+    listed = client.get(
+        "/api/v1/inventory-stock-updates",
+        headers=headers,
+        params={"category": "fertilizer"},
+    )
+    assert listed.status_code == 200, listed.text
+    body = listed.json()
+    assert body["meta"]["total"] == 1
+    assert body["items"][0]["item_name"] == "Urea"
+    assert body["items"][0]["item_category"] == "fertilizer"
+    assert body["items"][0]["quantity_change"] == "10.000"

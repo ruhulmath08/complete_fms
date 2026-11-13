@@ -52,3 +52,26 @@ def validate_currency_code(currency_code: str) -> str:
             details={"field": "currency_code"},
         )
     return code
+
+
+def validate_timezone(timezone_name: str) -> str:
+    from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+
+    name = timezone_name.strip()
+    if not name:
+        raise AppError(
+            code="VALIDATION_ERROR",
+            message="Timezone is required.",
+            status_code=422,
+            details={"field": "timezone"},
+        )
+    try:
+        ZoneInfo(name)
+    except ZoneInfoNotFoundError as exc:
+        raise AppError(
+            code="VALIDATION_ERROR",
+            message="Invalid timezone.",
+            status_code=422,
+            details={"field": "timezone"},
+        ) from exc
+    return name

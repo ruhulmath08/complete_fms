@@ -170,6 +170,51 @@ def test_expenses_harvests_and_summary(
     assert harvests.status_code == 200
     assert harvests.json()["meta"]["total"] == 2
 
+    expense_id = expense.json()["id"]
+    harvest_id = harvest.json()["id"]
+
+    patched_expense = client.patch(
+        f"/api/v1/crop-cycles/{cycle_id}/expenses/{expense_id}",
+        headers=headers,
+        json={"amount": "120.00", "note": "updated"},
+    )
+    assert patched_expense.status_code == 200, patched_expense.text
+    assert patched_expense.json()["amount"] == "120.00"
+    assert patched_expense.json()["note"] == "updated"
+
+    patched_harvest = client.patch(
+        f"/api/v1/crop-cycles/{cycle_id}/harvests/{harvest_id}",
+        headers=headers,
+        json={"quantity": "210", "sale_amount": "420.00"},
+    )
+    assert patched_harvest.status_code == 200, patched_harvest.text
+    assert patched_harvest.json()["quantity"] == "210.000"
+    assert patched_harvest.json()["sale_amount"] == "420.00"
+
+    missing = client.patch(
+        f"/api/v1/crop-cycles/{cycle_id}/expenses/{harvest_id}",
+        headers=headers,
+        json={"amount": "1"},
+    )
+    assert missing.status_code == 404
+    assert missing.json()["code"] == "CROP_EXPENSE_NOT_FOUND"
+
+    deleted_expense = client.delete(
+        f"/api/v1/crop-cycles/{cycle_id}/expenses/{expense_id}",
+        headers=headers,
+    )
+    assert deleted_expense.status_code == 204
+    expenses_after = client.get(
+        f"/api/v1/crop-cycles/{cycle_id}/expenses", headers=headers
+    )
+    assert expenses_after.json()["meta"]["total"] == 1
+
+    deleted_harvest = client.delete(
+        f"/api/v1/crop-cycles/{cycle_id}/harvests/{harvest_id}",
+        headers=headers,
+    )
+    assert deleted_harvest.status_code == 204
+
     client.post(f"/api/v1/crop-cycles/{cycle_id}/archive", headers=headers)
     blocked = client.post(
         f"/api/v1/crop-cycles/{cycle_id}/expenses",
@@ -178,3 +223,12 @@ def test_expenses_harvests_and_summary(
     )
     assert blocked.status_code == 409
     assert blocked.json()["code"] == "CROP_CYCLE_ARCHIVED"
+
+    remaining_expense_id = expenses_after.json()["items"][0]["id"]
+    blocked_patch = client.patch(
+        f"/api/v1/crop-cycles/{cycle_id}/expenses/{remaining_expense_id}",
+        headers=headers,
+        json={"amount": "1"},
+    )
+    assert blocked_patch.status_code == 409
+    assert blocked_patch.json()["code"] == "CROP_CYCLE_ARCHIVED"

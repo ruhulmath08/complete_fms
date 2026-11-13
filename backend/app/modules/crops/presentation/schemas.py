@@ -71,6 +71,13 @@ class CropExpenseCreateRequest(BaseModel):
     note: str | None = None
 
 
+class CropExpenseUpdateRequest(BaseModel):
+    spent_at: date | None = None
+    category: str | None = None
+    amount: Decimal | None = None
+    note: str | None = None
+
+
 class CropExpenseResponse(BaseModel):
     model_config = {"from_attributes": True}
 
@@ -87,6 +94,14 @@ class HarvestCreateRequest(BaseModel):
     harvested_at: date
     quantity: Decimal
     unit: str = Field(min_length=1, max_length=32)
+    sale_amount: Decimal | None = None
+    note: str | None = None
+
+
+class HarvestUpdateRequest(BaseModel):
+    harvested_at: date | None = None
+    quantity: Decimal | None = None
+    unit: str | None = Field(default=None, min_length=1, max_length=32)
     sale_amount: Decimal | None = None
     note: str | None = None
 

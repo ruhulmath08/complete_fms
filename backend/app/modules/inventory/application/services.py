@@ -241,3 +241,45 @@ class StockUpdateService:
             ).all()
         )
         return items, total
+
+    def list_by_category(
+        self,
+        *,
+        owner_id: UUID,
+        category: str,
+        limit: int | None = None,
+        offset: int | None = None,
+    ) -> tuple[list[tuple[StockUpdateModel, InventoryItemModel]], int]:
+        cat = parse_inventory_category(category).value
+        lim, off = _clamp_paging(limit, offset)
+        filters = [
+            StockUpdateModel.owner_id == owner_id,
+            InventoryItemModel.owner_id == owner_id,
+            InventoryItemModel.category == cat,
+        ]
+        total = self.db.scalar(
+            select(func.count())
+            .select_from(StockUpdateModel)
+            .join(
+                InventoryItemModel,
+                InventoryItemModel.id == StockUpdateModel.inventory_item_id,
+            )
+            .where(*filters)
+        ) or 0
+        rows = list(
+            self.db.execute(
+                select(StockUpdateModel, InventoryItemModel)
+                .join(
+                    InventoryItemModel,
+                    InventoryItemModel.id == StockUpdateModel.inventory_item_id,
+                )
+                .where(*filters)
+                .order_by(
+                    StockUpdateModel.occurred_at.desc(),
+                    StockUpdateModel.created_at.desc(),
+                )
+                .limit(lim)
+                .offset(off)
+            ).all()
+        )
+        return [(r[0], r[1]) for r in rows], total

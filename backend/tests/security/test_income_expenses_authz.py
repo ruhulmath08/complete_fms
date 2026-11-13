@@ -34,6 +34,8 @@ def test_ledger_requires_auth(
         ("GET", "/api/v1/ledger-entries"),
         ("POST", "/api/v1/ledger-entries"),
         ("GET", "/api/v1/ledger-entries/totals?from=2024-01-01&to=2024-01-31"),
+        ("GET", "/api/v1/ledger-entries/series?from=2024-01-01&to=2024-01-31&grain=day"),
+        ("GET", "/api/v1/dashboard/aggregates?from=2024-01-01&to=2024-01-31&grain=week"),
         ("GET", f"/api/v1/ledger-entries/{entry_id}"),
         ("PATCH", f"/api/v1/ledger-entries/{entry_id}"),
         ("POST", f"/api/v1/ledger-entries/{entry_id}/archive"),

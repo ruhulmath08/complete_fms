@@ -45,9 +45,11 @@ class FarmSettingsResponse(BaseModel):
     id: UUID
     owner_id: UUID
     currency_code: str
+    timezone: str | None = None
     created_at: datetime
     updated_at: datetime
 
 
 class FarmSettingsUpdateRequest(BaseModel):
-    currency_code: str = Field(min_length=1, max_length=16)
+    currency_code: str | None = Field(default=None, min_length=1, max_length=16)
+    timezone: str | None = Field(default=None, min_length=1, max_length=64)

@@ -9,6 +9,12 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.core.errors import AppError
+from app.core.farm_clock import (
+    assert_not_future,
+    bucket_for,
+    bucket_starts,
+    parse_grain,
+)
 from app.modules.income_expenses.domain.rules import (
     EntryType,
     assert_entry_not_archived,
@@ -222,4 +228,61 @@ class PeriodTotalsService:
             "total_income": total_income,
             "total_expenses": total_expenses,
             "net": compute_net(total_income, total_expenses),
+        }
+
+    def get_series(
+        self,
+        *,
+        owner_id: UUID,
+        from_date: date,
+        to_date: date,
+        grain: str = "day",
+        timezone_name: str | None = None,
+    ) -> dict:
+        validate_date_range(from_date, to_date)
+        assert_not_future(to_date, timezone_name=timezone_name)
+        grain_value = parse_grain(grain)
+        starts = bucket_starts(from_date, to_date, grain_value)
+        income_map: dict[date, Decimal] = {s: Decimal("0.00") for s in starts}
+        expense_map: dict[date, Decimal] = {s: Decimal("0.00") for s in starts}
+
+        rows = self.db.execute(
+            select(
+                LedgerEntryModel.occurred_at,
+                LedgerEntryModel.entry_type,
+                LedgerEntryModel.amount,
+            ).where(
+                LedgerEntryModel.owner_id == owner_id,
+                LedgerEntryModel.is_archived.is_(False),
+                LedgerEntryModel.occurred_at >= from_date,
+                LedgerEntryModel.occurred_at <= to_date,
+            )
+        ).all()
+        for occurred_at, entry_type, amount in rows:
+            bucket = bucket_for(occurred_at, grain_value)
+            if bucket not in income_map:
+                continue
+            value = Decimal(amount or 0).quantize(Decimal("0.01"))
+            if entry_type == EntryType.INCOME.value:
+                income_map[bucket] += value
+            elif entry_type == EntryType.EXPENSE.value:
+                expense_map[bucket] += value
+
+        points = []
+        for start in starts:
+            income = income_map[start].quantize(Decimal("0.01"))
+            expenses = expense_map[start].quantize(Decimal("0.01"))
+            points.append(
+                {
+                    "bucket_start": start,
+                    "income": income,
+                    "expenses": expenses,
+                    "net": compute_net(income, expenses),
+                }
+            )
+        return {
+            "from": from_date,
+            "to": to_date,
+            "grain": grain_value,
+            "points": points,
         }

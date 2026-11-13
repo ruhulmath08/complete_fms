@@ -53,3 +53,19 @@ class PeriodTotalsResponse(BaseModel):
     net: Decimal
 
     model_config = {"populate_by_name": True}
+
+
+class LedgerSeriesPointResponse(BaseModel):
+    bucket_start: date
+    income: Decimal
+    expenses: Decimal
+    net: Decimal
+
+
+class LedgerSeriesResponse(BaseModel):
+    from_: date = Field(alias="from")
+    to: date
+    grain: str
+    points: list[LedgerSeriesPointResponse]
+
+    model_config = {"populate_by_name": True}

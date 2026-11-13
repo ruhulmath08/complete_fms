@@ -395,6 +395,81 @@ class CropExpenseService:
         )
         return items, total
 
+    def get(
+        self, *, owner_id: UUID, cycle_id: UUID, expense_id: UUID
+    ) -> CropExpenseModel:
+        self.cycles.get(owner_id=owner_id, cycle_id=cycle_id)
+        row = self.db.scalar(
+            select(CropExpenseModel).where(
+                CropExpenseModel.id == expense_id,
+                CropExpenseModel.crop_cycle_id == cycle_id,
+                CropExpenseModel.owner_id == owner_id,
+            )
+        )
+        if row is None:
+            raise AppError(
+                code="CROP_EXPENSE_NOT_FOUND",
+                message="Crop expense not found.",
+                status_code=404,
+            )
+        return row
+
+    def update(
+        self,
+        *,
+        owner_id: UUID,
+        cycle_id: UUID,
+        expense_id: UUID,
+        spent_at: date | None = None,
+        category: str | None = None,
+        amount: Decimal | None = None,
+        note: str | None = None,
+        fields_set: set[str] | None = None,
+    ) -> CropExpenseModel:
+        cycle = self.cycles.get(owner_id=owner_id, cycle_id=cycle_id)
+        assert_cycle_not_archived(cycle.is_archived)
+        row = self.get(
+            owner_id=owner_id, cycle_id=cycle_id, expense_id=expense_id
+        )
+        set_fields = fields_set or set()
+
+        if "spent_at" in set_fields and spent_at is not None:
+            row.spent_at = spent_at
+        if "category" in set_fields and category is not None:
+            row.category = parse_expense_category(category).value
+        if "amount" in set_fields and amount is not None:
+            row.amount = validate_positive_amount(amount)
+        if "note" in set_fields:
+            row.note = validate_optional_text(note, field="note")
+
+        self.db.add(row)
+        self.db.commit()
+        self.db.refresh(row)
+        logger.info(
+            "Crop expense updated id=%s cycle_id=%s owner_id=%s",
+            row.id,
+            cycle_id,
+            owner_id,
+        )
+        return row
+
+    def delete(
+        self, *, owner_id: UUID, cycle_id: UUID, expense_id: UUID
+    ) -> None:
+        cycle = self.cycles.get(owner_id=owner_id, cycle_id=cycle_id)
+        assert_cycle_not_archived(cycle.is_archived)
+        row = self.get(
+            owner_id=owner_id, cycle_id=cycle_id, expense_id=expense_id
+        )
+        self.db.delete(row)
+        self.db.commit()
+        logger.info(
+            "Crop expense deleted id=%s cycle_id=%s owner_id=%s",
+            expense_id,
+            cycle_id,
+            owner_id,
+        )
+
 
 class HarvestService:
     def __init__(self, db: Session) -> None:
@@ -462,3 +537,81 @@ class HarvestService:
             ).all()
         )
         return items, total
+
+    def get(
+        self, *, owner_id: UUID, cycle_id: UUID, harvest_id: UUID
+    ) -> HarvestModel:
+        self.cycles.get(owner_id=owner_id, cycle_id=cycle_id)
+        row = self.db.scalar(
+            select(HarvestModel).where(
+                HarvestModel.id == harvest_id,
+                HarvestModel.crop_cycle_id == cycle_id,
+                HarvestModel.owner_id == owner_id,
+            )
+        )
+        if row is None:
+            raise AppError(
+                code="HARVEST_NOT_FOUND",
+                message="Harvest not found.",
+                status_code=404,
+            )
+        return row
+
+    def update(
+        self,
+        *,
+        owner_id: UUID,
+        cycle_id: UUID,
+        harvest_id: UUID,
+        harvested_at: date | None = None,
+        quantity: Decimal | None = None,
+        unit: str | None = None,
+        sale_amount: Decimal | None = None,
+        note: str | None = None,
+        fields_set: set[str] | None = None,
+    ) -> HarvestModel:
+        cycle = self.cycles.get(owner_id=owner_id, cycle_id=cycle_id)
+        assert_cycle_not_archived(cycle.is_archived)
+        row = self.get(
+            owner_id=owner_id, cycle_id=cycle_id, harvest_id=harvest_id
+        )
+        set_fields = fields_set or set()
+
+        if "harvested_at" in set_fields and harvested_at is not None:
+            row.harvested_at = harvested_at
+        if "quantity" in set_fields and quantity is not None:
+            row.quantity = validate_positive_quantity(quantity)
+        if "unit" in set_fields and unit is not None:
+            row.unit = validate_unit(unit)
+        if "sale_amount" in set_fields:
+            row.sale_amount = validate_non_negative_money(sale_amount)
+        if "note" in set_fields:
+            row.note = validate_optional_text(note, field="note")
+
+        self.db.add(row)
+        self.db.commit()
+        self.db.refresh(row)
+        logger.info(
+            "Harvest updated id=%s cycle_id=%s owner_id=%s",
+            row.id,
+            cycle_id,
+            owner_id,
+        )
+        return row
+
+    def delete(
+        self, *, owner_id: UUID, cycle_id: UUID, harvest_id: UUID
+    ) -> None:
+        cycle = self.cycles.get(owner_id=owner_id, cycle_id=cycle_id)
+        assert_cycle_not_archived(cycle.is_archived)
+        row = self.get(
+            owner_id=owner_id, cycle_id=cycle_id, harvest_id=harvest_id
+        )
+        self.db.delete(row)
+        self.db.commit()
+        logger.info(
+            "Harvest deleted id=%s cycle_id=%s owner_id=%s",
+            harvest_id,
+            cycle_id,
+            owner_id,
+        )

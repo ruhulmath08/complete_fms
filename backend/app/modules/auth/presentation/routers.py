@@ -165,7 +165,10 @@ def patch_farm_settings(
     settings: Settings = Depends(get_settings_dep),
 ) -> FarmSettingsResponse:
     row = _service(db, settings).update_farm_settings(
-        owner_id=owner.id, currency_code=body.currency_code
+        owner_id=owner.id,
+        currency_code=body.currency_code,
+        timezone=body.timezone,
+        fields_set=set(body.model_fields_set),
     )
     return FarmSettingsResponse.model_validate(row)
 

@@ -38,6 +38,7 @@ def test_inventory_requires_auth(
         ("POST", f"/api/v1/inventory-items/{item_id}/archive"),
         ("GET", f"/api/v1/inventory-items/{item_id}/stock-updates"),
         ("POST", f"/api/v1/inventory-items/{item_id}/stock-updates"),
+        ("GET", "/api/v1/inventory-stock-updates"),
     ]
     for method, path in cases:
         response = client.request(method, path)

@@ -2,11 +2,11 @@
 id: 002-api-fertilizer-stock-list
 unit: 001-ops-calc-api
 intent: 005-resolve-operations-and-calculations-issue
-status: draft
+status: complete
 priority: must
 created: '2026-11-13T07:00:00Z'
 assigned_bolt: 032-ops-calc-api
-implemented: false
+implemented: true
 ---
 
 # Story: 002-api-fertilizer-stock-list

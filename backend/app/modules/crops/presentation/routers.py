@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session
 
 from app.api.v1.deps import get_current_owner, get_db_session
@@ -20,12 +20,14 @@ from app.modules.crops.presentation.schemas import (
     CropCycleUpdateRequest,
     CropExpenseCreateRequest,
     CropExpenseResponse,
+    CropExpenseUpdateRequest,
     CropNameCreateRequest,
     CropNameResponse,
     CropNameUpdateRequest,
     CycleSummaryResponse,
     HarvestCreateRequest,
     HarvestResponse,
+    HarvestUpdateRequest,
 )
 
 crop_names_router = APIRouter(prefix="/crop-names", tags=["crops"])
@@ -234,6 +236,46 @@ def list_crop_expenses(
     )
 
 
+@crop_cycles_router.patch(
+    "/{cycle_id}/expenses/{expense_id}",
+    response_model=CropExpenseResponse,
+)
+def update_crop_expense(
+    cycle_id: UUID,
+    expense_id: UUID,
+    body: CropExpenseUpdateRequest,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> CropExpenseResponse:
+    row = CropExpenseService(db).update(
+        owner_id=owner.id,
+        cycle_id=cycle_id,
+        expense_id=expense_id,
+        spent_at=body.spent_at,
+        category=body.category,
+        amount=body.amount,
+        note=body.note,
+        fields_set=set(body.model_fields_set),
+    )
+    return CropExpenseResponse.model_validate(row)
+
+
+@crop_cycles_router.delete(
+    "/{cycle_id}/expenses/{expense_id}",
+    status_code=204,
+)
+def delete_crop_expense(
+    cycle_id: UUID,
+    expense_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> Response:
+    CropExpenseService(db).delete(
+        owner_id=owner.id, cycle_id=cycle_id, expense_id=expense_id
+    )
+    return Response(status_code=204)
+
+
 @crop_cycles_router.post(
     "/{cycle_id}/harvests",
     response_model=HarvestResponse,
@@ -275,3 +317,44 @@ def list_harvests(
         items=[HarvestResponse.model_validate(i) for i in items],
         meta=PageMeta(total=total, limit=limit, offset=offset),
     )
+
+
+@crop_cycles_router.patch(
+    "/{cycle_id}/harvests/{harvest_id}",
+    response_model=HarvestResponse,
+)
+def update_harvest(
+    cycle_id: UUID,
+    harvest_id: UUID,
+    body: HarvestUpdateRequest,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> HarvestResponse:
+    row = HarvestService(db).update(
+        owner_id=owner.id,
+        cycle_id=cycle_id,
+        harvest_id=harvest_id,
+        harvested_at=body.harvested_at,
+        quantity=body.quantity,
+        unit=body.unit,
+        sale_amount=body.sale_amount,
+        note=body.note,
+        fields_set=set(body.model_fields_set),
+    )
+    return HarvestResponse.model_validate(row)
+
+
+@crop_cycles_router.delete(
+    "/{cycle_id}/harvests/{harvest_id}",
+    status_code=204,
+)
+def delete_harvest(
+    cycle_id: UUID,
+    harvest_id: UUID,
+    owner: OwnerModel = Depends(get_current_owner),
+    db: Session = Depends(get_db_session),
+) -> Response:
+    HarvestService(db).delete(
+        owner_id=owner.id, cycle_id=cycle_id, harvest_id=harvest_id
+    )
+    return Response(status_code=204)
