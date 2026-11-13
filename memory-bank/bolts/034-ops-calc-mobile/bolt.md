@@ -3,17 +3,20 @@ id: 034-ops-calc-mobile
 unit: 003-ops-calc-mobile
 intent: 005-resolve-operations-and-calculations-issue
 type: simple-construction-bolt
-status: planned
+status: in-progress
 stories:
   - 001-mobile-crop-expense-harvest-actions
   - 002-mobile-fertilizer-stock-table
   - 003-mobile-ledger-range-graph
   - 004-mobile-dashboard-and-landing
 created: '2026-11-13T07:00:00Z'
-started: null
+started: '2026-11-13T08:00:00Z'
 completed: null
-current_stage: null
-stages_completed: []
+current_stage: plan
+stages_completed:
+  - stage: plan
+    completed_at: '2026-11-13T08:00:00Z'
+    artifact: implementation-plan.md
 requires_bolts:
   - 032-ops-calc-api
 enables_bolts: []
@@ -42,8 +45,8 @@ Deliver Flutter crop Action flows, fertilizer stock table, ledger numeric+graph,
 
 ## Stages
 
-- [ ] **1. Implementation plan** → `implementation-plan.md`
-- [ ] **2. Implement** → `implementation-walkthrough.md`
+- [x] **1. Implementation plan** → `implementation-plan.md`
+- [ ] **2. Implement** → `implementation-walkthrough.md` ⏳
 - [ ] **3. Test** → `test-walkthrough.md`
 
 ## Dependencies
