@@ -38,23 +38,23 @@ python scripts/seed_demo_data.py          # first time
 python scripts/seed_demo_data.py --reset  # wipe & reseed demo owner
 ```
 
-| Field | Value |
-|-------|-------|
-| Email | `demo@completefms.com` |
-| Password | `Password1` |
+| Field    | Value                  |
+| -------- | ---------------------- |
+| Email    | `demo@completefms.com` |
+| Password | `Password1`            |
 
 ## Main endpoints
 
-| Method | Path | Auth |
-|--------|------|------|
-| GET | `/api/v1/health` | Public |
-| GET | `/api/v1/config/suggested-units` | Public |
-| POST | `/api/v1/auth/signup` | Public (multipart) |
-| POST | `/api/v1/auth/signin` | Public |
-| POST | `/api/v1/auth/refresh` | Public |
-| POST | `/api/v1/auth/signout` | Bearer |
-| GET/PATCH | `/api/v1/me` | Bearer |
-| GET | `/api/v1/me/profile-image` | Bearer |
-| GET/PATCH | `/api/v1/farm-settings` | Bearer |
+| Method    | Path                             | Auth               |
+| --------- | -------------------------------- | ------------------ |
+| GET       | `/api/v1/health`                 | Public             |
+| GET       | `/api/v1/config/suggested-units` | Public             |
+| POST      | `/api/v1/auth/signup`            | Public (multipart) |
+| POST      | `/api/v1/auth/signin`            | Public             |
+| POST      | `/api/v1/auth/refresh`           | Public             |
+| POST      | `/api/v1/auth/signout`           | Bearer             |
+| GET/PATCH | `/api/v1/me`                     | Bearer             |
+| GET       | `/api/v1/me/profile-image`       | Bearer             |
+| GET/PATCH | `/api/v1/farm-settings`          | Bearer             |
 
 Errors use `{ "code", "message", "details?" }`.

@@ -1,7 +1,7 @@
 ---
 intent: 005-resolve-operations-and-calculations-issue
-created: '2026-11-13T06:45:00Z'
-completed: '2026-11-13T07:00:00Z'
+created: "2026-11-13T06:45:00Z"
+completed: "2026-11-13T07:00:00Z"
 status: complete
 ---
 
@@ -16,13 +16,13 @@ status: complete
 
 ## Artifacts Created
 
-| Artifact       | Status | File                             |
-| -------------- | ------ | -------------------------------- |
-| Requirements   | ✅     | requirements.md                  |
-| System Context | ✅     | system-context.md                |
-| Units          | ✅     | units.md / units/*/unit-brief.md |
-| Stories        | ✅     | units/*/stories/*.md (12)        |
-| Bolt Plan      | ✅     | memory-bank/bolts/032–034        |
+| Artifact       | Status | File                              |
+| -------------- | ------ | --------------------------------- |
+| Requirements   | ✅     | requirements.md                   |
+| System Context | ✅     | system-context.md                 |
+| Units          | ✅     | units.md / units/\*/unit-brief.md |
+| Stories        | ✅     | units/_/stories/_.md (12)         |
+| Bolt Plan      | ✅     | memory-bank/bolts/032–034         |
 
 ## Summary
 
@@ -44,15 +44,15 @@ status: complete
 
 ## Decision Log
 
-| Date                 | Decision                                                              | Rationale                                 | Approved |
-| -------------------- | --------------------------------------------------------------------- | ----------------------------------------- | -------- |
-| 2026-11-13T06:45:00Z | Intent id `005-resolve-operations-and-calculations-issue`             | Next sequence after `004`                 | Yes      |
-| 2026-11-13T06:45:00Z | Scope includes crops Action, inventory table, ledger graph, Dashboard | Product owner request; web + mobile + API | Yes      |
-| 2026-11-13T06:51:00Z | Fertilizer = all stock changes in fertilizer category                 | Checkpoint 1                              | Yes      |
-| 2026-11-13T06:51:00Z | Dashboard egg + hen headcount; ledger numeric+graph; default this week; farm local TZ | Checkpoint 1              | Yes      |
-| 2026-11-13T06:53:00Z | Requirements approved (Checkpoint 2)                                  | Product owner                             | Yes      |
-| 2026-11-13T07:00:00Z | Units API → web → mobile; bolts 032–034                               | Matches 003/004 layering                  | Yes      |
-| 2026-11-13T07:00:00Z | Checkpoint 3 artifacts approved                                       | Product owner                             | Yes      |
+| Date                 | Decision                                                                              | Rationale                                 | Approved |
+| -------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------- | -------- |
+| 2026-11-13T06:45:00Z | Intent id `005-resolve-operations-and-calculations-issue`                             | Next sequence after `004`                 | Yes      |
+| 2026-11-13T06:45:00Z | Scope includes crops Action, inventory table, ledger graph, Dashboard                 | Product owner request; web + mobile + API | Yes      |
+| 2026-11-13T06:51:00Z | Fertilizer = all stock changes in fertilizer category                                 | Checkpoint 1                              | Yes      |
+| 2026-11-13T06:51:00Z | Dashboard egg + hen headcount; ledger numeric+graph; default this week; farm local TZ | Checkpoint 1                              | Yes      |
+| 2026-11-13T06:53:00Z | Requirements approved (Checkpoint 2)                                                  | Product owner                             | Yes      |
+| 2026-11-13T07:00:00Z | Units API → web → mobile; bolts 032–034                                               | Matches 003/004 layering                  | Yes      |
+| 2026-11-13T07:00:00Z | Checkpoint 3 artifacts approved                                                       | Product owner                             | Yes      |
 
 ## Scope Changes
 

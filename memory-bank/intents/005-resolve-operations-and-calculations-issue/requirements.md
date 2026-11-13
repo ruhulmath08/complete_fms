@@ -2,8 +2,8 @@
 intent: 005-resolve-operations-and-calculations-issue
 phase: inception
 status: complete
-created: '2026-11-13T06:45:00Z'
-updated: '2026-11-13T07:00:00Z'
+created: "2026-11-13T06:45:00Z"
+updated: "2026-11-13T07:00:00Z"
 type: enhancement
 ---
 
@@ -15,14 +15,14 @@ Fix remaining operations and calculation gaps after intents `003`/`004`, and add
 
 ## Business Goals
 
-| Goal | Success Metric | Priority |
-|------|----------------|----------|
-| Crop history maintainability | Farmer edits and deletes at least one crop expense and one harvest on web and on mobile like cow Action | Must |
-| Fertilizer stock visibility | All stock changes for items in the fertilizer category display as a paginated Action-capable table like cows | Must |
-| Ledger insight | After Apply date range, numeric Total income / Total expenses / Net remain visible and a graph shows the same concepts for the range | Must |
-| Dashboard landing & analytics | After login, farmer lands on Dashboard with egg, hen headcount, milk, cow production, expenses/cost, and income graphs for the selected period | Must |
-| Period control | Day/week/month/year selection works; default first load is this week; future dates blocked in farm local TZ (UI + API) | Must |
-| Developer reuse | Construction extends existing Action/table/pagination/aggregate patterns without inventing one-offs | Should |
+| Goal                          | Success Metric                                                                                                                                 | Priority |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Crop history maintainability  | Farmer edits and deletes at least one crop expense and one harvest on web and on mobile like cow Action                                        | Must     |
+| Fertilizer stock visibility   | All stock changes for items in the fertilizer category display as a paginated Action-capable table like cows                                   | Must     |
+| Ledger insight                | After Apply date range, numeric Total income / Total expenses / Net remain visible and a graph shows the same concepts for the range           | Must     |
+| Dashboard landing & analytics | After login, farmer lands on Dashboard with egg, hen headcount, milk, cow production, expenses/cost, and income graphs for the selected period | Must     |
+| Period control                | Day/week/month/year selection works; default first load is this week; future dates blocked in farm local TZ (UI + API)                         | Must     |
+| Developer reuse               | Construction extends existing Action/table/pagination/aggregate patterns without inventing one-offs                                            | Should   |
 
 ## Beneficiaries
 
@@ -156,33 +156,33 @@ Fix remaining operations and calculation gaps after intents `003`/`004`, and add
 
 ### NFR-1: Performance
 
-| Requirement | Metric | Target |
-|-------------|--------|--------|
+| Requirement          | Metric                                             | Target                                                               |
+| -------------------- | -------------------------------------------------- | -------------------------------------------------------------------- |
 | Dashboard aggregates | Time to usable graph data for modest farm datasets | p95 &lt; 3s preferred; must complete within existing client timeouts |
-| History Action | Edit/delete round-trip | Same class as existing cow/poultry Action |
-| Ledger apply | Totals + graph refresh | Completes within existing client timeouts |
+| History Action       | Edit/delete round-trip                             | Same class as existing cow/poultry Action                            |
+| Ledger apply         | Totals + graph refresh                             | Completes within existing client timeouts                            |
 
 ### NFR-2: Security
 
-| Requirement | Standard | Notes |
-|-------------|----------|-------|
-| Authentication / ownership | Existing JWT owner scope | Dashboard, ledger, crop, inventory APIs owner-only |
-| Future-date rejection | Server validation in farm local TZ | Do not rely on UI alone |
+| Requirement                | Standard                           | Notes                                              |
+| -------------------------- | ---------------------------------- | -------------------------------------------------- |
+| Authentication / ownership | Existing JWT owner scope           | Dashboard, ledger, crop, inventory APIs owner-only |
+| Future-date rejection      | Server validation in farm local TZ | Do not rely on UI alone                            |
 
 ### NFR-3: Reliability
 
-| Requirement | Metric | Target |
-|-------------|--------|--------|
-| Empty / sparse data | Graphs and tables | Empty or zero-safe states; no uncaught client errors |
+| Requirement             | Metric               | Target                                                               |
+| ----------------------- | -------------------- | -------------------------------------------------------------------- |
+| Empty / sparse data     | Graphs and tables    | Empty or zero-safe states; no uncaught client errors                 |
 | Chart failure isolation | Record-keeping flows | Crop/inventory/ledger CRUD remains usable if a chart fails to render |
 
 ### NFR-4: Usability / i18n
 
-| Requirement | Metric | Target |
-|-------------|--------|--------|
-| Action colors | Convention | Edit = primary; Delete = danger |
-| Mobile strings | Locales | EN + BN for new Dashboard/ledger/crop/inventory UI copy |
-| Landing clarity | Navigation | Dashboard labeled and discoverable in shell |
+| Requirement     | Metric     | Target                                                  |
+| --------------- | ---------- | ------------------------------------------------------- |
+| Action colors   | Convention | Edit = primary; Delete = danger                         |
+| Mobile strings  | Locales    | EN + BN for new Dashboard/ledger/crop/inventory UI copy |
+| Landing clarity | Navigation | Dashboard labeled and discoverable in shell             |
 
 ---
 
@@ -210,24 +210,24 @@ Fix remaining operations and calculation gaps after intents `003`/`004`, and add
 
 ## Assumptions
 
-| Assumption | Risk if Invalid | Mitigation |
-|------------|-----------------|------------|
-| Inventory already has a fertilizer category enum/value usable for filtering | Cannot filter stock rows | Confirm category value in Construction; add if missing via FR-8 |
-| Hen headcount can be derived from poultry group records (or a clear aggregate) over the period | Missing graph | Define aggregate rule in API design; if impossible, spike then adjust scope |
-| Cow production means milk and/or cow-related production series distinct from “milk” labeling | Duplicate graphs | Clarify series definitions in technical design (milk qty vs cow count/output) |
-| Farm timezone is available or defaultable (e.g. from farm settings / profile) | Wrong “today” | Construction documents default TZ if unset |
-| Ledger period totals can feed or accompany time-series points for the graph | Wrong chart shape | Prefer dedicated series endpoint if totals-only is insufficient |
+| Assumption                                                                                     | Risk if Invalid          | Mitigation                                                                    |
+| ---------------------------------------------------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------- |
+| Inventory already has a fertilizer category enum/value usable for filtering                    | Cannot filter stock rows | Confirm category value in Construction; add if missing via FR-8               |
+| Hen headcount can be derived from poultry group records (or a clear aggregate) over the period | Missing graph            | Define aggregate rule in API design; if impossible, spike then adjust scope   |
+| Cow production means milk and/or cow-related production series distinct from “milk” labeling   | Duplicate graphs         | Clarify series definitions in technical design (milk qty vs cow count/output) |
+| Farm timezone is available or defaultable (e.g. from farm settings / profile)                  | Wrong “today”            | Construction documents default TZ if unset                                    |
+| Ledger period totals can feed or accompany time-series points for the graph                    | Wrong chart shape        | Prefer dedicated series endpoint if totals-only is insufficient               |
 
 ---
 
 ## Open Questions
 
-| Question | Owner | Due Date | Resolution |
-|----------|-------|----------|------------|
-| Exact meaning of “Fertilizer for soil” | Product owner | Checkpoint 1 | **Resolved**: all stock changes for items in the **fertilizer category** |
-| Hen on dashboard | Product owner | Checkpoint 1 | **Resolved**: egg production graph **and** hen **headcount** graph |
-| Ledger numeric vs graph | Product owner | Checkpoint 1 | **Resolved**: keep **numeric totals and graph** |
-| Default dashboard period | Product owner | Checkpoint 1 | **Resolved**: **this week** |
-| Future date timezone | Product owner | Checkpoint 1 | **Resolved**: **farm local timezone** |
-| Exact definition of “cow production” vs “milk” series (qty vs headcount vs other) | Product owner | Checkpoint 2 / design | Pending |
-| Farm timezone source when settings unset | Construction | Design | Pending default |
+| Question                                                                          | Owner         | Due Date              | Resolution                                                               |
+| --------------------------------------------------------------------------------- | ------------- | --------------------- | ------------------------------------------------------------------------ |
+| Exact meaning of “Fertilizer for soil”                                            | Product owner | Checkpoint 1          | **Resolved**: all stock changes for items in the **fertilizer category** |
+| Hen on dashboard                                                                  | Product owner | Checkpoint 1          | **Resolved**: egg production graph **and** hen **headcount** graph       |
+| Ledger numeric vs graph                                                           | Product owner | Checkpoint 1          | **Resolved**: keep **numeric totals and graph**                          |
+| Default dashboard period                                                          | Product owner | Checkpoint 1          | **Resolved**: **this week**                                              |
+| Future date timezone                                                              | Product owner | Checkpoint 1          | **Resolved**: **farm local timezone**                                    |
+| Exact definition of “cow production” vs “milk” series (qty vs headcount vs other) | Product owner | Checkpoint 2 / design | Pending                                                                  |
+| Farm timezone source when settings unset                                          | Construction  | Design                | Pending default                                                          |
