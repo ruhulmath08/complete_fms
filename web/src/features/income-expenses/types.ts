@@ -50,6 +50,20 @@ export type PeriodTotals = {
   net: string;
 };
 
+export type LedgerSeriesPoint = {
+  bucket_start: string;
+  income: string;
+  expenses: string;
+  net: string;
+};
+
+export type LedgerSeries = {
+  from?: string;
+  to: string;
+  grain: string;
+  points: LedgerSeriesPoint[];
+};
+
 export type PageMeta = {
   total: number;
   limit: number;

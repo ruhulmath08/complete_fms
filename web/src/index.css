@@ -873,3 +873,52 @@ a:focus-visible {
   flex-wrap: wrap;
   margin-bottom: var(--space-5);
 }
+
+.series-chart {
+  margin: 0 0 var(--space-4);
+}
+
+.series-chart__title {
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.series-chart__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+}
+
+.series-chart__legend {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-size: 0.9rem;
+}
+
+.series-chart__swatch {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 2px;
+  margin-right: var(--space-2);
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+.period-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}

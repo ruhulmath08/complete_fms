@@ -112,3 +112,7 @@ export type HarvestCreateInput = {
   sale_amount?: string | null;
   note?: string | null;
 };
+
+export type ExpenseUpdateInput = Partial<ExpenseCreateInput>;
+
+export type HarvestUpdateInput = Partial<HarvestCreateInput>;

@@ -48,6 +48,19 @@ export type StockUpdate = {
   created_at: string;
 };
 
+export type StockUpdateListItem = {
+  id: string;
+  inventory_item_id: string;
+  item_name: string;
+  item_unit: string;
+  item_category: InventoryCategory;
+  occurred_at: string;
+  change_type: StockChangeType;
+  quantity_change: string;
+  reason: string | null;
+  created_at: string;
+};
+
 export type PageMeta = {
   total: number;
   limit: number;

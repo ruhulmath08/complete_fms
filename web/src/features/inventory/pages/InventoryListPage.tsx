@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { listInventoryItems } from "../api/inventoryApi";
+import { FertilizerStockTable } from "../components/FertilizerStockTable";
 import { INVENTORY_CATEGORIES } from "../types";
 import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
 import { getErrorMessage } from "../../../shared/api/errors";
@@ -116,6 +117,8 @@ export function InventoryListPage() {
           />
         </>
       ) : null}
+
+      <FertilizerStockTable />
     </div>
   );
 }

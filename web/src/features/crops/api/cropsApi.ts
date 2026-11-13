@@ -9,8 +9,10 @@ import type {
   CropNameUpdateInput,
   CycleSummary,
   ExpenseCreateInput,
+  ExpenseUpdateInput,
   Harvest,
   HarvestCreateInput,
+  HarvestUpdateInput,
   Page,
 } from "../types";
 
@@ -129,6 +131,30 @@ export async function addCropExpense(
   });
 }
 
+export async function updateCropExpense(
+  cycleId: string,
+  expenseId: string,
+  input: ExpenseUpdateInput,
+): Promise<CropExpense> {
+  return apiRequest<CropExpense>(
+    `/api/v1/crop-cycles/${cycleId}/expenses/${expenseId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+}
+
+export async function deleteCropExpense(
+  cycleId: string,
+  expenseId: string,
+): Promise<void> {
+  await apiRequest<void>(
+    `/api/v1/crop-cycles/${cycleId}/expenses/${expenseId}`,
+    { method: "DELETE" },
+  );
+}
+
 export async function listHarvests(
   cycleId: string,
   params?: { limit?: number; offset?: number },
@@ -150,6 +176,30 @@ export async function addHarvest(
     method: "POST",
     body: JSON.stringify(input),
   });
+}
+
+export async function updateHarvest(
+  cycleId: string,
+  harvestId: string,
+  input: HarvestUpdateInput,
+): Promise<Harvest> {
+  return apiRequest<Harvest>(
+    `/api/v1/crop-cycles/${cycleId}/harvests/${harvestId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+}
+
+export async function deleteHarvest(
+  cycleId: string,
+  harvestId: string,
+): Promise<void> {
+  await apiRequest<void>(
+    `/api/v1/crop-cycles/${cycleId}/harvests/${harvestId}`,
+    { method: "DELETE" },
+  );
 }
 
 export async function getSuggestedUnits(): Promise<string[]> {

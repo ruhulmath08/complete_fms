@@ -4,10 +4,10 @@ import { AuthProvider } from "./shared/auth/AuthProvider";
 import { AppShell } from "./shared/ui/AppShell";
 import { ProtectedRoute } from "./shared/ui/ProtectedRoute";
 import { FarmSettingsPage } from "./features/auth/pages/FarmSettingsPage";
-import { HomePage } from "./features/auth/pages/HomePage";
 import { ProfilePage } from "./features/auth/pages/ProfilePage";
 import { SignInPage } from "./features/auth/pages/SignInPage";
 import { SignUpPage } from "./features/auth/pages/SignUpPage";
+import { DashboardPage } from "./features/dashboard/pages/DashboardPage";
 import { CowCreatePage } from "./features/cows/pages/CowCreatePage";
 import { CowDetailPage } from "./features/cows/pages/CowDetailPage";
 import { CowsListPage } from "./features/cows/pages/CowsListPage";
@@ -39,7 +39,8 @@ export default function App() {
             <Route path="/signup" element={<SignUpPage />} />
             <Route element={<ProtectedRoute />}>
               <Route element={<AppShell />}>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/cows" element={<CowsListPage />} />
                 <Route path="/cows/new" element={<CowCreatePage />} />
                 <Route path="/cows/:cowId" element={<CowDetailPage />} />

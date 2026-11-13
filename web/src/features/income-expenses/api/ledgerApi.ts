@@ -3,6 +3,7 @@ import type {
   LedgerEntry,
   LedgerEntryCreateInput,
   LedgerEntryUpdateInput,
+  LedgerSeries,
   Page,
   PeriodTotals,
 } from "../types";
@@ -66,4 +67,17 @@ export async function getPeriodTotals(params: {
     to: params.to,
   });
   return apiRequest<PeriodTotals>(`/api/v1/ledger-entries/totals?${search}`);
+}
+
+export async function getLedgerSeries(params: {
+  from: string;
+  to: string;
+  grain: string;
+}): Promise<LedgerSeries> {
+  const search = new URLSearchParams({
+    from: params.from,
+    to: params.to,
+    grain: params.grain,
+  });
+  return apiRequest<LedgerSeries>(`/api/v1/ledger-entries/series?${search}`);
 }

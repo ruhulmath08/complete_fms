@@ -12,7 +12,7 @@ export function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  if (isSignedIn) return <Navigate to="/profile" replace />;
+  if (isSignedIn) return <Navigate to="/dashboard" replace />;
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
@@ -20,7 +20,7 @@ export function SignInPage() {
     setSubmitting(true);
     try {
       await signIn(email, password);
-      navigate("/profile");
+      navigate("/dashboard");
     } catch (err) {
       if (err instanceof ApiError && err.code === "INVALID_CREDENTIALS") {
         setError(err.message);

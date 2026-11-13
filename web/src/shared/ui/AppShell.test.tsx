@@ -43,6 +43,7 @@ function renderShell() {
         <Routes>
           <Route element={<AppShell />}>
             <Route path="/" element={<div>Home body</div>} />
+            <Route path="/dashboard" element={<div>Dashboard body</div>} />
             <Route path="/cows" element={<div>Cows body</div>} />
             <Route path="/profile" element={<div>Profile body</div>} />
           </Route>
@@ -61,6 +62,14 @@ describe("AppShell", () => {
     renderShell();
 
     expect(await screen.findByRole("navigation")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
+      "href",
+      "/dashboard",
+    );
+    expect(screen.getByRole("link", { name: "Farm Manager" })).toHaveAttribute(
+      "href",
+      "/dashboard",
+    );
     expect(screen.getByRole("link", { name: "Cows" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Poultry" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Crops" })).toBeInTheDocument();

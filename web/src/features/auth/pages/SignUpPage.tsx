@@ -11,7 +11,7 @@ export function SignUpPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  if (isSignedIn) return <Navigate to="/profile" replace />;
+  if (isSignedIn) return <Navigate to="/dashboard" replace />;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

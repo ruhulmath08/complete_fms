@@ -8,6 +8,7 @@ import { useAuth } from "../auth/useAuth";
 const SIDEBAR_KEY = "fms.shell.sidebarOpen";
 
 const NAV_ITEMS = [
+  { to: "/dashboard", label: "Dashboard" },
   { to: "/cows", label: "Cows" },
   { to: "/poultry", label: "Poultry" },
   { to: "/crops", label: "Crops" },
@@ -150,7 +151,7 @@ export function AppShell() {
 
       <header className="app-topbar">
         <div className="app-topbar__brand">
-          <Link to="/" className="app-topbar__brand-link">
+          <Link to="/dashboard" className="app-topbar__brand-link">
             Farm Manager
           </Link>
           <button

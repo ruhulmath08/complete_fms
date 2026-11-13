@@ -1,11 +1,13 @@
 import { apiRequest } from "../../../shared/api/client";
 import type {
+  InventoryCategory,
   InventoryItem,
   InventoryItemCreateInput,
   InventoryItemUpdateInput,
   Page,
   StockUpdate,
   StockUpdateCreateInput,
+  StockUpdateListItem,
 } from "../types";
 
 export async function listInventoryItems(params?: {
@@ -80,5 +82,20 @@ export async function addStockUpdate(
       method: "POST",
       body: JSON.stringify(input),
     },
+  );
+}
+
+export async function listInventoryStockUpdates(params?: {
+  category?: InventoryCategory;
+  limit?: number;
+  offset?: number;
+}): Promise<Page<StockUpdateListItem>> {
+  const search = new URLSearchParams();
+  if (params?.category) search.set("category", params.category);
+  if (params?.limit != null) search.set("limit", String(params.limit));
+  if (params?.offset != null) search.set("offset", String(params.offset));
+  const qs = search.toString();
+  return apiRequest<Page<StockUpdateListItem>>(
+    `/api/v1/inventory-stock-updates${qs ? `?${qs}` : ""}`,
   );
 }

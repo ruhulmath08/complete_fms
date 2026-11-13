@@ -5,6 +5,8 @@ import {
   addCropExpense,
   addHarvest,
   archiveCropCycle,
+  deleteCropExpense,
+  deleteHarvest,
   getCropCycle,
   getCropCycleSummary,
   getSuggestedUnits,
@@ -12,16 +14,21 @@ import {
   listCropNames,
   listHarvests,
   updateCropCycle,
+  updateCropExpense,
+  updateHarvest,
 } from "../api/cropsApi";
 import { CropCycleForm } from "../components/CropCycleForm";
 import {
   EXPENSE_CATEGORIES,
   type CropCycleCreateInput,
+  type CropExpense,
   type ExpenseCategory,
+  type Harvest,
 } from "../types";
 import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
 import { ApiError, getErrorMessage } from "../../../shared/api/errors";
 import { ErrorBanner } from "../../../shared/ui/ErrorBanner";
+import { DeleteIcon, EditIcon } from "../../../shared/ui/ActionIcons";
 import { LoadingState } from "../../../shared/ui/LoadingState";
 import { PaginationControls } from "../../../shared/ui/PaginationControls";
 
@@ -75,6 +82,7 @@ function ExpensesSection({
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [spentAt, setSpentAt] = useState(() =>
     new Date().toISOString().slice(0, 10),
   );
@@ -88,31 +96,72 @@ function ExpensesSection({
       listCropExpenses(cycleId, { limit: DEFAULT_PAGE_SIZE, offset }),
   });
 
+  function resetForm() {
+    setEditingId(null);
+    setSpentAt(new Date().toISOString().slice(0, 10));
+    setCategory("labour");
+    setAmount("");
+    setNote("");
+  }
+
+  function startEdit(row: CropExpense) {
+    setEditingId(row.id);
+    setSpentAt(row.spent_at);
+    setCategory(row.category);
+    setAmount(row.amount);
+    setNote(row.note ?? "");
+    setError(null);
+  }
+
+  async function refreshAfterChange() {
+    await queryClient.invalidateQueries({
+      queryKey: ["crop-expenses", cycleId],
+    });
+    await queryClient.invalidateQueries({
+      queryKey: ["crop-cycle-summary", cycleId],
+    });
+  }
+
   const mutation = useMutation({
-    mutationFn: () =>
-      addCropExpense(cycleId, {
+    mutationFn: () => {
+      const payload = {
         spent_at: spentAt,
         category,
         amount,
         note: note.trim() || null,
-      }),
+      };
+      if (editingId) return updateCropExpense(cycleId, editingId, payload);
+      return addCropExpense(cycleId, payload);
+    },
     onSuccess: async () => {
-      setAmount("");
-      setNote("");
+      resetForm();
       setError(null);
       setOffset(0);
-      await queryClient.invalidateQueries({
-        queryKey: ["crop-expenses", cycleId],
-      });
-      await queryClient.invalidateQueries({
-        queryKey: ["crop-cycle-summary", cycleId],
-      });
+      await refreshAfterChange();
     },
     onError: (err) => {
       if (err instanceof ApiError) setError(err.message);
       else setError(getErrorMessage(err));
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: (expenseId: string) => deleteCropExpense(cycleId, expenseId),
+    onSuccess: async () => {
+      if (editingId) resetForm();
+      setError(null);
+      await refreshAfterChange();
+    },
+    onError: (err) => {
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
+    },
+  });
+
+  function onDelete(row: CropExpense) {
+    if (!window.confirm("Delete this expense?")) return;
+    deleteMutation.mutate(row.id);
+  }
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
@@ -146,6 +195,7 @@ function ExpensesSection({
                   <th scope="col">Category</th>
                   <th scope="col">Total</th>
                   <th scope="col">Note</th>
+                  {canAdd ? <th scope="col">Action</th> : null}
                 </tr>
               </thead>
               <tbody>
@@ -156,6 +206,31 @@ function ExpensesSection({
                     <td>{categoryLabel(row.category)}</td>
                     <td>{row.amount}</td>
                     <td>{row.note ?? "—"}</td>
+                    {canAdd ? (
+                      <td>
+                        <div className="table-actions">
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-primary"
+                            aria-label="Edit expense"
+                            title="Edit"
+                            onClick={() => startEdit(row)}
+                          >
+                            <EditIcon />
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-danger"
+                            aria-label="Delete expense"
+                            title="Delete"
+                            disabled={deleteMutation.isPending}
+                            onClick={() => onDelete(row)}
+                          >
+                            <DeleteIcon />
+                          </button>
+                        </div>
+                      </td>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>
@@ -223,13 +298,28 @@ function ExpensesSection({
                 />
               </div>
             </div>
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? "Saving…" : "Add expense"}
-            </button>
+            <div className="toolbar-actions">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending
+                  ? "Saving…"
+                  : editingId
+                    ? "Update expense"
+                    : "Add expense"}
+              </button>
+              {editingId ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={resetForm}
+                >
+                  Cancel edit
+                </button>
+              ) : null}
+            </div>
           </form>
         </>
       ) : (
@@ -251,6 +341,7 @@ function HarvestsSection({
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [harvestedAt, setHarvestedAt] = useState(() =>
     new Date().toISOString().slice(0, 10),
   );
@@ -268,31 +359,73 @@ function HarvestsSection({
     queryFn: getSuggestedUnits,
   });
 
+  function resetForm() {
+    setEditingId(null);
+    setHarvestedAt(new Date().toISOString().slice(0, 10));
+    setQuantity("");
+    setUnit("kg");
+    setSaleAmount("");
+    setNote("");
+  }
+
+  function startEdit(row: Harvest) {
+    setEditingId(row.id);
+    setHarvestedAt(row.harvested_at);
+    setQuantity(row.quantity);
+    setUnit(row.unit);
+    setSaleAmount(row.sale_amount ?? "");
+    setNote(row.note ?? "");
+    setError(null);
+  }
+
+  async function refreshAfterChange() {
+    await queryClient.invalidateQueries({ queryKey: ["harvests", cycleId] });
+    await queryClient.invalidateQueries({
+      queryKey: ["crop-cycle-summary", cycleId],
+    });
+  }
+
   const mutation = useMutation({
-    mutationFn: () =>
-      addHarvest(cycleId, {
+    mutationFn: () => {
+      const payload = {
         harvested_at: harvestedAt,
         quantity,
         unit,
         sale_amount: saleAmount.trim() || null,
         note: note.trim() || null,
-      }),
+      };
+      if (editingId) return updateHarvest(cycleId, editingId, payload);
+      return addHarvest(cycleId, payload);
+    },
     onSuccess: async () => {
-      setQuantity("");
-      setSaleAmount("");
-      setNote("");
+      resetForm();
       setError(null);
       setOffset(0);
-      await queryClient.invalidateQueries({ queryKey: ["harvests", cycleId] });
-      await queryClient.invalidateQueries({
-        queryKey: ["crop-cycle-summary", cycleId],
-      });
+      await refreshAfterChange();
     },
     onError: (err) => {
       if (err instanceof ApiError) setError(err.message);
       else setError(getErrorMessage(err));
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: (harvestId: string) => deleteHarvest(cycleId, harvestId),
+    onSuccess: async () => {
+      if (editingId) resetForm();
+      setError(null);
+      await refreshAfterChange();
+    },
+    onError: (err) => {
+      if (err instanceof ApiError) setError(err.message);
+      else setError(getErrorMessage(err));
+    },
+  });
+
+  function onDelete(row: Harvest) {
+    if (!window.confirm("Delete this harvest?")) return;
+    deleteMutation.mutate(row.id);
+  }
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
@@ -327,6 +460,7 @@ function HarvestsSection({
                   <th scope="col">Unit</th>
                   <th scope="col">Sale total</th>
                   <th scope="col">Note</th>
+                  {canAdd ? <th scope="col">Action</th> : null}
                 </tr>
               </thead>
               <tbody>
@@ -338,6 +472,31 @@ function HarvestsSection({
                     <td>{row.unit}</td>
                     <td>{row.sale_amount ?? "—"}</td>
                     <td>{row.note ?? "—"}</td>
+                    {canAdd ? (
+                      <td>
+                        <div className="table-actions">
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-primary"
+                            aria-label="Edit harvest"
+                            title="Edit"
+                            onClick={() => startEdit(row)}
+                          >
+                            <EditIcon />
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-icon btn-icon-danger"
+                            aria-label="Delete harvest"
+                            title="Delete"
+                            disabled={deleteMutation.isPending}
+                            onClick={() => onDelete(row)}
+                          >
+                            <DeleteIcon />
+                          </button>
+                        </div>
+                      </td>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>
@@ -413,13 +572,28 @@ function HarvestsSection({
                 <option key={u} value={u} />
               ))}
             </datalist>
-            <button
-              className="btn btn-primary"
-              type="submit"
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? "Saving…" : "Add harvest"}
-            </button>
+            <div className="toolbar-actions">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending
+                  ? "Saving…"
+                  : editingId
+                    ? "Update harvest"
+                    : "Add harvest"}
+              </button>
+              {editingId ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={resetForm}
+                >
+                  Cancel edit
+                </button>
+              ) : null}
+            </div>
           </form>
         </>
       ) : (

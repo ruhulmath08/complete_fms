@@ -2,7 +2,9 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPeriodTotals, listLedgerEntries } from "../api/ledgerApi";
+import { LedgerRangeChart } from "../components/LedgerRangeChart";
 import { ENTRY_CATEGORIES, ENTRY_TYPES } from "../types";
+import { toIsoDate } from "../../../shared/dates";
 import { DEFAULT_PAGE_SIZE } from "../../../shared/constants/pagination";
 import { getErrorMessage } from "../../../shared/api/errors";
 import { EmptyState } from "../../../shared/ui/EmptyState";
@@ -20,12 +22,8 @@ function categoryLabel(value: string): string {
 
 function monthBounds(): { from: string; to: string } {
   const now = new Date();
-  const from = new Date(now.getFullYear(), now.getMonth(), 1)
-    .toISOString()
-    .slice(0, 10);
-  const to = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-    .toISOString()
-    .slice(0, 10);
+  const from = toIsoDate(new Date(now.getFullYear(), now.getMonth(), 1));
+  const to = toIsoDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
   return { from, to };
 }
 
@@ -113,6 +111,10 @@ export function LedgerListPage() {
       <button type="button" className="btn btn-ghost" onClick={applyRange}>
         Apply date range
       </button>
+
+      <div style={{ marginTop: "1rem" }}>
+        <LedgerRangeChart from={appliedFrom} to={appliedTo} />
+      </div>
 
       <label className="checkbox-row">
         <input

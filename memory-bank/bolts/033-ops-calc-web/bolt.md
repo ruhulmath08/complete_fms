@@ -12,11 +12,14 @@ stories:
 created: '2026-11-13T07:00:00Z'
 started: '2026-11-13T07:40:00Z'
 completed: null
-current_stage: plan
+current_stage: implement
 stages_completed:
   - stage: plan
     completed_at: '2026-11-13T07:40:00Z'
     artifact: implementation-plan.md
+  - stage: implement
+    completed_at: '2026-11-13T07:50:00Z'
+    artifact: implementation-walkthrough.md
 requires_bolts:
   - 032-ops-calc-api
 enables_bolts: []
@@ -46,8 +49,8 @@ Deliver React crop Action columns, fertilizer stock table, ledger numeric+graph,
 ## Stages
 
 - [x] **1. Implementation plan** → `implementation-plan.md`
-- [ ] **2. Implement** → `implementation-walkthrough.md` ⏳
-- [ ] **3. Test** → `test-walkthrough.md`
+- [x] **2. Implement** → `implementation-walkthrough.md`
+- [ ] **3. Test** → `test-walkthrough.md` ⏳
 
 ## Dependencies
 
