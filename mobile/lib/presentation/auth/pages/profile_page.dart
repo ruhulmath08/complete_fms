@@ -9,6 +9,7 @@ import '../../../domain/usecases/auth_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/form_field_column.dart';
+import '../widgets/profile_image_preview.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -116,8 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (_error != null)
           Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
         if (_saved) Text(l10n.saved),
-        if (_imageBytes != null)
-          CircleAvatar(radius: 48, backgroundImage: MemoryImage(_imageBytes!)),
+        ProfileImagePreview(localPath: _imagePath, bytes: _imageBytes),
         FormFieldColumn(
           children: [
             TextField(controller: _fullName, decoration: InputDecoration(labelText: l10n.fullName)),
