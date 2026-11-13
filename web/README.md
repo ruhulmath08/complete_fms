@@ -4,15 +4,15 @@ React (Vite) SPA for a single-farm owner: record keeping across cows, poultry, c
 
 ## Features
 
-| Area | What you can do |
-|------|-----------------|
-| **Dashboard** | Post-login home. Period day / week / month / year (default **this week**). Charts for egg production, hen headcount, milk, cow production, expenses/cost, and income. Future dates blocked in the farm local timezone. |
-| **Auth & account** | Sign up (multipart + profile image), sign in / out, profile edit, farm settings (currency). |
-| **Cows** | List / create / detail with cow image; milk production and feeding histories as paginated tables with row **Total**, **Edit** / **Delete** actions. |
-| **Poultry** | Groups (broilers, ducks, layers, local); egg production and feeding histories with the same Action / Total / **No.** column patterns as cows. |
-| **Crops** | Crop names and cycles; expenses and harvests with Edit / Delete actions (confirm on delete). |
-| **Inventory** | Items and stock updates; fertilizer-category stock changes as a paginated Action-capable table. |
-| **Income & expenses** | Ledger list with date-range filter; **Total income / Total expenses / Net** plus a trend graph for the applied range. |
+| Area                  | What you can do                                                                                                                                                                                                        |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dashboard**         | Post-login home. Period day / week / month / year (default **this week**). Charts for egg production, hen headcount, milk, cow production, expenses/cost, and income. Future dates blocked in the farm local timezone. |
+| **Auth & account**    | Sign up (multipart + profile image), sign in / out, profile edit, farm settings (currency).                                                                                                                            |
+| **Cows**              | List / create / detail with cow image; milk production and feeding histories as paginated tables with row **Total**, **Edit** / **Delete** actions.                                                                    |
+| **Poultry**           | Groups (broilers, ducks, layers, local); egg production and feeding histories with the same Action / Total / **No.** column patterns as cows.                                                                          |
+| **Crops**             | Crop names and cycles; expenses and harvests with Edit / Delete actions (confirm on delete).                                                                                                                           |
+| **Inventory**         | Items and stock updates; fertilizer-category stock changes as a paginated Action-capable table.                                                                                                                        |
+| **Income & expenses** | Ledger list with date-range filter; **Total income / Total expenses / Net** plus a trend graph for the applied range.                                                                                                  |
 
 Signed-in shell: collapsible left sidebar, header (notifications placeholder + profile), footer. Design tokens and shared chrome live in `src/index.css` / `shared/ui/AppShell.tsx`.
 

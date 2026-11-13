@@ -4,15 +4,15 @@ FastAPI modular monolith for the farm management system. Serves the React web ap
 
 ## Domains
 
-| Module | Responsibility |
-|--------|----------------|
+| Module                        | Responsibility                                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | **Auth / me / farm-settings** | Signup (multipart + profile image), JWT sign-in/refresh/sign-out, profile, currency settings, suggested units |
-| **Cows** | Cow CRUD, cow image upload/serve, milk productions & feedings (incl. PATCH/DELETE) |
-| **Poultry** | Poultry groups, egg productions & feedings (incl. PATCH/DELETE) |
-| **Crops** | Crop names, cycles, expenses & harvests (incl. PATCH/DELETE on history) |
-| **Inventory** | Items, stock updates; fertilizer-category stock listing/filters as needed by clients |
-| **Income & expenses** | Ledger entries, date-range totals / series for graphs |
-| **Dashboard** | Period aggregates (eggs, hen headcount, milk, cow production, expenses, income) |
+| **Cows**                      | Cow CRUD, cow image upload/serve, milk productions & feedings (incl. PATCH/DELETE)                            |
+| **Poultry**                   | Poultry groups, egg productions & feedings (incl. PATCH/DELETE)                                               |
+| **Crops**                     | Crop names, cycles, expenses & harvests (incl. PATCH/DELETE on history)                                       |
+| **Inventory**                 | Items, stock updates; fertilizer-category stock listing/filters as needed by clients                          |
+| **Income & expenses**         | Ledger entries, date-range totals / series for graphs                                                         |
+| **Dashboard**                 | Period aggregates (eggs, hen headcount, milk, cow production, expenses, income)                               |
 
 Owner-scoped; single farm. Errors use `{ "code", "message", "details?" }`.
 
@@ -63,17 +63,17 @@ python scripts/seed_demo_data.py --reset  # wipe & reseed demo owner
 
 All under `/api/v1` (see OpenAPI for full contracts):
 
-| Prefix / area | Notes |
-|---------------|--------|
-| `/health`, `/config/suggested-units` | Public |
-| `/auth/*` | Signup, signin, refresh, signout |
-| `/me`, `/me/profile-image`, `/farm-settings` | Owner profile & settings |
-| `/cows`, `/cows/{id}/…` | Cows, image, milk, feeding |
-| `/poultry-groups`, `…/eggs`, `…/feedings` | Poultry history |
-| `/crop-names`, `/crop-cycles`, expenses/harvests | Crops |
-| `/inventory-items`, `/inventory-stock-updates` | Inventory |
-| `/ledger-entries` | Income & expenses |
-| `/dashboard` | Period aggregates for charts |
+| Prefix / area                                    | Notes                            |
+| ------------------------------------------------ | -------------------------------- |
+| `/health`, `/config/suggested-units`             | Public                           |
+| `/auth/*`                                        | Signup, signin, refresh, signout |
+| `/me`, `/me/profile-image`, `/farm-settings`     | Owner profile & settings         |
+| `/cows`, `/cows/{id}/…`                          | Cows, image, milk, feeding       |
+| `/poultry-groups`, `…/eggs`, `…/feedings`        | Poultry history                  |
+| `/crop-names`, `/crop-cycles`, expenses/harvests | Crops                            |
+| `/inventory-items`, `/inventory-stock-updates`   | Inventory                        |
+| `/ledger-entries`                                | Income & expenses                |
+| `/dashboard`                                     | Period aggregates for charts     |
 
 ## Related
 
