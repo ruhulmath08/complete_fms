@@ -7,7 +7,7 @@ Usage (from backend/ with venv active):
     python scripts/seed_demo_data.py --reset   # wipe demo owner then reseed
 
 Sign in as:
-    email:    demo@completefms.local
+    email:    demo@completefms.com
     password: Password1
 """
 
@@ -56,9 +56,11 @@ from app.modules.poultry.infrastructure.models import (  # noqa: E402
     PoultryGroupModel,
 )
 
-DEMO_EMAIL = "demo@completefms.local"
+# Use a normal TLD — pydantic EmailStr rejects reserved domains like .local
+DEMO_EMAIL = "demo@completefms.com"
 DEMO_PHONE = "+8801710000001"
 DEMO_PASSWORD = "Password1"
+LEGACY_DEMO_EMAILS = ("demo@completefms.local",)
 
 # Tiny 1x1 PNG
 _PNG = (
@@ -93,23 +95,22 @@ def _wipe_demo_owner(session) -> None:
     ORM ``session.delete(owner)`` nulls ``farm_settings.owner_id`` first and
     trips the NOT NULL constraint.
     """
-    owner = session.scalar(select(OwnerModel).where(OwnerModel.email == DEMO_EMAIL))
-    if owner is None:
-        # Clean leftover rows from a previous failed wipe
+    emails = (DEMO_EMAIL, *LEGACY_DEMO_EMAILS)
+    owners = session.scalars(select(OwnerModel).where(OwnerModel.email.in_(emails))).all()
+    if not owners:
         session.execute(
             delete(FarmSettingsModel).where(FarmSettingsModel.owner_id.is_(None))
         )
         session.commit()
         return
 
-    owner_id = owner.id
-    # Drop dependent settings first (avoids ORM nulling the FK)
-    session.execute(
-        delete(FarmSettingsModel).where(FarmSettingsModel.owner_id == owner_id)
-    )
-    session.execute(delete(OwnerModel).where(OwnerModel.id == owner_id))
+    for owner in owners:
+        session.execute(
+            delete(FarmSettingsModel).where(FarmSettingsModel.owner_id == owner.id)
+        )
+        session.execute(delete(OwnerModel).where(OwnerModel.id == owner.id))
+        print(f"Removed existing demo owner {owner.email}")
     session.commit()
-    print(f"Removed existing demo owner {DEMO_EMAIL}")
 
 
 def _get_or_create_owner(session) -> OwnerModel:

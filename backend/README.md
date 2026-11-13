@@ -40,7 +40,7 @@ python scripts/seed_demo_data.py --reset  # wipe & reseed demo owner
 
 | Field | Value |
 |-------|-------|
-| Email | `demo@completefms.local` |
+| Email | `demo@completefms.com` |
 | Password | `Password1` |
 
 ## Main endpoints
