@@ -79,6 +79,9 @@ def _at(day: date, hour: int = 8, minute: int = 0) -> datetime:
     return datetime(day.year, day.month, day.day, hour, minute, tzinfo=UTC)
 
 
+DEMO_ASSETS = Path(__file__).resolve().parent / "demo_assets"
+
+
 def _ensure_profile_image(owner_id) -> str:
     settings = get_settings()
     folder = settings.profile_images_path / str(owner_id)
@@ -87,6 +90,23 @@ def _ensure_profile_image(owner_id) -> str:
     if not path.exists():
         path.write_bytes(_PNG)
     return f"profile_images/{owner_id}/demo.png"
+
+
+def _ensure_cow_image(owner_id, cow_id, asset_name: str) -> str:
+    """Copy a bundled demo JPEG into uploads/cow_images/{owner}/{cow}/."""
+    settings = get_settings()
+    src = DEMO_ASSETS / asset_name
+    folder = settings.cow_images_path / str(owner_id) / str(cow_id)
+    folder.mkdir(parents=True, exist_ok=True)
+    dest = folder / "demo.jpg"
+    if src.is_file():
+        dest.write_bytes(src.read_bytes())
+    else:
+        # Fallback tiny PNG renamed — API accepts jpeg/png; use png bytes with .png
+        dest = folder / "demo.png"
+        dest.write_bytes(_PNG)
+        return f"cow_images/{owner_id}/{cow_id}/demo.png"
+    return f"cow_images/{owner_id}/{cow_id}/demo.jpg"
 
 
 def _wipe_demo_owner(session) -> None:
@@ -145,12 +165,12 @@ def _get_or_create_owner(session) -> OwnerModel:
 
 def _seed_cows(session, owner_id, today: date, rng: random.Random) -> list[CowModel]:
     cows_spec = [
-        ("CW-101", "Rani", "Sahiwal", "milk", "female"),
-        ("CW-102", "Moti", "Local", "both", "female"),
-        ("CW-103", "Bahadur", "Friesian cross", "meat", "male"),
+        ("CW-101", "Rani", "Sahiwal", "milk", "female", "cow_rani.jpg"),
+        ("CW-102", "Moti", "Local", "both", "female", "cow_moti.jpg"),
+        ("CW-103", "Bahadur", "Friesian cross", "meat", "male", "cow_bahadur.jpg"),
     ]
     cows: list[CowModel] = []
-    for tag, name, breed, purpose, gender in cows_spec:
+    for tag, name, breed, purpose, gender, image_asset in cows_spec:
         cow = CowModel(
             owner_id=owner_id,
             tag_number=tag,
@@ -169,8 +189,11 @@ def _seed_cows(session, owner_id, today: date, rng: random.Random) -> list[CowMo
             is_archived=False,
         )
         session.add(cow)
-        cows.append(cow)
+        cows.append((cow, image_asset))
     session.flush()
+    for cow, image_asset in cows:
+        cow.image_path = _ensure_cow_image(owner_id, cow.id, image_asset)
+    cows = [c for c, _ in cows]
 
     milk_cows = [c for c in cows if c.purpose in ("milk", "both")]
     for day_offset in range(13, -1, -1):
