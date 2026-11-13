@@ -1,11 +1,25 @@
-# Backend API (Platform & Auth)
+# Backend API
 
-FastAPI modular monolith for the farm management system. This first slice delivers platform foundation plus owner auth, profile, and farm settings.
+FastAPI modular monolith for the farm management system. Serves the React web app and Flutter mobile client: auth, farm settings, domain CRUD/history, and Dashboard aggregates.
+
+## Domains
+
+| Module | Responsibility |
+|--------|----------------|
+| **Auth / me / farm-settings** | Signup (multipart + profile image), JWT sign-in/refresh/sign-out, profile, currency settings, suggested units |
+| **Cows** | Cow CRUD, cow image upload/serve, milk productions & feedings (incl. PATCH/DELETE) |
+| **Poultry** | Poultry groups, egg productions & feedings (incl. PATCH/DELETE) |
+| **Crops** | Crop names, cycles, expenses & harvests (incl. PATCH/DELETE on history) |
+| **Inventory** | Items, stock updates; fertilizer-category stock listing/filters as needed by clients |
+| **Income & expenses** | Ledger entries, date-range totals / series for graphs |
+| **Dashboard** | Period aggregates (eggs, hen headcount, milk, cow production, expenses, income) |
+
+Owner-scoped; single farm. Errors use `{ "code", "message", "details?" }`.
 
 ## Prerequisites
 
 - Python 3.11+
-- Local PostgreSQL database (no Docker for v1)
+- Local PostgreSQL (no Docker for v1)
 
 ## Setup
 
@@ -24,7 +38,9 @@ uvicorn app.main:app --reload --port 8000
 
 - Health: `GET http://localhost:8000/api/v1/health`
 - OpenAPI: `http://localhost:8000/docs`
-- Uploads root: `backend/uploads/` (gitignored). Profile images: `backend/uploads/profile_images/{owner_id}/`. Cow images: `backend/uploads/cow_images/{owner_id}/{cow_id}/`
+- Uploads root: `backend/uploads/` (gitignored)
+  - Profile images: `uploads/profile_images/{owner_id}/`
+  - Cow images: `uploads/cow_images/{owner_id}/{cow_id}/`
 
 ## Demo data (presentations / manual testing)
 
@@ -43,18 +59,25 @@ python scripts/seed_demo_data.py --reset  # wipe & reseed demo owner
 | Email    | `demo@completefms.com` |
 | Password | `Password1`            |
 
-## Main endpoints
+## Main route groups
 
-| Method    | Path                             | Auth               |
-| --------- | -------------------------------- | ------------------ |
-| GET       | `/api/v1/health`                 | Public             |
-| GET       | `/api/v1/config/suggested-units` | Public             |
-| POST      | `/api/v1/auth/signup`            | Public (multipart) |
-| POST      | `/api/v1/auth/signin`            | Public             |
-| POST      | `/api/v1/auth/refresh`           | Public             |
-| POST      | `/api/v1/auth/signout`           | Bearer             |
-| GET/PATCH | `/api/v1/me`                     | Bearer             |
-| GET       | `/api/v1/me/profile-image`       | Bearer             |
-| GET/PATCH | `/api/v1/farm-settings`          | Bearer             |
+All under `/api/v1` (see OpenAPI for full contracts):
 
-Errors use `{ "code", "message", "details?" }`.
+| Prefix / area | Notes |
+|---------------|--------|
+| `/health`, `/config/suggested-units` | Public |
+| `/auth/*` | Signup, signin, refresh, signout |
+| `/me`, `/me/profile-image`, `/farm-settings` | Owner profile & settings |
+| `/cows`, `/cows/{id}/…` | Cows, image, milk, feeding |
+| `/poultry-groups`, `…/eggs`, `…/feedings` | Poultry history |
+| `/crop-names`, `/crop-cycles`, expenses/harvests | Crops |
+| `/inventory-items`, `/inventory-stock-updates` | Inventory |
+| `/ledger-entries` | Income & expenses |
+| `/dashboard` | Period aggregates for charts |
+
+## Related
+
+- React web app: [`../web/README.md`](../web/README.md)
+- Flutter mobile app: [`../mobile/README.md`](../mobile/README.md)
+- Repo overview: [`../README.md`](../README.md)
+- API conventions: [`../memory-bank/standards/api-conventions.md`](../memory-bank/standards/api-conventions.md)

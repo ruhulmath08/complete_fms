@@ -1,36 +1,43 @@
-# Farm Management Project
+# Farm Management System (complete_fms)
 
-This project is a farm management system that helps farmers keep track of their livestock, crops, supplies, income, and expenses.
+Single-farm, single-owner record keeping for livestock, crops, inventory, and money — with a shared FastAPI backend, a React web app, and a Flutter mobile app.
+
+## Packages
+
+| Package | Role | Docs |
+| ------- | ---- | ---- |
+| [`backend/`](backend/) | FastAPI + PostgreSQL API | [`backend/README.md`](backend/README.md) |
+| [`web/`](web/) | React (Vite) SPA | [`web/README.md`](web/README.md) |
+| [`mobile/`](mobile/) | Flutter app (EN/BN) | [`mobile/README.md`](mobile/README.md) |
 
 ## Features
 
-- Cow records for meat and milk, including milk production
-- Poultry groups for broilers, ducks, layers, and local birds
-- Crop cycles and harvest records
-- Crop costs, including labour, fertilizers, pesticides and chemicals, seeds, irrigation, equipment, and other costs
-- Inventory records and stock updates
-- Simple income and expense entries
-- Basic farm settings
+- **Dashboard** — post-login home with day/week/month/year charts (eggs, hen headcount, milk, cow production, expenses, income); default **this week**; no future dates in farm local timezone
+- **Auth & account** — sign up / sign in, profile image, farm settings (currency)
+- **Cows** — meat/milk records, cow image, milk & feeding history with totals and edit/delete
+- **Poultry** — broiler / duck / layer / local groups; egg & feeding history with the same action patterns
+- **Crops** — crop names, cycles, expenses, and harvests (edit/delete on history)
+- **Inventory** — items and stock updates; fertilizer-category stock as a full history table
+- **Income & expenses** — ledger with date-range totals (income / expenses / net) and a trend graph
+
+Web and mobile stay aligned on workflows and design tokens where practical.
 
 ## Technologies
 
-- Backend: Python with FastAPI (SQLAlchemy, pgAdmin, PostgreSQL)
-- Web app: React
-- Mobile app: Flutter using Clean Architecture, BLoC, GoRouter, GetIt, Material 3.
-- The colors, fonts, and design should match the web and mobile apps.
+- **Backend:** Python 3.11+, FastAPI, SQLAlchemy, Alembic, PostgreSQL
+- **Web:** React, Vite, TypeScript, TanStack Query, React Router
+- **Mobile:** Flutter, Clean Architecture, BLoC/Cubit, GoRouter, GetIt, Dio, Material 3, EN/BN l10n
 
-## Architecture
+## Quick start
 
-The project has three parts:
+1. Start the API — see [`backend/README.md`](backend/README.md) (Postgres, migrations, `uvicorn`)
+2. Optional demo farm — `python scripts/seed_demo_data.py` in `backend/` (`demo@completefms.com` / `Password1`)
+3. Web — `cd web && npm install && npm run dev`
+4. Mobile — `cd mobile && flutter pub get && flutter run`
 
-- Backend: Python with FastAPI (SQLAlchemy, pgAdmin, PostgreSQL)
-- Infrastructure: GoRouter, GetIt, Material 3, Theme, Localizations (bangla and english), and other infrastructure code.
-- Presentation: screens, widgets, and BLoCs
-- Domain: business rules, entities, use cases, and repository interfaces, Logger, and Utils.
-- Data: API calls, data models, data sources, mappers to convert between data models and entities, and repository implementations
-- The domain layer is pure Dart code. No API calls, no data models, no data sources, no mappers, no repository implementations.
-- Data and domain layers are saperate projects. They inside the mobile app project.
+OpenAPI: `http://localhost:8000/docs`
 
-## The details document is in the docs folder. Please follow the following links
+## Further reading
 
-- 1 [Install Spaces](docs/01-install-spaces.md)
+- Standards & conventions: [`memory-bank/standards/`](memory-bank/standards/)
+- Cursor Spaces setup notes: [docs/01-install-spaces.md](docs/01-install-spaces.md), [docs/02-start-working.md](docs/02-start-working.md)
