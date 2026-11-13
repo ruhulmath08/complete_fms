@@ -20,7 +20,7 @@ from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BACKEND_ROOT))
@@ -88,10 +88,26 @@ def _ensure_profile_image(owner_id) -> str:
 
 
 def _wipe_demo_owner(session) -> None:
+    """Delete demo owner via SQL so DB ON DELETE CASCADE runs.
+
+    ORM ``session.delete(owner)`` nulls ``farm_settings.owner_id`` first and
+    trips the NOT NULL constraint.
+    """
     owner = session.scalar(select(OwnerModel).where(OwnerModel.email == DEMO_EMAIL))
     if owner is None:
+        # Clean leftover rows from a previous failed wipe
+        session.execute(
+            delete(FarmSettingsModel).where(FarmSettingsModel.owner_id.is_(None))
+        )
+        session.commit()
         return
-    session.delete(owner)
+
+    owner_id = owner.id
+    # Drop dependent settings first (avoids ORM nulling the FK)
+    session.execute(
+        delete(FarmSettingsModel).where(FarmSettingsModel.owner_id == owner_id)
+    )
+    session.execute(delete(OwnerModel).where(OwnerModel.id == owner_id))
     session.commit()
     print(f"Removed existing demo owner {DEMO_EMAIL}")
 
