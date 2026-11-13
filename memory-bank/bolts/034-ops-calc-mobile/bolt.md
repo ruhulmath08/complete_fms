@@ -3,7 +3,7 @@ id: 034-ops-calc-mobile
 unit: 003-ops-calc-mobile
 intent: 005-resolve-operations-and-calculations-issue
 type: simple-construction-bolt
-status: in-progress
+status: complete
 stories:
   - 001-mobile-crop-expense-harvest-actions
   - 002-mobile-fertilizer-stock-table
@@ -11,8 +11,8 @@ stories:
   - 004-mobile-dashboard-and-landing
 created: '2026-11-13T07:00:00Z'
 started: '2026-11-13T08:00:00Z'
-completed: null
-current_stage: implement
+completed: '2026-11-13T08:25:00Z'
+current_stage: null
 stages_completed:
   - stage: plan
     completed_at: '2026-11-13T08:00:00Z'
@@ -20,6 +20,9 @@ stages_completed:
   - stage: implement
     completed_at: '2026-11-13T08:20:00Z'
     artifact: implementation-walkthrough.md
+  - stage: test
+    completed_at: '2026-11-13T08:25:00Z'
+    artifact: test-walkthrough.md
 requires_bolts:
   - 032-ops-calc-api
 enables_bolts: []
@@ -41,16 +44,16 @@ Deliver Flutter crop Action flows, fertilizer stock table, ledger numeric+graph,
 
 ## Stories Included
 
-- [ ] **001-mobile-crop-expense-harvest-actions**: Crop Action - Priority: Must
-- [ ] **002-mobile-fertilizer-stock-table**: Fertilizer stock table - Priority: Must
-- [ ] **003-mobile-ledger-range-graph**: Ledger graph + numeric - Priority: Must
-- [ ] **004-mobile-dashboard-and-landing**: Dashboard + landing - Priority: Must
+- [x] **001-mobile-crop-expense-harvest-actions**: Crop Action - Priority: Must
+- [x] **002-mobile-fertilizer-stock-table**: Fertilizer stock table - Priority: Must
+- [x] **003-mobile-ledger-range-graph**: Ledger graph + numeric - Priority: Must
+- [x] **004-mobile-dashboard-and-landing**: Dashboard + landing - Priority: Must
 
 ## Stages
 
 - [x] **1. Implementation plan** → `implementation-plan.md`
 - [x] **2. Implement** → `implementation-walkthrough.md`
-- [ ] **3. Test** → `test-walkthrough.md` ⏳
+- [x] **3. Test** → `test-walkthrough.md`
 
 ## Dependencies
 

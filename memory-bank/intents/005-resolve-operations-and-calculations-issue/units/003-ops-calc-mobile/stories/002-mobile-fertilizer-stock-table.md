@@ -2,11 +2,11 @@
 id: 002-mobile-fertilizer-stock-table
 unit: 003-ops-calc-mobile
 intent: 005-resolve-operations-and-calculations-issue
-status: draft
+status: complete
 priority: must
 created: '2026-11-13T07:00:00Z'
 assigned_bolt: 034-ops-calc-mobile
-implemented: false
+implemented: true
 ---
 
 # Story: 002-mobile-fertilizer-stock-table

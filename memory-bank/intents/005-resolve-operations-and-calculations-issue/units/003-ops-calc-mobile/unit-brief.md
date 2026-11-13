@@ -2,7 +2,7 @@
 unit: 003-ops-calc-mobile
 intent: 005-resolve-operations-and-calculations-issue
 phase: inception
-status: ready
+status: complete
 created: '2026-11-13T07:00:00Z'
 updated: '2026-11-13T07:00:00Z'
 unit_type: mobile
