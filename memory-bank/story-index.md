@@ -2,9 +2,9 @@
 
 ## Overview
 
-- **Total stories**: 50
-- **Generated**: 50
-- **Last updated**: 2026-11-12T07:34:21Z
+- **Total stories**: 62
+- **Generated**: 62
+- **Last updated**: 2026-11-13T07:00:00Z
 
 ---
 
@@ -366,12 +366,98 @@
 **Priority**: should
 **Path**: `memory-bank/intents/003-update-api-web-and-mobile-design/units/003-design-mobile/stories/005-mobile-forms-a11y.md`
 
+### 005-resolve-operations-and-calculations-issue
+
+### 001-api-crop-expense-harvest-update-delete.md ✅ GENERATED
+
+**Title**: API crop expense/harvest update delete
+**Unit**: `001-ops-calc-api`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/001-ops-calc-api/stories/001-api-crop-expense-harvest-update-delete.md`
+
+### 002-api-fertilizer-stock-list.md ✅ GENERATED
+
+**Title**: API fertilizer stock list
+**Unit**: `001-ops-calc-api`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/001-ops-calc-api/stories/002-api-fertilizer-stock-list.md`
+
+### 003-api-ledger-range-series.md ✅ GENERATED
+
+**Title**: API ledger range series
+**Unit**: `001-ops-calc-api`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/001-ops-calc-api/stories/003-api-ledger-range-series.md`
+
+### 004-api-dashboard-aggregates.md ✅ GENERATED
+
+**Title**: API dashboard aggregates
+**Unit**: `001-ops-calc-api`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/001-ops-calc-api/stories/004-api-dashboard-aggregates.md`
+
+### 001-web-crop-expense-harvest-actions.md ✅ GENERATED
+
+**Title**: Web crop expense harvest actions
+**Unit**: `002-ops-calc-web`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/002-ops-calc-web/stories/001-web-crop-expense-harvest-actions.md`
+
+### 002-web-fertilizer-stock-table.md ✅ GENERATED
+
+**Title**: Web fertilizer stock table
+**Unit**: `002-ops-calc-web`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/002-ops-calc-web/stories/002-web-fertilizer-stock-table.md`
+
+### 003-web-ledger-range-graph.md ✅ GENERATED
+
+**Title**: Web ledger range graph
+**Unit**: `002-ops-calc-web`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/002-ops-calc-web/stories/003-web-ledger-range-graph.md`
+
+### 004-web-dashboard-and-landing.md ✅ GENERATED
+
+**Title**: Web dashboard and landing
+**Unit**: `002-ops-calc-web`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/002-ops-calc-web/stories/004-web-dashboard-and-landing.md`
+
+### 001-mobile-crop-expense-harvest-actions.md ✅ GENERATED
+
+**Title**: Mobile crop expense harvest actions
+**Unit**: `003-ops-calc-mobile`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/003-ops-calc-mobile/stories/001-mobile-crop-expense-harvest-actions.md`
+
+### 002-mobile-fertilizer-stock-table.md ✅ GENERATED
+
+**Title**: Mobile fertilizer stock table
+**Unit**: `003-ops-calc-mobile`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/003-ops-calc-mobile/stories/002-mobile-fertilizer-stock-table.md`
+
+### 003-mobile-ledger-range-graph.md ✅ GENERATED
+
+**Title**: Mobile ledger range graph
+**Unit**: `003-ops-calc-mobile`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/003-ops-calc-mobile/stories/003-mobile-ledger-range-graph.md`
+
+### 004-mobile-dashboard-and-landing.md ✅ GENERATED
+
+**Title**: Mobile dashboard and landing
+**Unit**: `003-ops-calc-mobile`
+**Priority**: must
+**Path**: `memory-bank/intents/005-resolve-operations-and-calculations-issue/units/003-ops-calc-mobile/stories/004-mobile-dashboard-and-landing.md`
+
 ---
 
 ## Stories by Status
 
 - **Planned**: 0
-- **Generated**: 50
+- **Generated**: 62
 - **In Progress**: 0
 - **Completed**: 0
 
@@ -405,3 +491,6 @@
 - `026-design-web` (simple-construction-bolt): 004-web-table-totals-and-actions, 005-web-cow-detail-chrome, 006-web-forms-a11y-docs
 - `027-design-mobile` (simple-construction-bolt): 001-mobile-nav-chrome, 002-mobile-tokens-and-states
 - `028-design-mobile` (simple-construction-bolt): 003-mobile-detail-history-pagination, 004-mobile-totals-actions-cow-layout, 005-mobile-forms-a11y
+- `032-ops-calc-api` (ddd-construction-bolt): 001-api-crop-expense-harvest-update-delete, 002-api-fertilizer-stock-list, 003-api-ledger-range-series, 004-api-dashboard-aggregates
+- `033-ops-calc-web` (simple-construction-bolt): 001-web-crop-expense-harvest-actions, 002-web-fertilizer-stock-table, 003-web-ledger-range-graph, 004-web-dashboard-and-landing
+- `034-ops-calc-mobile` (simple-construction-bolt): 001-mobile-crop-expense-harvest-actions, 002-mobile-fertilizer-stock-table, 003-mobile-ledger-range-graph, 004-mobile-dashboard-and-landing
