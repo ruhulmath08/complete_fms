@@ -153,4 +153,50 @@ class CropsRepositoryImpl implements CropsRepository {
     });
     return mapHarvest(json);
   }
+
+  @override
+  Future<CropExpense> updateExpense({
+    required String cycleId,
+    required String expenseId,
+    required String spentAt,
+    required ExpenseCategory category,
+    required String amount,
+    String? note,
+  }) async {
+    final json = await _api.updateExpense(cycleId, expenseId, {
+      'spent_at': spentAt,
+      'category': expenseCategoryToApi(category),
+      'amount': amount,
+      'note': note,
+    });
+    return mapCropExpense(json);
+  }
+
+  @override
+  Future<void> deleteExpense(String cycleId, String expenseId) =>
+      _api.deleteExpense(cycleId, expenseId);
+
+  @override
+  Future<Harvest> updateHarvest({
+    required String cycleId,
+    required String harvestId,
+    required String harvestedAt,
+    required String quantity,
+    required String unit,
+    String? saleAmount,
+    String? note,
+  }) async {
+    final json = await _api.updateHarvest(cycleId, harvestId, {
+      'harvested_at': harvestedAt,
+      'quantity': quantity,
+      'unit': unit,
+      'sale_amount': saleAmount,
+      'note': note,
+    });
+    return mapHarvest(json);
+  }
+
+  @override
+  Future<void> deleteHarvest(String cycleId, String harvestId) =>
+      _api.deleteHarvest(cycleId, harvestId);
 }

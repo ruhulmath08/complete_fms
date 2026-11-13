@@ -32,14 +32,14 @@ void main() {
 
   Future<void> pumpShell(WidgetTester tester) async {
     final router = GoRouter(
-      initialLocation: AppRoutes.home,
+      initialLocation: AppRoutes.dashboard,
       routes: [
         ShellRoute(
           builder: (context, state, child) => AppShell(child: child),
           routes: [
             GoRoute(
-              path: AppRoutes.home,
-              builder: (context, state) => const Text('Home body'),
+              path: AppRoutes.dashboard,
+              builder: (context, state) => const Text('Dashboard body'),
             ),
             GoRoute(
               path: AppRoutes.cows,
@@ -75,6 +75,7 @@ void main() {
     await tester.tap(find.byTooltip('Open navigation menu'));
     await tester.pumpAndSettle();
 
+    expect(find.text('Dashboard'), findsOneWidget);
     expect(find.text('Cows'), findsWidgets);
     expect(find.text('Poultry'), findsOneWidget);
     expect(find.text('Crops'), findsOneWidget);

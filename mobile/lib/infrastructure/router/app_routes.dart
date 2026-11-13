@@ -1,7 +1,7 @@
 abstract final class AppRoutes {
   static const signIn = '/signin';
   static const signUp = '/signup';
-  static const home = '/home';
+  static const dashboard = '/dashboard';
   static const cows = '/cows';
   static const cowsNew = '/cows/new';
   static const poultry = '/poultry';

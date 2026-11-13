@@ -59,4 +59,27 @@ abstract class CropsRepository {
     String? saleAmount,
     String? note,
   });
+
+  Future<CropExpense> updateExpense({
+    required String cycleId,
+    required String expenseId,
+    required String spentAt,
+    required ExpenseCategory category,
+    required String amount,
+    String? note,
+  });
+
+  Future<void> deleteExpense(String cycleId, String expenseId);
+
+  Future<Harvest> updateHarvest({
+    required String cycleId,
+    required String harvestId,
+    required String harvestedAt,
+    required String quantity,
+    required String unit,
+    String? saleAmount,
+    String? note,
+  });
+
+  Future<void> deleteHarvest(String cycleId, String harvestId);
 }

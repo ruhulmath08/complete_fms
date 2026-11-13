@@ -95,4 +95,20 @@ class LedgerApi {
       _client.throwDio(e);
     }
   }
+
+  Future<Map<String, dynamic>> getSeries({
+    required String from,
+    required String to,
+    required String grain,
+  }) async {
+    try {
+      final response = await _dio.get<Map<String, dynamic>>(
+        '/api/v1/ledger-entries/series',
+        queryParameters: {'from': from, 'to': to, 'grain': grain},
+      );
+      return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
 }

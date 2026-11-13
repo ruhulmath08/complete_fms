@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/presentation/auth/pages/farm_settings_page.dart';
-import 'package:mobile/presentation/auth/pages/home_page.dart';
 import 'package:mobile/presentation/auth/pages/profile_page.dart';
 import 'package:mobile/presentation/auth/pages/sign_in_page.dart';
 import 'package:mobile/presentation/auth/pages/sign_up_page.dart';
@@ -17,6 +16,7 @@ import 'package:mobile/presentation/crops/pages/crop_cycles_list_page.dart';
 import 'package:mobile/presentation/crops/pages/crop_name_create_page.dart';
 import 'package:mobile/presentation/crops/pages/crop_name_detail_page.dart';
 import 'package:mobile/presentation/crops/pages/crop_names_list_page.dart';
+import 'package:mobile/presentation/dashboard/pages/dashboard_page.dart';
 import 'package:mobile/presentation/inventory/pages/inventory_create_page.dart';
 import 'package:mobile/presentation/inventory/pages/inventory_detail_page.dart';
 import 'package:mobile/presentation/inventory/pages/inventory_list_page.dart';
@@ -31,14 +31,14 @@ import 'package:mobile/presentation/shell/app_shell.dart';
 
 GoRouter createRouter(SessionCubit sessionCubit) {
   return GoRouter(
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.dashboard,
     refreshListenable: GoRouterRefreshStream(sessionCubit.stream),
     redirect: (context, state) {
       final signedIn = sessionCubit.state;
       final loc = state.matchedLocation;
       final onAuth = loc == AppRoutes.signIn || loc == AppRoutes.signUp;
       if (!signedIn && !onAuth) return AppRoutes.signIn;
-      if (signedIn && onAuth) return AppRoutes.home;
+      if (signedIn && onAuth) return AppRoutes.dashboard;
       return null;
     },
     routes: [
@@ -54,8 +54,8 @@ GoRouter createRouter(SessionCubit sessionCubit) {
         builder: (context, state, child) => AppShell(child: child),
         routes: [
           GoRoute(
-            path: AppRoutes.home,
-            builder: (context, state) => const HomePage(),
+            path: AppRoutes.dashboard,
+            builder: (context, state) => const DashboardPage(),
           ),
           GoRoute(
             path: AppRoutes.cows,

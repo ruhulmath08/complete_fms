@@ -59,3 +59,17 @@ class AddStockUpdate {
         reason: reason,
       );
 }
+
+class ListFertilizerStockUpdates {
+  ListFertilizerStockUpdates(this._repository);
+  final InventoryRepository _repository;
+  Future<PagedResult<StockUpdateListItem>> call({
+    int limit = 10,
+    int offset = 0,
+  }) =>
+      _repository.listStockUpdatesByCategory(
+        category: InventoryCategory.fertilizer,
+        limit: limit,
+        offset: offset,
+      );
+}

@@ -128,3 +128,61 @@ class AddHarvest {
         note: note,
       );
 }
+
+class UpdateCropExpense {
+  UpdateCropExpense(this._repository);
+  final CropsRepository _repository;
+  Future<CropExpense> call({
+    required String cycleId,
+    required String expenseId,
+    required String spentAt,
+    required ExpenseCategory category,
+    required String amount,
+    String? note,
+  }) =>
+      _repository.updateExpense(
+        cycleId: cycleId,
+        expenseId: expenseId,
+        spentAt: spentAt,
+        category: category,
+        amount: amount,
+        note: note,
+      );
+}
+
+class DeleteCropExpense {
+  DeleteCropExpense(this._repository);
+  final CropsRepository _repository;
+  Future<void> call(String cycleId, String expenseId) =>
+      _repository.deleteExpense(cycleId, expenseId);
+}
+
+class UpdateHarvest {
+  UpdateHarvest(this._repository);
+  final CropsRepository _repository;
+  Future<Harvest> call({
+    required String cycleId,
+    required String harvestId,
+    required String harvestedAt,
+    required String quantity,
+    required String unit,
+    String? saleAmount,
+    String? note,
+  }) =>
+      _repository.updateHarvest(
+        cycleId: cycleId,
+        harvestId: harvestId,
+        harvestedAt: harvestedAt,
+        quantity: quantity,
+        unit: unit,
+        saleAmount: saleAmount,
+        note: note,
+      );
+}
+
+class DeleteHarvest {
+  DeleteHarvest(this._repository);
+  final CropsRepository _repository;
+  Future<void> call(String cycleId, String harvestId) =>
+      _repository.deleteHarvest(cycleId, harvestId);
+}

@@ -3,6 +3,7 @@ import '../../../domain/entities/crop.dart';
 import '../../../domain/failures.dart';
 import '../../../domain/usecases/crops_usecases.dart';
 import '../../../infrastructure/di/injection.dart';
+import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/form_field_column.dart';
 import '../widgets/crop_cycle_form_fields.dart';
@@ -59,6 +60,8 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
   final _expenseAmount = TextEditingController();
   final _expenseNote = TextEditingController();
   ExpenseCategory _expenseCategory = ExpenseCategory.labour;
+  String? _editingExpenseId;
+  String? _editingHarvestId;
 
   final _harvestedAt = TextEditingController(text: _todayDate());
   final _harvestQty = TextEditingController();
@@ -205,48 +208,237 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
     }
   }
 
-  Future<void> _addExpense() async {
+  void _resetExpenseForm() {
+    _editingExpenseId = null;
+    _spentAt.text = _todayDate();
+    _expenseAmount.clear();
+    _expenseNote.clear();
+    _expenseCategory = ExpenseCategory.labour;
+  }
+
+  void _resetHarvestForm() {
+    _editingHarvestId = null;
+    _harvestedAt.text = _todayDate();
+    _harvestQty.clear();
+    _harvestUnit.text = 'kg';
+    _saleAmount.clear();
+    _harvestNote.clear();
+  }
+
+  void _startEditExpense(CropExpense row) {
+    setState(() {
+      _editingExpenseId = row.id;
+      _spentAt.text = row.spentAt;
+      _expenseCategory = row.category;
+      _expenseAmount.text = row.amount;
+      _expenseNote.text = row.note ?? '';
+      _error = null;
+    });
+  }
+
+  void _startEditHarvest(Harvest row) {
+    setState(() {
+      _editingHarvestId = row.id;
+      _harvestedAt.text = row.harvestedAt;
+      _harvestQty.text = row.quantity;
+      _harvestUnit.text = row.unit;
+      _saleAmount.text = row.saleAmount ?? '';
+      _harvestNote.text = row.note ?? '';
+      _error = null;
+    });
+  }
+
+  Future<void> _saveExpense() async {
     setState(() => _error = null);
+    final note = _expenseNote.text.trim();
     try {
-      await getIt<AddCropExpense>()(
-        cycleId: widget.cycleId,
-        spentAt: _spentAt.text.trim(),
-        category: _expenseCategory,
-        amount: _expenseAmount.text.trim(),
-        note: _expenseNote.text.trim().isEmpty
-            ? null
-            : _expenseNote.text.trim(),
-      );
-      _expenseAmount.clear();
-      _expenseNote.clear();
+      if (_editingExpenseId != null) {
+        await getIt<UpdateCropExpense>()(
+          cycleId: widget.cycleId,
+          expenseId: _editingExpenseId!,
+          spentAt: _spentAt.text.trim(),
+          category: _expenseCategory,
+          amount: _expenseAmount.text.trim(),
+          note: note.isEmpty ? null : note,
+        );
+      } else {
+        await getIt<AddCropExpense>()(
+          cycleId: widget.cycleId,
+          spentAt: _spentAt.text.trim(),
+          category: _expenseCategory,
+          amount: _expenseAmount.text.trim(),
+          note: note.isEmpty ? null : note,
+        );
+      }
+      if (!mounted) return;
+      setState(_resetExpenseForm);
       await _load();
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  Future<void> _addHarvest() async {
-    setState(() => _error = null);
+  Future<bool> _confirmDelete(String message) async {
+    final l10n = AppLocalizations.of(context)!;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    return ok == true;
+  }
+
+  Future<void> _deleteExpense(CropExpense row) async {
+    final l10n = AppLocalizations.of(context)!;
+    if (!await _confirmDelete(l10n.deleteExpenseConfirm)) return;
     try {
-      await getIt<AddHarvest>()(
-        cycleId: widget.cycleId,
-        harvestedAt: _harvestedAt.text.trim(),
-        quantity: _harvestQty.text.trim(),
-        unit: _harvestUnit.text.trim(),
-        saleAmount: _saleAmount.text.trim().isEmpty
-            ? null
-            : _saleAmount.text.trim(),
-        note: _harvestNote.text.trim().isEmpty
-            ? null
-            : _harvestNote.text.trim(),
-      );
-      _harvestQty.clear();
-      _saleAmount.clear();
-      _harvestNote.clear();
+      await getIt<DeleteCropExpense>()(widget.cycleId, row.id);
+      if (!mounted) return;
+      if (_editingExpenseId == row.id) setState(_resetExpenseForm);
+      await _load();
+    } on AppFailure catch (e) {
+      if (mounted) setState(() => _error = e.message);
+    }
+  }
+
+  Future<void> _saveHarvest() async {
+    setState(() => _error = null);
+    final sale = _saleAmount.text.trim();
+    final note = _harvestNote.text.trim();
+    try {
+      if (_editingHarvestId != null) {
+        await getIt<UpdateHarvest>()(
+          cycleId: widget.cycleId,
+          harvestId: _editingHarvestId!,
+          harvestedAt: _harvestedAt.text.trim(),
+          quantity: _harvestQty.text.trim(),
+          unit: _harvestUnit.text.trim(),
+          saleAmount: sale.isEmpty ? null : sale,
+          note: note.isEmpty ? null : note,
+        );
+      } else {
+        await getIt<AddHarvest>()(
+          cycleId: widget.cycleId,
+          harvestedAt: _harvestedAt.text.trim(),
+          quantity: _harvestQty.text.trim(),
+          unit: _harvestUnit.text.trim(),
+          saleAmount: sale.isEmpty ? null : sale,
+          note: note.isEmpty ? null : note,
+        );
+      }
+      if (!mounted) return;
+      setState(_resetHarvestForm);
       await _load();
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     }
+  }
+
+  Future<void> _deleteHarvest(Harvest row) async {
+    final l10n = AppLocalizations.of(context)!;
+    if (!await _confirmDelete(l10n.deleteHarvestConfirm)) return;
+    try {
+      await getIt<DeleteHarvest>()(widget.cycleId, row.id);
+      if (!mounted) return;
+      if (_editingHarvestId == row.id) setState(_resetHarvestForm);
+      await _load();
+    } on AppFailure catch (e) {
+      if (mounted) setState(() => _error = e.message);
+    }
+  }
+
+  Widget _actionCell({
+    required AppLocalizations l10n,
+    required VoidCallback onEdit,
+    required VoidCallback onDelete,
+    required Key editKey,
+    required Key deleteKey,
+  }) {
+    final tokens = AppTokens.of(context);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          key: editKey,
+          tooltip: l10n.editEntry,
+          onPressed: onEdit,
+          color: tokens.primary,
+          icon: const Icon(Icons.edit_outlined),
+        ),
+        IconButton(
+          key: deleteKey,
+          tooltip: l10n.delete,
+          onPressed: onDelete,
+          color: tokens.danger,
+          icon: const Icon(Icons.delete_outline),
+        ),
+      ],
+    );
+  }
+
+  DataRow _expenseRow(
+    CropExpense row,
+    int index,
+    bool canWrite,
+    AppLocalizations l10n,
+  ) {
+    return DataRow(
+      cells: [
+        DataCell(Text('$index')),
+        DataCell(Text(row.spentAt)),
+        DataCell(Text(_categoryLabel(l10n, row.category))),
+        DataCell(Text(row.amount)),
+        DataCell(Text(row.note ?? '—')),
+        if (canWrite)
+          DataCell(
+            _actionCell(
+              l10n: l10n,
+              onEdit: () => _startEditExpense(row),
+              onDelete: () => _deleteExpense(row),
+              editKey: ValueKey('expense-edit-${row.id}'),
+              deleteKey: ValueKey('expense-delete-${row.id}'),
+            ),
+          ),
+      ],
+    );
+  }
+
+  DataRow _harvestRow(
+    Harvest row,
+    int index,
+    bool canWrite,
+    AppLocalizations l10n,
+  ) {
+    return DataRow(
+      cells: [
+        DataCell(Text('$index')),
+        DataCell(Text(row.harvestedAt)),
+        DataCell(Text('${row.quantity} ${row.unit}')),
+        DataCell(Text(row.saleAmount ?? '—')),
+        DataCell(Text(row.note ?? '—')),
+        if (canWrite)
+          DataCell(
+            _actionCell(
+              l10n: l10n,
+              onEdit: () => _startEditHarvest(row),
+              onDelete: () => _deleteHarvest(row),
+              editKey: ValueKey('harvest-edit-${row.id}'),
+              deleteKey: ValueKey('harvest-delete-${row.id}'),
+            ),
+          ),
+      ],
+    );
   }
 
   @override
@@ -356,15 +548,26 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
         ],
         const Divider(height: 32),
         Text(l10n.expenses, style: Theme.of(context).textTheme.titleLarge),
-        ..._expenses.map(
-          (row) => ListTile(
-            title: Text(
-              '${_categoryLabel(l10n, row.category)} · ${row.amount}',
+        if (_expenses.isEmpty)
+          Text(l10n.noExpenses)
+        else
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columns: [
+                DataColumn(label: Text(l10n.rowNumber)),
+                DataColumn(label: Text(l10n.dateLabel)),
+                DataColumn(label: Text(l10n.expenseCategory)),
+                DataColumn(label: Text(l10n.amount)),
+                DataColumn(label: Text(l10n.note)),
+                if (canWrite) DataColumn(label: Text(l10n.actions)),
+              ],
+              rows: [
+                for (var i = 0; i < _expenses.length; i++)
+                  _expenseRow(_expenses[i], i + 1, canWrite, l10n),
+              ],
             ),
-            subtitle: Text(row.spentAt),
           ),
-        ),
-        if (_expenses.isEmpty) Text(l10n.noExpenses),
         if (canWrite) ...[
           FormFieldColumn(
             children: [
@@ -400,21 +603,42 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
             ],
           ),
           const SizedBox(height: FormFieldColumn.gap),
-          FilledButton(onPressed: _addExpense, child: Text(l10n.addExpense)),
+          FilledButton(
+            onPressed: _saveExpense,
+            child: Text(
+              _editingExpenseId != null
+                  ? l10n.updateExpenseEntry
+                  : l10n.addExpense,
+            ),
+          ),
+          if (_editingExpenseId != null)
+            TextButton(
+              onPressed: () => setState(_resetExpenseForm),
+              child: Text(l10n.cancelEdit),
+            ),
         ],
         const Divider(height: 32),
         Text(l10n.harvests, style: Theme.of(context).textTheme.titleLarge),
-        ..._harvests.map(
-          (row) => ListTile(
-            title: Text('${row.quantity} ${row.unit}'),
-            subtitle: Text(
-              row.saleAmount == null
-                  ? row.harvestedAt
-                  : '${row.harvestedAt} · ${l10n.saleAmount} ${row.saleAmount}',
+        if (_harvests.isEmpty)
+          Text(l10n.noHarvests)
+        else
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columns: [
+                DataColumn(label: Text(l10n.rowNumber)),
+                DataColumn(label: Text(l10n.dateLabel)),
+                DataColumn(label: Text(l10n.quantity)),
+                DataColumn(label: Text(l10n.saleAmountColumn)),
+                DataColumn(label: Text(l10n.note)),
+                if (canWrite) DataColumn(label: Text(l10n.actions)),
+              ],
+              rows: [
+                for (var i = 0; i < _harvests.length; i++)
+                  _harvestRow(_harvests[i], i + 1, canWrite, l10n),
+              ],
             ),
           ),
-        ),
-        if (_harvests.isEmpty) Text(l10n.noHarvests),
         if (canWrite) ...[
           FormFieldColumn(
             children: [
@@ -443,7 +667,19 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
             ],
           ),
           const SizedBox(height: FormFieldColumn.gap),
-          FilledButton(onPressed: _addHarvest, child: Text(l10n.addHarvest)),
+          FilledButton(
+            onPressed: _saveHarvest,
+            child: Text(
+              _editingHarvestId != null
+                  ? l10n.updateHarvestEntry
+                  : l10n.addHarvest,
+            ),
+          ),
+          if (_editingHarvestId != null)
+            TextButton(
+              onPressed: () => setState(_resetHarvestForm),
+              child: Text(l10n.cancelEdit),
+            ),
         ] else
           Text(l10n.cropCycleArchivedReadOnly),
       ],

@@ -21,4 +21,10 @@ abstract class LedgerRepository {
     required String from,
     required String to,
   });
+
+  Future<LedgerSeries> getSeries({
+    required String from,
+    required String to,
+    required String grain,
+  });
 }

@@ -28,6 +28,11 @@ class AppShell extends StatelessWidget {
 
   List<_DrawerDestination> _destinations(AppLocalizations l10n) => [
     _DrawerDestination(
+      path: AppRoutes.dashboard,
+      label: l10n.dashboardTitle,
+      icon: Icons.dashboard_outlined,
+    ),
+    _DrawerDestination(
       path: AppRoutes.cows,
       label: l10n.cowsTitle,
       icon: Icons.pets_outlined,

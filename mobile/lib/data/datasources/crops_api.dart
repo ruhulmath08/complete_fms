@@ -218,4 +218,56 @@ class CropsApi {
       _client.throwDio(e);
     }
   }
+
+  Future<Map<String, dynamic>> updateExpense(
+    String cycleId,
+    String expenseId,
+    Map<String, dynamic> body,
+  ) async {
+    try {
+      final response = await _dio.patch<Map<String, dynamic>>(
+        '/api/v1/crop-cycles/$cycleId/expenses/$expenseId',
+        data: body,
+      );
+      return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
+  Future<void> deleteExpense(String cycleId, String expenseId) async {
+    try {
+      await _dio.delete<void>(
+        '/api/v1/crop-cycles/$cycleId/expenses/$expenseId',
+      );
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> updateHarvest(
+    String cycleId,
+    String harvestId,
+    Map<String, dynamic> body,
+  ) async {
+    try {
+      final response = await _dio.patch<Map<String, dynamic>>(
+        '/api/v1/crop-cycles/$cycleId/harvests/$harvestId',
+        data: body,
+      );
+      return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
+
+  Future<void> deleteHarvest(String cycleId, String harvestId) async {
+    try {
+      await _dio.delete<void>(
+        '/api/v1/crop-cycles/$cycleId/harvests/$harvestId',
+      );
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
 }

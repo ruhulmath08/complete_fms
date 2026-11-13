@@ -107,4 +107,24 @@ class InventoryApi {
       _client.throwDio(e);
     }
   }
+
+  Future<Map<String, dynamic>> listStockUpdatesByCategory({
+    required String category,
+    int limit = 10,
+    int offset = 0,
+  }) async {
+    try {
+      final response = await _dio.get<Map<String, dynamic>>(
+        '/api/v1/inventory-stock-updates',
+        queryParameters: {
+          'category': category,
+          'limit': limit,
+          'offset': offset,
+        },
+      );
+      return response.data!;
+    } on DioException catch (e) {
+      _client.throwDio(e);
+    }
+  }
 }

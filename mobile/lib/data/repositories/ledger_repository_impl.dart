@@ -69,4 +69,12 @@ class LedgerRepositoryImpl implements LedgerRepository {
     required String to,
   }) async =>
       mapPeriodTotals(await _api.getPeriodTotals(from: from, to: to));
+
+  @override
+  Future<LedgerSeries> getSeries({
+    required String from,
+    required String to,
+    required String grain,
+  }) async =>
+      mapLedgerSeries(await _api.getSeries(from: from, to: to, grain: grain));
 }

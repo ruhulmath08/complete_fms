@@ -28,4 +28,10 @@ abstract class InventoryRepository {
     required String quantityChange,
     String? reason,
   });
+
+  Future<PagedResult<StockUpdateListItem>> listStockUpdatesByCategory({
+    required InventoryCategory category,
+    int limit = 10,
+    int offset = 0,
+  });
 }

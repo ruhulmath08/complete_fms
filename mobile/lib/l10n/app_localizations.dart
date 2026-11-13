@@ -1459,6 +1459,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Net'**
   String get net;
+
+  /// No description provided for @dateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get dateLabel;
+
+  /// No description provided for @itemLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get itemLabel;
+
+  /// No description provided for @saleAmountColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale amount'**
+  String get saleAmountColumn;
+
+  /// No description provided for @updateExpenseEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Update expense'**
+  String get updateExpenseEntry;
+
+  /// No description provided for @updateHarvestEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Update harvest'**
+  String get updateHarvestEntry;
+
+  /// No description provided for @deleteExpenseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this expense entry?'**
+  String get deleteExpenseConfirm;
+
+  /// No description provided for @deleteHarvestConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this harvest entry?'**
+  String get deleteHarvestConfirm;
+
+  /// No description provided for @fertilizerStockHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertilizer stock history'**
+  String get fertilizerStockHistory;
+
+  /// No description provided for @noFertilizerStockUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'No fertilizer stock updates yet.'**
+  String get noFertilizerStockUpdates;
+
+  /// No description provided for @ledgerChartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Income and expenses over time'**
+  String get ledgerChartTitle;
+
+  /// No description provided for @ledgerChartSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Income, expenses and net over the selected date range'**
+  String get ledgerChartSemantics;
+
+  /// No description provided for @ledgerChartEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No ledger activity in this range.'**
+  String get ledgerChartEmpty;
+
+  /// No description provided for @dashboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboardTitle;
+
+  /// No description provided for @dashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Farm production, headcount, costs and income over time'**
+  String get dashboardSubtitle;
+
+  /// No description provided for @dashboardFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get dashboardFrom;
+
+  /// No description provided for @dashboardTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get dashboardTo;
+
+  /// No description provided for @dashboardChartEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No data in this period.'**
+  String get dashboardChartEmpty;
+
+  /// No description provided for @periodDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get periodDay;
+
+  /// No description provided for @periodWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get periodWeek;
+
+  /// No description provided for @periodMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get periodMonth;
+
+  /// No description provided for @periodYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get periodYear;
+
+  /// No description provided for @chartEggProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg production'**
+  String get chartEggProduction;
+
+  /// No description provided for @chartEggProductionSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg production chart'**
+  String get chartEggProductionSemantics;
+
+  /// No description provided for @chartHenHeadcount.
+  ///
+  /// In en, this message translates to:
+  /// **'Hen headcount'**
+  String get chartHenHeadcount;
+
+  /// No description provided for @chartHenHeadcountSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Hen headcount chart'**
+  String get chartHenHeadcountSemantics;
+
+  /// No description provided for @chartMilk.
+  ///
+  /// In en, this message translates to:
+  /// **'Milk'**
+  String get chartMilk;
+
+  /// No description provided for @chartMilkSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Milk chart'**
+  String get chartMilkSemantics;
+
+  /// No description provided for @chartCowProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cow production'**
+  String get chartCowProduction;
+
+  /// No description provided for @chartCowProductionSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Cow production chart'**
+  String get chartCowProductionSemantics;
+
+  /// No description provided for @chartExpensesCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses cost'**
+  String get chartExpensesCost;
+
+  /// No description provided for @chartExpensesCostSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses cost chart'**
+  String get chartExpensesCostSemantics;
+
+  /// No description provided for @chartIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get chartIncome;
+
+  /// No description provided for @chartIncomeSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Income chart'**
+  String get chartIncomeSemantics;
 }
 
 class _AppLocalizationsDelegate

@@ -47,4 +47,32 @@ void main() {
     expect(json['category'], 'feed_or_supplies');
     expect(json['amount'], '25.00');
   });
+
+  test('maps ledger series points', () {
+    final series = mapLedgerSeries({
+      'from': '2026-11-09',
+      'to': '2026-11-13',
+      'grain': 'day',
+      'points': [
+        {
+          'bucket_start': '2026-11-09',
+          'income': '100.00',
+          'expenses': '40.00',
+          'net': '60.00',
+        },
+        {
+          'bucket_start': '2026-11-10',
+          'income': 0,
+          'expenses': '5',
+          'net': '-5',
+        },
+      ],
+    });
+
+    expect(series.grain, 'day');
+    expect(series.points.length, 2);
+    expect(series.points.first.net, '60.00');
+    expect(series.points.last.income, '0');
+    expect(series.points.last.net, '-5');
+  });
 }

@@ -83,3 +83,20 @@ Map<String, dynamic> ledgerEntryWriteToJson(LedgerEntryWriteParams params) => {
       'unit': params.unit,
       'note': params.note,
     };
+
+LedgerSeries mapLedgerSeries(Map<String, dynamic> json) => LedgerSeries(
+      from: json['from'] as String?,
+      to: json['to'] as String,
+      grain: json['grain'] as String,
+      points: (json['points'] as List<dynamic>? ?? const [])
+          .map((e) => e as Map<String, dynamic>)
+          .map(
+            (p) => LedgerSeriesPoint(
+              bucketStart: p['bucket_start'] as String,
+              income: p['income'].toString(),
+              expenses: p['expenses'].toString(),
+              net: p['net'].toString(),
+            ),
+          )
+          .toList(),
+    );

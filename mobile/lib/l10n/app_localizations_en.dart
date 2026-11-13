@@ -715,4 +715,105 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get net => 'Net';
+
+  @override
+  String get dateLabel => 'Date';
+
+  @override
+  String get itemLabel => 'Item';
+
+  @override
+  String get saleAmountColumn => 'Sale amount';
+
+  @override
+  String get updateExpenseEntry => 'Update expense';
+
+  @override
+  String get updateHarvestEntry => 'Update harvest';
+
+  @override
+  String get deleteExpenseConfirm => 'Delete this expense entry?';
+
+  @override
+  String get deleteHarvestConfirm => 'Delete this harvest entry?';
+
+  @override
+  String get fertilizerStockHistory => 'Fertilizer stock history';
+
+  @override
+  String get noFertilizerStockUpdates => 'No fertilizer stock updates yet.';
+
+  @override
+  String get ledgerChartTitle => 'Income and expenses over time';
+
+  @override
+  String get ledgerChartSemantics =>
+      'Income, expenses and net over the selected date range';
+
+  @override
+  String get ledgerChartEmpty => 'No ledger activity in this range.';
+
+  @override
+  String get dashboardTitle => 'Dashboard';
+
+  @override
+  String get dashboardSubtitle =>
+      'Farm production, headcount, costs and income over time';
+
+  @override
+  String get dashboardFrom => 'From';
+
+  @override
+  String get dashboardTo => 'To';
+
+  @override
+  String get dashboardChartEmpty => 'No data in this period.';
+
+  @override
+  String get periodDay => 'Day';
+
+  @override
+  String get periodWeek => 'Week';
+
+  @override
+  String get periodMonth => 'Month';
+
+  @override
+  String get periodYear => 'Year';
+
+  @override
+  String get chartEggProduction => 'Egg production';
+
+  @override
+  String get chartEggProductionSemantics => 'Egg production chart';
+
+  @override
+  String get chartHenHeadcount => 'Hen headcount';
+
+  @override
+  String get chartHenHeadcountSemantics => 'Hen headcount chart';
+
+  @override
+  String get chartMilk => 'Milk';
+
+  @override
+  String get chartMilkSemantics => 'Milk chart';
+
+  @override
+  String get chartCowProduction => 'Cow production';
+
+  @override
+  String get chartCowProductionSemantics => 'Cow production chart';
+
+  @override
+  String get chartExpensesCost => 'Expenses cost';
+
+  @override
+  String get chartExpensesCostSemantics => 'Expenses cost chart';
+
+  @override
+  String get chartIncome => 'Income';
+
+  @override
+  String get chartIncomeSemantics => 'Income chart';
 }

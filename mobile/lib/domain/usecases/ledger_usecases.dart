@@ -48,3 +48,14 @@ class GetPeriodTotals {
   Future<PeriodTotals> call({required String from, required String to}) =>
       _repository.getPeriodTotals(from: from, to: to);
 }
+
+class GetLedgerSeries {
+  GetLedgerSeries(this._repository);
+  final LedgerRepository _repository;
+  Future<LedgerSeries> call({
+    required String from,
+    required String to,
+    required String grain,
+  }) =>
+      _repository.getSeries(from: from, to: to, grain: grain);
+}

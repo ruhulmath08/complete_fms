@@ -90,3 +90,17 @@ Map<String, dynamic> inventoryItemUpdateToJson(InventoryItemUpdateParams params)
       'price_per_unit': params.pricePerUnit,
       'note': params.note,
     };
+
+StockUpdateListItem mapStockUpdateListItem(Map<String, dynamic> json) =>
+    StockUpdateListItem(
+      id: json['id'] as String,
+      inventoryItemId: json['inventory_item_id'] as String,
+      itemName: json['item_name'] as String,
+      itemUnit: json['item_unit'] as String,
+      itemCategory: mapInventoryCategory(json['item_category'] as String),
+      occurredAt: json['occurred_at'] as String,
+      changeType: mapStockChangeType(json['change_type'] as String),
+      quantityChange: json['quantity_change'].toString(),
+      reason: json['reason'] as String?,
+      createdAt: json['created_at'] as String,
+    );

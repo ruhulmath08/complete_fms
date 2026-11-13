@@ -42,7 +42,7 @@ class _SignInPageState extends State<SignInPage> {
       );
       if (!mounted) return;
       context.read<SessionCubit>().markSignedIn();
-      context.go(AppRoutes.home);
+      context.go(AppRoutes.dashboard);
     } on AppFailure catch (e) {
       setState(() => _error = e.message);
     } catch (_) {

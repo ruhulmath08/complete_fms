@@ -89,4 +89,18 @@ class InventoryRepositoryImpl implements InventoryRepository {
     });
     return mapStockUpdate(json);
   }
+
+  @override
+  Future<PagedResult<StockUpdateListItem>> listStockUpdatesByCategory({
+    required InventoryCategory category,
+    int limit = 10,
+    int offset = 0,
+  }) async {
+    final json = await _api.listStockUpdatesByCategory(
+      category: inventoryCategoryToApi(category),
+      limit: limit,
+      offset: offset,
+    );
+    return _page(json, mapStockUpdateListItem);
+  }
 }

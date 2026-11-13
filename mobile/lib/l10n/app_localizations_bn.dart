@@ -714,4 +714,104 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get net => 'নীট';
+
+  @override
+  String get dateLabel => 'তারিখ';
+
+  @override
+  String get itemLabel => 'আইটেম';
+
+  @override
+  String get saleAmountColumn => 'বিক্রয়ের পরিমাণ';
+
+  @override
+  String get updateExpenseEntry => 'খরচ হালনাগাদ';
+
+  @override
+  String get updateHarvestEntry => 'ফসল সংগ্রহ হালনাগাদ';
+
+  @override
+  String get deleteExpenseConfirm => 'এই খরচের এন্ট্রি মুছবেন?';
+
+  @override
+  String get deleteHarvestConfirm => 'এই ফসল সংগ্রহের এন্ট্রি মুছবেন?';
+
+  @override
+  String get fertilizerStockHistory => 'সারের মজুত ইতিহাস';
+
+  @override
+  String get noFertilizerStockUpdates => 'এখনও সারের মজুত হালনাগাদ নেই।';
+
+  @override
+  String get ledgerChartTitle => 'সময়ের সাথে আয় ও ব্যয়';
+
+  @override
+  String get ledgerChartSemantics => 'নির্বাচিত সময়ে আয়, ব্যয় ও নীট';
+
+  @override
+  String get ledgerChartEmpty => 'এই সময়ে কোনো লেজার কার্যক্রম নেই।';
+
+  @override
+  String get dashboardTitle => 'ড্যাশবোর্ড';
+
+  @override
+  String get dashboardSubtitle =>
+      'সময়ের সাথে খামারের উৎপাদন, সংখ্যা, খরচ ও আয়';
+
+  @override
+  String get dashboardFrom => 'থেকে';
+
+  @override
+  String get dashboardTo => 'পর্যন্ত';
+
+  @override
+  String get dashboardChartEmpty => 'এই সময়ে কোনো তথ্য নেই।';
+
+  @override
+  String get periodDay => 'দিন';
+
+  @override
+  String get periodWeek => 'সপ্তাহ';
+
+  @override
+  String get periodMonth => 'মাস';
+
+  @override
+  String get periodYear => 'বছর';
+
+  @override
+  String get chartEggProduction => 'ডিম উৎপাদন';
+
+  @override
+  String get chartEggProductionSemantics => 'ডিম উৎপাদন চার্ট';
+
+  @override
+  String get chartHenHeadcount => 'মুরগির সংখ্যা';
+
+  @override
+  String get chartHenHeadcountSemantics => 'মুরগির সংখ্যা চার্ট';
+
+  @override
+  String get chartMilk => 'দুধ';
+
+  @override
+  String get chartMilkSemantics => 'দুধ চার্ট';
+
+  @override
+  String get chartCowProduction => 'গরুর উৎপাদন';
+
+  @override
+  String get chartCowProductionSemantics => 'গরুর উৎপাদন চার্ট';
+
+  @override
+  String get chartExpensesCost => 'খরচ';
+
+  @override
+  String get chartExpensesCostSemantics => 'খরচ চার্ট';
+
+  @override
+  String get chartIncome => 'আয়';
+
+  @override
+  String get chartIncomeSemantics => 'আয় চার্ট';
 }

@@ -10,6 +10,7 @@ import '../../../infrastructure/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shared/widgets/async_state_views.dart';
 import '../../shared/widgets/entity_list_card.dart';
+import '../widgets/fertilizer_stock_table.dart';
 import '../widgets/inventory_item_form_fields.dart';
 
 class InventoryListPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
   bool _loading = true;
   String? _error;
   List<InventoryItem> _items = const [];
+  final _stockTableKey = GlobalKey<FertilizerStockTableState>();
 
   @override
   void initState() {
@@ -54,14 +56,21 @@ class _InventoryListPageState extends State<InventoryListPage> {
     }
   }
 
+  Future<void> _refreshAll() async {
+    await Future.wait([
+      _load(),
+      _stockTableKey.currentState?.reload() ?? Future<void>.value(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final tokens = AppTokens.of(context);
-    return Padding(
-      padding: EdgeInsets.all(tokens.space4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return RefreshIndicator(
+      onRefresh: _refreshAll,
+      child: ListView(
+        padding: EdgeInsets.all(tokens.space4),
         children: [
           Row(
             children: [
@@ -74,7 +83,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
               FilledButton(
                 onPressed: () async {
                   await context.push(AppRoutes.inventoryNew);
-                  _load();
+                  _refreshAll();
                 },
                 child: Text(l10n.addInventoryItem),
               ),
@@ -91,34 +100,31 @@ class _InventoryListPageState extends State<InventoryListPage> {
           ),
           if (_error != null) ErrorView(message: _error!),
           if (_loading)
-            const Expanded(child: LoadingView())
+            const Padding(
+              padding: EdgeInsets.all(24),
+              child: LoadingView(),
+            )
           else if (_items.isEmpty)
-            Expanded(child: Center(child: Text(l10n.noInventoryItems)))
+            Padding(
+              padding: EdgeInsets.all(tokens.space4),
+              child: Center(child: Text(l10n.noInventoryItems)),
+            )
           else
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: _load,
-                child: ListView.separated(
-                  itemCount: _items.length,
-                  separatorBuilder: (context, index) =>
-                      SizedBox(height: tokens.space2),
-                  itemBuilder: (context, index) {
-                    final item = _items[index];
-                    return EntityListCard(
-                      title: item.name,
-                      subtitle:
-                          '${inventoryCategoryLabel(l10n, item.category)} · '
-                          '${item.quantity} ${item.unit}'
-                          '${item.isArchived ? ' · ${l10n.archived}' : ''}',
-                      onTap: () async {
-                        await context.push(AppRoutes.inventoryItem(item.id));
-                        _load();
-                      },
-                    );
-                  },
-                ),
+            for (final item in _items) ...[
+              EntityListCard(
+                title: item.name,
+                subtitle: '${inventoryCategoryLabel(l10n, item.category)} · '
+                    '${item.quantity} ${item.unit}'
+                    '${item.isArchived ? ' · ${l10n.archived}' : ''}',
+                onTap: () async {
+                  await context.push(AppRoutes.inventoryItem(item.id));
+                  _refreshAll();
+                },
               ),
-            ),
+              SizedBox(height: tokens.space2),
+            ],
+          const Divider(height: 32),
+          FertilizerStockTable(key: _stockTableKey),
         ],
       ),
     );
