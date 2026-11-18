@@ -1,4 +1,13 @@
-import 'package:mobile/domain/entities/ledger.dart';
+import 'package:mobile/data/models/ledger/ledger_entry_model.dart';
+import 'package:mobile/data/models/ledger/ledger_series_model.dart';
+import 'package:mobile/data/models/ledger/period_totals_model.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_point.dart';
+import 'package:mobile/domain/entities/ledger/period_totals.dart';
 
 LedgerEntryType mapLedgerEntryType(String value) {
   switch (value) {
@@ -53,26 +62,32 @@ String ledgerEntryCategoryToApi(LedgerEntryCategory value) => switch (value) {
       LedgerEntryCategory.other => 'other',
     };
 
-LedgerEntry mapLedgerEntry(Map<String, dynamic> json) => LedgerEntry(
-      id: json['id'] as String,
-      entryType: mapLedgerEntryType(json['entry_type'] as String),
-      occurredAt: json['occurred_at'] as String,
-      category: mapLedgerEntryCategory(json['category'] as String),
-      amount: json['amount'].toString(),
-      unit: json['unit'] as String?,
-      totalPrice: json['total_price'].toString(),
-      note: json['note'] as String?,
-      isArchived: json['is_archived'] as bool? ?? false,
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
+LedgerEntry mapLedgerEntry(Map<String, dynamic> json) =>
+    mapLedgerEntryModel(LedgerEntryModel.fromJson(json));
+
+LedgerEntry mapLedgerEntryModel(LedgerEntryModel model) => LedgerEntry(
+      id: model.id,
+      entryType: mapLedgerEntryType(model.entryType),
+      occurredAt: model.occurredAt,
+      category: mapLedgerEntryCategory(model.category),
+      amount: model.amount,
+      unit: model.unit,
+      totalPrice: model.totalPrice,
+      note: model.note,
+      isArchived: model.isArchived,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
     );
 
-PeriodTotals mapPeriodTotals(Map<String, dynamic> json) => PeriodTotals(
-      from: json['from'] as String,
-      to: json['to'] as String,
-      totalIncome: json['total_income'].toString(),
-      totalExpenses: json['total_expenses'].toString(),
-      net: json['net'].toString(),
+PeriodTotals mapPeriodTotals(Map<String, dynamic> json) =>
+    mapPeriodTotalsModel(PeriodTotalsModel.fromJson(json));
+
+PeriodTotals mapPeriodTotalsModel(PeriodTotalsModel model) => PeriodTotals(
+      from: model.from,
+      to: model.to,
+      totalIncome: model.totalIncome,
+      totalExpenses: model.totalExpenses,
+      net: model.net,
     );
 
 Map<String, dynamic> ledgerEntryWriteToJson(LedgerEntryWriteParams params) => {
@@ -84,18 +99,20 @@ Map<String, dynamic> ledgerEntryWriteToJson(LedgerEntryWriteParams params) => {
       'note': params.note,
     };
 
-LedgerSeries mapLedgerSeries(Map<String, dynamic> json) => LedgerSeries(
-      from: json['from'] as String?,
-      to: json['to'] as String,
-      grain: json['grain'] as String,
-      points: (json['points'] as List<dynamic>? ?? const [])
-          .map((e) => e as Map<String, dynamic>)
+LedgerSeries mapLedgerSeries(Map<String, dynamic> json) =>
+    mapLedgerSeriesModel(LedgerSeriesModel.fromJson(json));
+
+LedgerSeries mapLedgerSeriesModel(LedgerSeriesModel model) => LedgerSeries(
+      from: model.from,
+      to: model.to,
+      grain: model.grain,
+      points: model.points
           .map(
             (p) => LedgerSeriesPoint(
-              bucketStart: p['bucket_start'] as String,
-              income: p['income'].toString(),
-              expenses: p['expenses'].toString(),
-              net: p['net'].toString(),
+              bucketStart: p.bucketStart,
+              income: p.income,
+              expenses: p.expenses,
+              net: p.net,
             ),
           )
           .toList(),
