@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data/mappers/poultry_mappers.dart';
-import 'package:mobile/domain/entities/poultry.dart';
+import 'package:mobile/data/mappers/poultry/poultry_mappers.dart';
+import 'package:mobile/domain/entities/common/acquisition_source.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_write_params.dart';
+import 'package:mobile/domain/entities/poultry/poultry_type.dart';
 
 void main() {
   test('maps poultry group JSON including acquired_by snake_case', () {
