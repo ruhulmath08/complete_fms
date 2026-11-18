@@ -1,4 +1,8 @@
-import 'package:mobile/domain/entities/ledger.dart';
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series.dart';
+import 'package:mobile/domain/entities/ledger/period_totals.dart';
 
 abstract class LedgerRepository {
   Future<PagedResult<LedgerEntry>> listEntries({
