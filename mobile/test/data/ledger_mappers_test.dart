@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data/mappers/ledger_mappers.dart';
-import 'package:mobile/domain/entities/ledger.dart';
+import 'package:mobile/data/mappers/ledger/ledger_mappers.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
 
 void main() {
   test('maps ledger entry including total_price equals amount', () {
