@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data/mappers/cows_mappers.dart';
-import 'package:mobile/domain/entities/cow.dart';
+import 'package:mobile/data/mappers/cow/cows_mappers.dart';
+import 'package:mobile/domain/entities/common/acquisition_source.dart';
+import 'package:mobile/domain/entities/cow/cow_gender.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params.dart';
 
 void main() {
   test('maps cow JSON including acquired_by and image_url', () {
