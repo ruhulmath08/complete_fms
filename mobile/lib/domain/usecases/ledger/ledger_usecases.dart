@@ -1,5 +1,9 @@
-import 'package:mobile/domain/entities/ledger.dart';
-import 'package:mobile/domain/repositories/ledger_repository.dart';
+import 'package:mobile/domain/repositories/ledger/ledger_repository.dart';
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series.dart';
+import 'package:mobile/domain/entities/ledger/period_totals.dart';
 
 class ListLedgerEntries {
   ListLedgerEntries(this._repository);
