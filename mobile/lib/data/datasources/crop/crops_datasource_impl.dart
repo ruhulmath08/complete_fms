@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/api_client.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
+import 'package:mobile/data/datasources/crop/crops_datasource.dart';
 
-class CropsApi {
-  CropsApi(this._client);
+class CropsDatasourceImpl implements CropsDatasource {
+  CropsDatasourceImpl(this._client);
 
   final ApiClient _client;
 
   Dio get _dio => _client.dio;
 
+  @override
   Future<Map<String, dynamic>> listNames({
     int limit = 100,
     int offset = 0,
@@ -28,6 +30,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getName(String cropNameId) async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
@@ -39,6 +42,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> createName(Map<String, dynamic> body) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -51,6 +55,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateName(
     String cropNameId,
     Map<String, dynamic> body,
@@ -66,6 +71,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> archiveName(String cropNameId) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -77,6 +83,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listCycles({
     int limit = 100,
     int offset = 0,
@@ -97,6 +104,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getCycle(String cycleId) async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
@@ -108,6 +116,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> createCycle(Map<String, dynamic> body) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -120,6 +129,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateCycle(
     String cycleId,
     Map<String, dynamic> body,
@@ -135,6 +145,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> archiveCycle(String cycleId) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -146,6 +157,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getCycleSummary(String cycleId) async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
@@ -157,6 +169,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listExpenses(
     String cycleId, {
     int limit = 50,
@@ -173,6 +186,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> addExpense(
     String cycleId,
     Map<String, dynamic> body,
@@ -188,6 +202,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listHarvests(
     String cycleId, {
     int limit = 50,
@@ -204,6 +219,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> addHarvest(
     String cycleId,
     Map<String, dynamic> body,
@@ -219,6 +235,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateExpense(
     String cycleId,
     String expenseId,
@@ -235,6 +252,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<void> deleteExpense(String cycleId, String expenseId) async {
     try {
       await _dio.delete<void>(
@@ -245,6 +263,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateHarvest(
     String cycleId,
     String harvestId,
@@ -261,6 +280,7 @@ class CropsApi {
     }
   }
 
+  @override
   Future<void> deleteHarvest(String cycleId, String harvestId) async {
     try {
       await _dio.delete<void>(
