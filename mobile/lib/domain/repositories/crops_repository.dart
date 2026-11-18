@@ -1,4 +1,4 @@
-import '../entities/crop.dart';
+import 'package:mobile/domain/entities/crop.dart';
 
 abstract class CropsRepository {
   Future<PagedResult<CropName>> listNames({

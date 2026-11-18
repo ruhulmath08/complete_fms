@@ -1,5 +1,5 @@
-import '../entities/poultry.dart';
-import '../repositories/poultry_repository.dart';
+import 'package:mobile/domain/entities/poultry.dart';
+import 'package:mobile/domain/repositories/poultry_repository.dart';
 
 class ListPoultryGroups {
   ListPoultryGroups(this._repository);

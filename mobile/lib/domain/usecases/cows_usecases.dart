@@ -1,5 +1,5 @@
-import '../entities/cow.dart';
-import '../repositories/cows_repository.dart';
+import 'package:mobile/domain/entities/cow.dart';
+import 'package:mobile/domain/repositories/cows_repository.dart';
 
 class ListCows {
   ListCows(this._repository);

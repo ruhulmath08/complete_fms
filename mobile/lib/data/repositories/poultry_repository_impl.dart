@@ -1,7 +1,7 @@
-import '../../domain/entities/poultry.dart';
-import '../../domain/repositories/poultry_repository.dart';
-import '../datasources/poultry_api.dart';
-import '../mappers/poultry_mappers.dart';
+import 'package:mobile/domain/entities/poultry.dart';
+import 'package:mobile/domain/repositories/poultry_repository.dart';
+import 'package:mobile/data/datasources/poultry_api.dart';
+import 'package:mobile/data/mappers/poultry_mappers.dart';
 
 class PoultryRepositoryImpl implements PoultryRepository {
   PoultryRepositoryImpl(this._api);

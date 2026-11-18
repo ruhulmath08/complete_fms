@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'api_client.dart';
+import 'package:mobile/data/datasources/api_client.dart';
 
 class CowsApi {
   CowsApi(this._client);

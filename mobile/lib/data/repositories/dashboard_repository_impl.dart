@@ -1,7 +1,7 @@
-import '../../domain/entities/dashboard.dart';
-import '../../domain/repositories/dashboard_repository.dart';
-import '../datasources/dashboard_api.dart';
-import '../mappers/dashboard_mappers.dart';
+import 'package:mobile/domain/entities/dashboard.dart';
+import 'package:mobile/domain/repositories/dashboard_repository.dart';
+import 'package:mobile/data/datasources/dashboard_api.dart';
+import 'package:mobile/data/mappers/dashboard_mappers.dart';
 
 class DashboardRepositoryImpl implements DashboardRepository {
   DashboardRepositoryImpl(this._api);

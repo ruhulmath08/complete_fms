@@ -1,4 +1,4 @@
-import '../../domain/entities/cow.dart';
+import 'package:mobile/domain/entities/cow.dart';
 
 CowPurpose mapPurpose(String value) => CowPurpose.values.firstWhere(
       (e) => e.name == value,

@@ -1,4 +1,4 @@
-import '../entities/ledger.dart';
+import 'package:mobile/domain/entities/ledger.dart';
 
 abstract class LedgerRepository {
   Future<PagedResult<LedgerEntry>> listEntries({

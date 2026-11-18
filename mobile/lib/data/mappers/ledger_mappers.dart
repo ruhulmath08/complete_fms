@@ -1,4 +1,4 @@
-import '../../domain/entities/ledger.dart';
+import 'package:mobile/domain/entities/ledger.dart';
 
 LedgerEntryType mapLedgerEntryType(String value) {
   switch (value) {

@@ -1,5 +1,5 @@
-import '../entities/dashboard.dart';
-import '../repositories/dashboard_repository.dart';
+import 'package:mobile/domain/entities/dashboard.dart';
+import 'package:mobile/domain/repositories/dashboard_repository.dart';
 
 class GetDashboardAggregates {
   GetDashboardAggregates(this._repository);

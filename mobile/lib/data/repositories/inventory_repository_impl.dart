@@ -1,7 +1,7 @@
-import '../../domain/entities/inventory.dart';
-import '../../domain/repositories/inventory_repository.dart';
-import '../datasources/inventory_api.dart';
-import '../mappers/inventory_mappers.dart';
+import 'package:mobile/domain/entities/inventory.dart';
+import 'package:mobile/domain/repositories/inventory_repository.dart';
+import 'package:mobile/data/datasources/inventory_api.dart';
+import 'package:mobile/data/mappers/inventory_mappers.dart';
 
 class InventoryRepositoryImpl implements InventoryRepository {
   InventoryRepositoryImpl(this._api);

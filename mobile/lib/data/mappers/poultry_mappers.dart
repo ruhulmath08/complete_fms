@@ -1,4 +1,4 @@
-import '../../domain/entities/poultry.dart';
+import 'package:mobile/domain/entities/poultry.dart';
 
 PoultryType mapPoultryType(String value) => PoultryType.values.firstWhere(
       (e) => e.name == value,

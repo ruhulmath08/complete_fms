@@ -1,5 +1,5 @@
-import '../entities/ledger.dart';
-import '../repositories/ledger_repository.dart';
+import 'package:mobile/domain/entities/ledger.dart';
+import 'package:mobile/domain/repositories/ledger_repository.dart';
 
 class ListLedgerEntries {
   ListLedgerEntries(this._repository);

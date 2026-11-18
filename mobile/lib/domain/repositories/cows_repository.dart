@@ -1,4 +1,4 @@
-import '../entities/cow.dart';
+import 'package:mobile/domain/entities/cow.dart';
 
 abstract class CowsRepository {
   Future<PagedResult<Cow>> listCows({

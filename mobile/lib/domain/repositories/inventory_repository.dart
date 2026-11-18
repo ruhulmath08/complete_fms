@@ -1,4 +1,4 @@
-import '../entities/inventory.dart';
+import 'package:mobile/domain/entities/inventory.dart';
 
 abstract class InventoryRepository {
   Future<PagedResult<InventoryItem>> listItems({

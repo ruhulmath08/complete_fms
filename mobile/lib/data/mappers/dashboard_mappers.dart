@@ -1,4 +1,4 @@
-import '../../domain/entities/dashboard.dart';
+import 'package:mobile/domain/entities/dashboard.dart';
 
 DashboardAggregates mapDashboardAggregates(Map<String, dynamic> json) {
   final rawSeries = (json['series'] as Map<String, dynamic>?) ?? const {};

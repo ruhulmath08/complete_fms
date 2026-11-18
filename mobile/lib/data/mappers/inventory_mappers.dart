@@ -1,4 +1,4 @@
-import '../../domain/entities/inventory.dart';
+import 'package:mobile/domain/entities/inventory.dart';
 
 InventoryCategory mapInventoryCategory(String value) {
   switch (value) {

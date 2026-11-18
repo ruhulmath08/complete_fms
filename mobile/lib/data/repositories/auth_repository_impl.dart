@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import '../../domain/entities/auth_tokens.dart';
-import '../../domain/entities/farm_settings.dart';
-import '../../domain/entities/owner_profile.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../datasources/auth_api.dart';
-import '../datasources/token_store.dart';
-import '../mappers/auth_mappers.dart';
+import 'package:mobile/domain/entities/auth_tokens.dart';
+import 'package:mobile/domain/entities/farm_settings.dart';
+import 'package:mobile/domain/entities/owner_profile.dart';
+import 'package:mobile/domain/repositories/auth_repository.dart';
+import 'package:mobile/data/datasources/auth_api.dart';
+import 'package:mobile/data/datasources/token_store.dart';
+import 'package:mobile/data/mappers/auth_mappers.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._api, this._tokenStore);

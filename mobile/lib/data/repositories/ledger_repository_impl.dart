@@ -1,7 +1,7 @@
-import '../../domain/entities/ledger.dart';
-import '../../domain/repositories/ledger_repository.dart';
-import '../datasources/ledger_api.dart';
-import '../mappers/ledger_mappers.dart';
+import 'package:mobile/domain/entities/ledger.dart';
+import 'package:mobile/domain/repositories/ledger_repository.dart';
+import 'package:mobile/data/datasources/ledger_api.dart';
+import 'package:mobile/data/mappers/ledger_mappers.dart';
 
 class LedgerRepositoryImpl implements LedgerRepository {
   LedgerRepositoryImpl(this._api);

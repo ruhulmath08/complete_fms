@@ -1,4 +1,4 @@
-import '../../domain/entities/crop.dart';
+import 'package:mobile/domain/entities/crop.dart';
 
 ExpenseCategory mapExpenseCategory(String value) {
   switch (value) {

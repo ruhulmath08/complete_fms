@@ -1,6 +1,6 @@
-import '../../domain/entities/auth_tokens.dart';
-import '../../domain/entities/farm_settings.dart';
-import '../../domain/entities/owner_profile.dart';
+import 'package:mobile/domain/entities/auth_tokens.dart';
+import 'package:mobile/domain/entities/farm_settings.dart';
+import 'package:mobile/domain/entities/owner_profile.dart';
 
 OwnerProfile mapOwnerProfile(Map<String, dynamic> json) {
   return OwnerProfile(

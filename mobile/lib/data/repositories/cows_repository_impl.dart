@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-import '../../domain/entities/cow.dart';
-import '../../domain/repositories/cows_repository.dart';
-import '../datasources/cows_api.dart';
-import '../mappers/cows_mappers.dart';
+import 'package:mobile/domain/entities/cow.dart';
+import 'package:mobile/domain/repositories/cows_repository.dart';
+import 'package:mobile/data/datasources/cows_api.dart';
+import 'package:mobile/data/mappers/cows_mappers.dart';
 
 class CowsRepositoryImpl implements CowsRepository {
   CowsRepositoryImpl(this._api);

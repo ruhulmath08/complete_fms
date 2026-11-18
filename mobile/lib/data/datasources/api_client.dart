@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import '../../domain/failures.dart';
-import '../../infrastructure/config/api_config.dart';
-import 'token_store.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/infrastructure/config/api_config.dart';
+import 'package:mobile/data/datasources/token_store.dart';
 
 class ApiClient {
   ApiClient(this._tokenStore) {

@@ -1,7 +1,7 @@
-import '../../domain/entities/crop.dart';
-import '../../domain/repositories/crops_repository.dart';
-import '../datasources/crops_api.dart';
-import '../mappers/crops_mappers.dart';
+import 'package:mobile/domain/entities/crop.dart';
+import 'package:mobile/domain/repositories/crops_repository.dart';
+import 'package:mobile/data/datasources/crops_api.dart';
+import 'package:mobile/data/mappers/crops_mappers.dart';
 
 class CropsRepositoryImpl implements CropsRepository {
   CropsRepositoryImpl(this._api);

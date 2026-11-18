@@ -1,5 +1,5 @@
-import '../entities/crop.dart';
-import '../repositories/crops_repository.dart';
+import 'package:mobile/domain/entities/crop.dart';
+import 'package:mobile/domain/repositories/crops_repository.dart';
 
 class ListCropNames {
   ListCropNames(this._repository);

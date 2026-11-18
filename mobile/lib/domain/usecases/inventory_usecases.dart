@@ -1,5 +1,5 @@
-import '../entities/inventory.dart';
-import '../repositories/inventory_repository.dart';
+import 'package:mobile/domain/entities/inventory.dart';
+import 'package:mobile/domain/repositories/inventory_repository.dart';
 
 class ListInventoryItems {
   ListInventoryItems(this._repository);

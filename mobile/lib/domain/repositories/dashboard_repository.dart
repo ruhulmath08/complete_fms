@@ -1,4 +1,4 @@
-import '../entities/dashboard.dart';
+import 'package:mobile/domain/entities/dashboard.dart';
 
 abstract class DashboardRepository {
   Future<DashboardAggregates> getAggregates({

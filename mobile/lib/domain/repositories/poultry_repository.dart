@@ -1,4 +1,4 @@
-import '../entities/poultry.dart';
+import 'package:mobile/domain/entities/poultry.dart';
 
 abstract class PoultryRepository {
   Future<PagedResult<PoultryGroup>> listGroups({
