@@ -2,14 +2,14 @@ import 'dart:typed_data';
 
 import 'package:material_ui/material_ui.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobile/domain/entities/owner_profile.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/repositories/auth_repository.dart';
-import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/domain/repositories/auth/auth_repository.dart';
+import 'package:mobile/domain/usecases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/auth/widgets/profile_image_preview.dart';
+import 'package:mobile/domain/entities/auth/owner_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/domain/usecases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';

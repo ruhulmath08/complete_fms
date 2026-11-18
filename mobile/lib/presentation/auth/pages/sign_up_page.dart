@@ -1,10 +1,10 @@
+import 'package:mobile/domain/entities/auth/sign_up_params.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/repositories/auth_repository.dart';
-import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/domain/usecases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
