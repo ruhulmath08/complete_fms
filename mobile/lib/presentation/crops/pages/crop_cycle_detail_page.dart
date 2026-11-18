@@ -1,12 +1,17 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile/domain/entities/crop.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/crops_usecases.dart';
+import 'package:mobile/domain/usecases/crop/crops_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/crops/widgets/crop_cycle_form_fields.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle.dart';
+import 'package:mobile/domain/entities/crop/crop_expense.dart';
+import 'package:mobile/domain/entities/crop/crop_name.dart';
+import 'package:mobile/domain/entities/crop/cycle_summary.dart';
+import 'package:mobile/domain/entities/crop/expense_category.dart';
+import 'package:mobile/domain/entities/crop/harvest.dart';
 
 String _todayDate() {
   final now = DateTime.now();

@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile/domain/entities/crop.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
+import 'package:mobile/domain/entities/crop/crop_name_write_params.dart';
 
 class CropNameFormFields extends StatelessWidget {
   const CropNameFormFields({
