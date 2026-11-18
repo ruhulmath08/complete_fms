@@ -1,9 +1,11 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/domain/entities/cow.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/cows/widgets/cow_form_fields.dart';
+import 'package:mobile/domain/entities/common/acquisition_source.dart';
+import 'package:mobile/domain/entities/cow/cow_gender.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose.dart';
 
 void main() {
   testWidgets('create form shows Weight (kg), auto-tag hint, no tag field', (

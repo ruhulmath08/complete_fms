@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/domain/usecases/auth/auth_usecases.dart';
 import 'package:mobile/presentation/session/session_cubit.dart';
 
 class _MockIsSignedIn extends Mock implements IsSignedIn {}

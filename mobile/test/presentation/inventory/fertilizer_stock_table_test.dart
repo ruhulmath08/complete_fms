@@ -1,11 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/domain/entities/inventory.dart';
-import 'package:mobile/domain/usecases/inventory_usecases.dart';
+import 'package:mobile/domain/usecases/inventory/inventory_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/presentation/inventory/widgets/fertilizer_stock_table.dart';
 import 'package:mocktail/mocktail.dart';
-
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_list_item.dart';
 import '../../support/pump_app.dart';
 
 class _MockListFertilizer extends Mock implements ListFertilizerStockUpdates {}
