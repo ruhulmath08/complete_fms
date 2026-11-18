@@ -1,7 +1,8 @@
-import 'package:mobile/domain/entities/auth_tokens.dart';
-import 'package:mobile/domain/entities/farm_settings.dart';
-import 'package:mobile/domain/entities/owner_profile.dart';
-import 'package:mobile/domain/repositories/auth_repository.dart';
+import 'package:mobile/domain/entities/auth/sign_up_params.dart';
+import 'package:mobile/domain/repositories/auth/auth_repository.dart';
+import 'package:mobile/domain/entities/auth/auth_tokens.dart';
+import 'package:mobile/domain/entities/auth/farm_settings.dart';
+import 'package:mobile/domain/entities/auth/owner_profile.dart';
 
 class SignUp {
   SignUp(this._repository);
