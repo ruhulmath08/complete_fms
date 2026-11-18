@@ -1,67 +1,75 @@
 import 'package:get_it/get_it.dart';
-import 'package:mobile/data/datasources/api_client.dart';
-import 'package:mobile/data/datasources/auth_api.dart';
-import 'package:mobile/data/datasources/cows_api.dart';
-import 'package:mobile/data/datasources/dashboard_api.dart';
-import 'package:mobile/data/datasources/crops_api.dart';
-import 'package:mobile/data/datasources/inventory_api.dart';
-import 'package:mobile/data/datasources/ledger_api.dart';
-import 'package:mobile/data/datasources/poultry_api.dart';
-import 'package:mobile/data/datasources/token_store.dart';
-import 'package:mobile/data/repositories/auth_repository_impl.dart';
-import 'package:mobile/data/repositories/cows_repository_impl.dart';
-import 'package:mobile/data/repositories/dashboard_repository_impl.dart';
-import 'package:mobile/data/repositories/crops_repository_impl.dart';
-import 'package:mobile/data/repositories/inventory_repository_impl.dart';
-import 'package:mobile/data/repositories/ledger_repository_impl.dart';
-import 'package:mobile/data/repositories/poultry_repository_impl.dart';
-import 'package:mobile/domain/repositories/auth_repository.dart';
-import 'package:mobile/domain/repositories/cows_repository.dart';
-import 'package:mobile/domain/repositories/dashboard_repository.dart';
-import 'package:mobile/domain/repositories/crops_repository.dart';
-import 'package:mobile/domain/repositories/inventory_repository.dart';
-import 'package:mobile/domain/repositories/ledger_repository.dart';
-import 'package:mobile/domain/repositories/poultry_repository.dart';
-import 'package:mobile/domain/usecases/auth_usecases.dart';
-import 'package:mobile/domain/usecases/cows_usecases.dart';
-import 'package:mobile/domain/usecases/dashboard_usecases.dart';
-import 'package:mobile/domain/usecases/crops_usecases.dart';
-import 'package:mobile/domain/usecases/inventory_usecases.dart';
-import 'package:mobile/domain/usecases/ledger_usecases.dart';
-import 'package:mobile/domain/usecases/poultry_usecases.dart';
+import 'package:mobile/data/datasources/auth/auth_local_datasource.dart';
+import 'package:mobile/data/datasources/auth/auth_local_datasource_impl.dart';
+import 'package:mobile/data/datasources/auth/auth_remote_datasource.dart';
+import 'package:mobile/data/datasources/auth/auth_remote_datasource_impl.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
+import 'package:mobile/data/datasources/cow/cows_datasource.dart';
+import 'package:mobile/data/datasources/cow/cows_datasource_impl.dart';
+import 'package:mobile/data/datasources/dashboard/dashboard_datasource.dart';
+import 'package:mobile/data/datasources/dashboard/dashboard_datasource_impl.dart';
+import 'package:mobile/data/datasources/crop/crops_datasource.dart';
+import 'package:mobile/data/datasources/crop/crops_datasource_impl.dart';
+import 'package:mobile/data/datasources/inventory/inventory_datasource.dart';
+import 'package:mobile/data/datasources/inventory/inventory_datasource_impl.dart';
+import 'package:mobile/data/datasources/ledger/ledger_datasource.dart';
+import 'package:mobile/data/datasources/ledger/ledger_datasource_impl.dart';
+import 'package:mobile/data/datasources/poultry/poultry_datasource.dart';
+import 'package:mobile/data/datasources/poultry/poultry_datasource_impl.dart';
+import 'package:mobile/data/repositories/auth/auth_repository_impl.dart';
+import 'package:mobile/data/repositories/cow/cows_repository_impl.dart';
+import 'package:mobile/data/repositories/dashboard/dashboard_repository_impl.dart';
+import 'package:mobile/data/repositories/crop/crops_repository_impl.dart';
+import 'package:mobile/data/repositories/inventory/inventory_repository_impl.dart';
+import 'package:mobile/data/repositories/ledger/ledger_repository_impl.dart';
+import 'package:mobile/data/repositories/poultry/poultry_repository_impl.dart';
+import 'package:mobile/domain/repositories/auth/auth_repository.dart';
+import 'package:mobile/domain/repositories/cow/cows_repository.dart';
+import 'package:mobile/domain/repositories/dashboard/dashboard_repository.dart';
+import 'package:mobile/domain/repositories/crop/crops_repository.dart';
+import 'package:mobile/domain/repositories/inventory/inventory_repository.dart';
+import 'package:mobile/domain/repositories/ledger/ledger_repository.dart';
+import 'package:mobile/domain/repositories/poultry/poultry_repository.dart';
+import 'package:mobile/domain/usecases/auth/auth_usecases.dart';
+import 'package:mobile/domain/usecases/cow/cows_usecases.dart';
+import 'package:mobile/domain/usecases/dashboard/dashboard_usecases.dart';
+import 'package:mobile/domain/usecases/crop/crops_usecases.dart';
+import 'package:mobile/domain/usecases/inventory/inventory_usecases.dart';
+import 'package:mobile/domain/usecases/ledger/ledger_usecases.dart';
+import 'package:mobile/domain/usecases/poultry/poultry_usecases.dart';
 import 'package:mobile/presentation/locale/locale_cubit.dart';
 import 'package:mobile/presentation/session/session_cubit.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> configureDependencies() async {
-  final tokenStore = TokenStore();
-  final apiClient = ApiClient(tokenStore);
-  final authApi = AuthApi(apiClient);
-  final cowsApi = CowsApi(apiClient);
-  final poultryApi = PoultryApi(apiClient);
-  final cropsApi = CropsApi(apiClient);
-  final inventoryApi = InventoryApi(apiClient);
-  final ledgerApi = LedgerApi(apiClient);
-  final dashboardApi = DashboardApi(apiClient);
-  final authRepo = AuthRepositoryImpl(authApi, tokenStore);
-  final cowsRepo = CowsRepositoryImpl(cowsApi);
-  final poultryRepo = PoultryRepositoryImpl(poultryApi);
-  final cropsRepo = CropsRepositoryImpl(cropsApi);
-  final inventoryRepo = InventoryRepositoryImpl(inventoryApi);
-  final ledgerRepo = LedgerRepositoryImpl(ledgerApi);
-  final dashboardRepo = DashboardRepositoryImpl(dashboardApi);
+  final authLocalDatasource = AuthLocalDatasourceImpl();
+  final apiClient = ApiClient(authLocalDatasource);
+  final authRemoteDatasource = AuthRemoteDatasourceImpl(apiClient);
+  final cowsDatasource = CowsDatasourceImpl(apiClient);
+  final poultryDatasource = PoultryDatasourceImpl(apiClient);
+  final cropsDatasource = CropsDatasourceImpl(apiClient);
+  final inventoryDatasource = InventoryDatasourceImpl(apiClient);
+  final ledgerDatasource = LedgerDatasourceImpl(apiClient);
+  final dashboardDatasource = DashboardDatasourceImpl(apiClient);
+  final authRepo = AuthRepositoryImpl(authRemoteDatasource, authLocalDatasource);
+  final cowsRepo = CowsRepositoryImpl(cowsDatasource);
+  final poultryRepo = PoultryRepositoryImpl(poultryDatasource);
+  final cropsRepo = CropsRepositoryImpl(cropsDatasource);
+  final inventoryRepo = InventoryRepositoryImpl(inventoryDatasource);
+  final ledgerRepo = LedgerRepositoryImpl(ledgerDatasource);
+  final dashboardRepo = DashboardRepositoryImpl(dashboardDatasource);
 
   getIt
-    ..registerSingleton<TokenStore>(tokenStore)
+    ..registerSingleton<AuthLocalDatasource>(authLocalDatasource)
     ..registerSingleton<ApiClient>(apiClient)
-    ..registerSingleton<AuthApi>(authApi)
-    ..registerSingleton<CowsApi>(cowsApi)
-    ..registerSingleton<PoultryApi>(poultryApi)
-    ..registerSingleton<CropsApi>(cropsApi)
-    ..registerSingleton<InventoryApi>(inventoryApi)
-    ..registerSingleton<LedgerApi>(ledgerApi)
-    ..registerSingleton<DashboardApi>(dashboardApi)
+    ..registerSingleton<AuthRemoteDatasource>(authRemoteDatasource)
+    ..registerSingleton<CowsDatasource>(cowsDatasource)
+    ..registerSingleton<PoultryDatasource>(poultryDatasource)
+    ..registerSingleton<CropsDatasource>(cropsDatasource)
+    ..registerSingleton<InventoryDatasource>(inventoryDatasource)
+    ..registerSingleton<LedgerDatasource>(ledgerDatasource)
+    ..registerSingleton<DashboardDatasource>(dashboardDatasource)
     ..registerSingleton<AuthRepository>(authRepo)
     ..registerSingleton<CowsRepository>(cowsRepo)
     ..registerSingleton<PoultryRepository>(poultryRepo)
