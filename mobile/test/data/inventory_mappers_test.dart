@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data/mappers/inventory_mappers.dart';
-import 'package:mobile/domain/entities/inventory.dart';
+import 'package:mobile/data/mappers/inventory/inventory_mappers.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_create_params.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_update_params.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
 
 void main() {
   test('maps inventory item including total_price', () {
