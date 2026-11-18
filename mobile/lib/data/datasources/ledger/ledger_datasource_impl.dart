@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/api_client.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
+import 'package:mobile/data/datasources/ledger/ledger_datasource.dart';
 
-class LedgerApi {
-  LedgerApi(this._client);
+class LedgerDatasourceImpl implements LedgerDatasource {
+  LedgerDatasourceImpl(this._client);
 
   final ApiClient _client;
 
   Dio get _dio => _client.dio;
 
+  @override
   Future<Map<String, dynamic>> listEntries({
     int limit = 100,
     int offset = 0,
@@ -32,6 +34,7 @@ class LedgerApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getEntry(String entryId) async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
@@ -43,6 +46,7 @@ class LedgerApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> createEntry(Map<String, dynamic> body) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -55,6 +59,7 @@ class LedgerApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateEntry(
     String entryId,
     Map<String, dynamic> body,
@@ -70,6 +75,7 @@ class LedgerApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> archiveEntry(String entryId) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -81,6 +87,7 @@ class LedgerApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getPeriodTotals({
     required String from,
     required String to,
@@ -96,6 +103,7 @@ class LedgerApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getSeries({
     required String from,
     required String to,
