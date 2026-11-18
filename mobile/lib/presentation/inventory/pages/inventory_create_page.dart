@@ -1,13 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:mobile/domain/entities/inventory.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/inventory_usecases.dart';
+import 'package:mobile/domain/usecases/inventory/inventory_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/inventory/widgets/inventory_item_form_fields.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category.dart';
 
 class InventoryCreatePage extends StatefulWidget {
   const InventoryCreatePage({super.key});

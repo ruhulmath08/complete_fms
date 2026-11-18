@@ -1,11 +1,14 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile/domain/entities/inventory.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/inventory_usecases.dart';
+import 'package:mobile/domain/usecases/inventory/inventory_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/inventory/widgets/inventory_item_form_fields.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
+import 'package:mobile/domain/entities/inventory/stock_update.dart';
 
 String _todayDate() {
   final now = DateTime.now();

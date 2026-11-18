@@ -1,9 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:mobile/domain/entities/inventory.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/inventory_usecases.dart';
+import 'package:mobile/domain/usecases/inventory/inventory_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
@@ -12,6 +11,7 @@ import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
 import 'package:mobile/presentation/inventory/widgets/fertilizer_stock_table.dart';
 import 'package:mobile/presentation/inventory/widgets/inventory_item_form_fields.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item.dart';
 
 class InventoryListPage extends StatefulWidget {
   const InventoryListPage({super.key});

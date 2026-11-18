@@ -1,7 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile/domain/entities/inventory.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_create_params.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_update_params.dart';
 
 String inventoryCategoryLabel(AppLocalizations l10n, InventoryCategory category) {
   return switch (category) {
