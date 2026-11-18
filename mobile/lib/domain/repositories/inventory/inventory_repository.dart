@@ -1,4 +1,11 @@
-import 'package:mobile/domain/entities/inventory.dart';
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_create_params.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_update_params.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
+import 'package:mobile/domain/entities/inventory/stock_update.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_list_item.dart';
 
 abstract class InventoryRepository {
   Future<PagedResult<InventoryItem>> listItems({
