@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/api_client.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
+import 'package:mobile/data/datasources/dashboard/dashboard_datasource.dart';
 
-class DashboardApi {
-  DashboardApi(this._client);
+class DashboardDatasourceImpl implements DashboardDatasource {
+  DashboardDatasourceImpl(this._client);
 
   final ApiClient _client;
 
   Dio get _dio => _client.dio;
 
+  @override
   Future<Map<String, dynamic>> getAggregates({
     required String from,
     required String to,
