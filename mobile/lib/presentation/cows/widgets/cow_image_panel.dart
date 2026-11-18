@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../domain/failures.dart';
-import '../../../domain/usecases/cows_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../infrastructure/theme/app_theme.dart';
-import '../../../l10n/app_localizations.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/usecases/cows_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
+import 'package:mobile/l10n/app_localizations.dart';
 
 /// Local pick preview and/or authenticated remote cow image.
 class CowImagePanel extends StatefulWidget {

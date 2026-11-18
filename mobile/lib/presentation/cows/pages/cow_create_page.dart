@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../domain/entities/cow.dart';
-import '../../../domain/failures.dart';
-import '../../../domain/usecases/cows_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../infrastructure/router/app_routes.dart';
-import '../../../infrastructure/theme/app_theme.dart';
-import '../../../l10n/app_localizations.dart';
-import '../widgets/cow_form_fields.dart';
-import '../widgets/cow_image_panel.dart';
+import 'package:mobile/domain/entities/cow.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/usecases/cows_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/infrastructure/router/app_routes.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/cows/widgets/cow_form_fields.dart';
+import 'package:mobile/presentation/cows/widgets/cow_image_panel.dart';
 
 class CowCreatePage extends StatefulWidget {
   const CowCreatePage({super.key});

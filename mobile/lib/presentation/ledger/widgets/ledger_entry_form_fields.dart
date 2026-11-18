@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import '../../../domain/entities/ledger.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../shared/widgets/form_field_column.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:mobile/domain/entities/ledger.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 
 String ledgerEntryTypeLabel(AppLocalizations l10n, LedgerEntryType type) {
   return switch (type) {

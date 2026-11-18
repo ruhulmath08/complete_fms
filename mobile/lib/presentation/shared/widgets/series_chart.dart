@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../../../infrastructure/theme/app_theme.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
 
 class ChartPoint {
   const ChartPoint(this.x, this.y);

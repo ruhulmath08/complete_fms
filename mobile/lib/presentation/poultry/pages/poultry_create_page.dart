@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../domain/entities/poultry.dart';
-import '../../../domain/failures.dart';
-import '../../../domain/usecases/poultry_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../infrastructure/router/app_routes.dart';
-import '../../../l10n/app_localizations.dart';
-import '../widgets/poultry_group_form_fields.dart';
+import 'package:mobile/domain/entities/poultry.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/usecases/poultry_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/infrastructure/router/app_routes.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/poultry/widgets/poultry_group_form_fields.dart';
 
 class PoultryCreatePage extends StatefulWidget {
   const PoultryCreatePage({super.key});

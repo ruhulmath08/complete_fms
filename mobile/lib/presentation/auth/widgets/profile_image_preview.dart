@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../../../infrastructure/theme/app_theme.dart';
-import '../../../l10n/app_localizations.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
+import 'package:mobile/l10n/app_localizations.dart';
 
 /// Full-image profile preview (contain, not circular crop).
 class ProfileImagePreview extends StatelessWidget {

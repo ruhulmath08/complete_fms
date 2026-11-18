@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../../../infrastructure/theme/app_theme.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
 
 /// Offset-based list pagination (default page size 10 on cow histories).
 class OffsetPaginationControls extends StatelessWidget {

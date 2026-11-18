@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../domain/entities/crop.dart';
-import '../../../domain/failures.dart';
-import '../../../domain/usecases/crops_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../infrastructure/router/app_routes.dart';
-import '../../../infrastructure/theme/app_theme.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../shared/widgets/async_state_views.dart';
-import '../../shared/widgets/entity_list_card.dart';
+import 'package:mobile/domain/entities/crop.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/usecases/crops_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/infrastructure/router/app_routes.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
+import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
 
 class CropCyclesListPage extends StatefulWidget {
   const CropCyclesListPage({super.key});

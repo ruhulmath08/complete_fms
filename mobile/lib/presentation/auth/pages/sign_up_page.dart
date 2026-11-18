@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../domain/failures.dart';
-import '../../../domain/repositories/auth_repository.dart';
-import '../../../domain/usecases/auth_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../infrastructure/router/app_routes.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../shared/widgets/form_field_column.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/repositories/auth_repository.dart';
+import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/infrastructure/router/app_routes.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

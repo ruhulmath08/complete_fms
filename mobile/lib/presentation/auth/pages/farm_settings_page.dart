@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
-import '../../../domain/failures.dart';
-import '../../../domain/usecases/auth_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../l10n/app_localizations.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+
+
 
 class FarmSettingsPage extends StatefulWidget {
   const FarmSettingsPage({super.key});

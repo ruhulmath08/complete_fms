@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import '../../../domain/entities/cow.dart';
-import '../../../domain/failures.dart';
-import '../../../domain/usecases/cows_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../infrastructure/theme/app_theme.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../shared/widgets/form_field_column.dart';
-import '../../shared/widgets/offset_pagination_controls.dart';
-import '../widgets/cow_form_fields.dart';
-import '../widgets/cow_image_panel.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:mobile/domain/entities/cow.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/usecases/cows_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
+import 'package:mobile/presentation/shared/widgets/offset_pagination_controls.dart';
+import 'package:mobile/presentation/cows/widgets/cow_form_fields.dart';
+import 'package:mobile/presentation/cows/widgets/cow_image_panel.dart';
 
 const _pageSize = 10;
 

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../l10n/app_localizations.dart';
-import '../../locale/locale_cubit.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/locale/locale_cubit.dart';
 
 /// English / Bangla chips (moved from the old home page into the dashboard).
 class LanguageSelector extends StatelessWidget {

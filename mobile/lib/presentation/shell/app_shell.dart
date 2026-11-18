@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../infrastructure/router/app_routes.dart';
-import '../../infrastructure/theme/app_theme.dart';
-import '../../l10n/app_localizations.dart';
-import '../session/session_cubit.dart';
+import 'package:mobile/infrastructure/router/app_routes.dart';
+import 'package:mobile/infrastructure/theme/app_theme.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/session/session_cubit.dart';
 
 enum _OverflowAction { profile, logout }
 

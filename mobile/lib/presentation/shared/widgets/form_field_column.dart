@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Vertical stack for form controls with a consistent **8px** gap between fields.
 class FormFieldColumn extends StatelessWidget {

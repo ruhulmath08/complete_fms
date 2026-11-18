@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../domain/failures.dart';
-import '../../../domain/usecases/auth_usecases.dart';
-import '../../../infrastructure/di/injection.dart';
-import '../../../infrastructure/router/app_routes.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../session/session_cubit.dart';
-import '../../shared/widgets/form_field_column.dart';
+import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/usecases/auth_usecases.dart';
+import 'package:mobile/infrastructure/di/injection.dart';
+import 'package:mobile/infrastructure/router/app_routes.dart';
+import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/session/session_cubit.dart';
+import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
