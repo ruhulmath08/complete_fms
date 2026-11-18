@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data/mappers/dashboard_mappers.dart';
-import 'package:mobile/domain/entities/dashboard.dart';
+import 'package:mobile/data/mappers/dashboard/dashboard_mappers.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_key.dart';
 
 void main() {
   test('maps dashboard aggregates with all six series', () {
