@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/api_client.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
+import 'package:mobile/data/datasources/poultry/poultry_datasource.dart';
 
-class PoultryApi {
-  PoultryApi(this._client);
+class PoultryDatasourceImpl implements PoultryDatasource {
+  PoultryDatasourceImpl(this._client);
 
   final ApiClient _client;
 
   Dio get _dio => _client.dio;
 
+  @override
   Future<Map<String, dynamic>> listGroups({
     int limit = 100,
     int offset = 0,
@@ -28,6 +30,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getGroup(String groupId) async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
@@ -39,6 +42,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> createGroup(Map<String, dynamic> body) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -51,6 +55,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateGroup(
     String groupId,
     Map<String, dynamic> body,
@@ -66,6 +71,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> archiveGroup(String groupId) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -77,6 +83,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listEggs(
     String groupId, {
     int limit = 50,
@@ -93,6 +100,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> addEgg(
     String groupId,
     Map<String, dynamic> body,
@@ -108,6 +116,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateEgg(
     String groupId,
     String eggId,
@@ -124,6 +133,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<void> deleteEgg(String groupId, String eggId) async {
     try {
       await _dio.delete<void>(
@@ -134,6 +144,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listFeedings(
     String groupId, {
     int limit = 50,
@@ -150,6 +161,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> addFeeding(
     String groupId,
     Map<String, dynamic> body,
@@ -165,6 +177,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateFeeding(
     String groupId,
     String feedingId,
@@ -181,6 +194,7 @@ class PoultryApi {
     }
   }
 
+  @override
   Future<void> deleteFeeding(String groupId, String feedingId) async {
     try {
       await _dio.delete<void>(
