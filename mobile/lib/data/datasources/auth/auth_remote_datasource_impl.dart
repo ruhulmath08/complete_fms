@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/api_client.dart';
+import 'package:mobile/data/datasources/auth/auth_remote_datasource.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
 
-class AuthApi {
-  AuthApi(this._client);
+class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
+  AuthRemoteDatasourceImpl(this._client);
 
   final ApiClient _client;
 
   Dio get _dio => _client.dio;
 
+  @override
   Future<Map<String, dynamic>> signUp(FormData formData) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -21,6 +23,7 @@ class AuthApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> signIn(String email, String password) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -34,6 +37,7 @@ class AuthApi {
     }
   }
 
+  @override
   Future<void> signOut(String? refreshToken) async {
     try {
       await _dio.post<void>(
@@ -45,6 +49,7 @@ class AuthApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getMe() async {
     try {
       final response = await _dio.get<Map<String, dynamic>>('/api/v1/me');
@@ -54,6 +59,7 @@ class AuthApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> patchMe(FormData formData) async {
     try {
       final response = await _dio.patch<Map<String, dynamic>>(
@@ -66,16 +72,19 @@ class AuthApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getFarmSettings() async {
     try {
-      final response =
-          await _dio.get<Map<String, dynamic>>('/api/v1/farm-settings');
+      final response = await _dio.get<Map<String, dynamic>>(
+        '/api/v1/farm-settings',
+      );
       return response.data!;
     } on DioException catch (e) {
       _client.throwDio(e);
     }
   }
 
+  @override
   Future<Map<String, dynamic>> patchFarmSettings(String currencyCode) async {
     try {
       final response = await _dio.patch<Map<String, dynamic>>(
@@ -88,6 +97,7 @@ class AuthApi {
     }
   }
 
+  @override
   Future<List<int>> getProfileImageBytes() async {
     try {
       final response = await _dio.get<List<int>>(
