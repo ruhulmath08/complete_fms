@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data/mappers/crops_mappers.dart';
-import 'package:mobile/domain/entities/crop.dart';
+import 'package:mobile/data/mappers/crop/crops_mappers.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_write_params.dart';
+import 'package:mobile/domain/entities/crop/expense_category.dart';
 
 void main() {
   test('maps crop name JSON', () {
