@@ -1,20 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/domain/entities/auth_tokens.dart';
-import 'package:mobile/domain/entities/farm_settings.dart';
-import 'package:mobile/domain/entities/owner_profile.dart';
-import 'package:mobile/domain/repositories/auth_repository.dart';
-import 'package:mobile/data/datasources/auth_api.dart';
-import 'package:mobile/data/datasources/token_store.dart';
-import 'package:mobile/data/mappers/auth_mappers.dart';
+import 'package:mobile/data/datasources/auth/auth_local_datasource.dart';
+import 'package:mobile/data/datasources/auth/auth_remote_datasource.dart';
+import 'package:mobile/data/mappers/auth/auth_mappers.dart';
+import 'package:mobile/data/models/auth/auth_tokens_model.dart';
+import 'package:mobile/data/models/auth/farm_settings_model.dart';
+import 'package:mobile/data/models/auth/owner_profile_model.dart';
+import 'package:mobile/domain/entities/auth/auth_tokens.dart';
+import 'package:mobile/domain/entities/auth/farm_settings.dart';
+import 'package:mobile/domain/entities/auth/owner_profile.dart';
+import 'package:mobile/domain/entities/auth/sign_up_params.dart';
+import 'package:mobile/domain/repositories/auth/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  AuthRepositoryImpl(this._api, this._tokenStore);
+  AuthRepositoryImpl(this._remote, this._local);
 
-  final AuthApi _api;
-  final TokenStore _tokenStore;
+  final AuthRemoteDatasource _remote;
+  final AuthLocalDatasource _local;
 
   @override
-  Future<bool> get isSignedIn => _tokenStore.hasAccess();
+  Future<bool> get isSignedIn => _local.hasAccessToken();
 
   @override
   Future<OwnerProfile> signUp(SignUpParams params) async {
@@ -32,8 +36,8 @@ class AuthRepositoryImpl implements AuthRepository {
         filename: params.profileImagePath.split('/').last,
       ),
     });
-    final json = await _api.signUp(form);
-    return mapOwnerProfile(json);
+    final model = OwnerProfileModel.fromJson(await _remote.signUp(form));
+    return mapOwnerProfileModel(model);
   }
 
   @override
@@ -41,9 +45,11 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String password,
   }) async {
-    final json = await _api.signIn(email, password);
-    final tokens = mapTokens(json);
-    await _tokenStore.save(
+    final model = AuthTokensModel.fromJson(
+      await _remote.signIn(email, password),
+    );
+    final tokens = mapTokensModel(model);
+    await _local.saveTokens(
       access: tokens.accessToken,
       refresh: tokens.refreshToken,
     );
@@ -52,17 +58,18 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> signOut() async {
-    final refresh = await _tokenStore.readRefresh();
+    final refresh = await _local.readRefreshToken();
     try {
-      await _api.signOut(refresh);
+      await _remote.signOut(refresh);
     } finally {
-      await _tokenStore.clear();
+      await _local.clearTokens();
     }
   }
 
   @override
   Future<OwnerProfile> getProfile() async {
-    return mapOwnerProfile(await _api.getMe());
+    final model = OwnerProfileModel.fromJson(await _remote.getMe());
+    return mapOwnerProfileModel(model);
   }
 
   @override
@@ -88,20 +95,26 @@ class AuthRepositoryImpl implements AuthRepository {
         filename: profileImagePath.split('/').last,
       );
     }
-    final json = await _api.patchMe(FormData.fromMap(map));
-    return mapOwnerProfile(json);
+    final model = OwnerProfileModel.fromJson(
+      await _remote.patchMe(FormData.fromMap(map)),
+    );
+    return mapOwnerProfileModel(model);
   }
 
   @override
   Future<FarmSettings> getFarmSettings() async {
-    return mapFarmSettings(await _api.getFarmSettings());
+    final model = FarmSettingsModel.fromJson(await _remote.getFarmSettings());
+    return mapFarmSettingsModel(model);
   }
 
   @override
   Future<FarmSettings> updateFarmSettings(String currencyCode) async {
-    return mapFarmSettings(await _api.patchFarmSettings(currencyCode));
+    final model = FarmSettingsModel.fromJson(
+      await _remote.patchFarmSettings(currencyCode),
+    );
+    return mapFarmSettingsModel(model);
   }
 
   @override
-  Future<List<int>> getProfileImageBytes() => _api.getProfileImageBytes();
+  Future<List<int>> getProfileImageBytes() => _remote.getProfileImageBytes();
 }
