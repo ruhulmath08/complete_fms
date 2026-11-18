@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:mobile/data/datasources/auth/auth_local_datasource.dart';
 import 'package:mobile/domain/failures.dart';
 import 'package:mobile/infrastructure/config/api_config.dart';
-import 'package:mobile/data/datasources/token_store.dart';
 
 class ApiClient {
-  ApiClient(this._tokenStore) {
+  ApiClient(this._localDatasource) {
     dio = Dio(
       BaseOptions(
         baseUrl: ApiConfig.baseUrl,
@@ -17,7 +17,7 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           if (options.extra['auth'] != false) {
-            final token = await _tokenStore.readAccess();
+            final token = await _localDatasource.readAccessToken();
             if (token != null) {
               options.headers['Authorization'] = 'Bearer $token';
             }
@@ -32,7 +32,7 @@ class ApiClient {
               request.extra['retried'] != true) {
             final refreshed = await _refresh();
             if (refreshed) {
-              final token = await _tokenStore.readAccess();
+              final token = await _localDatasource.readAccessToken();
               final opts = request.copyWith(
                 headers: Map<String, dynamic>.from(request.headers)
                   ..['Authorization'] = 'Bearer $token',
@@ -54,10 +54,10 @@ class ApiClient {
   }
 
   late final Dio dio;
-  final TokenStore _tokenStore;
+  final AuthLocalDatasource _localDatasource;
 
   Future<bool> _refresh() async {
-    final refresh = await _tokenStore.readRefresh();
+    final refresh = await _localDatasource.readRefreshToken();
     if (refresh == null) return false;
     try {
       final response = await dio.post<Map<String, dynamic>>(
@@ -66,13 +66,13 @@ class ApiClient {
         options: Options(extra: {'auth': false}),
       );
       final data = response.data!;
-      await _tokenStore.save(
+      await _localDatasource.saveTokens(
         access: data['access_token'] as String,
         refresh: data['refresh_token'] as String,
       );
       return true;
     } catch (_) {
-      await _tokenStore.clear();
+      await _localDatasource.clearTokens();
       return false;
     }
   }
@@ -85,6 +85,9 @@ class ApiClient {
         message: data['message'] as String? ?? 'Request failed.',
       );
     }
-    throw AppFailure(code: 'HTTP_ERROR', message: e.message ?? 'Request failed.');
+    throw AppFailure(
+      code: 'HTTP_ERROR',
+      message: e.message ?? 'Request failed.',
+    );
   }
 }
