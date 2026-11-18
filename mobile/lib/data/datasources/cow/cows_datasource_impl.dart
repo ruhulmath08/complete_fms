@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/api_client.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
+import 'package:mobile/data/datasources/cow/cows_datasource.dart';
 
-class CowsApi {
-  CowsApi(this._client);
+class CowsDatasourceImpl implements CowsDatasource {
+  CowsDatasourceImpl(this._client);
 
   final ApiClient _client;
 
   Dio get _dio => _client.dio;
 
+  @override
   Future<Map<String, dynamic>> listCows({
     int limit = 100,
     int offset = 0,
@@ -28,16 +30,19 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getCow(String cowId) async {
     try {
-      final response =
-          await _dio.get<Map<String, dynamic>>('/api/v1/cows/$cowId');
+      final response = await _dio.get<Map<String, dynamic>>(
+        '/api/v1/cows/$cowId',
+      );
       return response.data!;
     } on DioException catch (e) {
       _client.throwDio(e);
     }
   }
 
+  @override
   Future<Map<String, dynamic>> createCow(Map<String, dynamic> body) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -50,6 +55,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateCow(
     String cowId,
     Map<String, dynamic> body,
@@ -65,6 +71,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> archiveCow(String cowId) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -76,6 +83,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> uploadCowImage(
     String cowId,
     FormData formData,
@@ -91,6 +99,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<List<int>> getCowImageBytes(String cowId) async {
     try {
       final response = await _dio.get<List<int>>(
@@ -103,6 +112,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listMilk(
     String cowId, {
     int limit = 10,
@@ -119,6 +129,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> addMilk(
     String cowId,
     Map<String, dynamic> body,
@@ -134,6 +145,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateMilk(
     String cowId,
     String milkId,
@@ -150,16 +162,16 @@ class CowsApi {
     }
   }
 
+  @override
   Future<void> deleteMilk(String cowId, String milkId) async {
     try {
-      await _dio.delete<void>(
-        '/api/v1/cows/$cowId/milk-productions/$milkId',
-      );
+      await _dio.delete<void>('/api/v1/cows/$cowId/milk-productions/$milkId');
     } on DioException catch (e) {
       _client.throwDio(e);
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listFeedings(
     String cowId, {
     int limit = 10,
@@ -176,6 +188,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> addFeeding(
     String cowId,
     Map<String, dynamic> body,
@@ -191,6 +204,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateFeeding(
     String cowId,
     String feedingId,
@@ -207,6 +221,7 @@ class CowsApi {
     }
   }
 
+  @override
   Future<void> deleteFeeding(String cowId, String feedingId) async {
     try {
       await _dio.delete<void>('/api/v1/cows/$cowId/feedings/$feedingId');
