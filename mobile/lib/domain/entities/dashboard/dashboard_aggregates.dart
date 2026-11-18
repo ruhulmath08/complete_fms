@@ -1,22 +1,5 @@
-enum DashboardSeriesKey {
-  eggProduction('egg_production'),
-  henHeadcount('hen_headcount'),
-  milk('milk'),
-  cowProduction('cow_production'),
-  expensesCost('expenses_cost'),
-  income('income');
-
-  const DashboardSeriesKey(this.apiKey);
-
-  final String apiKey;
-}
-
-class DashboardSeriesPoint {
-  const DashboardSeriesPoint({required this.bucketStart, required this.value});
-
-  final String bucketStart;
-  final String value;
-}
+import 'package:mobile/domain/entities/dashboard/dashboard_series_key.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_point.dart';
 
 class DashboardAggregates {
   const DashboardAggregates({
