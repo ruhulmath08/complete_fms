@@ -1,4 +1,8 @@
-import 'package:mobile/domain/entities/cow.dart';
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/cow/cow.dart';
+import 'package:mobile/domain/entities/cow/cow_feeding.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params.dart';
+import 'package:mobile/domain/entities/cow/milk_production.dart';
 
 abstract class CowsRepository {
   Future<PagedResult<Cow>> listCows({
