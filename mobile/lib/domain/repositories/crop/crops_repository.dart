@@ -1,4 +1,12 @@
-import 'package:mobile/domain/entities/crop.dart';
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_write_params.dart';
+import 'package:mobile/domain/entities/crop/crop_expense.dart';
+import 'package:mobile/domain/entities/crop/crop_name.dart';
+import 'package:mobile/domain/entities/crop/crop_name_write_params.dart';
+import 'package:mobile/domain/entities/crop/cycle_summary.dart';
+import 'package:mobile/domain/entities/crop/expense_category.dart';
+import 'package:mobile/domain/entities/crop/harvest.dart';
 
 abstract class CropsRepository {
   Future<PagedResult<CropName>> listNames({
