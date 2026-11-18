@@ -1,5 +1,9 @@
-import 'package:mobile/domain/entities/poultry.dart';
-import 'package:mobile/domain/repositories/poultry_repository.dart';
+import 'package:mobile/domain/repositories/poultry/poultry_repository.dart';
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/poultry/egg_production.dart';
+import 'package:mobile/domain/entities/poultry/poultry_feeding.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_write_params.dart';
 
 class ListPoultryGroups {
   ListPoultryGroups(this._repository);
