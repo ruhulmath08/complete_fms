@@ -1,5 +1,9 @@
-import 'package:mobile/domain/entities/cow.dart';
-import 'package:mobile/domain/repositories/cows_repository.dart';
+import 'package:mobile/domain/repositories/cow/cows_repository.dart';
+import 'package:mobile/domain/entities/common/paged_result.dart';
+import 'package:mobile/domain/entities/cow/cow.dart';
+import 'package:mobile/domain/entities/cow/cow_feeding.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params.dart';
+import 'package:mobile/domain/entities/cow/milk_production.dart';
 
 class ListCows {
   ListCows(this._repository);
