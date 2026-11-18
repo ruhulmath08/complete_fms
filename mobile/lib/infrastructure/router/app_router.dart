@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/presentation/auth/pages/farm_settings_page.dart';

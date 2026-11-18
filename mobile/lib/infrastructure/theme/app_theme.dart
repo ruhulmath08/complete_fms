@@ -1,6 +1,6 @@
 import 'dart:ui' show lerpDouble;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Design tokens mirrored from web CSS where practical (`#2f6a3a`, neutrals, radius).
 @immutable
