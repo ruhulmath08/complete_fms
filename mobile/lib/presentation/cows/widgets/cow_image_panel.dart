@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:material_ui/material_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/cows_usecases.dart';
+import 'package:mobile/domain/usecases/cow/cows_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';

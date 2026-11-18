@@ -1,15 +1,17 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:mobile/domain/entities/cow.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/cows_usecases.dart';
+import 'package:mobile/domain/usecases/cow/cows_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/cows/widgets/cow_form_fields.dart';
 import 'package:mobile/presentation/cows/widgets/cow_image_panel.dart';
+import 'package:mobile/domain/entities/common/acquisition_source.dart';
+import 'package:mobile/domain/entities/cow/cow_gender.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose.dart';
 
 class CowCreatePage extends StatefulWidget {
   const CowCreatePage({super.key});
