@@ -1,7 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile/domain/entities/ledger.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
 
 String ledgerEntryTypeLabel(AppLocalizations l10n, LedgerEntryType type) {
   return switch (type) {
