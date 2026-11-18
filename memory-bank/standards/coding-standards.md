@@ -63,18 +63,45 @@ complete_fms/
 │   └── ... auth, cows, poultry, crops, inventory, income_expenses
 ├── web/              # React Vite SPA by feature
 │   └── src/features/...
-└── mobile/           # Flutter Clean Architecture
-    ├── infrastructure/
-    ├── presentation/
-    ├── domain/       # separate pure Dart project
-    └── data/         # separate project (API, models, mappers, repos)
+└── mobile/           # Flutter Clean Architecture (single package)
+    └── lib/
+        ├── infrastructure/   # DI, router, theme, config
+        ├── presentation/     # pages, cubits, widgets by feature
+        ├── domain/           # pure Dart: entities, repos, usecases
+        ├── data/             # models, datasources, mappers, repo impls
+        └── l10n/
 ```
 
-**Conventions**:
+**Domain folders** (keep the same names across layers): `auth/`, `cow/`, `crop/`, `poultry/`, `inventory/`, `ledger/`, `dashboard/`, `common/`.
+
+**Mobile layout for a feature** (example: cow):
+
+```text
+domain/entities/cow/          # one type per file; import entities directly (no mega-barrel)
+domain/repositories/cow/
+domain/usecases/cow/
+data/models/cow/              # JSON DTOs + fromJson
+data/mappers/cow/             # Model → Entity (and write JSON helpers)
+data/datasources/cow/         # abstract + Impl
+data/repositories/cow/        # orchestrates datasources; maps models → entities
+presentation/cows/            # UI feature folder (plural OK for screens)
+```
+
+**Mobile conventions**:
+
+- Domain stays pure Dart: no Flutter, Dio, models, mappers, or datasource/repo implementations
+- One public type per file under `domain/entities/...`; prefer direct imports over barrel exports
+- Data flow: API JSON → `models` → `mappers` → `entities` → repository → use cases → presentation
+- Datasources: declare an abstract class and a `*Impl`; register the abstract in GetIt
+- Multi-source only when needed (e.g. auth): `AuthRemoteDatasource` + `AuthLocalDatasource`; single-source domains keep one `*Datasource` + Impl (no empty local/remote folders)
+- Shared HTTP: `data/datasources/common/api_client.dart` (auth local datasource supplies tokens / refresh)
+- Shared paging helpers: `data/models/common/`, `data/repositories/common/`
+- When adding a feature, create matching folders in domain + data + presentation and wire DI — do not leave types in flat `entities/` or `*_api.dart` files
+
+**Other conventions**:
 
 - Backend: one module per domain capability; business rules in backend
 - Web: feature-based folders; shared UI under `shared/`
-- Mobile: infrastructure / presentation / domain / data; domain has no API/data models/mappers/repo implementations
 - Tests: co-located or adjacent `tests/` per package; prefer behavior-focused names
 
 ## Testing Strategy

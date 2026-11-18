@@ -50,7 +50,7 @@ Baseline security with stricter token handling
 
 - **API (FastAPI):** Auth, domain modules, persistence via SQLAlchemy/PostgreSQL
 - **Web (React/Vite):** Feature screens against `/api/v1`
-- **Mobile (Flutter):** Infrastructure, presentation, domain, data projects
+- **Mobile (Flutter):** Infrastructure, presentation, domain, and data layers in one package, organized by domain folder (`auth`, `cow`, `crop`, …). Folder and datasource rules live in `coding-standards.md`
 - **PostgreSQL:** System of record (local install in development)
 
 ## Data Flow

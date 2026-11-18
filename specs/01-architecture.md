@@ -38,7 +38,7 @@ Organize Flutter code into:
 - Domain: business rules, entities, use cases, and repository interfaces, Logger, and Utils.
 - Data: API calls, data models, data sources, mappers to convert between data models and entities, and repository implementations
 - The domain layer is pure Dart code. No API calls, no data models, no data sources, no mappers, no repository implementations.
-- Data and domain layers are saperate projects. They inside the mobile app project.
+- Data and domain layers live inside the mobile app package (not separate pub packages). Keep the same domain folders across entities, repositories, usecases, models, mappers, and datasources. See `memory-bank/standards/coding-standards.md` for the current folder rules.
 
 ## Decisions to make before implementation
 

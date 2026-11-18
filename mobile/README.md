@@ -47,14 +47,26 @@ Use your machine LAN IP for a physical device.
 
 ## Structure
 
+Clean Architecture with **domain folders** mirrored across layers (`auth`, `cow`, `crop`, `poultry`, `inventory`, `ledger`, `dashboard`, `common`).
+
 ```text
 lib/
-  domain/          # entities, repository interfaces, use cases (pure Dart)
-  data/            # Dio APIs, token store, mappers, repository impl
-  presentation/    # pages, cubits, shell, shared widgets (charts, tables, forms)
-  infrastructure/  # DI (GetIt), GoRouter, theme, config
-  l10n/            # English and Bangla ARB / generated localizations
+  domain/
+    entities/{domain}/       # one type per file; direct imports (no mega-barrel)
+    repositories/{domain}/
+    usecases/{domain}/
+  data/
+    models/{domain}/         # API JSON DTOs
+    mappers/{domain}/        # Model → Entity
+    datasources/{domain}/    # abstract + Impl (auth: remote + local)
+    datasources/common/      # ApiClient (tokens via AuthLocalDatasource)
+    repositories/{domain}/   # repo impls; models → entities
+  presentation/              # pages, cubits, shell, shared widgets
+  infrastructure/            # DI (GetIt), GoRouter, theme, config
+  l10n/                      # English and Bangla ARB / generated localizations
 ```
+
+Folder rules for new features: [`../memory-bank/standards/coding-standards.md`](../memory-bank/standards/coding-standards.md).
 
 ## Related
 
@@ -62,3 +74,4 @@ lib/
 - React web app: [`../web/README.md`](../web/README.md)
 - Repo overview: [`../README.md`](../README.md)
 - UX conventions: [`../memory-bank/standards/ux-guide.md`](../memory-bank/standards/ux-guide.md)
+- Coding standards (mobile layout): [`../memory-bank/standards/coding-standards.md`](../memory-bank/standards/coding-standards.md)
