@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/api_client.dart';
+import 'package:mobile/data/datasources/common/api_client.dart';
+import 'package:mobile/data/datasources/inventory/inventory_datasource.dart';
 
-class InventoryApi {
-  InventoryApi(this._client);
+class InventoryDatasourceImpl implements InventoryDatasource {
+  InventoryDatasourceImpl(this._client);
 
   final ApiClient _client;
 
   Dio get _dio => _client.dio;
 
+  @override
   Future<Map<String, dynamic>> listItems({
     int limit = 100,
     int offset = 0,
@@ -28,6 +30,7 @@ class InventoryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> getItem(String itemId) async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
@@ -39,6 +42,7 @@ class InventoryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> createItem(Map<String, dynamic> body) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -51,6 +55,7 @@ class InventoryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> updateItem(
     String itemId,
     Map<String, dynamic> body,
@@ -66,6 +71,7 @@ class InventoryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> archiveItem(String itemId) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
@@ -77,6 +83,7 @@ class InventoryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listStockUpdates(
     String itemId, {
     int limit = 50,
@@ -93,6 +100,7 @@ class InventoryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> addStockUpdate(
     String itemId,
     Map<String, dynamic> body,
@@ -108,6 +116,7 @@ class InventoryApi {
     }
   }
 
+  @override
   Future<Map<String, dynamic>> listStockUpdatesByCategory({
     required String category,
     int limit = 10,
