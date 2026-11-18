@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/poultry/poultry_usecases.dart';
+import 'package:mobile/domain/use_cases/poultry/poultry_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';

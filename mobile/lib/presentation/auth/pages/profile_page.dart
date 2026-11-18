@@ -4,7 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/domain/failures.dart';
 import 'package:mobile/domain/repositories/auth/auth_repository.dart';
-import 'package:mobile/domain/usecases/auth/auth_usecases.dart';
+import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';

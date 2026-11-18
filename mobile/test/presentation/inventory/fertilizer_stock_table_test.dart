@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/domain/usecases/inventory/inventory_usecases.dart';
+import 'package:mobile/domain/use_cases/inventory/inventory_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/presentation/inventory/widgets/fertilizer_stock_table.dart';
 import 'package:mocktail/mocktail.dart';

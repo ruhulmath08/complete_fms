@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/inventory/inventory_usecases.dart';
+import 'package:mobile/domain/use_cases/inventory/inventory_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';

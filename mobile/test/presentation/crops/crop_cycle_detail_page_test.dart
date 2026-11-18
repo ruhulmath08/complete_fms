@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/domain/usecases/crop/crops_usecases.dart';
+import 'package:mobile/domain/use_cases/crop/crops_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/presentation/crops/pages/crop_cycle_detail_page.dart';

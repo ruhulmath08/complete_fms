@@ -2,7 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/poultry/poultry_usecases.dart';
+import 'package:mobile/domain/use_cases/poultry/poultry_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';

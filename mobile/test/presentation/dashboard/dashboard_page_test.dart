@@ -2,7 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/domain/date_ranges.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/dashboard/dashboard_usecases.dart';
+import 'package:mobile/domain/use_cases/dashboard/dashboard_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/presentation/dashboard/pages/dashboard_page.dart';
 import 'package:mocktail/mocktail.dart';
