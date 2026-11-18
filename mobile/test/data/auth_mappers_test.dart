@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/data/mappers/auth_mappers.dart';
+import 'package:mobile/data/mappers/auth/auth_mappers.dart';
 
 void main() {
   test('maps owner profile JSON from API', () {
