@@ -1,15 +1,16 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:mobile/domain/date_ranges.dart';
-import 'package:mobile/domain/entities/dashboard.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/dashboard_usecases.dart';
+import 'package:mobile/domain/usecases/dashboard/dashboard_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/language_selector.dart';
 import 'package:mobile/presentation/shared/widgets/series_chart.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_aggregates.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_key.dart';
 
 /// Post-login landing page: six aggregate charts over a selectable period.
 class DashboardPage extends StatefulWidget {
