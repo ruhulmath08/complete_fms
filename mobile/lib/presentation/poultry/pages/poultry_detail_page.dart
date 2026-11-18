@@ -1,12 +1,16 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile/domain/entities/poultry.dart';
 import 'package:mobile/domain/failures.dart';
-import 'package:mobile/domain/usecases/poultry_usecases.dart';
+import 'package:mobile/domain/usecases/poultry/poultry_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/poultry/widgets/poultry_group_form_fields.dart';
+import 'package:mobile/domain/entities/common/acquisition_source.dart';
+import 'package:mobile/domain/entities/poultry/egg_production.dart';
+import 'package:mobile/domain/entities/poultry/poultry_feeding.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group.dart';
+import 'package:mobile/domain/entities/poultry/poultry_type.dart';
 
 String _rowTotal(String quantity, String unitPrice) {
   final qty = double.tryParse(quantity);
