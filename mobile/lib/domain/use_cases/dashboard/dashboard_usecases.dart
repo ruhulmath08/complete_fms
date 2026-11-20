@@ -1,10 +1,10 @@
 import 'package:mobile/domain/repositories/dashboard/dashboard_repository.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_aggregates.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_aggregates_entity.dart';
 
 class GetDashboardAggregates {
   GetDashboardAggregates(this._repository);
   final DashboardRepository _repository;
-  Future<DashboardAggregates> call({
+  Future<DashboardAggregatesEntity> call({
     required String from,
     required String to,
     required String grain,

@@ -2,14 +2,13 @@ import 'dart:typed_data';
 
 import 'package:material_ui/material_ui.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobile/domain/failures.dart';
+import 'package:mobile/domain/entities/auth/owner_profile_entity.dart';
 import 'package:mobile/domain/repositories/auth/auth_repository.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
-import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/auth/widgets/profile_image_preview.dart';
-import 'package:mobile/domain/entities/auth/owner_profile.dart';
+import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,7 +18,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  OwnerProfile? _profile;
+  OwnerProfileEntity? _profile;
   Uint8List? _imageBytes;
   String? _error;
   String? _imagePath;
@@ -41,27 +40,43 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _load() async {
-    try {
-      final profile = await getIt<GetProfile>()();
-      final bytes = await getIt<AuthRepository>().getProfileImageBytes();
-      if (!mounted) return;
-      setState(() {
-        _profile = profile;
-        _imageBytes = Uint8List.fromList(bytes);
-        _fullName.text = profile.fullName;
-        _email.text = profile.email;
-        _phone.text = profile.phone;
-        _address.text = profile.address;
-        _latitude.text = profile.latitude.toString();
-        _longitude.text = profile.longitude.toString();
-        _loading = false;
-      });
-    } on AppFailure catch (e) {
-      setState(() {
-        _error = e.message;
-        _loading = false;
-      });
-    }
+    final profileResult = await getIt<GetProfile>()();
+    if (!mounted) return;
+
+    await profileResult.when(
+      success: (profile) async {
+        final bytesResult =
+            await getIt<AuthRepository>().getProfileImageBytes();
+        if (!mounted) return;
+        bytesResult.when(
+          success: (bytes) {
+            setState(() {
+              _profile = profile;
+              _imageBytes = Uint8List.fromList(bytes);
+              _fullName.text = profile.fullName;
+              _email.text = profile.email;
+              _phone.text = profile.phone;
+              _address.text = profile.address;
+              _latitude.text = profile.latitude.toString();
+              _longitude.text = profile.longitude.toString();
+              _loading = false;
+            });
+          },
+          failure: (failure) {
+            setState(() {
+              _error = failure.message;
+              _loading = false;
+            });
+          },
+        );
+      },
+      failure: (failure) async {
+        setState(() {
+          _error = failure.message;
+          _loading = false;
+        });
+      },
+    );
   }
 
   Future<void> _save() async {
@@ -70,29 +85,36 @@ class _ProfilePageState extends State<ProfilePage> {
       _error = null;
       _saved = false;
     });
-    try {
-      final updated = await getIt<UpdateProfile>()(
-        fullName: _fullName.text.trim(),
-        email: _email.text.trim(),
-        phone: _phone.text.trim(),
-        address: _address.text.trim(),
-        latitude: double.parse(_latitude.text),
-        longitude: double.parse(_longitude.text),
-        profileImagePath: _imagePath,
-      );
-      final bytes = await getIt<AuthRepository>().getProfileImageBytes();
-      if (!mounted) return;
-      setState(() {
-        _profile = updated;
-        _imageBytes = Uint8List.fromList(bytes);
-        _imagePath = null;
-        _saved = true;
-      });
-    } on AppFailure catch (e) {
-      setState(() => _error = e.message);
-    } finally {
-      if (mounted) setState(() => _saving = false);
-    }
+    final updatedResult = await getIt<UpdateProfile>()(
+      fullName: _fullName.text.trim(),
+      email: _email.text.trim(),
+      phone: _phone.text.trim(),
+      address: _address.text.trim(),
+      latitude: double.parse(_latitude.text),
+      longitude: double.parse(_longitude.text),
+      profileImagePath: _imagePath,
+    );
+    if (!mounted) return;
+
+    await updatedResult.when(
+      success: (updated) async {
+        final bytesResult = await getIt<AuthRepository>().getProfileImageBytes();
+        if (!mounted) return;
+        bytesResult.when(
+          success: (bytes) {
+            setState(() {
+              _profile = updated;
+              _imageBytes = Uint8List.fromList(bytes);
+              _imagePath = null;
+              _saved = true;
+            });
+          },
+          failure: (failure) => setState(() => _error = failure.message),
+        );
+      },
+      failure: (failure) async => setState(() => _error = failure.message),
+    );
+    if (mounted) setState(() => _saving = false);
   }
 
   @override

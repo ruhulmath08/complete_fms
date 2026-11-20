@@ -1,10 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/cow/cow_gender.dart';
-import 'package:mobile/domain/entities/cow/cow_purpose.dart';
-import 'package:mobile/domain/entities/cow/cow_write_params.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_gender_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params_entity.dart';
 
 class CowFormFields extends StatelessWidget {
   const CowFormFields({
@@ -40,12 +40,12 @@ class CowFormFields extends StatelessWidget {
   final TextEditingController purchaseDate;
   final TextEditingController purchasePrice;
   final TextEditingController notes;
-  final CowPurpose purpose;
-  final CowGender gender;
-  final AcquisitionSource acquiredBy;
-  final ValueChanged<CowPurpose> onPurposeChanged;
-  final ValueChanged<CowGender> onGenderChanged;
-  final ValueChanged<AcquisitionSource> onAcquiredByChanged;
+  final CowPurposeEntity purpose;
+  final CowGenderEntity gender;
+  final AcquisitionSourceEntity acquiredBy;
+  final ValueChanged<CowPurposeEntity> onPurposeChanged;
+  final ValueChanged<CowGenderEntity> onGenderChanged;
+  final ValueChanged<AcquisitionSourceEntity> onAcquiredByChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +66,22 @@ class CowFormFields extends StatelessWidget {
           controller: name,
           decoration: InputDecoration(labelText: '${l10n.cowName} *'),
         ),
-        DropdownButtonFormField<CowPurpose>(
+        DropdownButtonFormField<CowPurposeEntity>(
           // ignore: deprecated_member_use
           value: purpose,
           decoration: InputDecoration(labelText: l10n.purpose),
-          items: CowPurpose.values
+          items: CowPurposeEntity.values
               .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
               .toList(),
           onChanged: (v) {
             if (v != null) onPurposeChanged(v);
           },
         ),
-        DropdownButtonFormField<CowGender>(
+        DropdownButtonFormField<CowGenderEntity>(
           // ignore: deprecated_member_use
           value: gender,
           decoration: InputDecoration(labelText: l10n.gender),
-          items: CowGender.values
+          items: CowGenderEntity.values
               .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
               .toList(),
           onChanged: (v) {
@@ -110,17 +110,17 @@ class CowFormFields extends StatelessWidget {
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(labelText: l10n.weightKg),
         ),
-        DropdownButtonFormField<AcquisitionSource>(
+        DropdownButtonFormField<AcquisitionSourceEntity>(
           // ignore: deprecated_member_use
           value: acquiredBy,
           decoration: InputDecoration(labelText: l10n.acquiredBy),
           items: [
             DropdownMenuItem(
-              value: AcquisitionSource.bornOnFarm,
+              value: AcquisitionSourceEntity.bornOnFarm,
               child: Text(l10n.bornOnFarm),
             ),
             DropdownMenuItem(
-              value: AcquisitionSource.purchased,
+              value: AcquisitionSourceEntity.purchased,
               child: Text(l10n.purchased),
             ),
           ],
@@ -128,7 +128,7 @@ class CowFormFields extends StatelessWidget {
             if (v != null) onAcquiredByChanged(v);
           },
         ),
-        if (acquiredBy == AcquisitionSource.purchased) ...[
+        if (acquiredBy == AcquisitionSourceEntity.purchased) ...[
           TextField(
             controller: purchaseDate,
             decoration: InputDecoration(labelText: l10n.purchaseDateHint),
@@ -148,7 +148,7 @@ class CowFormFields extends StatelessWidget {
   }
 }
 
-CowWriteParams? buildCowWriteParams({
+CowWriteParamsEntity? buildCowWriteParams({
   required TextEditingController name,
   required TextEditingController breed,
   required TextEditingController dateOfBirth,
@@ -158,9 +158,9 @@ CowWriteParams? buildCowWriteParams({
   required TextEditingController purchaseDate,
   required TextEditingController purchasePrice,
   required TextEditingController notes,
-  required CowPurpose purpose,
-  required CowGender gender,
-  required AcquisitionSource acquiredBy,
+  required CowPurposeEntity purpose,
+  required CowGenderEntity gender,
+  required AcquisitionSourceEntity acquiredBy,
 }) {
   String? emptyToNull(String value) {
     final trimmed = value.trim();
@@ -173,7 +173,7 @@ CowWriteParams? buildCowWriteParams({
     return null;
   }
 
-  return CowWriteParams(
+  return CowWriteParamsEntity(
     purpose: purpose,
     gender: gender,
     acquiredBy: acquiredBy,
@@ -183,10 +183,10 @@ CowWriteParams? buildCowWriteParams({
     color: emptyToNull(color.text),
     weight: emptyToNull(weight.text),
     age: age.text.trim().isEmpty ? null : int.tryParse(age.text.trim()),
-    purchaseDate: acquiredBy == AcquisitionSource.purchased
+    purchaseDate: acquiredBy == AcquisitionSourceEntity.purchased
         ? emptyToNull(purchaseDate.text)
         : null,
-    purchasePrice: acquiredBy == AcquisitionSource.purchased
+    purchasePrice: acquiredBy == AcquisitionSourceEntity.purchased
         ? emptyToNull(purchasePrice.text)
         : null,
     notes: emptyToNull(notes.text),

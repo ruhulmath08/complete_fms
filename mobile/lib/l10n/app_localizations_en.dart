@@ -1,7 +1,7 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 
-import 'package:mobile/l10n/app_localizations.dart';
+import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
@@ -180,7 +180,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tag number is generated automatically after create.';
 
   @override
-  String get cowImage => 'Cow image';
+  String get cowImage => 'CowEntity image';
 
   @override
   String get pickCowImage => 'Pick cow image';
@@ -800,10 +800,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chartMilkSemantics => 'Milk chart';
 
   @override
-  String get chartCowProduction => 'Cow production';
+  String get chartCowProduction => 'CowEntity production';
 
   @override
-  String get chartCowProductionSemantics => 'Cow production chart';
+  String get chartCowProductionSemantics => 'CowEntity production chart';
 
   @override
   String get chartExpensesCost => 'Expenses cost';

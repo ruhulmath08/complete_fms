@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/mappers/poultry/poultry_mappers.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group_write_params.dart';
-import 'package:mobile/domain/entities/poultry/poultry_type.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_write_params_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_type_entity.dart';
 
 void main() {
   test('maps poultry group JSON including acquired_by snake_case', () {
@@ -22,8 +22,8 @@ void main() {
     });
 
     expect(group.name, 'House A');
-    expect(group.poultryType, PoultryType.layer);
-    expect(group.acquiredBy, AcquisitionSource.bornOnFarm);
+    expect(group.poultryType, PoultryTypeEntity.layer);
+    expect(group.acquiredBy, AcquisitionSourceEntity.bornOnFarm);
     expect(group.eggsEligible, isTrue);
     expect(group.birdCount, 100);
   });
@@ -45,16 +45,16 @@ void main() {
     });
 
     expect(group.eggsEligible, isFalse);
-    expect(group.acquiredBy, AcquisitionSource.purchased);
+    expect(group.acquiredBy, AcquisitionSourceEntity.purchased);
   });
 
   test('poultryGroupWriteToJson clears purchase fields when born on farm', () {
     final json = poultryGroupWriteToJson(
-      const PoultryGroupWriteParams(
-        poultryType: PoultryType.duck,
+      const PoultryGroupWriteParamsEntity(
+        poultryType: PoultryTypeEntity.duck,
         name: 'Ducks',
         birdCount: 20,
-        acquiredBy: AcquisitionSource.bornOnFarm,
+        acquiredBy: AcquisitionSourceEntity.bornOnFarm,
         purchaseDate: '2024-01-01',
         purchasePrice: '99',
       ),
@@ -67,11 +67,11 @@ void main() {
 
   test('poultryGroupWriteToJson keeps purchase fields when purchased', () {
     final json = poultryGroupWriteToJson(
-      const PoultryGroupWriteParams(
-        poultryType: PoultryType.local,
+      const PoultryGroupWriteParamsEntity(
+        poultryType: PoultryTypeEntity.local,
         name: 'Local',
         birdCount: 30,
-        acquiredBy: AcquisitionSource.purchased,
+        acquiredBy: AcquisitionSourceEntity.purchased,
         purchaseDate: '2024-06-01',
         purchasePrice: '5000.00',
       ),

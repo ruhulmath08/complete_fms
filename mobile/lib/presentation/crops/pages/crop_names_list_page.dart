@@ -9,7 +9,7 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
 
 class CropNamesListPage extends StatefulWidget {
   const CropNamesListPage({super.key});
@@ -22,7 +22,7 @@ class _CropNamesListPageState extends State<CropNamesListPage> {
   bool _includeArchived = false;
   bool _loading = true;
   String? _error;
-  List<CropName> _names = const [];
+  List<CropNameEntity> _names = const [];
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _CropNamesListPageState extends State<CropNamesListPage> {
         _names = page.items;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;

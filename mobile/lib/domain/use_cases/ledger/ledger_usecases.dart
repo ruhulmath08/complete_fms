@@ -1,14 +1,14 @@
 import 'package:mobile/domain/repositories/ledger/ledger_repository.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series.dart';
-import 'package:mobile/domain/entities/ledger/period_totals.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_entity.dart';
+import 'package:mobile/domain/entities/ledger/period_totals_entity.dart';
 
 class ListLedgerEntries {
   ListLedgerEntries(this._repository);
   final LedgerRepository _repository;
-  Future<PagedResult<LedgerEntry>> call({
+  Future<PagedResultEntity<LedgerEntryEntity>> call({
     bool includeArchived = false,
     String? from,
     String? to,
@@ -23,40 +23,40 @@ class ListLedgerEntries {
 class GetLedgerEntry {
   GetLedgerEntry(this._repository);
   final LedgerRepository _repository;
-  Future<LedgerEntry> call(String entryId) => _repository.getEntry(entryId);
+  Future<LedgerEntryEntity> call(String entryId) => _repository.getEntry(entryId);
 }
 
 class CreateLedgerEntry {
   CreateLedgerEntry(this._repository);
   final LedgerRepository _repository;
-  Future<LedgerEntry> call(LedgerEntryWriteParams params) =>
+  Future<LedgerEntryEntity> call(LedgerEntryWriteParamsEntity params) =>
       _repository.createEntry(params);
 }
 
 class UpdateLedgerEntry {
   UpdateLedgerEntry(this._repository);
   final LedgerRepository _repository;
-  Future<LedgerEntry> call(String entryId, LedgerEntryWriteParams params) =>
+  Future<LedgerEntryEntity> call(String entryId, LedgerEntryWriteParamsEntity params) =>
       _repository.updateEntry(entryId, params);
 }
 
 class ArchiveLedgerEntry {
   ArchiveLedgerEntry(this._repository);
   final LedgerRepository _repository;
-  Future<LedgerEntry> call(String entryId) => _repository.archiveEntry(entryId);
+  Future<LedgerEntryEntity> call(String entryId) => _repository.archiveEntry(entryId);
 }
 
 class GetPeriodTotals {
   GetPeriodTotals(this._repository);
   final LedgerRepository _repository;
-  Future<PeriodTotals> call({required String from, required String to}) =>
+  Future<PeriodTotalsEntity> call({required String from, required String to}) =>
       _repository.getPeriodTotals(from: from, to: to);
 }
 
 class GetLedgerSeries {
   GetLedgerSeries(this._repository);
   final LedgerRepository _repository;
-  Future<LedgerSeries> call({
+  Future<LedgerSeriesEntity> call({
     required String from,
     required String to,
     required String grain,

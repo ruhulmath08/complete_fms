@@ -1,86 +1,49 @@
-import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/common/api_client.dart';
 import 'package:mobile/data/datasources/inventory/inventory_datasource.dart';
+import 'package:mobile/data/network/api_client.dart';
+import 'package:mobile/data/network/api_endpoints.dart';
 
 class InventoryDatasourceImpl implements InventoryDatasource {
   InventoryDatasourceImpl(this._client);
 
   final ApiClient _client;
 
-  Dio get _dio => _client.dio;
-
   @override
   Future<Map<String, dynamic>> listItems({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
-  }) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/inventory-items',
-        queryParameters: {
-          'limit': limit,
-          'offset': offset,
-          if (includeArchived) 'include_archived': true,
-        },
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  }) {
+    return _client.get(
+      ApiEndpoints.inventoryItems,
+      query: {
+        'limit': limit,
+        'offset': offset,
+        if (includeArchived) 'include_archived': true,
+      },
+    );
   }
 
   @override
-  Future<Map<String, dynamic>> getItem(String itemId) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/inventory-items/$itemId',
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<Map<String, dynamic>> getItem(String itemId) {
+    return _client.get(ApiEndpoints.inventoryItem(itemId));
   }
 
   @override
-  Future<Map<String, dynamic>> createItem(Map<String, dynamic> body) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/v1/inventory-items',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<Map<String, dynamic>> createItem(Map<String, dynamic> body) {
+    return _client.post(ApiEndpoints.inventoryItems, data: body);
   }
 
   @override
   Future<Map<String, dynamic>> updateItem(
     String itemId,
     Map<String, dynamic> body,
-  ) async {
-    try {
-      final response = await _dio.patch<Map<String, dynamic>>(
-        '/api/v1/inventory-items/$itemId',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  ) {
+    return _client.patch(ApiEndpoints.inventoryItem(itemId), data: body);
   }
 
   @override
-  Future<Map<String, dynamic>> archiveItem(String itemId) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/v1/inventory-items/$itemId/archive',
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<Map<String, dynamic>> archiveItem(String itemId) {
+    return _client.post(ApiEndpoints.inventoryItemArchive(itemId));
   }
 
   @override
@@ -88,32 +51,19 @@ class InventoryDatasourceImpl implements InventoryDatasource {
     String itemId, {
     int limit = 50,
     int offset = 0,
-  }) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/inventory-items/$itemId/stock-updates',
-        queryParameters: {'limit': limit, 'offset': offset},
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  }) {
+    return _client.get(
+      ApiEndpoints.itemStockUpdates(itemId),
+      query: {'limit': limit, 'offset': offset},
+    );
   }
 
   @override
   Future<Map<String, dynamic>> addStockUpdate(
     String itemId,
     Map<String, dynamic> body,
-  ) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/v1/inventory-items/$itemId/stock-updates',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  ) {
+    return _client.post(ApiEndpoints.itemStockUpdates(itemId), data: body);
   }
 
   @override
@@ -121,19 +71,10 @@ class InventoryDatasourceImpl implements InventoryDatasource {
     required String category,
     int limit = 10,
     int offset = 0,
-  }) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/inventory-stock-updates',
-        queryParameters: {
-          'category': category,
-          'limit': limit,
-          'offset': offset,
-        },
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  }) {
+    return _client.get(
+      ApiEndpoints.inventoryStockUpdates,
+      query: {'category': category, 'limit': limit, 'offset': offset},
+    );
   }
 }

@@ -3,50 +3,50 @@ import 'package:mobile/data/models/crop/crop_expense_model.dart';
 import 'package:mobile/data/models/crop/crop_name_model.dart';
 import 'package:mobile/data/models/crop/cycle_summary_model.dart';
 import 'package:mobile/data/models/crop/harvest_model.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle_write_params.dart';
-import 'package:mobile/domain/entities/crop/crop_expense.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
-import 'package:mobile/domain/entities/crop/crop_name_write_params.dart';
-import 'package:mobile/domain/entities/crop/cycle_summary.dart';
-import 'package:mobile/domain/entities/crop/expense_category.dart';
-import 'package:mobile/domain/entities/crop/harvest.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_expense_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/cycle_summary_entity.dart';
+import 'package:mobile/domain/entities/crop/expense_category_entity.dart';
+import 'package:mobile/domain/entities/crop/harvest_entity.dart';
 
-ExpenseCategory mapExpenseCategory(String value) {
+ExpenseCategoryEntity mapExpenseCategory(String value) {
   switch (value) {
     case 'labour':
-      return ExpenseCategory.labour;
+      return ExpenseCategoryEntity.labour;
     case 'fertilizers':
-      return ExpenseCategory.fertilizers;
+      return ExpenseCategoryEntity.fertilizers;
     case 'pesticides_and_chemicals':
-      return ExpenseCategory.pesticidesAndChemicals;
+      return ExpenseCategoryEntity.pesticidesAndChemicals;
     case 'seeds':
-      return ExpenseCategory.seeds;
+      return ExpenseCategoryEntity.seeds;
     case 'irrigation':
-      return ExpenseCategory.irrigation;
+      return ExpenseCategoryEntity.irrigation;
     case 'equipment':
-      return ExpenseCategory.equipment;
+      return ExpenseCategoryEntity.equipment;
     case 'other':
-      return ExpenseCategory.other;
+      return ExpenseCategoryEntity.other;
     default:
-      return ExpenseCategory.other;
+      return ExpenseCategoryEntity.other;
   }
 }
 
-String expenseCategoryToApi(ExpenseCategory value) => switch (value) {
-      ExpenseCategory.labour => 'labour',
-      ExpenseCategory.fertilizers => 'fertilizers',
-      ExpenseCategory.pesticidesAndChemicals => 'pesticides_and_chemicals',
-      ExpenseCategory.seeds => 'seeds',
-      ExpenseCategory.irrigation => 'irrigation',
-      ExpenseCategory.equipment => 'equipment',
-      ExpenseCategory.other => 'other',
+String expenseCategoryToApi(ExpenseCategoryEntity value) => switch (value) {
+      ExpenseCategoryEntity.labour => 'labour',
+      ExpenseCategoryEntity.fertilizers => 'fertilizers',
+      ExpenseCategoryEntity.pesticidesAndChemicals => 'pesticides_and_chemicals',
+      ExpenseCategoryEntity.seeds => 'seeds',
+      ExpenseCategoryEntity.irrigation => 'irrigation',
+      ExpenseCategoryEntity.equipment => 'equipment',
+      ExpenseCategoryEntity.other => 'other',
     };
 
-CropName mapCropName(Map<String, dynamic> json) =>
+CropNameEntity mapCropName(Map<String, dynamic> json) =>
     mapCropNameModel(CropNameModel.fromJson(json));
 
-CropName mapCropNameModel(CropNameModel model) => CropName(
+CropNameEntity mapCropNameModel(CropNameModel model) => CropNameEntity(
       id: model.id,
       name: model.name,
       notes: model.notes,
@@ -55,10 +55,10 @@ CropName mapCropNameModel(CropNameModel model) => CropName(
       updatedAt: model.updatedAt,
     );
 
-CropCycle mapCropCycle(Map<String, dynamic> json) =>
+CropCycleEntity mapCropCycle(Map<String, dynamic> json) =>
     mapCropCycleModel(CropCycleModel.fromJson(json));
 
-CropCycle mapCropCycleModel(CropCycleModel model) => CropCycle(
+CropCycleEntity mapCropCycleModel(CropCycleModel model) => CropCycleEntity(
       id: model.id,
       cropNameId: model.cropNameId,
       plotName: model.plotName,
@@ -72,10 +72,10 @@ CropCycle mapCropCycleModel(CropCycleModel model) => CropCycle(
       updatedAt: model.updatedAt,
     );
 
-CropExpense mapCropExpense(Map<String, dynamic> json) =>
+CropExpenseEntity mapCropExpense(Map<String, dynamic> json) =>
     mapCropExpenseModel(CropExpenseModel.fromJson(json));
 
-CropExpense mapCropExpenseModel(CropExpenseModel model) => CropExpense(
+CropExpenseEntity mapCropExpenseModel(CropExpenseModel model) => CropExpenseEntity(
       id: model.id,
       cropCycleId: model.cropCycleId,
       spentAt: model.spentAt,
@@ -85,10 +85,10 @@ CropExpense mapCropExpenseModel(CropExpenseModel model) => CropExpense(
       createdAt: model.createdAt,
     );
 
-Harvest mapHarvest(Map<String, dynamic> json) =>
+HarvestEntity mapHarvest(Map<String, dynamic> json) =>
     mapHarvestModel(HarvestModel.fromJson(json));
 
-Harvest mapHarvestModel(HarvestModel model) => Harvest(
+HarvestEntity mapHarvestModel(HarvestModel model) => HarvestEntity(
       id: model.id,
       cropCycleId: model.cropCycleId,
       harvestedAt: model.harvestedAt,
@@ -99,22 +99,22 @@ Harvest mapHarvestModel(HarvestModel model) => Harvest(
       createdAt: model.createdAt,
     );
 
-CycleSummary mapCycleSummary(Map<String, dynamic> json) =>
+CycleSummaryEntity mapCycleSummary(Map<String, dynamic> json) =>
     mapCycleSummaryModel(CycleSummaryModel.fromJson(json));
 
-CycleSummary mapCycleSummaryModel(CycleSummaryModel model) => CycleSummary(
+CycleSummaryEntity mapCycleSummaryModel(CycleSummaryModel model) => CycleSummaryEntity(
       cropCycleId: model.cropCycleId,
       totalExpenses: model.totalExpenses,
       totalSaleIncome: model.totalSaleIncome,
       result: model.result,
     );
 
-Map<String, dynamic> cropNameWriteToJson(CropNameWriteParams params) => {
+Map<String, dynamic> cropNameWriteToJson(CropNameWriteParamsEntity params) => {
       'name': params.name,
       'notes': params.notes,
     };
 
-Map<String, dynamic> cropCycleWriteToJson(CropCycleWriteParams params) => {
+Map<String, dynamic> cropCycleWriteToJson(CropCycleWriteParamsEntity params) => {
       'crop_name_id': params.cropNameId,
       'planted_at': params.plantedAt,
       'plot_name': params.plotName,

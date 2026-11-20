@@ -7,7 +7,7 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/inventory/widgets/inventory_item_form_fields.dart';
-import 'package:mobile/domain/entities/inventory/inventory_category.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart';
 
 class InventoryCreatePage extends StatefulWidget {
   const InventoryCreatePage({super.key});
@@ -22,7 +22,7 @@ class _InventoryCreatePageState extends State<InventoryCreatePage> {
   final _unit = TextEditingController(text: 'kg');
   final _pricePerUnit = TextEditingController(text: '0');
   final _note = TextEditingController();
-  InventoryCategory _category = InventoryCategory.feed;
+  InventoryCategoryEntity _category = InventoryCategoryEntity.feed;
   String? _error;
   bool _saving = false;
 
@@ -54,7 +54,7 @@ class _InventoryCreatePageState extends State<InventoryCreatePage> {
       );
       if (!mounted) return;
       context.go(AppRoutes.inventoryItem(item.id));
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);

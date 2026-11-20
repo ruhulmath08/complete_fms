@@ -5,10 +5,10 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/inventory/widgets/inventory_item_form_fields.dart';
-import 'package:mobile/domain/entities/inventory/inventory_category.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item.dart';
-import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
-import 'package:mobile/domain/entities/inventory/stock_update.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_entity.dart';
 
 String _todayDate() {
   final now = DateTime.now();
@@ -27,8 +27,8 @@ class InventoryDetailPage extends StatefulWidget {
 }
 
 class _InventoryDetailPageState extends State<InventoryDetailPage> {
-  InventoryItem? _item;
-  List<StockUpdate> _updates = const [];
+  InventoryItemEntity? _item;
+  List<StockUpdateEntity> _updates = const [];
   bool _loading = true;
   bool _editing = false;
   bool _saving = false;
@@ -39,12 +39,12 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
   final _unit = TextEditingController();
   final _pricePerUnit = TextEditingController();
   final _note = TextEditingController();
-  InventoryCategory _category = InventoryCategory.feed;
+  InventoryCategoryEntity _category = InventoryCategoryEntity.feed;
 
   final _occurredAt = TextEditingController(text: _todayDate());
   final _quantityChange = TextEditingController();
   final _reason = TextEditingController();
-  StockChangeType _changeType = StockChangeType.add;
+  StockChangeTypeEntity _changeType = StockChangeTypeEntity.add;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
     super.dispose();
   }
 
-  void _hydrate(InventoryItem item) {
+  void _hydrate(InventoryItemEntity item) {
     _name.text = item.name;
     _quantity.text = item.quantity;
     _unit.text = item.unit;
@@ -93,7 +93,7 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
         _updates = updates.items;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -121,7 +121,7 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
       if (!mounted) return;
       setState(() => _editing = false);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -151,7 +151,7 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
     try {
       await getIt<ArchiveInventoryItem>()(widget.itemId);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -169,7 +169,7 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
       _quantityChange.clear();
       _reason.clear();
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -269,17 +269,17 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
                 controller: _occurredAt,
                 decoration: InputDecoration(labelText: l10n.occurredAtHint),
               ),
-              DropdownButtonFormField<StockChangeType>(
+              DropdownButtonFormField<StockChangeTypeEntity>(
                 // ignore: deprecated_member_use
                 value: _changeType,
                 decoration: InputDecoration(labelText: l10n.stockChangeType),
                 items: [
                   DropdownMenuItem(
-                    value: StockChangeType.add,
+                    value: StockChangeTypeEntity.add,
                     child: Text(l10n.stockAdd),
                   ),
                   DropdownMenuItem(
-                    value: StockChangeType.use,
+                    value: StockChangeTypeEntity.use,
                     child: Text(l10n.stockUse),
                   ),
                 ],

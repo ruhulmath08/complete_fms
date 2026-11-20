@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'
-    show GlobalWidgetsLocalizations;
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:material_ui/material_ui.dart';
-import 'package:mobile/l10n/app_localizations_bn.dart';
-import 'package:mobile/l10n/app_localizations_en.dart';
+
+import 'app_localizations_bn.dart';
+import 'app_localizations_en.dart';
 
 // ignore_for_file: type=lint
 
@@ -432,7 +431,7 @@ abstract class AppLocalizations {
   /// No description provided for @cowImage.
   ///
   /// In en, this message translates to:
-  /// **'Cow image'**
+  /// **'CowEntity image'**
   String get cowImage;
 
   /// No description provided for @pickCowImage.
@@ -1626,13 +1625,13 @@ abstract class AppLocalizations {
   /// No description provided for @chartCowProduction.
   ///
   /// In en, this message translates to:
-  /// **'Cow production'**
+  /// **'CowEntity production'**
   String get chartCowProduction;
 
   /// No description provided for @chartCowProductionSemantics.
   ///
   /// In en, this message translates to:
-  /// **'Cow production chart'**
+  /// **'CowEntity production chart'**
   String get chartCowProductionSemantics;
 
   /// No description provided for @chartExpensesCost.

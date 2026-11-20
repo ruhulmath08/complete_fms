@@ -5,13 +5,13 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/presentation/crops/pages/crop_cycle_detail_page.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle.dart';
-import 'package:mobile/domain/entities/crop/crop_expense.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
-import 'package:mobile/domain/entities/crop/cycle_summary.dart';
-import 'package:mobile/domain/entities/crop/expense_category.dart';
-import 'package:mobile/domain/entities/crop/harvest.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_expense_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/domain/entities/crop/cycle_summary_entity.dart';
+import 'package:mobile/domain/entities/crop/expense_category_entity.dart';
+import 'package:mobile/domain/entities/crop/harvest_entity.dart';
 import '../../support/pump_app.dart';
 
 class _MockGetCycle extends Mock implements GetCropCycle {}
@@ -38,17 +38,17 @@ class _MockDeleteHarvest extends Mock implements DeleteHarvest {}
 
 const _cycleId = 'cycle-1';
 
-const _expense = CropExpense(
+const _expense = CropExpenseEntity(
   id: 'exp-1',
   cropCycleId: _cycleId,
   spentAt: '2026-11-05',
-  category: ExpenseCategory.seeds,
+  category: ExpenseCategoryEntity.seeds,
   amount: '150.00',
   note: 'Hybrid',
   createdAt: '2026-11-05T10:00:00Z',
 );
 
-const _harvest = Harvest(
+const _harvest = HarvestEntity(
   id: 'har-1',
   cropCycleId: _cycleId,
   harvestedAt: '2026-11-10',
@@ -60,7 +60,7 @@ const _harvest = Harvest(
 );
 
 void main() {
-  setUpAll(() => registerFallbackValue(ExpenseCategory.labour));
+  setUpAll(() => registerFallbackValue(ExpenseCategoryEntity.labour));
 
   late _MockUpdateExpense updateExpense;
   late _MockDeleteExpense deleteExpense;
@@ -80,7 +80,7 @@ void main() {
     deleteHarvest = _MockDeleteHarvest();
 
     when(() => getCycle(_cycleId)).thenAnswer(
-      (_) async => const CropCycle(
+      (_) async => const CropCycleEntity(
         id: _cycleId,
         cropNameId: 'name-1',
         plantedAt: '2026-10-01',
@@ -91,9 +91,9 @@ void main() {
     );
     when(() => listNames(includeArchived: any(named: 'includeArchived')))
         .thenAnswer(
-      (_) async => const PagedResult<CropName>(
+      (_) async => const PagedResultEntity<CropNameEntity>(
         items: [
-          CropName(
+          CropNameEntity(
             id: 'name-1',
             name: 'Rice',
             isArchived: false,
@@ -107,7 +107,7 @@ void main() {
       ),
     );
     when(() => summary(_cycleId)).thenAnswer(
-      (_) async => const CycleSummary(
+      (_) async => const CycleSummaryEntity(
         cropCycleId: _cycleId,
         totalExpenses: '150.00',
         totalSaleIncome: '5000.00',
@@ -115,7 +115,7 @@ void main() {
       ),
     );
     when(() => listExpenses(_cycleId)).thenAnswer(
-      (_) async => const PagedResult<CropExpense>(
+      (_) async => const PagedResultEntity<CropExpenseEntity>(
         items: [_expense],
         total: 1,
         limit: 50,
@@ -123,7 +123,7 @@ void main() {
       ),
     );
     when(() => listHarvests(_cycleId)).thenAnswer(
-      (_) async => const PagedResult<Harvest>(
+      (_) async => const PagedResultEntity<HarvestEntity>(
         items: [_harvest],
         total: 1,
         limit: 50,
@@ -253,7 +253,7 @@ void main() {
         cycleId: _cycleId,
         expenseId: 'exp-1',
         spentAt: '2026-11-05',
-        category: ExpenseCategory.seeds,
+        category: ExpenseCategoryEntity.seeds,
         amount: '175.50',
         note: 'Hybrid',
       ),

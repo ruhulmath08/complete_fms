@@ -4,11 +4,11 @@ import 'package:mobile/data/models/poultry/egg_production_model.dart';
 import 'package:mobile/data/models/poultry/poultry_feeding_model.dart';
 import 'package:mobile/data/models/poultry/poultry_group_model.dart';
 import 'package:mobile/data/repositories/common/page_result_mapper.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/poultry/egg_production.dart';
-import 'package:mobile/domain/entities/poultry/poultry_feeding.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group_write_params.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/poultry/egg_production_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_feeding_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_write_params_entity.dart';
 import 'package:mobile/domain/repositories/poultry/poultry_repository.dart';
 
 class PoultryRepositoryImpl implements PoultryRepository {
@@ -17,7 +17,7 @@ class PoultryRepositoryImpl implements PoultryRepository {
   final PoultryDatasource _datasource;
 
   @override
-  Future<PagedResult<PoultryGroup>> listGroups({
+  Future<PagedResultEntity<PoultryGroupEntity>> listGroups({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
@@ -35,13 +35,13 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
-  Future<PoultryGroup> getGroup(String groupId) async {
+  Future<PoultryGroupEntity> getGroup(String groupId) async {
     final model = PoultryGroupModel.fromJson(await _datasource.getGroup(groupId));
     return mapPoultryGroupModel(model);
   }
 
   @override
-  Future<PoultryGroup> createGroup(PoultryGroupWriteParams params) async {
+  Future<PoultryGroupEntity> createGroup(PoultryGroupWriteParamsEntity params) async {
     final model = PoultryGroupModel.fromJson(
       await _datasource.createGroup(poultryGroupWriteToJson(params)),
     );
@@ -49,9 +49,9 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
-  Future<PoultryGroup> updateGroup(
+  Future<PoultryGroupEntity> updateGroup(
     String groupId,
-    PoultryGroupWriteParams params,
+    PoultryGroupWriteParamsEntity params,
   ) async {
     final model = PoultryGroupModel.fromJson(
       await _datasource.updateGroup(groupId, poultryGroupWriteToJson(params)),
@@ -60,13 +60,13 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
-  Future<PoultryGroup> archiveGroup(String groupId) async {
+  Future<PoultryGroupEntity> archiveGroup(String groupId) async {
     final model = PoultryGroupModel.fromJson(await _datasource.archiveGroup(groupId));
     return mapPoultryGroupModel(model);
   }
 
   @override
-  Future<PagedResult<EggProduction>> listEggs(
+  Future<PagedResultEntity<EggProductionEntity>> listEggs(
     String groupId, {
     int limit = 50,
     int offset = 0,
@@ -76,7 +76,7 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
-  Future<EggProduction> addEgg({
+  Future<EggProductionEntity> addEgg({
     required String groupId,
     required String producedAt,
     required String quantity,
@@ -97,7 +97,7 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
-  Future<EggProduction> updateEgg({
+  Future<EggProductionEntity> updateEgg({
     required String groupId,
     required String eggId,
     required String producedAt,
@@ -123,7 +123,7 @@ class PoultryRepositoryImpl implements PoultryRepository {
       _datasource.deleteEgg(groupId, eggId);
 
   @override
-  Future<PagedResult<PoultryFeeding>> listFeedings(
+  Future<PagedResultEntity<PoultryFeedingEntity>> listFeedings(
     String groupId, {
     int limit = 50,
     int offset = 0,
@@ -137,7 +137,7 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
-  Future<PoultryFeeding> addFeeding({
+  Future<PoultryFeedingEntity> addFeeding({
     required String groupId,
     required String fedAt,
     required String feedName,
@@ -158,7 +158,7 @@ class PoultryRepositoryImpl implements PoultryRepository {
   }
 
   @override
-  Future<PoultryFeeding> updateFeeding({
+  Future<PoultryFeedingEntity> updateFeeding({
     required String groupId,
     required String feedingId,
     required String fedAt,

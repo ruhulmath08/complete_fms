@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
-import 'package:mobile/domain/entities/crop/crop_name_write_params.dart';
+import 'package:mobile/domain/entities/crop/crop_name_write_params_entity.dart';
 
 class CropNameFormFields extends StatelessWidget {
   const CropNameFormFields({
@@ -32,12 +32,12 @@ class CropNameFormFields extends StatelessWidget {
   }
 }
 
-CropNameWriteParams buildCropNameWriteParams({
+CropNameWriteParamsEntity buildCropNameWriteParams({
   required TextEditingController name,
   required TextEditingController notes,
 }) {
   final notesText = notes.text.trim();
-  return CropNameWriteParams(
+  return CropNameWriteParamsEntity(
     name: name.text.trim(),
     notes: notesText.isEmpty ? null : notesText,
   );

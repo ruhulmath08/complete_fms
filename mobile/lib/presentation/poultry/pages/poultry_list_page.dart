@@ -9,7 +9,7 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_entity.dart';
 
 class PoultryListPage extends StatefulWidget {
   const PoultryListPage({super.key});
@@ -22,7 +22,7 @@ class _PoultryListPageState extends State<PoultryListPage> {
   bool _includeArchived = false;
   bool _loading = true;
   String? _error;
-  List<PoultryGroup> _groups = const [];
+  List<PoultryGroupEntity> _groups = const [];
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _PoultryListPageState extends State<PoultryListPage> {
         _groups = page.items;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;

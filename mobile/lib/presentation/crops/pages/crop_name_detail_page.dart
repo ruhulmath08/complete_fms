@@ -4,7 +4,7 @@ import 'package:mobile/domain/use_cases/crop/crops_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/crops/widgets/crop_name_form_fields.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
 
 class CropNameDetailPage extends StatefulWidget {
   const CropNameDetailPage({super.key, required this.cropNameId});
@@ -16,7 +16,7 @@ class CropNameDetailPage extends StatefulWidget {
 }
 
 class _CropNameDetailPageState extends State<CropNameDetailPage> {
-  CropName? _cropName;
+  CropNameEntity? _cropName;
   bool _loading = true;
   bool _editing = false;
   bool _saving = false;
@@ -38,7 +38,7 @@ class _CropNameDetailPageState extends State<CropNameDetailPage> {
     super.dispose();
   }
 
-  void _hydrate(CropName cropName) {
+  void _hydrate(CropNameEntity cropName) {
     _name.text = cropName.name;
     _notes.text = cropName.notes ?? '';
   }
@@ -56,7 +56,7 @@ class _CropNameDetailPageState extends State<CropNameDetailPage> {
         _cropName = cropName;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -80,7 +80,7 @@ class _CropNameDetailPageState extends State<CropNameDetailPage> {
         _cropName = cropName;
         _editing = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -110,7 +110,7 @@ class _CropNameDetailPageState extends State<CropNameDetailPage> {
     try {
       await getIt<ArchiveCropName>()(widget.cropNameId);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }

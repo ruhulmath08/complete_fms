@@ -8,12 +8,12 @@ import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/shared/widgets/offset_pagination_controls.dart';
 import 'package:mobile/presentation/cows/widgets/cow_form_fields.dart';
 import 'package:mobile/presentation/cows/widgets/cow_image_panel.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/cow/cow.dart';
-import 'package:mobile/domain/entities/cow/cow_feeding.dart';
-import 'package:mobile/domain/entities/cow/cow_gender.dart';
-import 'package:mobile/domain/entities/cow/cow_purpose.dart';
-import 'package:mobile/domain/entities/cow/milk_production.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_feeding_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_gender_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose_entity.dart';
+import 'package:mobile/domain/entities/cow/milk_production_entity.dart';
 
 const _pageSize = 10;
 
@@ -45,9 +45,9 @@ class CowDetailPage extends StatefulWidget {
 }
 
 class _CowDetailPageState extends State<CowDetailPage> {
-  Cow? _cow;
-  List<MilkProduction> _milk = const [];
-  List<CowFeeding> _feedings = const [];
+  CowEntity? _cow;
+  List<MilkProductionEntity> _milk = const [];
+  List<CowFeedingEntity> _feedings = const [];
   int _milkOffset = 0;
   int _milkTotal = 0;
   int _feedingOffset = 0;
@@ -69,9 +69,9 @@ class _CowDetailPageState extends State<CowDetailPage> {
   final _purchaseDate = TextEditingController();
   final _purchasePrice = TextEditingController();
   final _notes = TextEditingController();
-  CowPurpose _purpose = CowPurpose.milk;
-  CowGender _gender = CowGender.female;
-  AcquisitionSource _acquiredBy = AcquisitionSource.bornOnFarm;
+  CowPurposeEntity _purpose = CowPurposeEntity.milk;
+  CowGenderEntity _gender = CowGenderEntity.female;
+  AcquisitionSourceEntity _acquiredBy = AcquisitionSourceEntity.bornOnFarm;
 
   final _milkProducedAt = TextEditingController();
   final _milkQty = TextEditingController();
@@ -122,7 +122,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     super.dispose();
   }
 
-  void _hydrateForm(Cow cow) {
+  void _hydrateForm(CowEntity cow) {
     _name.text = cow.name ?? '';
     _breed.text = cow.breed ?? '';
     _dateOfBirth.text = cow.dateOfBirth ?? '';
@@ -137,7 +137,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     _acquiredBy = cow.acquiredBy;
   }
 
-  String _cowPhotoSemantics(Cow cow, AppLocalizations l10n) {
+  String _cowPhotoSemantics(CowEntity cow, AppLocalizations l10n) {
     final name = cow.name;
     if (name != null && name.isNotEmpty) {
       return l10n.cowPhotoAlt(name, cow.tagNumber);
@@ -164,7 +164,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     _feedNote.clear();
   }
 
-  void _startEditMilk(MilkProduction row) {
+  void _startEditMilk(MilkProductionEntity row) {
     setState(() {
       _editingMilkId = row.id;
       _milkProducedAt.text = row.producedAt;
@@ -175,7 +175,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     });
   }
 
-  void _startEditFeeding(CowFeeding row) {
+  void _startEditFeeding(CowFeedingEntity row) {
     setState(() {
       _editingFeedingId = row.id;
       _feedFedAt.text = row.fedAt;
@@ -229,7 +229,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
         _imagePath = null;
       });
       await Future.wait([_loadMilk(), _loadFeedings()]);
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -276,7 +276,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
         _imagePath = null;
       });
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -306,7 +306,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     try {
       await getIt<ArchiveCow>()(widget.cowId);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -340,12 +340,12 @@ class _CowDetailPageState extends State<CowDetailPage> {
         _resetMilkForm();
       });
       await _loadMilk();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  Future<void> _deleteMilk(MilkProduction row) async {
+  Future<void> _deleteMilk(MilkProductionEntity row) async {
     final l10n = AppLocalizations.of(context)!;
     final ok = await showDialog<bool>(
       context: context,
@@ -368,7 +368,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
       await getIt<DeleteMilkProduction>()(widget.cowId, row.id);
       if (_editingMilkId == row.id) _resetMilkForm();
       await _loadMilk();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -404,12 +404,12 @@ class _CowDetailPageState extends State<CowDetailPage> {
         _resetFeedingForm();
       });
       await _loadFeedings();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  Future<void> _deleteFeeding(CowFeeding row) async {
+  Future<void> _deleteFeeding(CowFeedingEntity row) async {
     final l10n = AppLocalizations.of(context)!;
     final ok = await showDialog<bool>(
       context: context,
@@ -432,7 +432,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
       await getIt<DeleteCowFeeding>()(widget.cowId, row.id);
       if (_editingFeedingId == row.id) _resetFeedingForm();
       await _loadFeedings();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -443,7 +443,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     return l10n.paginationSummary(page, totalPages, total);
   }
 
-  Widget _buildMilkSection(Cow cow, bool canWrite, AppLocalizations l10n) {
+  Widget _buildMilkSection(CowEntity cow, bool canWrite, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -529,7 +529,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
   }
 
   DataRow _milkRow(
-    MilkProduction row,
+    MilkProductionEntity row,
     int index,
     bool canWrite,
     AppLocalizations l10n,
@@ -657,7 +657,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
   }
 
   DataRow _feedingRow(
-    CowFeeding row,
+    CowFeedingEntity row,
     int index,
     bool canWrite,
     AppLocalizations l10n,
@@ -695,7 +695,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
     );
   }
 
-  Widget _buildDetailChrome(Cow cow, AppLocalizations l10n, bool canWrite) {
+  Widget _buildDetailChrome(CowEntity cow, AppLocalizations l10n, bool canWrite) {
     final tokens = AppTokens.of(context);
     final photoLabel = _cowPhotoSemantics(cow, l10n);
     final image = CowImagePanel(

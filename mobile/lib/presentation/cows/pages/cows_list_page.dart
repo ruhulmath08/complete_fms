@@ -9,7 +9,7 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
-import 'package:mobile/domain/entities/cow/cow.dart';
+import 'package:mobile/domain/entities/cow/cow_entity.dart';
 
 class CowsListPage extends StatefulWidget {
   const CowsListPage({super.key});
@@ -22,7 +22,7 @@ class _CowsListPageState extends State<CowsListPage> {
   bool _includeArchived = false;
   bool _loading = true;
   String? _error;
-  List<Cow> _cows = const [];
+  List<CowEntity> _cows = const [];
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _CowsListPageState extends State<CowsListPage> {
         _cows = page.items;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;

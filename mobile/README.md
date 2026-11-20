@@ -59,7 +59,7 @@ lib/
     models/{domain}/         # API JSON DTOs
     mappers/{domain}/        # Model → Entity
     datasources/{domain}/    # abstract + Impl (auth: remote + local)
-    datasources/common/      # ApiClient (tokens via AuthLocalDatasource)
+    network/                 # ApiClient (tokens via AuthLocalDatasource)
     repositories/{domain}/   # repo impls; models → entities
   presentation/              # pages, cubits, shell, shared widgets
   infrastructure/            # DI (GetIt), GoRouter, theme, config

@@ -5,11 +5,11 @@ import 'package:mobile/domain/use_cases/ledger/ledger_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/presentation/ledger/pages/ledger_list_page.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series_point.dart';
-import 'package:mobile/domain/entities/ledger/period_totals.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_point_entity.dart';
+import 'package:mobile/domain/entities/ledger/period_totals_entity.dart';
 import '../../support/pump_app.dart';
 
 class _MockListEntries extends Mock implements ListLedgerEntries {}
@@ -34,7 +34,7 @@ void main() {
         to: any(named: 'to'),
       ),
     ).thenAnswer(
-      (_) async => const PagedResult<LedgerEntry>(
+      (_) async => const PagedResultEntity<LedgerEntryEntity>(
         items: [],
         total: 0,
         limit: 100,
@@ -43,7 +43,7 @@ void main() {
     );
     when(() => totals(from: any(named: 'from'), to: any(named: 'to')))
         .thenAnswer(
-      (_) async => const PeriodTotals(
+      (_) async => const PeriodTotalsEntity(
         from: '2026-11-01',
         to: '2026-11-30',
         totalIncome: '120.00',
@@ -58,18 +58,18 @@ void main() {
         grain: any(named: 'grain'),
       ),
     ).thenAnswer(
-      (_) async => const LedgerSeries(
+      (_) async => const LedgerSeriesEntity(
         from: '2026-11-01',
         to: '2026-11-13',
         grain: 'day',
         points: [
-          LedgerSeriesPoint(
+          LedgerSeriesPointEntity(
             bucketStart: '2026-11-01',
             income: '100.00',
             expenses: '40.00',
             net: '60.00',
           ),
-          LedgerSeriesPoint(
+          LedgerSeriesPointEntity(
             bucketStart: '2026-11-02',
             income: '20.00',
             expenses: '5.00',

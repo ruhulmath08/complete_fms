@@ -13,9 +13,9 @@ import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/ledger/widgets/ledger_entry_form_fields.dart';
 import 'package:mobile/presentation/ledger/widgets/ledger_series_chart.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series.dart';
-import 'package:mobile/domain/entities/ledger/period_totals.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_entity.dart';
+import 'package:mobile/domain/entities/ledger/period_totals_entity.dart';
 
 String _isoDate(DateTime d) {
   final m = d.month.toString().padLeft(2, '0');
@@ -43,9 +43,9 @@ class _LedgerListPageState extends State<LedgerListPage> {
   bool _includeArchived = false;
   bool _loading = true;
   String? _error;
-  List<LedgerEntry> _items = const [];
-  PeriodTotals? _totals;
-  LedgerSeries? _series;
+  List<LedgerEntryEntity> _items = const [];
+  PeriodTotalsEntity? _totals;
+  LedgerSeriesEntity? _series;
 
   @override
   void initState() {
@@ -91,7 +91,7 @@ class _LedgerListPageState extends State<LedgerListPage> {
         _series = series;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;

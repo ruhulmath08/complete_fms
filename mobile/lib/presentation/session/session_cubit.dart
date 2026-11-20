@@ -14,7 +14,7 @@ class SessionCubit extends Cubit<bool> {
   void markSignedIn() => emit(true);
 
   Future<void> signOut() async {
-    await _signOut();
+    await _signOut(); // Result ignored: always clear local session state
     emit(false);
   }
 }

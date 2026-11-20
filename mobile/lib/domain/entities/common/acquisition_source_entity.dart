@@ -1,0 +1,1 @@
+enum AcquisitionSourceEntity { purchased, bornOnFarm }

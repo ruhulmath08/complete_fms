@@ -6,11 +6,11 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/poultry/widgets/poultry_group_form_fields.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/poultry/egg_production.dart';
-import 'package:mobile/domain/entities/poultry/poultry_feeding.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group.dart';
-import 'package:mobile/domain/entities/poultry/poultry_type.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/poultry/egg_production_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_feeding_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_type_entity.dart';
 
 String _rowTotal(String quantity, String unitPrice) {
   final qty = double.tryParse(quantity);
@@ -40,9 +40,9 @@ class PoultryDetailPage extends StatefulWidget {
 }
 
 class _PoultryDetailPageState extends State<PoultryDetailPage> {
-  PoultryGroup? _group;
-  List<EggProduction> _eggs = const [];
-  List<PoultryFeeding> _feedings = const [];
+  PoultryGroupEntity? _group;
+  List<EggProductionEntity> _eggs = const [];
+  List<PoultryFeedingEntity> _feedings = const [];
   String? _editingEggId;
   String? _editingFeedingId;
   bool _loading = true;
@@ -56,8 +56,8 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
   final _purchaseDate = TextEditingController();
   final _purchasePrice = TextEditingController();
   final _notes = TextEditingController();
-  PoultryType _poultryType = PoultryType.layer;
-  AcquisitionSource _acquiredBy = AcquisitionSource.bornOnFarm;
+  PoultryTypeEntity _poultryType = PoultryTypeEntity.layer;
+  AcquisitionSourceEntity _acquiredBy = AcquisitionSourceEntity.bornOnFarm;
 
   final _eggProducedAt = TextEditingController();
   final _eggQty = TextEditingController();
@@ -103,7 +103,7 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
     super.dispose();
   }
 
-  void _hydrateForm(PoultryGroup group) {
+  void _hydrateForm(PoultryGroupEntity group) {
     _name.text = group.name;
     _birdCount.text = group.birdCount.toString();
     _dateAcquired.text = group.dateAcquired ?? '';
@@ -151,7 +151,7 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
         _feedings = feedings.items;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -185,7 +185,7 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
         _editing = false;
       });
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -215,12 +215,12 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
     try {
       await getIt<ArchivePoultryGroup>()(widget.groupId);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  void _startEditEgg(EggProduction row) {
+  void _startEditEgg(EggProductionEntity row) {
     setState(() {
       _editingEggId = row.id;
       _eggProducedAt.text = row.producedAt;
@@ -232,7 +232,7 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
     });
   }
 
-  void _startEditFeeding(PoultryFeeding row) {
+  void _startEditFeeding(PoultryFeedingEntity row) {
     setState(() {
       _editingFeedingId = row.id;
       _feedFedAt.text = row.fedAt;
@@ -270,12 +270,12 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
       }
       setState(_resetEggForm);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  Future<void> _deleteEgg(EggProduction row) async {
+  Future<void> _deleteEgg(EggProductionEntity row) async {
     final l10n = AppLocalizations.of(context)!;
     final ok = await showDialog<bool>(
       context: context,
@@ -298,7 +298,7 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
       await getIt<DeleteEggProduction>()(widget.groupId, row.id);
       if (_editingEggId == row.id) _resetEggForm();
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -329,12 +329,12 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
       }
       setState(_resetFeedingForm);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  Future<void> _deleteFeeding(PoultryFeeding row) async {
+  Future<void> _deleteFeeding(PoultryFeedingEntity row) async {
     final l10n = AppLocalizations.of(context)!;
     final ok = await showDialog<bool>(
       context: context,
@@ -357,13 +357,13 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
       await getIt<DeletePoultryFeeding>()(widget.groupId, row.id);
       if (_editingFeedingId == row.id) _resetFeedingForm();
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
   DataRow _eggRow(
-    EggProduction row,
+    EggProductionEntity row,
     int index,
     bool canWrite,
     AppLocalizations l10n,
@@ -402,7 +402,7 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
   }
 
   DataRow _feedingRow(
-    PoultryFeeding row,
+    PoultryFeedingEntity row,
     int index,
     bool canWrite,
     AppLocalizations l10n,
