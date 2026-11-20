@@ -180,7 +180,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tag number is generated automatically after create.';
 
   @override
-  String get cowImage => 'CowEntity image';
+  String get cowImage => 'Cow image';
 
   @override
   String get pickCowImage => 'Pick cow image';
@@ -800,10 +800,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chartMilkSemantics => 'Milk chart';
 
   @override
-  String get chartCowProduction => 'CowEntity production';
+  String get chartCowProduction => 'Cow production';
 
   @override
-  String get chartCowProductionSemantics => 'CowEntity production chart';
+  String get chartCowProductionSemantics => 'Cow production chart';
 
   @override
   String get chartExpensesCost => 'Expenses cost';

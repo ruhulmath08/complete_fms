@@ -431,7 +431,7 @@ abstract class AppLocalizations {
   /// No description provided for @cowImage.
   ///
   /// In en, this message translates to:
-  /// **'CowEntity image'**
+  /// **'Cow image'**
   String get cowImage;
 
   /// No description provided for @pickCowImage.
@@ -1625,13 +1625,13 @@ abstract class AppLocalizations {
   /// No description provided for @chartCowProduction.
   ///
   /// In en, this message translates to:
-  /// **'CowEntity production'**
+  /// **'Cow production'**
   String get chartCowProduction;
 
   /// No description provided for @chartCowProductionSemantics.
   ///
   /// In en, this message translates to:
-  /// **'CowEntity production chart'**
+  /// **'Cow production chart'**
   String get chartCowProductionSemantics;
 
   /// No description provided for @chartExpensesCost.
