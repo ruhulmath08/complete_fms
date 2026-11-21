@@ -1,9 +1,8 @@
-import 'package:mobile/domain/entities/auth/sign_up_params.dart';
+import 'package:mobile/domain/entities/auth/sign_up_params_entity.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:mobile/domain/failures.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
@@ -58,29 +57,25 @@ class _SignUpPageState extends State<SignUpPage> {
       _busy = true;
       _error = null;
     });
-    try {
-      await getIt<SignUp>()(
-        SignUpParams(
-          fullName: _fullName.text.trim(),
-          email: _email.text.trim(),
-          phone: _phone.text.trim(),
-          address: _address.text.trim(),
-          latitude: double.parse(_latitude.text),
-          longitude: double.parse(_longitude.text),
-          password: _password.text,
-          confirmPassword: _confirm.text,
-          profileImagePath: _imagePath!,
-        ),
-      );
-      if (!mounted) return;
-      context.go(AppRoutes.signIn);
-    } on AppFailure catch (e) {
-      setState(() => _error = e.message);
-    } catch (_) {
-      setState(() => _error = l10n.genericError);
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
+    final result = await getIt<SignUp>()(
+      SignUpParamsEntity(
+        fullName: _fullName.text.trim(),
+        email: _email.text.trim(),
+        phone: _phone.text.trim(),
+        address: _address.text.trim(),
+        latitude: double.parse(_latitude.text),
+        longitude: double.parse(_longitude.text),
+        password: _password.text,
+        confirmPassword: _confirm.text,
+        profileImagePath: _imagePath!,
+      ),
+    );
+    if (!mounted) return;
+    result.when(
+      success: (_) => context.go(AppRoutes.signIn),
+      failure: (failure) => setState(() => _error = failure.message),
+    );
+    if (mounted) setState(() => _busy = false);
   }
 
   @override

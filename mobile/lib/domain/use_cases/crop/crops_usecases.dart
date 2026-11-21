@@ -1,102 +1,102 @@
 import 'package:mobile/domain/repositories/crop/crops_repository.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle_write_params.dart';
-import 'package:mobile/domain/entities/crop/crop_expense.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
-import 'package:mobile/domain/entities/crop/crop_name_write_params.dart';
-import 'package:mobile/domain/entities/crop/cycle_summary.dart';
-import 'package:mobile/domain/entities/crop/expense_category.dart';
-import 'package:mobile/domain/entities/crop/harvest.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_expense_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/cycle_summary_entity.dart';
+import 'package:mobile/domain/entities/crop/expense_category_entity.dart';
+import 'package:mobile/domain/entities/crop/harvest_entity.dart';
 
 class ListCropNames {
   ListCropNames(this._repository);
   final CropsRepository _repository;
-  Future<PagedResult<CropName>> call({bool includeArchived = false}) =>
+  Future<PagedResultEntity<CropNameEntity>> call({bool includeArchived = false}) =>
       _repository.listNames(includeArchived: includeArchived);
 }
 
 class GetCropName {
   GetCropName(this._repository);
   final CropsRepository _repository;
-  Future<CropName> call(String cropNameId) => _repository.getName(cropNameId);
+  Future<CropNameEntity> call(String cropNameId) => _repository.getName(cropNameId);
 }
 
 class CreateCropName {
   CreateCropName(this._repository);
   final CropsRepository _repository;
-  Future<CropName> call(CropNameWriteParams params) =>
+  Future<CropNameEntity> call(CropNameWriteParamsEntity params) =>
       _repository.createName(params);
 }
 
 class UpdateCropName {
   UpdateCropName(this._repository);
   final CropsRepository _repository;
-  Future<CropName> call(String cropNameId, CropNameWriteParams params) =>
+  Future<CropNameEntity> call(String cropNameId, CropNameWriteParamsEntity params) =>
       _repository.updateName(cropNameId, params);
 }
 
 class ArchiveCropName {
   ArchiveCropName(this._repository);
   final CropsRepository _repository;
-  Future<CropName> call(String cropNameId) =>
+  Future<CropNameEntity> call(String cropNameId) =>
       _repository.archiveName(cropNameId);
 }
 
 class ListCropCycles {
   ListCropCycles(this._repository);
   final CropsRepository _repository;
-  Future<PagedResult<CropCycle>> call({bool includeArchived = false}) =>
+  Future<PagedResultEntity<CropCycleEntity>> call({bool includeArchived = false}) =>
       _repository.listCycles(includeArchived: includeArchived);
 }
 
 class GetCropCycle {
   GetCropCycle(this._repository);
   final CropsRepository _repository;
-  Future<CropCycle> call(String cycleId) => _repository.getCycle(cycleId);
+  Future<CropCycleEntity> call(String cycleId) => _repository.getCycle(cycleId);
 }
 
 class CreateCropCycle {
   CreateCropCycle(this._repository);
   final CropsRepository _repository;
-  Future<CropCycle> call(CropCycleWriteParams params) =>
+  Future<CropCycleEntity> call(CropCycleWriteParamsEntity params) =>
       _repository.createCycle(params);
 }
 
 class UpdateCropCycle {
   UpdateCropCycle(this._repository);
   final CropsRepository _repository;
-  Future<CropCycle> call(String cycleId, CropCycleWriteParams params) =>
+  Future<CropCycleEntity> call(String cycleId, CropCycleWriteParamsEntity params) =>
       _repository.updateCycle(cycleId, params);
 }
 
 class ArchiveCropCycle {
   ArchiveCropCycle(this._repository);
   final CropsRepository _repository;
-  Future<CropCycle> call(String cycleId) => _repository.archiveCycle(cycleId);
+  Future<CropCycleEntity> call(String cycleId) => _repository.archiveCycle(cycleId);
 }
 
 class GetCropCycleSummary {
   GetCropCycleSummary(this._repository);
   final CropsRepository _repository;
-  Future<CycleSummary> call(String cycleId) =>
+  Future<CycleSummaryEntity> call(String cycleId) =>
       _repository.getCycleSummary(cycleId);
 }
 
 class ListCropExpenses {
   ListCropExpenses(this._repository);
   final CropsRepository _repository;
-  Future<PagedResult<CropExpense>> call(String cycleId) =>
+  Future<PagedResultEntity<CropExpenseEntity>> call(String cycleId) =>
       _repository.listExpenses(cycleId);
 }
 
 class AddCropExpense {
   AddCropExpense(this._repository);
   final CropsRepository _repository;
-  Future<CropExpense> call({
+  Future<CropExpenseEntity> call({
     required String cycleId,
     required String spentAt,
-    required ExpenseCategory category,
+    required ExpenseCategoryEntity category,
     required String amount,
     String? note,
   }) =>
@@ -112,14 +112,14 @@ class AddCropExpense {
 class ListHarvests {
   ListHarvests(this._repository);
   final CropsRepository _repository;
-  Future<PagedResult<Harvest>> call(String cycleId) =>
+  Future<PagedResultEntity<HarvestEntity>> call(String cycleId) =>
       _repository.listHarvests(cycleId);
 }
 
 class AddHarvest {
   AddHarvest(this._repository);
   final CropsRepository _repository;
-  Future<Harvest> call({
+  Future<HarvestEntity> call({
     required String cycleId,
     required String harvestedAt,
     required String quantity,
@@ -140,11 +140,11 @@ class AddHarvest {
 class UpdateCropExpense {
   UpdateCropExpense(this._repository);
   final CropsRepository _repository;
-  Future<CropExpense> call({
+  Future<CropExpenseEntity> call({
     required String cycleId,
     required String expenseId,
     required String spentAt,
-    required ExpenseCategory category,
+    required ExpenseCategoryEntity category,
     required String amount,
     String? note,
   }) =>
@@ -168,7 +168,7 @@ class DeleteCropExpense {
 class UpdateHarvest {
   UpdateHarvest(this._repository);
   final CropsRepository _repository;
-  Future<Harvest> call({
+  Future<HarvestEntity> call({
     required String cycleId,
     required String harvestId,
     required String harvestedAt,

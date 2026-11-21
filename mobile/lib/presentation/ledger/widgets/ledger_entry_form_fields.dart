@@ -1,28 +1,28 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params_entity.dart';
 
-String ledgerEntryTypeLabel(AppLocalizations l10n, LedgerEntryType type) {
+String ledgerEntryTypeLabel(AppLocalizations l10n, LedgerEntryTypeEntity type) {
   return switch (type) {
-    LedgerEntryType.income => l10n.ledgerIncome,
-    LedgerEntryType.expense => l10n.ledgerExpense,
+    LedgerEntryTypeEntity.income => l10n.ledgerIncome,
+    LedgerEntryTypeEntity.expense => l10n.ledgerExpense,
   };
 }
 
-String ledgerCategoryLabel(AppLocalizations l10n, LedgerEntryCategory category) {
+String ledgerCategoryLabel(AppLocalizations l10n, LedgerEntryCategoryEntity category) {
   return switch (category) {
-    LedgerEntryCategory.labour => l10n.ledgerLabour,
-    LedgerEntryCategory.feedOrSupplies => l10n.ledgerFeedOrSupplies,
-    LedgerEntryCategory.utilities => l10n.ledgerUtilities,
-    LedgerEntryCategory.transport => l10n.ledgerTransport,
-    LedgerEntryCategory.equipment => l10n.ledgerEquipment,
-    LedgerEntryCategory.livestockSale => l10n.ledgerLivestockSale,
-    LedgerEntryCategory.productSale => l10n.ledgerProductSale,
-    LedgerEntryCategory.subsidy => l10n.ledgerSubsidy,
-    LedgerEntryCategory.other => l10n.ledgerOther,
+    LedgerEntryCategoryEntity.labour => l10n.ledgerLabour,
+    LedgerEntryCategoryEntity.feedOrSupplies => l10n.ledgerFeedOrSupplies,
+    LedgerEntryCategoryEntity.utilities => l10n.ledgerUtilities,
+    LedgerEntryCategoryEntity.transport => l10n.ledgerTransport,
+    LedgerEntryCategoryEntity.equipment => l10n.ledgerEquipment,
+    LedgerEntryCategoryEntity.livestockSale => l10n.ledgerLivestockSale,
+    LedgerEntryCategoryEntity.productSale => l10n.ledgerProductSale,
+    LedgerEntryCategoryEntity.subsidy => l10n.ledgerSubsidy,
+    LedgerEntryCategoryEntity.other => l10n.ledgerOther,
   };
 }
 
@@ -43,21 +43,21 @@ class LedgerEntryFormFields extends StatelessWidget {
   final TextEditingController amount;
   final TextEditingController unit;
   final TextEditingController note;
-  final LedgerEntryType entryType;
-  final LedgerEntryCategory category;
-  final ValueChanged<LedgerEntryType> onEntryTypeChanged;
-  final ValueChanged<LedgerEntryCategory> onCategoryChanged;
+  final LedgerEntryTypeEntity entryType;
+  final LedgerEntryCategoryEntity category;
+  final ValueChanged<LedgerEntryTypeEntity> onEntryTypeChanged;
+  final ValueChanged<LedgerEntryCategoryEntity> onCategoryChanged;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return FormFieldColumn(
       children: [
-        DropdownButtonFormField<LedgerEntryType>(
+        DropdownButtonFormField<LedgerEntryTypeEntity>(
           // ignore: deprecated_member_use
           value: entryType,
           decoration: InputDecoration(labelText: l10n.ledgerEntryType),
-          items: LedgerEntryType.values
+          items: LedgerEntryTypeEntity.values
               .map(
                 (t) => DropdownMenuItem(
                   value: t,
@@ -73,11 +73,11 @@ class LedgerEntryFormFields extends StatelessWidget {
           controller: occurredAt,
           decoration: InputDecoration(labelText: l10n.occurredAtHint),
         ),
-        DropdownButtonFormField<LedgerEntryCategory>(
+        DropdownButtonFormField<LedgerEntryCategoryEntity>(
           // ignore: deprecated_member_use
           value: category,
           decoration: InputDecoration(labelText: l10n.ledgerCategory),
-          items: LedgerEntryCategory.values
+          items: LedgerEntryCategoryEntity.values
               .map(
                 (c) => DropdownMenuItem(
                   value: c,
@@ -108,17 +108,17 @@ class LedgerEntryFormFields extends StatelessWidget {
   }
 }
 
-LedgerEntryWriteParams buildLedgerEntryWriteParams({
+LedgerEntryWriteParamsEntity buildLedgerEntryWriteParams({
   required TextEditingController occurredAt,
   required TextEditingController amount,
   required TextEditingController unit,
   required TextEditingController note,
-  required LedgerEntryType entryType,
-  required LedgerEntryCategory category,
+  required LedgerEntryTypeEntity entryType,
+  required LedgerEntryCategoryEntity category,
 }) {
   final unitText = unit.text.trim();
   final noteText = note.text.trim();
-  return LedgerEntryWriteParams(
+  return LedgerEntryWriteParamsEntity(
     entryType: entryType,
     occurredAt: occurredAt.text.trim(),
     category: category,

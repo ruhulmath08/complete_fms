@@ -1,71 +1,71 @@
 import 'package:mobile/data/models/ledger/ledger_entry_model.dart';
 import 'package:mobile/data/models/ledger/ledger_series_model.dart';
 import 'package:mobile/data/models/ledger/period_totals_model.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series_point.dart';
-import 'package:mobile/domain/entities/ledger/period_totals.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_point_entity.dart';
+import 'package:mobile/domain/entities/ledger/period_totals_entity.dart';
 
-LedgerEntryType mapLedgerEntryType(String value) {
+LedgerEntryTypeEntity mapLedgerEntryType(String value) {
   switch (value) {
     case 'income':
-      return LedgerEntryType.income;
+      return LedgerEntryTypeEntity.income;
     case 'expense':
-      return LedgerEntryType.expense;
+      return LedgerEntryTypeEntity.expense;
     default:
-      return LedgerEntryType.expense;
+      return LedgerEntryTypeEntity.expense;
   }
 }
 
-String ledgerEntryTypeToApi(LedgerEntryType value) => switch (value) {
-      LedgerEntryType.income => 'income',
-      LedgerEntryType.expense => 'expense',
+String ledgerEntryTypeToApi(LedgerEntryTypeEntity value) => switch (value) {
+      LedgerEntryTypeEntity.income => 'income',
+      LedgerEntryTypeEntity.expense => 'expense',
     };
 
-LedgerEntryCategory mapLedgerEntryCategory(String value) {
+LedgerEntryCategoryEntity mapLedgerEntryCategory(String value) {
   switch (value) {
     case 'labour':
-      return LedgerEntryCategory.labour;
+      return LedgerEntryCategoryEntity.labour;
     case 'feed_or_supplies':
-      return LedgerEntryCategory.feedOrSupplies;
+      return LedgerEntryCategoryEntity.feedOrSupplies;
     case 'utilities':
-      return LedgerEntryCategory.utilities;
+      return LedgerEntryCategoryEntity.utilities;
     case 'transport':
-      return LedgerEntryCategory.transport;
+      return LedgerEntryCategoryEntity.transport;
     case 'equipment':
-      return LedgerEntryCategory.equipment;
+      return LedgerEntryCategoryEntity.equipment;
     case 'livestock_sale':
-      return LedgerEntryCategory.livestockSale;
+      return LedgerEntryCategoryEntity.livestockSale;
     case 'product_sale':
-      return LedgerEntryCategory.productSale;
+      return LedgerEntryCategoryEntity.productSale;
     case 'subsidy':
-      return LedgerEntryCategory.subsidy;
+      return LedgerEntryCategoryEntity.subsidy;
     case 'other':
-      return LedgerEntryCategory.other;
+      return LedgerEntryCategoryEntity.other;
     default:
-      return LedgerEntryCategory.other;
+      return LedgerEntryCategoryEntity.other;
   }
 }
 
-String ledgerEntryCategoryToApi(LedgerEntryCategory value) => switch (value) {
-      LedgerEntryCategory.labour => 'labour',
-      LedgerEntryCategory.feedOrSupplies => 'feed_or_supplies',
-      LedgerEntryCategory.utilities => 'utilities',
-      LedgerEntryCategory.transport => 'transport',
-      LedgerEntryCategory.equipment => 'equipment',
-      LedgerEntryCategory.livestockSale => 'livestock_sale',
-      LedgerEntryCategory.productSale => 'product_sale',
-      LedgerEntryCategory.subsidy => 'subsidy',
-      LedgerEntryCategory.other => 'other',
+String ledgerEntryCategoryToApi(LedgerEntryCategoryEntity value) => switch (value) {
+      LedgerEntryCategoryEntity.labour => 'labour',
+      LedgerEntryCategoryEntity.feedOrSupplies => 'feed_or_supplies',
+      LedgerEntryCategoryEntity.utilities => 'utilities',
+      LedgerEntryCategoryEntity.transport => 'transport',
+      LedgerEntryCategoryEntity.equipment => 'equipment',
+      LedgerEntryCategoryEntity.livestockSale => 'livestock_sale',
+      LedgerEntryCategoryEntity.productSale => 'product_sale',
+      LedgerEntryCategoryEntity.subsidy => 'subsidy',
+      LedgerEntryCategoryEntity.other => 'other',
     };
 
-LedgerEntry mapLedgerEntry(Map<String, dynamic> json) =>
+LedgerEntryEntity mapLedgerEntry(Map<String, dynamic> json) =>
     mapLedgerEntryModel(LedgerEntryModel.fromJson(json));
 
-LedgerEntry mapLedgerEntryModel(LedgerEntryModel model) => LedgerEntry(
+LedgerEntryEntity mapLedgerEntryModel(LedgerEntryModel model) => LedgerEntryEntity(
       id: model.id,
       entryType: mapLedgerEntryType(model.entryType),
       occurredAt: model.occurredAt,
@@ -79,10 +79,10 @@ LedgerEntry mapLedgerEntryModel(LedgerEntryModel model) => LedgerEntry(
       updatedAt: model.updatedAt,
     );
 
-PeriodTotals mapPeriodTotals(Map<String, dynamic> json) =>
+PeriodTotalsEntity mapPeriodTotals(Map<String, dynamic> json) =>
     mapPeriodTotalsModel(PeriodTotalsModel.fromJson(json));
 
-PeriodTotals mapPeriodTotalsModel(PeriodTotalsModel model) => PeriodTotals(
+PeriodTotalsEntity mapPeriodTotalsModel(PeriodTotalsModel model) => PeriodTotalsEntity(
       from: model.from,
       to: model.to,
       totalIncome: model.totalIncome,
@@ -90,7 +90,7 @@ PeriodTotals mapPeriodTotalsModel(PeriodTotalsModel model) => PeriodTotals(
       net: model.net,
     );
 
-Map<String, dynamic> ledgerEntryWriteToJson(LedgerEntryWriteParams params) => {
+Map<String, dynamic> ledgerEntryWriteToJson(LedgerEntryWriteParamsEntity params) => {
       'entry_type': ledgerEntryTypeToApi(params.entryType),
       'occurred_at': params.occurredAt,
       'category': ledgerEntryCategoryToApi(params.category),
@@ -99,16 +99,16 @@ Map<String, dynamic> ledgerEntryWriteToJson(LedgerEntryWriteParams params) => {
       'note': params.note,
     };
 
-LedgerSeries mapLedgerSeries(Map<String, dynamic> json) =>
+LedgerSeriesEntity mapLedgerSeries(Map<String, dynamic> json) =>
     mapLedgerSeriesModel(LedgerSeriesModel.fromJson(json));
 
-LedgerSeries mapLedgerSeriesModel(LedgerSeriesModel model) => LedgerSeries(
+LedgerSeriesEntity mapLedgerSeriesModel(LedgerSeriesModel model) => LedgerSeriesEntity(
       from: model.from,
       to: model.to,
       grain: model.grain,
       points: model.points
           .map(
-            (p) => LedgerSeriesPoint(
+            (p) => LedgerSeriesPointEntity(
               bucketStart: p.bucketStart,
               income: p.income,
               expenses: p.expenses,

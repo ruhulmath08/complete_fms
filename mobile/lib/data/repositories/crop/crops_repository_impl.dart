@@ -6,15 +6,15 @@ import 'package:mobile/data/models/crop/crop_name_model.dart';
 import 'package:mobile/data/models/crop/cycle_summary_model.dart';
 import 'package:mobile/data/models/crop/harvest_model.dart';
 import 'package:mobile/data/repositories/common/page_result_mapper.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle_write_params.dart';
-import 'package:mobile/domain/entities/crop/crop_expense.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
-import 'package:mobile/domain/entities/crop/crop_name_write_params.dart';
-import 'package:mobile/domain/entities/crop/cycle_summary.dart';
-import 'package:mobile/domain/entities/crop/expense_category.dart';
-import 'package:mobile/domain/entities/crop/harvest.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_expense_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/cycle_summary_entity.dart';
+import 'package:mobile/domain/entities/crop/expense_category_entity.dart';
+import 'package:mobile/domain/entities/crop/harvest_entity.dart';
 import 'package:mobile/domain/repositories/crop/crops_repository.dart';
 
 class CropsRepositoryImpl implements CropsRepository {
@@ -23,7 +23,7 @@ class CropsRepositoryImpl implements CropsRepository {
   final CropsDatasource _datasource;
 
   @override
-  Future<PagedResult<CropName>> listNames({
+  Future<PagedResultEntity<CropNameEntity>> listNames({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
@@ -37,13 +37,13 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropName> getName(String cropNameId) async {
+  Future<CropNameEntity> getName(String cropNameId) async {
     final model = CropNameModel.fromJson(await _datasource.getName(cropNameId));
     return mapCropNameModel(model);
   }
 
   @override
-  Future<CropName> createName(CropNameWriteParams params) async {
+  Future<CropNameEntity> createName(CropNameWriteParamsEntity params) async {
     final model = CropNameModel.fromJson(
       await _datasource.createName(cropNameWriteToJson(params)),
     );
@@ -51,9 +51,9 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropName> updateName(
+  Future<CropNameEntity> updateName(
     String cropNameId,
-    CropNameWriteParams params,
+    CropNameWriteParamsEntity params,
   ) async {
     final model = CropNameModel.fromJson(
       await _datasource.updateName(cropNameId, cropNameWriteToJson(params)),
@@ -62,13 +62,13 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropName> archiveName(String cropNameId) async {
+  Future<CropNameEntity> archiveName(String cropNameId) async {
     final model = CropNameModel.fromJson(await _datasource.archiveName(cropNameId));
     return mapCropNameModel(model);
   }
 
   @override
-  Future<PagedResult<CropCycle>> listCycles({
+  Future<PagedResultEntity<CropCycleEntity>> listCycles({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
@@ -82,13 +82,13 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropCycle> getCycle(String cycleId) async {
+  Future<CropCycleEntity> getCycle(String cycleId) async {
     final model = CropCycleModel.fromJson(await _datasource.getCycle(cycleId));
     return mapCropCycleModel(model);
   }
 
   @override
-  Future<CropCycle> createCycle(CropCycleWriteParams params) async {
+  Future<CropCycleEntity> createCycle(CropCycleWriteParamsEntity params) async {
     final model = CropCycleModel.fromJson(
       await _datasource.createCycle(cropCycleWriteToJson(params)),
     );
@@ -96,9 +96,9 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropCycle> updateCycle(
+  Future<CropCycleEntity> updateCycle(
     String cycleId,
-    CropCycleWriteParams params,
+    CropCycleWriteParamsEntity params,
   ) async {
     final model = CropCycleModel.fromJson(
       await _datasource.updateCycle(cycleId, cropCycleWriteToJson(params)),
@@ -107,13 +107,13 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropCycle> archiveCycle(String cycleId) async {
+  Future<CropCycleEntity> archiveCycle(String cycleId) async {
     final model = CropCycleModel.fromJson(await _datasource.archiveCycle(cycleId));
     return mapCropCycleModel(model);
   }
 
   @override
-  Future<CycleSummary> getCycleSummary(String cycleId) async {
+  Future<CycleSummaryEntity> getCycleSummary(String cycleId) async {
     final model = CycleSummaryModel.fromJson(
       await _datasource.getCycleSummary(cycleId),
     );
@@ -121,7 +121,7 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<PagedResult<CropExpense>> listExpenses(
+  Future<PagedResultEntity<CropExpenseEntity>> listExpenses(
     String cycleId, {
     int limit = 50,
     int offset = 0,
@@ -131,10 +131,10 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropExpense> addExpense({
+  Future<CropExpenseEntity> addExpense({
     required String cycleId,
     required String spentAt,
-    required ExpenseCategory category,
+    required ExpenseCategoryEntity category,
     required String amount,
     String? note,
   }) async {
@@ -150,7 +150,7 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<PagedResult<Harvest>> listHarvests(
+  Future<PagedResultEntity<HarvestEntity>> listHarvests(
     String cycleId, {
     int limit = 50,
     int offset = 0,
@@ -160,7 +160,7 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<Harvest> addHarvest({
+  Future<HarvestEntity> addHarvest({
     required String cycleId,
     required String harvestedAt,
     required String quantity,
@@ -181,11 +181,11 @@ class CropsRepositoryImpl implements CropsRepository {
   }
 
   @override
-  Future<CropExpense> updateExpense({
+  Future<CropExpenseEntity> updateExpense({
     required String cycleId,
     required String expenseId,
     required String spentAt,
-    required ExpenseCategory category,
+    required ExpenseCategoryEntity category,
     required String amount,
     String? note,
   }) async {
@@ -205,7 +205,7 @@ class CropsRepositoryImpl implements CropsRepository {
       _datasource.deleteExpense(cycleId, expenseId);
 
   @override
-  Future<Harvest> updateHarvest({
+  Future<HarvestEntity> updateHarvest({
     required String cycleId,
     required String harvestId,
     required String harvestedAt,

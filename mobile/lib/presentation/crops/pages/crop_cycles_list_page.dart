@@ -9,7 +9,7 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_entity.dart';
 
 class CropCyclesListPage extends StatefulWidget {
   const CropCyclesListPage({super.key});
@@ -22,7 +22,7 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
   bool _includeArchived = false;
   bool _loading = true;
   String? _error;
-  List<CropCycle> _cycles = const [];
+  List<CropCycleEntity> _cycles = const [];
   Map<String, String> _nameById = const {};
 
   @override
@@ -47,7 +47,7 @@ class _CropCyclesListPageState extends State<CropCyclesListPage> {
         _cycles = cycles.items;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;

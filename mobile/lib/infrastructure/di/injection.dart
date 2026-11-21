@@ -1,50 +1,66 @@
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:mobile/data/datasources/auth/auth_local_datasource.dart';
 import 'package:mobile/data/datasources/auth/auth_local_datasource_impl.dart';
 import 'package:mobile/data/datasources/auth/auth_remote_datasource.dart';
 import 'package:mobile/data/datasources/auth/auth_remote_datasource_impl.dart';
-import 'package:mobile/data/datasources/common/api_client.dart';
 import 'package:mobile/data/datasources/cow/cows_datasource.dart';
 import 'package:mobile/data/datasources/cow/cows_datasource_impl.dart';
-import 'package:mobile/data/datasources/dashboard/dashboard_datasource.dart';
-import 'package:mobile/data/datasources/dashboard/dashboard_datasource_impl.dart';
 import 'package:mobile/data/datasources/crop/crops_datasource.dart';
 import 'package:mobile/data/datasources/crop/crops_datasource_impl.dart';
+import 'package:mobile/data/datasources/dashboard/dashboard_datasource.dart';
+import 'package:mobile/data/datasources/dashboard/dashboard_datasource_impl.dart';
 import 'package:mobile/data/datasources/inventory/inventory_datasource.dart';
 import 'package:mobile/data/datasources/inventory/inventory_datasource_impl.dart';
 import 'package:mobile/data/datasources/ledger/ledger_datasource.dart';
 import 'package:mobile/data/datasources/ledger/ledger_datasource_impl.dart';
 import 'package:mobile/data/datasources/poultry/poultry_datasource.dart';
 import 'package:mobile/data/datasources/poultry/poultry_datasource_impl.dart';
+import 'package:mobile/data/network/api_activity.dart';
+import 'package:mobile/data/network/api_client.dart';
+import 'package:mobile/data/network/network_info.dart';
 import 'package:mobile/data/repositories/auth/auth_repository_impl.dart';
 import 'package:mobile/data/repositories/cow/cows_repository_impl.dart';
-import 'package:mobile/data/repositories/dashboard/dashboard_repository_impl.dart';
 import 'package:mobile/data/repositories/crop/crops_repository_impl.dart';
+import 'package:mobile/data/repositories/dashboard/dashboard_repository_impl.dart';
 import 'package:mobile/data/repositories/inventory/inventory_repository_impl.dart';
 import 'package:mobile/data/repositories/ledger/ledger_repository_impl.dart';
 import 'package:mobile/data/repositories/poultry/poultry_repository_impl.dart';
 import 'package:mobile/domain/repositories/auth/auth_repository.dart';
 import 'package:mobile/domain/repositories/cow/cows_repository.dart';
-import 'package:mobile/domain/repositories/dashboard/dashboard_repository.dart';
 import 'package:mobile/domain/repositories/crop/crops_repository.dart';
+import 'package:mobile/domain/repositories/dashboard/dashboard_repository.dart';
 import 'package:mobile/domain/repositories/inventory/inventory_repository.dart';
 import 'package:mobile/domain/repositories/ledger/ledger_repository.dart';
 import 'package:mobile/domain/repositories/poultry/poultry_repository.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
+import 'package:mobile/domain/use_cases/auth/sign_in/sign_in_use_case.dart';
 import 'package:mobile/domain/use_cases/cow/cows_usecases.dart';
-import 'package:mobile/domain/use_cases/dashboard/dashboard_usecases.dart';
 import 'package:mobile/domain/use_cases/crop/crops_usecases.dart';
+import 'package:mobile/domain/use_cases/dashboard/dashboard_usecases.dart';
 import 'package:mobile/domain/use_cases/inventory/inventory_usecases.dart';
 import 'package:mobile/domain/use_cases/ledger/ledger_usecases.dart';
 import 'package:mobile/domain/use_cases/poultry/poultry_usecases.dart';
+import 'package:mobile/presentation/auth/sign_in/bloc/sign_in_bloc.dart';
+import 'package:mobile/presentation/loading/loading_cubit.dart';
 import 'package:mobile/presentation/locale/locale_cubit.dart';
 import 'package:mobile/presentation/session/session_cubit.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> configureDependencies() async {
+void configureDependencies({bool reset = false}) {
+  if (reset) {
+    getIt.reset();
+  }
+
   final authLocalDatasource = AuthLocalDatasourceImpl();
-  final apiClient = ApiClient(authLocalDatasource);
+  final networkInfo = NetworkInfoImpl(InternetConnection());
+  final apiActivity = ApiActivity();
+  final apiClient = ApiClient(
+    authLocalDatasource,
+    networkInfo,
+    activity: apiActivity,
+  );
   final authRemoteDatasource = AuthRemoteDatasourceImpl(apiClient);
   final cowsDatasource = CowsDatasourceImpl(apiClient);
   final poultryDatasource = PoultryDatasourceImpl(apiClient);
@@ -52,7 +68,10 @@ Future<void> configureDependencies() async {
   final inventoryDatasource = InventoryDatasourceImpl(apiClient);
   final ledgerDatasource = LedgerDatasourceImpl(apiClient);
   final dashboardDatasource = DashboardDatasourceImpl(apiClient);
-  final authRepo = AuthRepositoryImpl(authRemoteDatasource, authLocalDatasource);
+  final authRepo = AuthRepositoryImpl(
+    authRemoteDatasource,
+    authLocalDatasource,
+  );
   final cowsRepo = CowsRepositoryImpl(cowsDatasource);
   final poultryRepo = PoultryRepositoryImpl(poultryDatasource);
   final cropsRepo = CropsRepositoryImpl(cropsDatasource);
@@ -61,6 +80,7 @@ Future<void> configureDependencies() async {
   final dashboardRepo = DashboardRepositoryImpl(dashboardDatasource);
 
   getIt
+    ..registerSingleton<NetworkInfo>(networkInfo)
     ..registerSingleton<AuthLocalDatasource>(authLocalDatasource)
     ..registerSingleton<ApiClient>(apiClient)
     ..registerSingleton<AuthRemoteDatasource>(authRemoteDatasource)
@@ -78,7 +98,7 @@ Future<void> configureDependencies() async {
     ..registerSingleton<LedgerRepository>(ledgerRepo)
     ..registerSingleton<DashboardRepository>(dashboardRepo)
     ..registerLazySingleton(() => SignUp(authRepo))
-    ..registerLazySingleton(() => SignIn(authRepo))
+    ..registerLazySingleton(() => SignInUseCase(repository: authRepo))
     ..registerLazySingleton(() => SignOut(authRepo))
     ..registerLazySingleton(() => GetProfile(authRepo))
     ..registerLazySingleton(() => UpdateProfile(authRepo))
@@ -148,6 +168,9 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton(() => GetPeriodTotals(ledgerRepo))
     ..registerLazySingleton(() => GetLedgerSeries(ledgerRepo))
     ..registerLazySingleton(() => GetDashboardAggregates(dashboardRepo))
+    ..registerFactory(() => SignInBloc(signInUseCase: getIt<SignInUseCase>()))
+    ..registerSingleton(apiActivity)
+    ..registerLazySingleton(() => LoadingCubit(apiActivity))
     ..registerLazySingleton(() => LocaleCubit())
     ..registerLazySingleton(
       () => SessionCubit(getIt<IsSignedIn>(), getIt<SignOut>()),

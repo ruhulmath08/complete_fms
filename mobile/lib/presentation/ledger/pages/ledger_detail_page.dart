@@ -4,9 +4,10 @@ import 'package:mobile/domain/use_cases/ledger/ledger_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/ledger/widgets/ledger_entry_form_fields.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 class LedgerDetailPage extends StatefulWidget {
   const LedgerDetailPage({super.key, required this.entryId});
@@ -18,7 +19,7 @@ class LedgerDetailPage extends StatefulWidget {
 }
 
 class _LedgerDetailPageState extends State<LedgerDetailPage> {
-  LedgerEntry? _entry;
+  LedgerEntryEntity? _entry;
   bool _loading = true;
   bool _editing = false;
   bool _saving = false;
@@ -28,8 +29,8 @@ class _LedgerDetailPageState extends State<LedgerDetailPage> {
   final _amount = TextEditingController();
   final _unit = TextEditingController();
   final _note = TextEditingController();
-  LedgerEntryType _entryType = LedgerEntryType.expense;
-  LedgerEntryCategory _category = LedgerEntryCategory.other;
+  LedgerEntryTypeEntity _entryType = LedgerEntryTypeEntity.expense;
+  LedgerEntryCategoryEntity _category = LedgerEntryCategoryEntity.other;
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class _LedgerDetailPageState extends State<LedgerDetailPage> {
     super.dispose();
   }
 
-  void _hydrate(LedgerEntry entry) {
+  void _hydrate(LedgerEntryEntity entry) {
     _occurredAt.text = entry.occurredAt;
     _amount.text = entry.amount;
     _unit.text = entry.unit ?? '';
@@ -68,7 +69,7 @@ class _LedgerDetailPageState extends State<LedgerDetailPage> {
         _entry = entry;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -97,7 +98,7 @@ class _LedgerDetailPageState extends State<LedgerDetailPage> {
       if (!mounted) return;
       setState(() => _editing = false);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -127,7 +128,7 @@ class _LedgerDetailPageState extends State<LedgerDetailPage> {
     try {
       await getIt<ArchiveLedgerEntry>()(widget.entryId);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -135,7 +136,7 @@ class _LedgerDetailPageState extends State<LedgerDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final entry = _entry;
     if (entry == null) {
       return Center(child: Text(_error ?? l10n.genericError));

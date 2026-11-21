@@ -9,8 +9,8 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/offset_pagination_controls.dart';
-import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
-import 'package:mobile/domain/entities/inventory/stock_update_list_item.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_list_item_entity.dart';
 
 /// Read-only fertilizer stock history (all fertilizer items), paginated.
 class FertilizerStockTable extends StatefulWidget {
@@ -27,7 +27,7 @@ class FertilizerStockTableState extends State<FertilizerStockTable> {
   String? _error;
   int _offset = 0;
   int _total = 0;
-  List<StockUpdateListItem> _rows = const [];
+  List<StockUpdateListItemEntity> _rows = const [];
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class FertilizerStockTableState extends State<FertilizerStockTable> {
         _total = page.total;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -120,7 +120,7 @@ class FertilizerStockTableState extends State<FertilizerStockTable> {
                       ),
                       DataCell(
                         Text(
-                          _rows[i].changeType == StockChangeType.add
+                          _rows[i].changeType == StockChangeTypeEntity.add
                               ? l10n.stockAdd
                               : l10n.stockUse,
                         ),

@@ -1,7 +1,7 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 
-import 'package:mobile/l10n/app_localizations.dart';
+import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
@@ -38,7 +38,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openNavigationMenu => 'Open navigation menu';
 
   @override
-  String get loadingLabel => 'Loading…';
+  String get loadingLabel => 'Please wait, loading…';
 
   @override
   String get useMenuHint =>
@@ -95,6 +95,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signInSubtitle => 'Access your farm records on this device.';
+
+  @override
+  String get invalidCredentials => 'Email or password is incorrect.';
+
+  @override
+  String get invalidEmail => 'Email format is invalid.';
+
+  @override
+  String get fillAllFields => 'Please fill in all fields.';
 
   @override
   String get signUpSubtitle =>

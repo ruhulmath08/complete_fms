@@ -1,7 +1,7 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 
-import 'package:mobile/l10n/app_localizations.dart';
+import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
@@ -38,7 +38,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get openNavigationMenu => 'নেভিগেশন মেনু খুলুন';
 
   @override
-  String get loadingLabel => 'লোড হচ্ছে…';
+  String get loadingLabel => 'অপেক্ষা করুন, লোড হচ্ছে…';
 
   @override
   String get useMenuHint =>
@@ -95,6 +95,15 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get signInSubtitle => 'এই ডিভাইসে আপনার ফার্ম রেকর্ড ব্যবহার করুন।';
+
+  @override
+  String get invalidCredentials => 'ইমেইল বা পাসওয়ার্ড সঠিক নয়।';
+
+  @override
+  String get invalidEmail => 'ইমেইলের ফরম্যাট সঠিক নয়।';
+
+  @override
+  String get fillAllFields => 'অনুগ্রহ করে সব ঘর পূরণ করুন।';
 
   @override
   String get signUpSubtitle =>

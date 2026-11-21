@@ -5,11 +5,11 @@ import 'package:mobile/data/models/cow/cow_feeding_model.dart';
 import 'package:mobile/data/models/cow/cow_model.dart';
 import 'package:mobile/data/models/cow/milk_production_model.dart';
 import 'package:mobile/data/repositories/common/page_result_mapper.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/cow/cow.dart';
-import 'package:mobile/domain/entities/cow/cow_feeding.dart';
-import 'package:mobile/domain/entities/cow/cow_write_params.dart';
-import 'package:mobile/domain/entities/cow/milk_production.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_feeding_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params_entity.dart';
+import 'package:mobile/domain/entities/cow/milk_production_entity.dart';
 import 'package:mobile/domain/repositories/cow/cows_repository.dart';
 
 class CowsRepositoryImpl implements CowsRepository {
@@ -18,7 +18,7 @@ class CowsRepositoryImpl implements CowsRepository {
   final CowsDatasource _datasource;
 
   @override
-  Future<PagedResult<Cow>> listCows({
+  Future<PagedResultEntity<CowEntity>> listCows({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
@@ -32,13 +32,13 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
-  Future<Cow> getCow(String cowId) async {
+  Future<CowEntity> getCow(String cowId) async {
     final model = CowModel.fromJson(await _datasource.getCow(cowId));
     return mapCowModel(model);
   }
 
   @override
-  Future<Cow> createCow(CowWriteParams params) async {
+  Future<CowEntity> createCow(CowWriteParamsEntity params) async {
     final model = CowModel.fromJson(
       await _datasource.createCow(cowWriteToJson(params)),
     );
@@ -46,7 +46,7 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
-  Future<Cow> updateCow(String cowId, CowWriteParams params) async {
+  Future<CowEntity> updateCow(String cowId, CowWriteParamsEntity params) async {
     final model = CowModel.fromJson(
       await _datasource.updateCow(cowId, cowWriteToJson(params)),
     );
@@ -54,13 +54,13 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
-  Future<Cow> archiveCow(String cowId) async {
+  Future<CowEntity> archiveCow(String cowId) async {
     final model = CowModel.fromJson(await _datasource.archiveCow(cowId));
     return mapCowModel(model);
   }
 
   @override
-  Future<Cow> uploadCowImage(String cowId, String imagePath) async {
+  Future<CowEntity> uploadCowImage(String cowId, String imagePath) async {
     final form = FormData.fromMap({
       'image': await MultipartFile.fromFile(imagePath),
     });
@@ -73,7 +73,7 @@ class CowsRepositoryImpl implements CowsRepository {
       _datasource.getCowImageBytes(cowId);
 
   @override
-  Future<PagedResult<MilkProduction>> listMilk(
+  Future<PagedResultEntity<MilkProductionEntity>> listMilk(
     String cowId, {
     int limit = 10,
     int offset = 0,
@@ -83,7 +83,7 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
-  Future<MilkProduction> addMilk({
+  Future<MilkProductionEntity> addMilk({
     required String cowId,
     required String producedAt,
     required String quantity,
@@ -104,7 +104,7 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
-  Future<MilkProduction> updateMilk({
+  Future<MilkProductionEntity> updateMilk({
     required String cowId,
     required String milkId,
     required String producedAt,
@@ -130,7 +130,7 @@ class CowsRepositoryImpl implements CowsRepository {
       _datasource.deleteMilk(cowId, milkId);
 
   @override
-  Future<PagedResult<CowFeeding>> listFeedings(
+  Future<PagedResultEntity<CowFeedingEntity>> listFeedings(
     String cowId, {
     int limit = 10,
     int offset = 0,
@@ -140,7 +140,7 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
-  Future<CowFeeding> addFeeding({
+  Future<CowFeedingEntity> addFeeding({
     required String cowId,
     required String fedAt,
     required String feedName,
@@ -163,7 +163,7 @@ class CowsRepositoryImpl implements CowsRepository {
   }
 
   @override
-  Future<CowFeeding> updateFeeding({
+  Future<CowFeedingEntity> updateFeeding({
     required String cowId,
     required String feedingId,
     required String fedAt,

@@ -6,31 +6,31 @@ import 'package:mobile/domain/use_cases/dashboard/dashboard_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/presentation/dashboard/pages/dashboard_page.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_aggregates.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_series_key.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_series_point.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_aggregates_entity.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_key_entity.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_point_entity.dart';
 import '../../support/pump_app.dart';
 
 class _MockGetDashboardAggregates extends Mock
     implements GetDashboardAggregates {}
 
-DashboardAggregates _aggregates() {
-  List<DashboardSeriesPoint> pts(List<String> v) => [
+DashboardAggregatesEntity _aggregates() {
+  List<DashboardSeriesPointEntity> pts(List<String> v) => [
         for (var i = 0; i < v.length; i++)
-          DashboardSeriesPoint(bucketStart: '2026-11-0${i + 1}', value: v[i]),
+          DashboardSeriesPointEntity(bucketStart: '2026-11-0${i + 1}', value: v[i]),
       ];
-  return DashboardAggregates(
+  return DashboardAggregatesEntity(
     from: '2026-11-09',
     to: '2026-11-13',
     grain: 'day',
     timezone: 'Asia/Dhaka',
     series: {
-      DashboardSeriesKey.eggProduction: pts(['10', '12']),
-      DashboardSeriesKey.henHeadcount: pts(['100', '100']),
-      DashboardSeriesKey.milk: pts(['5.5', '6.0']),
-      DashboardSeriesKey.cowProduction: pts(['3', '4']),
-      DashboardSeriesKey.expensesCost: pts(['40.00', '0.00']),
-      DashboardSeriesKey.income: pts(['100.00', '20.00']),
+      DashboardSeriesKeyEntity.eggProduction: pts(['10', '12']),
+      DashboardSeriesKeyEntity.henHeadcount: pts(['100', '100']),
+      DashboardSeriesKeyEntity.milk: pts(['5.5', '6.0']),
+      DashboardSeriesKeyEntity.cowProduction: pts(['3', '4']),
+      DashboardSeriesKeyEntity.expensesCost: pts(['40.00', '0.00']),
+      DashboardSeriesKeyEntity.income: pts(['100.00', '20.00']),
     },
   );
 }
@@ -77,7 +77,7 @@ void main() {
       'Egg production chart',
       'Hen headcount chart',
       'Milk chart',
-      'Cow production chart',
+      'CowEntity production chart',
       'Expenses cost chart',
       'Income chart',
     ]) {
@@ -135,7 +135,7 @@ void main() {
         grain: any(named: 'grain'),
       ),
     ).thenThrow(
-      AppFailure(code: 'FUTURE_DATE_NOT_ALLOWED', message: 'No future dates'),
+      Failure(code: 'FUTURE_DATE_NOT_ALLOWED', message: 'No future dates'),
     );
     await pumpDashboard(tester);
 

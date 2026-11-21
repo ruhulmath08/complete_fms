@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mobile/domain/result.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
 import 'package:mobile/presentation/session/session_cubit.dart';
 
@@ -30,7 +31,7 @@ void main() {
   blocTest<SessionCubit, bool>(
     'signOut clears session state',
     build: () {
-      when(() => signOut()).thenAnswer((_) async {});
+      when(() => signOut()).thenAnswer((_) async => const Success(Unit.value));
       return SessionCubit(isSignedIn, signOut)..markSignedIn();
     },
     act: (cubit) => cubit.signOut(),

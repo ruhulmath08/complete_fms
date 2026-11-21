@@ -5,7 +5,7 @@ import 'package:mobile/presentation/session/session_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();
+  configureDependencies();
   await getIt<SessionCubit>().bootstrap();
   runApp(FarmManagerApp());
 }

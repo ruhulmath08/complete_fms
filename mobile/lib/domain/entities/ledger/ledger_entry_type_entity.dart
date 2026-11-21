@@ -1,0 +1,1 @@
+enum LedgerEntryTypeEntity { income, expense }

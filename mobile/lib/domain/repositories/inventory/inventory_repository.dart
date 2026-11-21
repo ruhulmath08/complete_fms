@@ -1,43 +1,43 @@
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/inventory/inventory_category.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item_create_params.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item_update_params.dart';
-import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
-import 'package:mobile/domain/entities/inventory/stock_update.dart';
-import 'package:mobile/domain/entities/inventory/stock_update_list_item.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_create_params_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_update_params_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_list_item_entity.dart';
 
 abstract class InventoryRepository {
-  Future<PagedResult<InventoryItem>> listItems({
+  Future<PagedResultEntity<InventoryItemEntity>> listItems({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
   });
 
-  Future<InventoryItem> getItem(String itemId);
+  Future<InventoryItemEntity> getItem(String itemId);
 
-  Future<InventoryItem> createItem(InventoryItemCreateParams params);
+  Future<InventoryItemEntity> createItem(InventoryItemCreateParamsEntity params);
 
-  Future<InventoryItem> updateItem(String itemId, InventoryItemUpdateParams params);
+  Future<InventoryItemEntity> updateItem(String itemId, InventoryItemUpdateParamsEntity params);
 
-  Future<InventoryItem> archiveItem(String itemId);
+  Future<InventoryItemEntity> archiveItem(String itemId);
 
-  Future<PagedResult<StockUpdate>> listStockUpdates(
+  Future<PagedResultEntity<StockUpdateEntity>> listStockUpdates(
     String itemId, {
     int limit = 50,
     int offset = 0,
   });
 
-  Future<StockUpdate> addStockUpdate({
+  Future<StockUpdateEntity> addStockUpdate({
     required String itemId,
     required String occurredAt,
-    required StockChangeType changeType,
+    required StockChangeTypeEntity changeType,
     required String quantityChange,
     String? reason,
   });
 
-  Future<PagedResult<StockUpdateListItem>> listStockUpdatesByCategory({
-    required InventoryCategory category,
+  Future<PagedResultEntity<StockUpdateListItemEntity>> listStockUpdatesByCategory({
+    required InventoryCategoryEntity category,
     int limit = 10,
     int offset = 0,
   });

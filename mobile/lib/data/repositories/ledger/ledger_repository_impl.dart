@@ -4,11 +4,11 @@ import 'package:mobile/data/models/ledger/ledger_entry_model.dart';
 import 'package:mobile/data/models/ledger/ledger_series_model.dart';
 import 'package:mobile/data/models/ledger/period_totals_model.dart';
 import 'package:mobile/data/repositories/common/page_result_mapper.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series.dart';
-import 'package:mobile/domain/entities/ledger/period_totals.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_entity.dart';
+import 'package:mobile/domain/entities/ledger/period_totals_entity.dart';
 import 'package:mobile/domain/repositories/ledger/ledger_repository.dart';
 
 class LedgerRepositoryImpl implements LedgerRepository {
@@ -17,7 +17,7 @@ class LedgerRepositoryImpl implements LedgerRepository {
   final LedgerDatasource _datasource;
 
   @override
-  Future<PagedResult<LedgerEntry>> listEntries({
+  Future<PagedResultEntity<LedgerEntryEntity>> listEntries({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
@@ -35,13 +35,13 @@ class LedgerRepositoryImpl implements LedgerRepository {
   }
 
   @override
-  Future<LedgerEntry> getEntry(String entryId) async {
+  Future<LedgerEntryEntity> getEntry(String entryId) async {
     final model = LedgerEntryModel.fromJson(await _datasource.getEntry(entryId));
     return mapLedgerEntryModel(model);
   }
 
   @override
-  Future<LedgerEntry> createEntry(LedgerEntryWriteParams params) async {
+  Future<LedgerEntryEntity> createEntry(LedgerEntryWriteParamsEntity params) async {
     final model = LedgerEntryModel.fromJson(
       await _datasource.createEntry(ledgerEntryWriteToJson(params)),
     );
@@ -49,9 +49,9 @@ class LedgerRepositoryImpl implements LedgerRepository {
   }
 
   @override
-  Future<LedgerEntry> updateEntry(
+  Future<LedgerEntryEntity> updateEntry(
     String entryId,
-    LedgerEntryWriteParams params,
+    LedgerEntryWriteParamsEntity params,
   ) async {
     final model = LedgerEntryModel.fromJson(
       await _datasource.updateEntry(entryId, ledgerEntryWriteToJson(params)),
@@ -60,13 +60,13 @@ class LedgerRepositoryImpl implements LedgerRepository {
   }
 
   @override
-  Future<LedgerEntry> archiveEntry(String entryId) async {
+  Future<LedgerEntryEntity> archiveEntry(String entryId) async {
     final model = LedgerEntryModel.fromJson(await _datasource.archiveEntry(entryId));
     return mapLedgerEntryModel(model);
   }
 
   @override
-  Future<PeriodTotals> getPeriodTotals({
+  Future<PeriodTotalsEntity> getPeriodTotals({
     required String from,
     required String to,
   }) async {
@@ -77,7 +77,7 @@ class LedgerRepositoryImpl implements LedgerRepository {
   }
 
   @override
-  Future<LedgerSeries> getSeries({
+  Future<LedgerSeriesEntity> getSeries({
     required String from,
     required String to,
     required String grain,

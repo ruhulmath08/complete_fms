@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/mappers/ledger/ledger_mappers.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params_entity.dart';
 
 void main() {
   test('maps ledger entry including total_price equals amount', () {
@@ -20,8 +20,8 @@ void main() {
       'updated_at': '2024-06-15T10:00:00Z',
     });
 
-    expect(entry.entryType, LedgerEntryType.income);
-    expect(entry.category, LedgerEntryCategory.productSale);
+    expect(entry.entryType, LedgerEntryTypeEntity.income);
+    expect(entry.category, LedgerEntryCategoryEntity.productSale);
     expect(entry.amount, '100.00');
     expect(entry.totalPrice, '100.00');
   });
@@ -37,10 +37,10 @@ void main() {
     expect(totals.net, '150.00');
 
     final json = ledgerEntryWriteToJson(
-      const LedgerEntryWriteParams(
-        entryType: LedgerEntryType.expense,
+      const LedgerEntryWriteParamsEntity(
+        entryType: LedgerEntryTypeEntity.expense,
         occurredAt: '2024-06-10',
-        category: LedgerEntryCategory.feedOrSupplies,
+        category: LedgerEntryCategoryEntity.feedOrSupplies,
         amount: '25.00',
         unit: 'kg',
       ),

@@ -3,13 +3,13 @@ import 'package:material_ui/material_ui.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/series_chart.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_entity.dart';
 
 /// Income / expenses / net over the selected range (numeric totals stay on the page).
 class LedgerSeriesChart extends StatelessWidget {
   const LedgerSeriesChart({super.key, required this.series});
 
-  final LedgerSeries series;
+  final LedgerSeriesEntity series;
 
   @override
   Widget build(BuildContext context) {

@@ -4,21 +4,21 @@ import 'package:mobile/domain/use_cases/inventory/inventory_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/presentation/inventory/widgets/fertilizer_stock_table.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/inventory/inventory_category.dart';
-import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
-import 'package:mobile/domain/entities/inventory/stock_update_list_item.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_list_item_entity.dart';
 import '../../support/pump_app.dart';
 
 class _MockListFertilizer extends Mock implements ListFertilizerStockUpdates {}
 
-StockUpdateListItem _row(String id, String name, StockChangeType type) =>
-    StockUpdateListItem(
+StockUpdateListItemEntity _row(String id, String name, StockChangeTypeEntity type) =>
+    StockUpdateListItemEntity(
       id: id,
       inventoryItemId: 'item-$id',
       itemName: name,
       itemUnit: 'kg',
-      itemCategory: InventoryCategory.fertilizer,
+      itemCategory: InventoryCategoryEntity.fertilizer,
       occurredAt: '2026-11-10',
       changeType: type,
       quantityChange: '2.500',
@@ -40,10 +40,10 @@ void main() {
     tester,
   ) async {
     when(() => usecase(limit: any(named: 'limit'), offset: 0)).thenAnswer(
-      (_) async => PagedResult(
+      (_) async => PagedResultEntity(
         items: [
-          _row('1', 'Urea', StockChangeType.use),
-          _row('2', 'TSP', StockChangeType.add),
+          _row('1', 'Urea', StockChangeTypeEntity.use),
+          _row('2', 'TSP', StockChangeTypeEntity.add),
         ],
         total: 25,
         limit: 10,
@@ -51,8 +51,8 @@ void main() {
       ),
     );
     when(() => usecase(limit: any(named: 'limit'), offset: 10)).thenAnswer(
-      (_) async => PagedResult(
-        items: [_row('3', 'MOP', StockChangeType.add)],
+      (_) async => PagedResultEntity(
+        items: [_row('3', 'MOP', StockChangeTypeEntity.add)],
         total: 25,
         limit: 10,
         offset: 10,
@@ -84,7 +84,7 @@ void main() {
   testWidgets('shows empty message', (tester) async {
     when(() => usecase(limit: any(named: 'limit'), offset: any(named: 'offset')))
         .thenAnswer(
-      (_) async => const PagedResult<StockUpdateListItem>(
+      (_) async => const PagedResultEntity<StockUpdateListItemEntity>(
         items: [],
         total: 0,
         limit: 10,

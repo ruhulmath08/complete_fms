@@ -7,8 +7,8 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/ledger/widgets/ledger_entry_form_fields.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_category.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_type.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_category_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_type_entity.dart';
 
 String _todayDate() {
   final now = DateTime.now();
@@ -29,8 +29,8 @@ class _LedgerCreatePageState extends State<LedgerCreatePage> {
   final _amount = TextEditingController();
   final _unit = TextEditingController();
   final _note = TextEditingController();
-  LedgerEntryType _entryType = LedgerEntryType.expense;
-  LedgerEntryCategory _category = LedgerEntryCategory.other;
+  LedgerEntryTypeEntity _entryType = LedgerEntryTypeEntity.expense;
+  LedgerEntryCategoryEntity _category = LedgerEntryCategoryEntity.other;
   String? _error;
   bool _saving = false;
 
@@ -61,7 +61,7 @@ class _LedgerCreatePageState extends State<LedgerCreatePage> {
       );
       if (!mounted) return;
       context.go(AppRoutes.ledgerEntry(entry.id));
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);

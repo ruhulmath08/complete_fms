@@ -1,47 +1,47 @@
 import 'package:mobile/data/models/cow/cow_feeding_model.dart';
 import 'package:mobile/data/models/cow/cow_model.dart';
 import 'package:mobile/data/models/cow/milk_production_model.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/cow/cow.dart';
-import 'package:mobile/domain/entities/cow/cow_feeding.dart';
-import 'package:mobile/domain/entities/cow/cow_gender.dart';
-import 'package:mobile/domain/entities/cow/cow_purpose.dart';
-import 'package:mobile/domain/entities/cow/cow_write_params.dart';
-import 'package:mobile/domain/entities/cow/milk_production.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_feeding_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_gender_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params_entity.dart';
+import 'package:mobile/domain/entities/cow/milk_production_entity.dart';
 
-CowPurpose mapPurpose(String value) => CowPurpose.values.firstWhere(
+CowPurposeEntity mapPurpose(String value) => CowPurposeEntity.values.firstWhere(
       (e) => e.name == value,
-      orElse: () => CowPurpose.milk,
+      orElse: () => CowPurposeEntity.milk,
     );
 
-CowGender mapGender(String value) => CowGender.values.firstWhere(
+CowGenderEntity mapGender(String value) => CowGenderEntity.values.firstWhere(
       (e) => e.name == value,
-      orElse: () => CowGender.unknown,
+      orElse: () => CowGenderEntity.unknown,
     );
 
-AcquisitionSource mapAcquiredBy(String value) {
+AcquisitionSourceEntity mapAcquiredBy(String value) {
   switch (value) {
     case 'purchased':
-      return AcquisitionSource.purchased;
+      return AcquisitionSourceEntity.purchased;
     case 'born_on_farm':
-      return AcquisitionSource.bornOnFarm;
+      return AcquisitionSourceEntity.bornOnFarm;
     default:
-      return AcquisitionSource.bornOnFarm;
+      return AcquisitionSourceEntity.bornOnFarm;
   }
 }
 
-String purposeToApi(CowPurpose value) => value.name;
+String purposeToApi(CowPurposeEntity value) => value.name;
 
-String genderToApi(CowGender value) => value.name;
+String genderToApi(CowGenderEntity value) => value.name;
 
-String acquiredByToApi(AcquisitionSource value) => switch (value) {
-      AcquisitionSource.purchased => 'purchased',
-      AcquisitionSource.bornOnFarm => 'born_on_farm',
+String acquiredByToApi(AcquisitionSourceEntity value) => switch (value) {
+      AcquisitionSourceEntity.purchased => 'purchased',
+      AcquisitionSourceEntity.bornOnFarm => 'born_on_farm',
     };
 
-Cow mapCow(Map<String, dynamic> json) => mapCowModel(CowModel.fromJson(json));
+CowEntity mapCow(Map<String, dynamic> json) => mapCowModel(CowModel.fromJson(json));
 
-Cow mapCowModel(CowModel model) => Cow(
+CowEntity mapCowModel(CowModel model) => CowEntity(
       id: model.id,
       tagNumber: model.tagNumber,
       name: model.name,
@@ -62,10 +62,10 @@ Cow mapCowModel(CowModel model) => Cow(
       updatedAt: model.updatedAt,
     );
 
-MilkProduction mapMilk(Map<String, dynamic> json) =>
+MilkProductionEntity mapMilk(Map<String, dynamic> json) =>
     mapMilkModel(MilkProductionModel.fromJson(json));
 
-MilkProduction mapMilkModel(MilkProductionModel model) => MilkProduction(
+MilkProductionEntity mapMilkModel(MilkProductionModel model) => MilkProductionEntity(
       id: model.id,
       cowId: model.cowId,
       producedAt: model.producedAt,
@@ -77,10 +77,10 @@ MilkProduction mapMilkModel(MilkProductionModel model) => MilkProduction(
       total: model.total,
     );
 
-CowFeeding mapFeeding(Map<String, dynamic> json) =>
+CowFeedingEntity mapFeeding(Map<String, dynamic> json) =>
     mapFeedingModel(CowFeedingModel.fromJson(json));
 
-CowFeeding mapFeedingModel(CowFeedingModel model) => CowFeeding(
+CowFeedingEntity mapFeedingModel(CowFeedingModel model) => CowFeedingEntity(
       id: model.id,
       cowId: model.cowId,
       fedAt: model.fedAt,
@@ -93,7 +93,7 @@ CowFeeding mapFeedingModel(CowFeedingModel model) => CowFeeding(
       total: model.total,
     );
 
-Map<String, dynamic> cowWriteToJson(CowWriteParams params) => {
+Map<String, dynamic> cowWriteToJson(CowWriteParamsEntity params) => {
       'purpose': purposeToApi(params.purpose),
       'gender': genderToApi(params.gender),
       'acquired_by': acquiredByToApi(params.acquiredBy),
@@ -103,10 +103,10 @@ Map<String, dynamic> cowWriteToJson(CowWriteParams params) => {
       'color': params.color,
       'weight': params.weight,
       'age': params.age,
-      'purchase_date': params.acquiredBy == AcquisitionSource.purchased
+      'purchase_date': params.acquiredBy == AcquisitionSourceEntity.purchased
           ? params.purchaseDate
           : null,
-      'purchase_price': params.acquiredBy == AcquisitionSource.purchased
+      'purchase_price': params.acquiredBy == AcquisitionSourceEntity.purchased
           ? params.purchasePrice
           : null,
       'notes': params.notes,

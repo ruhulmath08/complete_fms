@@ -7,8 +7,8 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/poultry/widgets/poultry_group_form_fields.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/poultry/poultry_type.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_type_entity.dart';
 
 class PoultryCreatePage extends StatefulWidget {
   const PoultryCreatePage({super.key});
@@ -25,8 +25,8 @@ class _PoultryCreatePageState extends State<PoultryCreatePage> {
   final _purchasePrice = TextEditingController();
   final _notes = TextEditingController();
 
-  PoultryType _poultryType = PoultryType.layer;
-  AcquisitionSource _acquiredBy = AcquisitionSource.bornOnFarm;
+  PoultryTypeEntity _poultryType = PoultryTypeEntity.layer;
+  AcquisitionSourceEntity _acquiredBy = AcquisitionSourceEntity.bornOnFarm;
   String? _error;
   bool _saving = false;
 
@@ -61,7 +61,7 @@ class _PoultryCreatePageState extends State<PoultryCreatePage> {
       );
       if (!mounted) return;
       context.go(AppRoutes.poultryGroup(group.id));
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);

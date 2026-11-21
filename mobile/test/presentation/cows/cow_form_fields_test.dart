@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/cows/widgets/cow_form_fields.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/cow/cow_gender.dart';
-import 'package:mobile/domain/entities/cow/cow_purpose.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_gender_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose_entity.dart';
 
 void main() {
   testWidgets('create form shows Weight (kg), auto-tag hint, no tag field', (
@@ -40,9 +40,9 @@ void main() {
               purchaseDate: purchaseDate,
               purchasePrice: purchasePrice,
               notes: notes,
-              purpose: CowPurpose.milk,
-              gender: CowGender.female,
-              acquiredBy: AcquisitionSource.bornOnFarm,
+              purpose: CowPurposeEntity.milk,
+              gender: CowGenderEntity.female,
+              acquiredBy: AcquisitionSourceEntity.bornOnFarm,
               onPurposeChanged: (_) {},
               onGenderChanged: (_) {},
               onAcquiredByChanged: (_) {},
@@ -76,9 +76,9 @@ void main() {
         purchaseDate: empty,
         purchasePrice: empty,
         notes: empty,
-        purpose: CowPurpose.milk,
-        gender: CowGender.female,
-        acquiredBy: AcquisitionSource.bornOnFarm,
+        purpose: CowPurposeEntity.milk,
+        gender: CowGenderEntity.female,
+        acquiredBy: AcquisitionSourceEntity.bornOnFarm,
       ),
       isNull,
     );
@@ -94,9 +94,9 @@ void main() {
       purchaseDate: empty,
       purchasePrice: empty,
       notes: empty,
-      purpose: CowPurpose.milk,
-      gender: CowGender.female,
-      acquiredBy: AcquisitionSource.bornOnFarm,
+      purpose: CowPurposeEntity.milk,
+      gender: CowGenderEntity.female,
+      acquiredBy: AcquisitionSourceEntity.bornOnFarm,
     );
     expect(params, isNotNull);
     expect(params!.name, 'Daisy');

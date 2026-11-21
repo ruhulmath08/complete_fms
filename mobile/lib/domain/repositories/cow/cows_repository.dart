@@ -1,35 +1,35 @@
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/cow/cow.dart';
-import 'package:mobile/domain/entities/cow/cow_feeding.dart';
-import 'package:mobile/domain/entities/cow/cow_write_params.dart';
-import 'package:mobile/domain/entities/cow/milk_production.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_feeding_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params_entity.dart';
+import 'package:mobile/domain/entities/cow/milk_production_entity.dart';
 
 abstract class CowsRepository {
-  Future<PagedResult<Cow>> listCows({
+  Future<PagedResultEntity<CowEntity>> listCows({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
   });
 
-  Future<Cow> getCow(String cowId);
+  Future<CowEntity> getCow(String cowId);
 
-  Future<Cow> createCow(CowWriteParams params);
+  Future<CowEntity> createCow(CowWriteParamsEntity params);
 
-  Future<Cow> updateCow(String cowId, CowWriteParams params);
+  Future<CowEntity> updateCow(String cowId, CowWriteParamsEntity params);
 
-  Future<Cow> archiveCow(String cowId);
+  Future<CowEntity> archiveCow(String cowId);
 
-  Future<Cow> uploadCowImage(String cowId, String imagePath);
+  Future<CowEntity> uploadCowImage(String cowId, String imagePath);
 
   Future<List<int>> getCowImageBytes(String cowId);
 
-  Future<PagedResult<MilkProduction>> listMilk(
+  Future<PagedResultEntity<MilkProductionEntity>> listMilk(
     String cowId, {
     int limit = 10,
     int offset = 0,
   });
 
-  Future<MilkProduction> addMilk({
+  Future<MilkProductionEntity> addMilk({
     required String cowId,
     required String producedAt,
     required String quantity,
@@ -38,7 +38,7 @@ abstract class CowsRepository {
     String? note,
   });
 
-  Future<MilkProduction> updateMilk({
+  Future<MilkProductionEntity> updateMilk({
     required String cowId,
     required String milkId,
     required String producedAt,
@@ -50,13 +50,13 @@ abstract class CowsRepository {
 
   Future<void> deleteMilk(String cowId, String milkId);
 
-  Future<PagedResult<CowFeeding>> listFeedings(
+  Future<PagedResultEntity<CowFeedingEntity>> listFeedings(
     String cowId, {
     int limit = 10,
     int offset = 0,
   });
 
-  Future<CowFeeding> addFeeding({
+  Future<CowFeedingEntity> addFeeding({
     required String cowId,
     required String fedAt,
     required String feedName,
@@ -66,7 +66,7 @@ abstract class CowsRepository {
     String? note,
   });
 
-  Future<CowFeeding> updateFeeding({
+  Future<CowFeedingEntity> updateFeeding({
     required String cowId,
     required String feedingId,
     required String fedAt,

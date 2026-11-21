@@ -9,8 +9,8 @@ import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/language_selector.dart';
 import 'package:mobile/presentation/shared/widgets/series_chart.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_aggregates.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_series_key.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_aggregates_entity.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_key_entity.dart';
 
 /// Post-login landing page: six aggregate charts over a selectable period.
 class DashboardPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _DashboardPageState extends State<DashboardPage> {
   final _to = TextEditingController();
   bool _loading = true;
   String? _error;
-  DashboardAggregates? _data;
+  DashboardAggregatesEntity? _data;
   int _requestId = 0;
 
   @override
@@ -103,7 +103,7 @@ class _DashboardPageState extends State<DashboardPage> {
         _data = data;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted || requestId != _requestId) return;
       setState(() {
         _error = e.message;
@@ -123,35 +123,35 @@ class _DashboardPageState extends State<DashboardPage> {
   ({String title, String semantics, Color color}) _chartMeta(
     AppLocalizations l10n,
     AppTokens tokens,
-    DashboardSeriesKey key,
+    DashboardSeriesKeyEntity key,
   ) =>
       switch (key) {
-        DashboardSeriesKey.eggProduction => (
+        DashboardSeriesKeyEntity.eggProduction => (
             title: l10n.chartEggProduction,
             semantics: l10n.chartEggProductionSemantics,
             color: tokens.accent,
           ),
-        DashboardSeriesKey.henHeadcount => (
+        DashboardSeriesKeyEntity.henHeadcount => (
             title: l10n.chartHenHeadcount,
             semantics: l10n.chartHenHeadcountSemantics,
             color: const Color(0xFF6B4F2A),
           ),
-        DashboardSeriesKey.milk => (
+        DashboardSeriesKeyEntity.milk => (
             title: l10n.chartMilk,
             semantics: l10n.chartMilkSemantics,
             color: const Color(0xFF3B6EA5),
           ),
-        DashboardSeriesKey.cowProduction => (
+        DashboardSeriesKeyEntity.cowProduction => (
             title: l10n.chartCowProduction,
             semantics: l10n.chartCowProductionSemantics,
             color: tokens.primary,
           ),
-        DashboardSeriesKey.expensesCost => (
+        DashboardSeriesKeyEntity.expensesCost => (
             title: l10n.chartExpensesCost,
             semantics: l10n.chartExpensesCostSemantics,
             color: tokens.danger,
           ),
-        DashboardSeriesKey.income => (
+        DashboardSeriesKeyEntity.income => (
             title: l10n.chartIncome,
             semantics: l10n.chartIncomeSemantics,
             color: const Color(0xFF1F7A5A),
@@ -237,7 +237,7 @@ class _DashboardPageState extends State<DashboardPage> {
               child: LoadingView(),
             )
           else if (data != null)
-            for (final key in DashboardSeriesKey.values) ...[
+            for (final key in DashboardSeriesKeyEntity.values) ...[
               Builder(
                 builder: (context) {
                   final meta = _chartMeta(l10n, tokens, key);

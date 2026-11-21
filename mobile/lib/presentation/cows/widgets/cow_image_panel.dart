@@ -77,7 +77,7 @@ class _CowImagePanelState extends State<CowImagePanel> {
         _remoteBytes = Uint8List.fromList(bytes);
         _loadingRemote = false;
       });
-    } on AppFailure {
+    } on Failure {
       if (!mounted) return;
       setState(() {
         _remoteBytes = null;

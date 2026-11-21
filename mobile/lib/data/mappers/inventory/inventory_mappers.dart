@@ -1,68 +1,68 @@
 import 'package:mobile/data/models/inventory/inventory_item_model.dart';
 import 'package:mobile/data/models/inventory/stock_update_list_item_model.dart';
 import 'package:mobile/data/models/inventory/stock_update_model.dart';
-import 'package:mobile/domain/entities/inventory/inventory_category.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item_create_params.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item_update_params.dart';
-import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
-import 'package:mobile/domain/entities/inventory/stock_update.dart';
-import 'package:mobile/domain/entities/inventory/stock_update_list_item.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_create_params_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_update_params_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_update_list_item_entity.dart';
 
-InventoryCategory mapInventoryCategory(String value) {
+InventoryCategoryEntity mapInventoryCategory(String value) {
   switch (value) {
     case 'feed':
-      return InventoryCategory.feed;
+      return InventoryCategoryEntity.feed;
     case 'fertilizer':
-      return InventoryCategory.fertilizer;
+      return InventoryCategoryEntity.fertilizer;
     case 'pesticide':
-      return InventoryCategory.pesticide;
+      return InventoryCategoryEntity.pesticide;
     case 'seed':
-      return InventoryCategory.seed;
+      return InventoryCategoryEntity.seed;
     case 'medicine':
-      return InventoryCategory.medicine;
+      return InventoryCategoryEntity.medicine;
     case 'equipment':
-      return InventoryCategory.equipment;
+      return InventoryCategoryEntity.equipment;
     case 'fuel':
-      return InventoryCategory.fuel;
+      return InventoryCategoryEntity.fuel;
     case 'other':
-      return InventoryCategory.other;
+      return InventoryCategoryEntity.other;
     default:
-      return InventoryCategory.other;
+      return InventoryCategoryEntity.other;
   }
 }
 
-String inventoryCategoryToApi(InventoryCategory value) => switch (value) {
-      InventoryCategory.feed => 'feed',
-      InventoryCategory.fertilizer => 'fertilizer',
-      InventoryCategory.pesticide => 'pesticide',
-      InventoryCategory.seed => 'seed',
-      InventoryCategory.medicine => 'medicine',
-      InventoryCategory.equipment => 'equipment',
-      InventoryCategory.fuel => 'fuel',
-      InventoryCategory.other => 'other',
+String inventoryCategoryToApi(InventoryCategoryEntity value) => switch (value) {
+      InventoryCategoryEntity.feed => 'feed',
+      InventoryCategoryEntity.fertilizer => 'fertilizer',
+      InventoryCategoryEntity.pesticide => 'pesticide',
+      InventoryCategoryEntity.seed => 'seed',
+      InventoryCategoryEntity.medicine => 'medicine',
+      InventoryCategoryEntity.equipment => 'equipment',
+      InventoryCategoryEntity.fuel => 'fuel',
+      InventoryCategoryEntity.other => 'other',
     };
 
-StockChangeType mapStockChangeType(String value) {
+StockChangeTypeEntity mapStockChangeType(String value) {
   switch (value) {
     case 'add':
-      return StockChangeType.add;
+      return StockChangeTypeEntity.add;
     case 'use':
-      return StockChangeType.use;
+      return StockChangeTypeEntity.use;
     default:
-      return StockChangeType.add;
+      return StockChangeTypeEntity.add;
   }
 }
 
-String stockChangeTypeToApi(StockChangeType value) => switch (value) {
-      StockChangeType.add => 'add',
-      StockChangeType.use => 'use',
+String stockChangeTypeToApi(StockChangeTypeEntity value) => switch (value) {
+      StockChangeTypeEntity.add => 'add',
+      StockChangeTypeEntity.use => 'use',
     };
 
-InventoryItem mapInventoryItem(Map<String, dynamic> json) =>
+InventoryItemEntity mapInventoryItem(Map<String, dynamic> json) =>
     mapInventoryItemModel(InventoryItemModel.fromJson(json));
 
-InventoryItem mapInventoryItemModel(InventoryItemModel model) => InventoryItem(
+InventoryItemEntity mapInventoryItemModel(InventoryItemModel model) => InventoryItemEntity(
       id: model.id,
       name: model.name,
       category: mapInventoryCategory(model.category),
@@ -76,10 +76,10 @@ InventoryItem mapInventoryItemModel(InventoryItemModel model) => InventoryItem(
       updatedAt: model.updatedAt,
     );
 
-StockUpdate mapStockUpdate(Map<String, dynamic> json) =>
+StockUpdateEntity mapStockUpdate(Map<String, dynamic> json) =>
     mapStockUpdateModel(StockUpdateModel.fromJson(json));
 
-StockUpdate mapStockUpdateModel(StockUpdateModel model) => StockUpdate(
+StockUpdateEntity mapStockUpdateModel(StockUpdateModel model) => StockUpdateEntity(
       id: model.id,
       inventoryItemId: model.inventoryItemId,
       occurredAt: model.occurredAt,
@@ -89,7 +89,7 @@ StockUpdate mapStockUpdateModel(StockUpdateModel model) => StockUpdate(
       createdAt: model.createdAt,
     );
 
-Map<String, dynamic> inventoryItemCreateToJson(InventoryItemCreateParams params) => {
+Map<String, dynamic> inventoryItemCreateToJson(InventoryItemCreateParamsEntity params) => {
       'name': params.name,
       'category': inventoryCategoryToApi(params.category),
       'quantity': params.quantity,
@@ -98,7 +98,7 @@ Map<String, dynamic> inventoryItemCreateToJson(InventoryItemCreateParams params)
       'note': params.note,
     };
 
-Map<String, dynamic> inventoryItemUpdateToJson(InventoryItemUpdateParams params) => {
+Map<String, dynamic> inventoryItemUpdateToJson(InventoryItemUpdateParamsEntity params) => {
       'name': params.name,
       'category': inventoryCategoryToApi(params.category),
       'unit': params.unit,
@@ -106,11 +106,11 @@ Map<String, dynamic> inventoryItemUpdateToJson(InventoryItemUpdateParams params)
       'note': params.note,
     };
 
-StockUpdateListItem mapStockUpdateListItem(Map<String, dynamic> json) =>
+StockUpdateListItemEntity mapStockUpdateListItem(Map<String, dynamic> json) =>
     mapStockUpdateListItemModel(StockUpdateListItemModel.fromJson(json));
 
-StockUpdateListItem mapStockUpdateListItemModel(StockUpdateListItemModel model) =>
-    StockUpdateListItem(
+StockUpdateListItemEntity mapStockUpdateListItemModel(StockUpdateListItemModel model) =>
+    StockUpdateListItemEntity(
       id: model.id,
       inventoryItemId: model.inventoryItemId,
       itemName: model.itemName,

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/presentation/auth/pages/farm_settings_page.dart';
 import 'package:mobile/presentation/auth/pages/profile_page.dart';
-import 'package:mobile/presentation/auth/pages/sign_in_page.dart';
+import 'package:mobile/presentation/auth/sign_in/sign_in_page.dart';
 import 'package:mobile/presentation/auth/pages/sign_up_page.dart';
 import 'package:mobile/presentation/cows/pages/cow_create_page.dart';
 import 'package:mobile/presentation/cows/pages/cow_detail_page.dart';

@@ -1,28 +1,21 @@
-import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/common/api_client.dart';
 import 'package:mobile/data/datasources/dashboard/dashboard_datasource.dart';
+import 'package:mobile/data/network/api_client.dart';
+import 'package:mobile/data/network/api_endpoints.dart';
 
 class DashboardDatasourceImpl implements DashboardDatasource {
   DashboardDatasourceImpl(this._client);
 
   final ApiClient _client;
 
-  Dio get _dio => _client.dio;
-
   @override
   Future<Map<String, dynamic>> getAggregates({
     required String from,
     required String to,
     required String grain,
-  }) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/dashboard/aggregates',
-        queryParameters: {'from': from, 'to': to, 'grain': grain},
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  }) {
+    return _client.get(
+      ApiEndpoints.dashboardAggregates,
+      query: {'from': from, 'to': to, 'grain': grain},
+    );
   }
 }

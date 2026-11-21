@@ -39,7 +39,7 @@ class _CropNameCreatePageState extends State<CropNameCreatePage> {
       );
       if (!mounted) return;
       context.go(AppRoutes.cropName(cropName.id));
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);

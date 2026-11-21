@@ -7,7 +7,8 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/crops/widgets/crop_cycle_form_fields.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 String _todayDate() {
   final now = DateTime.now();
@@ -31,7 +32,7 @@ class _CropCycleCreatePageState extends State<CropCycleCreatePage> {
   final _location = TextEditingController();
   final _notes = TextEditingController();
 
-  List<CropName> _cropNames = const [];
+  List<CropNameEntity> _cropNames = const [];
   String? _cropNameId;
   bool _loadingNames = true;
   String? _error;
@@ -67,7 +68,7 @@ class _CropCycleCreatePageState extends State<CropCycleCreatePage> {
         _cropNameId = page.items.isNotEmpty ? page.items.first.id : null;
         _loadingNames = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -97,7 +98,7 @@ class _CropCycleCreatePageState extends State<CropCycleCreatePage> {
       );
       if (!mounted) return;
       context.go(AppRoutes.cropCycle(cycle.id));
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -108,7 +109,7 @@ class _CropCycleCreatePageState extends State<CropCycleCreatePage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     if (_loadingNames) {
-      return const Center(child: CircularProgressIndicator());
+      return const LoadingView();
     }
 
     return ListView(

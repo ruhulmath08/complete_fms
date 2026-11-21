@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group_write_params.dart';
-import 'package:mobile/domain/entities/poultry/poultry_type.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_write_params_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_type_entity.dart';
 
 class PoultryGroupFormFields extends StatelessWidget {
   const PoultryGroupFormFields({
@@ -26,10 +26,10 @@ class PoultryGroupFormFields extends StatelessWidget {
   final TextEditingController purchaseDate;
   final TextEditingController purchasePrice;
   final TextEditingController notes;
-  final PoultryType poultryType;
-  final AcquisitionSource acquiredBy;
-  final ValueChanged<PoultryType> onPoultryTypeChanged;
-  final ValueChanged<AcquisitionSource> onAcquiredByChanged;
+  final PoultryTypeEntity poultryType;
+  final AcquisitionSourceEntity acquiredBy;
+  final ValueChanged<PoultryTypeEntity> onPoultryTypeChanged;
+  final ValueChanged<AcquisitionSourceEntity> onAcquiredByChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +40,11 @@ class PoultryGroupFormFields extends StatelessWidget {
           controller: name,
           decoration: InputDecoration(labelText: l10n.poultryGroupName),
         ),
-        DropdownButtonFormField<PoultryType>(
+        DropdownButtonFormField<PoultryTypeEntity>(
           // ignore: deprecated_member_use
           value: poultryType,
           decoration: InputDecoration(labelText: l10n.poultryType),
-          items: PoultryType.values
+          items: PoultryTypeEntity.values
               .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
               .toList(),
           onChanged: (v) {
@@ -60,17 +60,17 @@ class PoultryGroupFormFields extends StatelessWidget {
           controller: dateAcquired,
           decoration: InputDecoration(labelText: l10n.dateAcquiredHint),
         ),
-        DropdownButtonFormField<AcquisitionSource>(
+        DropdownButtonFormField<AcquisitionSourceEntity>(
           // ignore: deprecated_member_use
           value: acquiredBy,
           decoration: InputDecoration(labelText: l10n.acquiredBy),
           items: [
             DropdownMenuItem(
-              value: AcquisitionSource.bornOnFarm,
+              value: AcquisitionSourceEntity.bornOnFarm,
               child: Text(l10n.bornOnFarm),
             ),
             DropdownMenuItem(
-              value: AcquisitionSource.purchased,
+              value: AcquisitionSourceEntity.purchased,
               child: Text(l10n.purchased),
             ),
           ],
@@ -78,7 +78,7 @@ class PoultryGroupFormFields extends StatelessWidget {
             if (v != null) onAcquiredByChanged(v);
           },
         ),
-        if (acquiredBy == AcquisitionSource.purchased) ...[
+        if (acquiredBy == AcquisitionSourceEntity.purchased) ...[
           TextField(
             controller: purchaseDate,
             decoration: InputDecoration(labelText: l10n.purchaseDateHint),
@@ -98,31 +98,31 @@ class PoultryGroupFormFields extends StatelessWidget {
   }
 }
 
-PoultryGroupWriteParams buildPoultryGroupWriteParams({
+PoultryGroupWriteParamsEntity buildPoultryGroupWriteParams({
   required TextEditingController name,
   required TextEditingController birdCount,
   required TextEditingController dateAcquired,
   required TextEditingController purchaseDate,
   required TextEditingController purchasePrice,
   required TextEditingController notes,
-  required PoultryType poultryType,
-  required AcquisitionSource acquiredBy,
+  required PoultryTypeEntity poultryType,
+  required AcquisitionSourceEntity acquiredBy,
 }) {
   String? emptyToNull(String value) {
     final trimmed = value.trim();
     return trimmed.isEmpty ? null : trimmed;
   }
 
-  return PoultryGroupWriteParams(
+  return PoultryGroupWriteParamsEntity(
     poultryType: poultryType,
     name: name.text.trim(),
     birdCount: int.tryParse(birdCount.text.trim()) ?? 0,
     acquiredBy: acquiredBy,
     dateAcquired: emptyToNull(dateAcquired.text),
-    purchaseDate: acquiredBy == AcquisitionSource.purchased
+    purchaseDate: acquiredBy == AcquisitionSourceEntity.purchased
         ? emptyToNull(purchaseDate.text)
         : null,
-    purchasePrice: acquiredBy == AcquisitionSource.purchased
+    purchasePrice: acquiredBy == AcquisitionSourceEntity.purchased
         ? emptyToNull(purchasePrice.text)
         : null,
     notes: emptyToNull(notes.text),
