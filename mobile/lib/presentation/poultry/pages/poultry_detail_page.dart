@@ -11,6 +11,7 @@ import 'package:mobile/domain/entities/poultry/egg_production_entity.dart';
 import 'package:mobile/domain/entities/poultry/poultry_feeding_entity.dart';
 import 'package:mobile/domain/entities/poultry/poultry_group_entity.dart';
 import 'package:mobile/domain/entities/poultry/poultry_type_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 String _rowTotal(String quantity, String unitPrice) {
   final qty = double.tryParse(quantity);
@@ -442,7 +443,7 @@ class _PoultryDetailPageState extends State<PoultryDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final group = _group;
     if (group == null) {
       return Center(child: Text(_error ?? l10n.genericError));

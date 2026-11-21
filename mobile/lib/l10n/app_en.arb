@@ -9,7 +9,7 @@
   "signOutConfirmMessage": "You will be signed out of Farm Manager on this device. You can sign in again anytime.",
   "moreOptions": "More options",
   "openNavigationMenu": "Open navigation menu",
-  "loadingLabel": "Loading…",
+  "loadingLabel": "Please wait, loading…",
   "useMenuHint": "Use the menu to open Cows, Poultry, Crops, Inventory, Income & expenses, Profile, or Farm settings.",
   "email": "Email",
   "password": "Password",

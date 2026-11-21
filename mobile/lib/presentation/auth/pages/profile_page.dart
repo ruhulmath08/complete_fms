@@ -9,6 +9,7 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/auth/widgets/profile_image_preview.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -131,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     return ListView(
       padding: const EdgeInsets.all(24),
       children: [

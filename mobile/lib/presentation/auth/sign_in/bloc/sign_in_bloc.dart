@@ -9,7 +9,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc({required this.signInUseCase})
     : super(
         const SignInState(
-          initial: SignInStateEnum.initial,
+          statusEnum: SignInStateEnum.initial,
           userName: '',
           password: '',
           errorMessage: '',
@@ -26,10 +26,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInUsernameChange event,
     Emitter<SignInState> emit,
   ) {
+    print('Username changed: ${event.username}');
     emit(
       state.copyWith(
         userName: event.username,
-        initial: SignInStateEnum.initial,
+        statusEnum: SignInStateEnum.initial,
       ),
     );
   }
@@ -38,10 +39,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInPasswordChange event,
     Emitter<SignInState> emit,
   ) {
+    print('Password changed: ${event.password}');
     emit(
       state.copyWith(
         password: event.password,
-        initial: SignInStateEnum.initial,
+        statusEnum: SignInStateEnum.initial,
       ),
     );
   }
@@ -50,14 +52,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInSubmitted event,
     Emitter<SignInState> emit,
   ) async {
-    emit(state.copyWith(initial: SignInStateEnum.loading));
+    emit(state.copyWith(statusEnum: SignInStateEnum.loading));
     final email = state.userName.trim();
     final password = state.password.trim();
 
     if (email.isEmpty || password.isEmpty) {
       emit(
         state.copyWith(
-          initial: SignInStateEnum.failed,
+          statusEnum: SignInStateEnum.failed,
           errorMessage: 'Please fill in all fields.',
         ),
       );
@@ -66,10 +68,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     final result = await signInUseCase(email: email, password: password);
     result.when(
-      success: (_) => emit(state.copyWith(initial: SignInStateEnum.success)),
+      success: (_) => emit(state.copyWith(statusEnum: SignInStateEnum.success)),
       failure: (failure) => emit(
         state.copyWith(
-          initial: SignInStateEnum.failed,
+          statusEnum: SignInStateEnum.failed,
           errorMessage: failure.message,
         ),
       ),

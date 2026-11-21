@@ -38,7 +38,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openNavigationMenu => 'Open navigation menu';
 
   @override
-  String get loadingLabel => 'Loading…';
+  String get loadingLabel => 'Please wait, loading…';
 
   @override
   String get useMenuHint =>

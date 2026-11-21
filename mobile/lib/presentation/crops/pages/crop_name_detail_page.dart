@@ -5,6 +5,7 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/crops/widgets/crop_name_form_fields.dart';
 import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 class CropNameDetailPage extends StatefulWidget {
   const CropNameDetailPage({super.key, required this.cropNameId});
@@ -118,7 +119,7 @@ class _CropNameDetailPageState extends State<CropNameDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final cropName = _cropName;
     if (cropName == null) {
       return Center(child: Text(_error ?? l10n.genericError));

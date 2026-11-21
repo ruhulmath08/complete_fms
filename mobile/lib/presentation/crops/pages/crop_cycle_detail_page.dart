@@ -12,6 +12,7 @@ import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
 import 'package:mobile/domain/entities/crop/cycle_summary_entity.dart';
 import 'package:mobile/domain/entities/crop/expense_category_entity.dart';
 import 'package:mobile/domain/entities/crop/harvest_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 String _todayDate() {
   final now = DateTime.now();
@@ -449,7 +450,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final cycle = _cycle;
     if (cycle == null) {
       return Center(child: Text(_error ?? l10n.genericError));

@@ -14,6 +14,7 @@ import 'package:mobile/domain/entities/cow/cow_feeding_entity.dart';
 import 'package:mobile/domain/entities/cow/cow_gender_entity.dart';
 import 'package:mobile/domain/entities/cow/cow_purpose_entity.dart';
 import 'package:mobile/domain/entities/cow/milk_production_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 const _pageSize = 10;
 
@@ -754,7 +755,7 @@ class _CowDetailPageState extends State<CowDetailPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final tokens = AppTokens.of(context);
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final cow = _cow;
     if (cow == null) {
       return Center(child: Text(_error ?? l10n.genericError));

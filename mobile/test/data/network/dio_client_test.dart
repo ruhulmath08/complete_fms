@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/datasources/auth/auth_local_datasource.dart';
+import 'package:mobile/data/network/api_activity.dart';
 import 'package:mobile/data/network/api_endpoints.dart';
 import 'package:mobile/data/network/api_client.dart';
 import 'package:mobile/data/network/dio/interceptors/auth_interceptor.dart';
@@ -29,6 +30,37 @@ void main() {
       'RetryInterceptor',
       'JsonLogInterceptor',
     ]);
+  });
+
+  test('writes report activity and reads do not', () async {
+    final activity = ApiActivity();
+    final counts = <int>[];
+    final subscription = activity.stream.listen(counts.add);
+    final client = ApiClient(
+      _MemoryAuthLocal(),
+      _FakeNetwork(true),
+      activity: activity,
+    );
+    client.dio.httpClientAdapter = _ScriptedAdapter(
+      (_) async => _body(200, '{"ok":true}'),
+    );
+
+    await client.get('/api/v1/me');
+    expect(activity.count, 0);
+    expect(counts, isEmpty);
+
+    await client.post('/api/v1/cows', data: {'name': 'A'});
+    expect(activity.count, 0);
+    expect(counts, [1, 0]);
+
+    client.dio.httpClientAdapter = _ScriptedAdapter(
+      (_) async => _body(400, '{"code":"BAD_REQUEST","message":"No."}'),
+    );
+    await expectLater(client.delete('/api/v1/cows/1'), throwsA(isA<Failure>()));
+    expect(activity.count, 0);
+    expect(counts, [1, 0, 1, 0]);
+
+    await subscription.cancel();
   });
 
   test('get throws the failure from the API body', () async {

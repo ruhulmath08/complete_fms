@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mobile/data/datasources/auth/auth_local_datasource.dart';
+import 'package:mobile/data/network/api_activity.dart';
 import 'package:mobile/data/network/dio/dio_config.dart';
 import 'package:mobile/data/network/dio/interceptors/auth_interceptor.dart';
 import 'package:mobile/data/network/dio/interceptors/connectivity_interceptor.dart';
@@ -22,10 +23,15 @@ const bool _httpLogEnabled =
 /// throw a [Failure] instead of a [DioException]. Auth, connectivity, and
 /// retries run inside [dio] before that mapping.
 class ApiClient {
-  ApiClient(AuthLocalDatasource localDatasource, NetworkInfo networkInfo)
-    : dio = _create(localDatasource, networkInfo);
+  ApiClient(
+    AuthLocalDatasource localDatasource,
+    NetworkInfo networkInfo, {
+    ApiActivity? activity,
+  }) : _activity = activity ?? ApiActivity(),
+       dio = _create(localDatasource, networkInfo);
 
   final Dio dio;
+  final ApiActivity _activity;
 
   Future<Map<String, dynamic>> get(
     String path, {
@@ -62,6 +68,7 @@ class ApiClient {
         data: data,
         options: _options(auth),
       ),
+      track: true,
     );
   }
 
@@ -69,19 +76,26 @@ class ApiClient {
   Future<void> postVoid(String path, {Object? data, bool auth = true}) {
     return _send(
       () => dio.post<void>(path, data: data, options: _options(auth)),
+      track: true,
     );
   }
 
   Future<Map<String, dynamic>> patch(String path, {Object? data}) {
-    return _json(() => dio.patch<Map<String, dynamic>>(path, data: data));
+    return _json(
+      () => dio.patch<Map<String, dynamic>>(path, data: data),
+      track: true,
+    );
   }
 
   Future<Map<String, dynamic>> put(String path, {Object? data}) {
-    return _json(() => dio.put<Map<String, dynamic>>(path, data: data));
+    return _json(
+      () => dio.put<Map<String, dynamic>>(path, data: data),
+      track: true,
+    );
   }
 
   Future<void> delete(String path) {
-    return _send(() => dio.delete<void>(path));
+    return _send(() => dio.delete<void>(path), track: true);
   }
 
   static Dio _create(
@@ -118,19 +132,23 @@ class ApiClient {
   }
 
   Future<Map<String, dynamic>> _json(
-    Future<Response<Map<String, dynamic>>> Function() call,
-  ) {
+    Future<Response<Map<String, dynamic>>> Function() call, {
+    bool track = false,
+  }) {
     return _send(() async {
       final response = await call();
       return response.data!;
-    });
+    }, track: track);
   }
 
-  Future<T> _send<T>(Future<T> Function() call) async {
+  Future<T> _send<T>(Future<T> Function() call, {bool track = false}) async {
+    if (track) _activity.begin();
     try {
       return await call();
     } on DioException catch (error) {
       throw failureFromDio(error);
+    } finally {
+      if (track) _activity.end();
     }
   }
 }

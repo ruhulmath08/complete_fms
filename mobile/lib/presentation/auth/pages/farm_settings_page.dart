@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 
 
@@ -73,7 +74,7 @@ class _FarmSettingsPageState extends State<FarmSettingsPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(

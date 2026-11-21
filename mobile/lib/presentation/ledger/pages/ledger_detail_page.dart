@@ -7,6 +7,7 @@ import 'package:mobile/presentation/ledger/widgets/ledger_entry_form_fields.dart
 import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
 import 'package:mobile/domain/entities/ledger/ledger_entry_category_entity.dart';
 import 'package:mobile/domain/entities/ledger/ledger_entry_type_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 class LedgerDetailPage extends StatefulWidget {
   const LedgerDetailPage({super.key, required this.entryId});
@@ -135,7 +136,7 @@ class _LedgerDetailPageState extends State<LedgerDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final entry = _entry;
     if (entry == null) {
       return Center(child: Text(_error ?? l10n.genericError));

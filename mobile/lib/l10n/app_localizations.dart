@@ -155,7 +155,7 @@ abstract class AppLocalizations {
   /// No description provided for @loadingLabel.
   ///
   /// In en, this message translates to:
-  /// **'Loading…'**
+  /// **'Please wait, loading…'**
   String get loadingLabel;
 
   /// No description provided for @useMenuHint.

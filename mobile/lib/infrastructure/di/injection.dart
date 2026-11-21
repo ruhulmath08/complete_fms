@@ -16,6 +16,7 @@ import 'package:mobile/data/datasources/ledger/ledger_datasource.dart';
 import 'package:mobile/data/datasources/ledger/ledger_datasource_impl.dart';
 import 'package:mobile/data/datasources/poultry/poultry_datasource.dart';
 import 'package:mobile/data/datasources/poultry/poultry_datasource_impl.dart';
+import 'package:mobile/data/network/api_activity.dart';
 import 'package:mobile/data/network/api_client.dart';
 import 'package:mobile/data/network/network_info.dart';
 import 'package:mobile/data/repositories/auth/auth_repository_impl.dart';
@@ -41,6 +42,7 @@ import 'package:mobile/domain/use_cases/inventory/inventory_usecases.dart';
 import 'package:mobile/domain/use_cases/ledger/ledger_usecases.dart';
 import 'package:mobile/domain/use_cases/poultry/poultry_usecases.dart';
 import 'package:mobile/presentation/auth/sign_in/bloc/sign_in_bloc.dart';
+import 'package:mobile/presentation/loading/loading_cubit.dart';
 import 'package:mobile/presentation/locale/locale_cubit.dart';
 import 'package:mobile/presentation/session/session_cubit.dart';
 
@@ -53,7 +55,12 @@ void configureDependencies({bool reset = false}) {
 
   final authLocalDatasource = AuthLocalDatasourceImpl();
   final networkInfo = NetworkInfoImpl(InternetConnection());
-  final apiClient = ApiClient(authLocalDatasource, networkInfo);
+  final apiActivity = ApiActivity();
+  final apiClient = ApiClient(
+    authLocalDatasource,
+    networkInfo,
+    activity: apiActivity,
+  );
   final authRemoteDatasource = AuthRemoteDatasourceImpl(apiClient);
   final cowsDatasource = CowsDatasourceImpl(apiClient);
   final poultryDatasource = PoultryDatasourceImpl(apiClient);
@@ -162,6 +169,8 @@ void configureDependencies({bool reset = false}) {
     ..registerLazySingleton(() => GetLedgerSeries(ledgerRepo))
     ..registerLazySingleton(() => GetDashboardAggregates(dashboardRepo))
     ..registerFactory(() => SignInBloc(signInUseCase: getIt<SignInUseCase>()))
+    ..registerSingleton(apiActivity)
+    ..registerLazySingleton(() => LoadingCubit(apiActivity))
     ..registerLazySingleton(() => LocaleCubit())
     ..registerLazySingleton(
       () => SessionCubit(getIt<IsSignedIn>(), getIt<SignOut>()),

@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
-import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/shared/widgets/farm_loading_widget.dart';
 
 class LoadingView extends StatelessWidget {
   const LoadingView({super.key, this.message});
@@ -9,23 +9,7 @@ class LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final tokens = AppTokens.of(context);
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const CircularProgressIndicator(),
-          SizedBox(height: tokens.space3),
-          Text(
-            message ?? l10n.loadingLabel,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: tokens.muted,
-                ),
-          ),
-        ],
-      ),
-    );
+    return FarmLoadingWidget(message: message);
   }
 }
 

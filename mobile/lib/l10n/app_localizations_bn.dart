@@ -38,7 +38,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get openNavigationMenu => 'নেভিগেশন মেনু খুলুন';
 
   @override
-  String get loadingLabel => 'লোড হচ্ছে…';
+  String get loadingLabel => 'অপেক্ষা করুন, লোড হচ্ছে…';
 
   @override
   String get useMenuHint =>

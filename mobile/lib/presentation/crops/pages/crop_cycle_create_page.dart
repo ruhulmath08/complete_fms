@@ -8,6 +8,7 @@ import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/crops/widgets/crop_cycle_form_fields.dart';
 import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 String _todayDate() {
   final now = DateTime.now();
@@ -108,7 +109,7 @@ class _CropCycleCreatePageState extends State<CropCycleCreatePage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     if (_loadingNames) {
-      return const Center(child: CircularProgressIndicator());
+      return const LoadingView();
     }
 
     return ListView(

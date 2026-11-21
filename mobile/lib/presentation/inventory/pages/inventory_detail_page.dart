@@ -9,6 +9,7 @@ import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart'
 import 'package:mobile/domain/entities/inventory/inventory_item_entity.dart';
 import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
 import 'package:mobile/domain/entities/inventory/stock_update_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 String _todayDate() {
   final now = DateTime.now();
@@ -177,7 +178,7 @@ class _InventoryDetailPageState extends State<InventoryDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final item = _item;
     if (item == null) {
       return Center(child: Text(_error ?? l10n.genericError));
