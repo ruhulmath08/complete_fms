@@ -97,6 +97,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInSubtitle => 'Access your farm records on this device.';
 
   @override
+  String get invalidCredentials => 'Email or password is incorrect.';
+
+  @override
+  String get invalidEmail => 'Email format is invalid.';
+
+  @override
+  String get fillAllFields => 'Please fill in all fields.';
+
+  @override
   String get signUpSubtitle =>
       'Register as the farm owner. You will sign in after signup.';
 

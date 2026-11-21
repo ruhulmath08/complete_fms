@@ -6,6 +6,7 @@ import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/auth/sign_in/bloc/sign_in_bloc.dart';
+import 'package:mobile/presentation/auth/sign_in/widgets/password_input_field.dart';
 import 'package:mobile/presentation/session/session_cubit.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 
@@ -37,12 +38,18 @@ class _SignInView extends StatelessWidget {
       },
       buildWhen: (previous, current) =>
           previous.statusEnum != current.statusEnum ||
-          previous.errorMessage != current.errorMessage,
+          previous.errorMessage != current.errorMessage ||
+          previous.errorCode != current.errorCode,
       builder: (context, state) {
         final busy = state.statusEnum == SignInStateEnum.loading;
-        final errorMessage = state.statusEnum == SignInStateEnum.failed
-            ? state.errorMessage
-            : '';
+        final errorMessage = state.statusEnum != SignInStateEnum.failed
+            ? ''
+            : switch (state.errorCode) {
+                SignInErrorCode.emptyFields => l10n.fillAllFields,
+                SignInErrorCode.invalidEmail => l10n.invalidEmail,
+                SignInErrorCode.invalidCredentials => l10n.invalidCredentials,
+                _ => state.errorMessage,
+              };
         return Scaffold(
           body: Center(
             child: ConstrainedBox(
@@ -84,11 +91,8 @@ class _SignInView extends StatelessWidget {
                                 .read<SignInBloc>()
                                 .add(SignInUsernameChange(username: value)),
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                              labelText: l10n.password,
-                            ),
-                            obscureText: true,
+                          PasswordInputField(
+                            labelText: l10n.password,
                             onChanged: (value) => context
                                 .read<SignInBloc>()
                                 .add(SignInPasswordChange(password: value)),

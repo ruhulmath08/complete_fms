@@ -266,6 +266,24 @@ abstract class AppLocalizations {
   /// **'Access your farm records on this device.'**
   String get signInSubtitle;
 
+  /// No description provided for @invalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or password is incorrect.'**
+  String get invalidCredentials;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email format is invalid.'**
+  String get invalidEmail;
+
+  /// No description provided for @fillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all fields.'**
+  String get fillAllFields;
+
   /// No description provided for @signUpSubtitle.
   ///
   /// In en, this message translates to:

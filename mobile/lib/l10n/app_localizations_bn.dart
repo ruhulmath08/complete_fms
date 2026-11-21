@@ -97,6 +97,15 @@ class AppLocalizationsBn extends AppLocalizations {
   String get signInSubtitle => 'এই ডিভাইসে আপনার ফার্ম রেকর্ড ব্যবহার করুন।';
 
   @override
+  String get invalidCredentials => 'ইমেইল বা পাসওয়ার্ড সঠিক নয়।';
+
+  @override
+  String get invalidEmail => 'ইমেইলের ফরম্যাট সঠিক নয়।';
+
+  @override
+  String get fillAllFields => 'অনুগ্রহ করে সব ঘর পূরণ করুন।';
+
+  @override
   String get signUpSubtitle =>
       'ফার্ম মালিক হিসেবে নিবন্ধন করুন। সাইনআপের পর সাইন ইন করবেন।';
 
