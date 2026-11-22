@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mobile/domain/result.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
+import 'package:mobile/domain/use_cases/auth/sign_in/sign_out_use_case.dart';
 import 'package:mobile/infrastructure/router/app_routes.dart';
 import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
@@ -13,7 +14,7 @@ import 'package:mobile/presentation/shell/app_shell.dart';
 
 class _MockIsSignedIn extends Mock implements IsSignedIn {}
 
-class _MockSignOut extends Mock implements SignOut {}
+class _MockSignOut extends Mock implements SignOutUseCase {}
 
 void main() {
   late _MockIsSignedIn isSignedIn;

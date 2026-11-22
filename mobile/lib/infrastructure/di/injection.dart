@@ -35,6 +35,7 @@ import 'package:mobile/domain/repositories/ledger/ledger_repository.dart';
 import 'package:mobile/domain/repositories/poultry/poultry_repository.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
 import 'package:mobile/domain/use_cases/auth/sign_in/sign_in_use_case.dart';
+import 'package:mobile/domain/use_cases/auth/sign_in/sign_out_use_case.dart';
 import 'package:mobile/domain/use_cases/cow/cows_usecases.dart';
 import 'package:mobile/domain/use_cases/crop/crops_usecases.dart';
 import 'package:mobile/domain/use_cases/dashboard/dashboard_usecases.dart';
@@ -99,7 +100,7 @@ void configureDependencies({bool reset = false}) {
     ..registerSingleton<DashboardRepository>(dashboardRepo)
     ..registerLazySingleton(() => SignUp(authRepo))
     ..registerLazySingleton(() => SignInUseCase(repository: authRepo))
-    ..registerLazySingleton(() => SignOut(authRepo))
+    ..registerLazySingleton(() => SignOutUseCase(authRepository: authRepo))
     ..registerLazySingleton(() => GetProfile(authRepo))
     ..registerLazySingleton(() => UpdateProfile(authRepo))
     ..registerLazySingleton(() => GetFarmSettings(authRepo))
@@ -173,6 +174,6 @@ void configureDependencies({bool reset = false}) {
     ..registerLazySingleton(() => LoadingCubit(apiActivity))
     ..registerLazySingleton(() => LocaleCubit())
     ..registerLazySingleton(
-      () => SessionCubit(getIt<IsSignedIn>(), getIt<SignOut>()),
+      () => SessionCubit(getIt<IsSignedIn>(), getIt<SignOutUseCase>()),
     );
 }

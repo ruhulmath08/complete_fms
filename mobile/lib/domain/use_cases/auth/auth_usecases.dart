@@ -13,14 +13,6 @@ class SignUp {
       _repository.signUp(params);
 }
 
-class SignOut {
-  SignOut(this._repository);
-
-  final AuthRepository _repository;
-
-  Future<Result<Unit>> call() => _repository.signOut();
-}
-
 class GetProfile {
   GetProfile(this._repository);
 
