@@ -66,9 +66,9 @@ complete_fms/
 └── mobile/           # Flutter Clean Architecture (single package)
     └── lib/
         ├── infrastructure/   # DI, router, theme, config
-        ├── presentation/     # pages, cubits, widgets by feature
-        ├── domain/           # pure Dart: entities, repos, usecases
-        ├── data/             # models, datasources, mappers, repo impls
+        ├── presentation/     # pages, blocs, cubits, widgets by feature
+        ├── domain/           # pure Dart: entities, repos, use_cases
+        ├── data/             # models, datasources, mappers, repo impls, network
         └── l10n/
 ```
 
@@ -77,10 +77,10 @@ complete_fms/
 **Mobile layout for a feature** (example: cow):
 
 ```text
-domain/entities/cow/          # one type per file; import entities directly (no mega-barrel)
+domain/entities/cow/          # *Entity, one type per *_entity.dart; direct imports
 domain/repositories/cow/
-domain/usecases/cow/
-data/models/cow/              # JSON DTOs + fromJson
+domain/use_cases/cow/         # cows_usecases.dart, or one file per use case
+data/models/cow/              # *Model JSON DTOs + fromJson
 data/mappers/cow/             # Model → Entity (and write JSON helpers)
 data/datasources/cow/         # abstract + Impl
 data/repositories/cow/        # orchestrates datasources; maps models → entities
@@ -89,16 +89,22 @@ presentation/cows/            # UI feature folder (plural OK for screens)
 
 **Mobile conventions**:
 
+- Domain and data are folders in the `mobile` package, not separate pub packages
 - Domain stays pure Dart: no Flutter, Dio, models, mappers, or datasource/repo implementations
-- One public type per file under `domain/entities/...`; prefer direct imports over barrel exports
-- Domain owns `Failure` and `Result<T>` (`domain/failures.dart`, `domain/result.dart`)
-- Data layer API calls use `safeApiCall` → `Result.success(data)` or `Result.failure`; presentation/use cases fold/`when` the result (auth is the reference; migrate other domains the same way)
-- Data flow: API JSON → `models` → `mappers` → `entities` → repository → use cases → presentation
+- Name domain types `*Entity` and files `*_entity.dart`. One public type per file. Import the file directly; do not add a barrel
+- Name JSON DTOs `*Model`. Map with functions in `data/mappers/{domain}/`
+- Domain owns `Failure` (`domain/failures.dart`) and `Result<T>` (`domain/result.dart`). `Result` is `Success` or `Err`; callers use `.when` or `.fold`
+- `ApiClient` (`data/network/api_client.dart`) is the only HTTP entry. It throws `Failure` after interceptors run. Do not add per-domain `*Api` clients
+- Auth repositories wrap calls in `safeApiCall` (`data/network/safe_api_call.dart`) and return `Result<T>`. Other domain repositories map models to entities and let `Failure` propagate; pages catch `on Failure`. Match the domain you are extending
+- Data flow: API JSON → `*Model.fromJson` → mapper → `*Entity` → repository → use case → presentation
 - Datasources: declare an abstract class and a `*Impl`; register the abstract in GetIt
-- Multi-source only when needed (e.g. auth): `AuthRemoteDatasource` + `AuthLocalDatasource`; single-source domains keep one `*Datasource` + Impl (no empty local/remote folders)
-- Shared HTTP: `data/network/api_client.dart` (auth local datasource supplies tokens / refresh; connectivity via `NetworkInfo`)
-- Shared paging helpers: `data/models/common/`, `data/repositories/common/`
-- When adding a feature, create matching folders in domain + data + presentation and wire DI — do not leave types in flat `entities/` or `*_api.dart` files
+- Multi-source only when needed (auth): `AuthRemoteDatasource` + `AuthLocalDatasource`. Other domains keep one `*Datasource` + Impl
+- Interceptor order on the shared Dio client: connectivity, auth (Bearer token and one in-flight refresh), retry, then debug JSON log. Timeouts and retry delays live in `data/network/dio/dio_config.dart`. Tokens come from `AuthLocalDatasource`
+- POST, PATCH, PUT, and DELETE notify `ApiActivity`. `LoadingCubit` turns that into the farm loading overlay. Reads are not tracked
+- UI widgets come from `package:material_ui/material_ui.dart` and `package:cupertino_ui/cupertino_ui.dart`. Do not import `package:flutter/material.dart` or `package:flutter/cupertino.dart`. Theme stays Material 3 via `AppTheme` / `AppTokens`
+- App-wide state: `SessionCubit`, `LocaleCubit`, and `LoadingCubit` (GetIt lazy singletons, provided on `FarmManagerApp`). Sign-in is `SignInBloc` (GetIt factory) and calls `SignInUseCase`. List, detail, and create pages are `StatefulWidget`s that call use cases from GetIt. A new form that owns validation and submit state follows `SignInBloc`
+- Shared paging helpers: `data/models/common/`, `data/repositories/common/`, domain type `PagedResultEntity`
+- When adding a feature, create matching folders in domain + data + presentation and wire DI in `infrastructure/di/injection.dart`
 
 **Other conventions**:
 
@@ -112,7 +118,7 @@ presentation/cows/            # UI feature folder (plural OK for screens)
 
 - Backend: pytest (unit + API tests)
 - Web: Vitest + Testing Library
-- Mobile: Flutter `test` (domain and BLoC-focused)
+- Mobile: Flutter `test` (domain, mappers, cubit/bloc, and widget tests)
 
 **Coverage Target**: Critical paths over a hard percentage for v1  
 Prioritize auth, ownership isolation, inventory no-negative-stock, and crop summary math.

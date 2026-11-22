@@ -9,14 +9,14 @@ Keep web and mobile visually consistent through shared design tokens. Flutter us
 Shared tokens + Material 3
 
 - Define a single token set for color, typography, and spacing
-- Flutter: Material 3 components themed from those tokens
+- Flutter: Material 3 components from the `material_ui` package, themed from those tokens
 - React: mirror tokens; prefer simple composed components over a heavy third-party UI kit in v1
 - Brand and product screens should feel like one product across platforms
 
 ## Styling Approach
 
 - **Web:** CSS variables + plain CSS / CSS modules
-- **Mobile:** Flutter Material 3 `ThemeData` / component themes
+- **Mobile:** Flutter Material 3 `ThemeData` / component themes. Import widgets from `package:material_ui/material_ui.dart` (Cupertino from `package:cupertino_ui/cupertino_ui.dart`)
 - Avoid divergent one-off palettes per screen
 
 ## Accessibility

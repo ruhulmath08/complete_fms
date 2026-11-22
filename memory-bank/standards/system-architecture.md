@@ -10,7 +10,7 @@ Modular monolith API + two clients
 
 - One FastAPI application with feature modules: auth/profile, cows, poultry, crops, inventory, income/expenses
 - React Vite SPA for web workflows
-- Flutter app using Clean Architecture, BLoC, GoRouter, GetIt, Material 3
+- Flutter app in one package: Clean Architecture, BLoC/Cubit, GoRouter, GetIt, Dio, Material 3 via `material_ui`
 - Clients do not duplicate core business rules; they present data and collect input
 
 ## API Design
@@ -24,7 +24,7 @@ Versioned REST JSON under `/api/v1/...`
 ## State Management
 
 - **Web:** TanStack Query (or equivalent) for server/API state; React local state/context for light UI state
-- **Mobile:** BLoC for presentation state; repositories in the data layer call the API
+- **Mobile:** `SessionCubit`, `LocaleCubit`, and `LoadingCubit` for app-wide state; `SignInBloc` for sign-in; feature pages call use cases from GetIt. Repositories talk to the API only through `ApiClient`
 
 ## Caching Strategy
 
@@ -50,7 +50,7 @@ Baseline security with stricter token handling
 
 - **API (FastAPI):** Auth, domain modules, persistence via SQLAlchemy/PostgreSQL
 - **Web (React/Vite):** Feature screens against `/api/v1`
-- **Mobile (Flutter):** Infrastructure, presentation, domain, and data layers in one package, organized by domain folder (`auth`, `cow`, `crop`, …). Folder and datasource rules live in `coding-standards.md`
+- **Mobile (Flutter):** Infrastructure, presentation, domain, and data layers in one package, organized by domain folder (`auth`, `cow`, `crop`, …). One Dio client (`ApiClient`) with connectivity, token refresh, and retry interceptors. Folder and datasource rules live in `coding-standards.md`
 - **PostgreSQL:** System of record (local install in development)
 
 ## Data Flow

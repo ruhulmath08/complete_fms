@@ -8,7 +8,7 @@ The system has three parts:
 
 - Backend: Python with FastAPI, SQLAlchemy, and PostgreSQL. pgAdmin may be used to administer the PostgreSQL database.
 - Web app: React.
-- Mobile app: Flutter using Clean Architecture, BLoC, GoRouter, GetIt, and Material 3.
+- Mobile app: Flutter in one package, using Clean Architecture, BLoC/Cubit, GoRouter, GetIt, Dio, and Material 3.
 
 The web and mobile apps should use a consistent visual style, including colors and fonts.
 
@@ -234,16 +234,16 @@ Build the web app with React. It communicates with the backend API and follows t
 
 ### Mobile
 
-Build the mobile app with Flutter, Clean Architecture, BLoC, GoRouter, GetIt, and Material 3. Support Bangla and English localization.
+Build the mobile app with Flutter, Clean Architecture, BLoC/Cubit, GoRouter, GetIt, Dio, and Material 3. Support Bangla and English localization.
 
-Organize mobile code into:
+Organize mobile code into folders inside the single `mobile` package (not separate pub packages):
 
-- Infrastructure: GoRouter, GetIt, Material 3, theme, localization, and supporting infrastructure
-- Presentation: screens, widgets, and BLoCs
-- Domain: pure Dart entities, business rules, use cases, repository interfaces, logger, and utilities
-- Data: API calls, data models, data sources, mappers between data models and domain entities, and repository implementations
+- Infrastructure: GoRouter, GetIt, Material 3 theme, localization, and supporting infrastructure
+- Presentation: screens, widgets, cubits, and blocs
+- Domain: pure Dart `*Entity` types, use cases under `domain/use_cases/`, and repository interfaces
+- Data: one shared Dio `ApiClient`, `*Model` JSON types, datasources, mappers, and repository implementations
 
-Keep data and domain as separate projects within the mobile app project. The domain layer must remain pure Dart: no API calls, data models, data sources, mappers, or repository implementations.
+The domain layer must remain pure Dart: no API calls, data models, data sources, mappers, or repository implementations. UI widgets come from `material_ui` and `cupertino_ui`. Current folder rules live in `memory-bank/standards/coding-standards.md` and `specs/01-architecture.md`.
 
 ### Shared API behavior
 

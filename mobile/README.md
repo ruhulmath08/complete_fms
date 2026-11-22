@@ -47,24 +47,35 @@ Use your machine LAN IP for a physical device.
 
 ## Structure
 
-Clean Architecture with **domain folders** mirrored across layers (`auth`, `cow`, `crop`, `poultry`, `inventory`, `ledger`, `dashboard`, `common`).
+Clean Architecture in **one** Flutter package. Domain folders are mirrored across layers (`auth`, `cow`, `crop`, `poultry`, `inventory`, `ledger`, `dashboard`, `common`). Domain stays pure Dart.
 
 ```text
 lib/
   domain/
-    entities/{domain}/       # one type per file; direct imports (no mega-barrel)
-    repositories/{domain}/
-    usecases/{domain}/
+    entities/{domain}/       # *Entity, one type per *_entity.dart file
+    repositories/{domain}/   # abstract repositories
+    use_cases/{domain}/      # one action class per use case
+    failures.dart            # Failure
+    result.dart              # Result / Success / Err (auth)
   data/
-    models/{domain}/         # API JSON DTOs
+    models/{domain}/         # *Model JSON DTOs + fromJson
     mappers/{domain}/        # Model → Entity
     datasources/{domain}/    # abstract + Impl (auth: remote + local)
-    network/                 # ApiClient (tokens via AuthLocalDatasource)
-    repositories/{domain}/   # repo impls; models → entities
-  presentation/              # pages, cubits, shell, shared widgets
-  infrastructure/            # DI (GetIt), GoRouter, theme, config
+    repositories/{domain}/   # impls; models → entities
+    network/                 # one Dio ApiClient
+      dio/interceptors/      # connectivity, auth refresh, retry, debug log
+  presentation/              # pages, blocs, cubits, shell, shared widgets
+  infrastructure/            # GetIt, GoRouter, Material 3 theme, config
   l10n/                      # English and Bangla ARB / generated localizations
 ```
+
+Request path: API JSON → `*Model` → mapper → `*Entity` → repository → use case → page.
+
+`ApiClient` is the only HTTP entry. Interceptors run in order: connectivity, Bearer token plus one shared refresh, retry, then a debug JSON log. It throws `Failure` instead of `DioException`. Auth repositories wrap that in `safeApiCall` and return `Result`. Other domains let `Failure` reach the page.
+
+Widgets come from `package:material_ui/material_ui.dart` and `package:cupertino_ui/cupertino_ui.dart`. Theme tokens stay Material 3 (`AppTheme` / `AppTokens`).
+
+App-wide state is `SessionCubit`, `LocaleCubit`, and `LoadingCubit` (write requests drive the farm loading overlay). Sign-in is `SignInBloc`. List, detail, and create pages call use cases from GetIt.
 
 Folder rules for new features: [`../memory-bank/standards/coding-standards.md`](../memory-bank/standards/coding-standards.md).
 

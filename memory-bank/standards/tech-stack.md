@@ -18,7 +18,7 @@ FastAPI + React (Vite SPA) + Flutter
 
 - **Backend:** FastAPI with modular feature packages (auth, cows, poultry, crops, inventory, income/expenses)
 - **Web:** React SPA scaffolded/served via Vite; consumes the FastAPI API
-- **Mobile:** Flutter with Clean Architecture, BLoC, GoRouter, GetIt, and Material 3; Bangla and English localization; domain and data as separate projects within the mobile app; domain remains pure Dart
+- **Mobile:** Flutter in one package. Clean Architecture folders (`domain`, `data`, `presentation`, `infrastructure`); domain stays pure Dart. BLoC/Cubit, GoRouter, GetIt, and a single Dio `ApiClient`. UI widgets from `material_ui` / `cupertino_ui`, themed as Material 3. Bangla and English localization
 
 ## Authentication
 

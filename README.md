@@ -26,7 +26,7 @@ Web and mobile stay aligned on workflows and design tokens where practical.
 
 - **Backend:** Python 3.11+, FastAPI, SQLAlchemy, Alembic, PostgreSQL
 - **Web:** React, Vite, TypeScript, TanStack Query, React Router
-- **Mobile:** Flutter, Clean Architecture, BLoC/Cubit, GoRouter, GetIt, Dio, Material 3, EN/BN l10n
+- **Mobile:** Flutter (one package), Clean Architecture, BLoC/Cubit, GoRouter, GetIt, Dio, Material 3 via `material_ui`, EN/BN l10n
 
 ## Quick start
 
