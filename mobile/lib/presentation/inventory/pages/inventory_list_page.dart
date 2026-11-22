@@ -11,7 +11,7 @@ import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 import 'package:mobile/presentation/shared/widgets/entity_list_card.dart';
 import 'package:mobile/presentation/inventory/widgets/fertilizer_stock_table.dart';
 import 'package:mobile/presentation/inventory/widgets/inventory_item_form_fields.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_entity.dart';
 
 class InventoryListPage extends StatefulWidget {
   const InventoryListPage({super.key});
@@ -24,7 +24,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
   bool _includeArchived = false;
   bool _loading = true;
   String? _error;
-  List<InventoryItem> _items = const [];
+  List<InventoryItemEntity> _items = const [];
   final _stockTableKey = GlobalKey<FertilizerStockTableState>();
 
   @override
@@ -47,7 +47,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
         _items = page.items;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;

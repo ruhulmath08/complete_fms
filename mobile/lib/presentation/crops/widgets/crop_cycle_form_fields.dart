@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle_write_params.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
 
 class CropCycleFormFields extends StatelessWidget {
   const CropCycleFormFields({
@@ -18,7 +18,7 @@ class CropCycleFormFields extends StatelessWidget {
     required this.notes,
   });
 
-  final List<CropName> cropNames;
+  final List<CropNameEntity> cropNames;
   final String? cropNameId;
   final ValueChanged<String?> onCropNameChanged;
   final TextEditingController plantedAt;
@@ -78,7 +78,7 @@ class CropCycleFormFields extends StatelessWidget {
   }
 }
 
-CropCycleWriteParams buildCropCycleWriteParams({
+CropCycleWriteParamsEntity buildCropCycleWriteParams({
   required String cropNameId,
   required TextEditingController plantedAt,
   required TextEditingController expectedHarvestAt,
@@ -92,7 +92,7 @@ CropCycleWriteParams buildCropCycleWriteParams({
     return value.isEmpty ? null : value;
   }
 
-  return CropCycleWriteParams(
+  return CropCycleWriteParamsEntity(
     cropNameId: cropNameId,
     plantedAt: plantedAt.text.trim(),
     plotName: emptyOrNull(plotName),

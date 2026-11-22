@@ -6,12 +6,13 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/shared/widgets/form_field_column.dart';
 import 'package:mobile/presentation/crops/widgets/crop_cycle_form_fields.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle.dart';
-import 'package:mobile/domain/entities/crop/crop_expense.dart';
-import 'package:mobile/domain/entities/crop/crop_name.dart';
-import 'package:mobile/domain/entities/crop/cycle_summary.dart';
-import 'package:mobile/domain/entities/crop/expense_category.dart';
-import 'package:mobile/domain/entities/crop/harvest.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_expense_entity.dart';
+import 'package:mobile/domain/entities/crop/crop_name_entity.dart';
+import 'package:mobile/domain/entities/crop/cycle_summary_entity.dart';
+import 'package:mobile/domain/entities/crop/expense_category_entity.dart';
+import 'package:mobile/domain/entities/crop/harvest_entity.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 String _todayDate() {
   final now = DateTime.now();
@@ -20,15 +21,15 @@ String _todayDate() {
   return '${now.year}-$m-$d';
 }
 
-String _categoryLabel(AppLocalizations l10n, ExpenseCategory category) {
+String _categoryLabel(AppLocalizations l10n, ExpenseCategoryEntity category) {
   return switch (category) {
-    ExpenseCategory.labour => l10n.expenseLabour,
-    ExpenseCategory.fertilizers => l10n.expenseFertilizers,
-    ExpenseCategory.pesticidesAndChemicals => l10n.expensePesticides,
-    ExpenseCategory.seeds => l10n.expenseSeeds,
-    ExpenseCategory.irrigation => l10n.expenseIrrigation,
-    ExpenseCategory.equipment => l10n.expenseEquipment,
-    ExpenseCategory.other => l10n.expenseOther,
+    ExpenseCategoryEntity.labour => l10n.expenseLabour,
+    ExpenseCategoryEntity.fertilizers => l10n.expenseFertilizers,
+    ExpenseCategoryEntity.pesticidesAndChemicals => l10n.expensePesticides,
+    ExpenseCategoryEntity.seeds => l10n.expenseSeeds,
+    ExpenseCategoryEntity.irrigation => l10n.expenseIrrigation,
+    ExpenseCategoryEntity.equipment => l10n.expenseEquipment,
+    ExpenseCategoryEntity.other => l10n.expenseOther,
   };
 }
 
@@ -42,11 +43,11 @@ class CropCycleDetailPage extends StatefulWidget {
 }
 
 class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
-  CropCycle? _cycle;
-  CycleSummary? _summary;
-  List<CropExpense> _expenses = const [];
-  List<Harvest> _harvests = const [];
-  List<CropName> _cropNames = const [];
+  CropCycleEntity? _cycle;
+  CycleSummaryEntity? _summary;
+  List<CropExpenseEntity> _expenses = const [];
+  List<HarvestEntity> _harvests = const [];
+  List<CropNameEntity> _cropNames = const [];
   String? _cropLabel;
   bool _loading = true;
   bool _editing = false;
@@ -64,7 +65,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
   final _spentAt = TextEditingController(text: _todayDate());
   final _expenseAmount = TextEditingController();
   final _expenseNote = TextEditingController();
-  ExpenseCategory _expenseCategory = ExpenseCategory.labour;
+  ExpenseCategoryEntity _expenseCategory = ExpenseCategoryEntity.labour;
   String? _editingExpenseId;
   String? _editingHarvestId;
 
@@ -103,7 +104,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
     super.dispose();
   }
 
-  void _hydrate(CropCycle cycle) {
+  void _hydrate(CropCycleEntity cycle) {
     _cropNameId = cycle.cropNameId;
     _plantedAt.text = cycle.plantedAt;
     _expectedHarvestAt.text = cycle.expectedHarvestAt ?? '';
@@ -146,7 +147,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
         _cropLabel = cropLabel;
         _loading = false;
       });
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (!mounted) return;
       setState(() {
         _error = e.message;
@@ -178,7 +179,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
       if (!mounted) return;
       setState(() => _editing = false);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -208,7 +209,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
     try {
       await getIt<ArchiveCropCycle>()(widget.cycleId);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -218,7 +219,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
     _spentAt.text = _todayDate();
     _expenseAmount.clear();
     _expenseNote.clear();
-    _expenseCategory = ExpenseCategory.labour;
+    _expenseCategory = ExpenseCategoryEntity.labour;
   }
 
   void _resetHarvestForm() {
@@ -230,7 +231,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
     _harvestNote.clear();
   }
 
-  void _startEditExpense(CropExpense row) {
+  void _startEditExpense(CropExpenseEntity row) {
     setState(() {
       _editingExpenseId = row.id;
       _spentAt.text = row.spentAt;
@@ -241,7 +242,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
     });
   }
 
-  void _startEditHarvest(Harvest row) {
+  void _startEditHarvest(HarvestEntity row) {
     setState(() {
       _editingHarvestId = row.id;
       _harvestedAt.text = row.harvestedAt;
@@ -278,7 +279,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
       if (!mounted) return;
       setState(_resetExpenseForm);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
@@ -304,7 +305,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
     return ok == true;
   }
 
-  Future<void> _deleteExpense(CropExpense row) async {
+  Future<void> _deleteExpense(CropExpenseEntity row) async {
     final l10n = AppLocalizations.of(context)!;
     if (!await _confirmDelete(l10n.deleteExpenseConfirm)) return;
     try {
@@ -312,7 +313,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
       if (!mounted) return;
       if (_editingExpenseId == row.id) setState(_resetExpenseForm);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (mounted) setState(() => _error = e.message);
     }
   }
@@ -345,12 +346,12 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
       if (!mounted) return;
       setState(_resetHarvestForm);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     }
   }
 
-  Future<void> _deleteHarvest(Harvest row) async {
+  Future<void> _deleteHarvest(HarvestEntity row) async {
     final l10n = AppLocalizations.of(context)!;
     if (!await _confirmDelete(l10n.deleteHarvestConfirm)) return;
     try {
@@ -358,7 +359,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
       if (!mounted) return;
       if (_editingHarvestId == row.id) setState(_resetHarvestForm);
       await _load();
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       if (mounted) setState(() => _error = e.message);
     }
   }
@@ -393,7 +394,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
   }
 
   DataRow _expenseRow(
-    CropExpense row,
+    CropExpenseEntity row,
     int index,
     bool canWrite,
     AppLocalizations l10n,
@@ -420,7 +421,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
   }
 
   DataRow _harvestRow(
-    Harvest row,
+    HarvestEntity row,
     int index,
     bool canWrite,
     AppLocalizations l10n,
@@ -449,7 +450,7 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     final cycle = _cycle;
     if (cycle == null) {
       return Center(child: Text(_error ?? l10n.genericError));
@@ -580,11 +581,11 @@ class _CropCycleDetailPageState extends State<CropCycleDetailPage> {
                 controller: _spentAt,
                 decoration: InputDecoration(labelText: l10n.spentAtHint),
               ),
-              DropdownButtonFormField<ExpenseCategory>(
+              DropdownButtonFormField<ExpenseCategoryEntity>(
                 // ignore: deprecated_member_use
                 value: _expenseCategory,
                 decoration: InputDecoration(labelText: l10n.expenseCategory),
-                items: ExpenseCategory.values
+                items: ExpenseCategoryEntity.values
                     .map(
                       (c) => DropdownMenuItem(
                         value: c,

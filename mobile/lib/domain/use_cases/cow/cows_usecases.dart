@@ -1,46 +1,46 @@
 import 'package:mobile/domain/repositories/cow/cows_repository.dart';
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/cow/cow.dart';
-import 'package:mobile/domain/entities/cow/cow_feeding.dart';
-import 'package:mobile/domain/entities/cow/cow_write_params.dart';
-import 'package:mobile/domain/entities/cow/milk_production.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_feeding_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params_entity.dart';
+import 'package:mobile/domain/entities/cow/milk_production_entity.dart';
 
 class ListCows {
   ListCows(this._repository);
   final CowsRepository _repository;
-  Future<PagedResult<Cow>> call({bool includeArchived = false}) =>
+  Future<PagedResultEntity<CowEntity>> call({bool includeArchived = false}) =>
       _repository.listCows(includeArchived: includeArchived);
 }
 
 class GetCow {
   GetCow(this._repository);
   final CowsRepository _repository;
-  Future<Cow> call(String cowId) => _repository.getCow(cowId);
+  Future<CowEntity> call(String cowId) => _repository.getCow(cowId);
 }
 
 class CreateCow {
   CreateCow(this._repository);
   final CowsRepository _repository;
-  Future<Cow> call(CowWriteParams params) => _repository.createCow(params);
+  Future<CowEntity> call(CowWriteParamsEntity params) => _repository.createCow(params);
 }
 
 class UpdateCow {
   UpdateCow(this._repository);
   final CowsRepository _repository;
-  Future<Cow> call(String cowId, CowWriteParams params) =>
+  Future<CowEntity> call(String cowId, CowWriteParamsEntity params) =>
       _repository.updateCow(cowId, params);
 }
 
 class ArchiveCow {
   ArchiveCow(this._repository);
   final CowsRepository _repository;
-  Future<Cow> call(String cowId) => _repository.archiveCow(cowId);
+  Future<CowEntity> call(String cowId) => _repository.archiveCow(cowId);
 }
 
 class UploadCowImage {
   UploadCowImage(this._repository);
   final CowsRepository _repository;
-  Future<Cow> call(String cowId, String imagePath) =>
+  Future<CowEntity> call(String cowId, String imagePath) =>
       _repository.uploadCowImage(cowId, imagePath);
 }
 
@@ -53,7 +53,7 @@ class GetCowImageBytes {
 class ListMilkProductions {
   ListMilkProductions(this._repository);
   final CowsRepository _repository;
-  Future<PagedResult<MilkProduction>> call(
+  Future<PagedResultEntity<MilkProductionEntity>> call(
     String cowId, {
     int limit = 10,
     int offset = 0,
@@ -64,7 +64,7 @@ class ListMilkProductions {
 class AddMilkProduction {
   AddMilkProduction(this._repository);
   final CowsRepository _repository;
-  Future<MilkProduction> call({
+  Future<MilkProductionEntity> call({
     required String cowId,
     required String producedAt,
     required String quantity,
@@ -85,7 +85,7 @@ class AddMilkProduction {
 class UpdateMilkProduction {
   UpdateMilkProduction(this._repository);
   final CowsRepository _repository;
-  Future<MilkProduction> call({
+  Future<MilkProductionEntity> call({
     required String cowId,
     required String milkId,
     required String producedAt,
@@ -115,7 +115,7 @@ class DeleteMilkProduction {
 class ListCowFeedings {
   ListCowFeedings(this._repository);
   final CowsRepository _repository;
-  Future<PagedResult<CowFeeding>> call(
+  Future<PagedResultEntity<CowFeedingEntity>> call(
     String cowId, {
     int limit = 10,
     int offset = 0,
@@ -126,7 +126,7 @@ class ListCowFeedings {
 class AddCowFeeding {
   AddCowFeeding(this._repository);
   final CowsRepository _repository;
-  Future<CowFeeding> call({
+  Future<CowFeedingEntity> call({
     required String cowId,
     required String fedAt,
     required String feedName,
@@ -149,7 +149,7 @@ class AddCowFeeding {
 class UpdateCowFeeding {
   UpdateCowFeeding(this._repository);
   final CowsRepository _repository;
-  Future<CowFeeding> call({
+  Future<CowFeedingEntity> call({
     required String cowId,
     required String feedingId,
     required String fedAt,

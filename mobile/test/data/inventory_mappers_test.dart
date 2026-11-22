@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/mappers/inventory/inventory_mappers.dart';
-import 'package:mobile/domain/entities/inventory/inventory_category.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item_create_params.dart';
-import 'package:mobile/domain/entities/inventory/inventory_item_update_params.dart';
-import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_create_params_entity.dart';
+import 'package:mobile/domain/entities/inventory/inventory_item_update_params_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
 
 void main() {
   test('maps inventory item including total_price', () {
@@ -22,7 +22,7 @@ void main() {
     });
 
     expect(item.name, 'Layer feed');
-    expect(item.category, InventoryCategory.feed);
+    expect(item.category, InventoryCategoryEntity.feed);
     expect(item.totalPrice, '5000.00');
   });
 
@@ -36,12 +36,12 @@ void main() {
       'reason': null,
       'created_at': '2024-06-01T08:00:00Z',
     });
-    expect(update.changeType, StockChangeType.use);
+    expect(update.changeType, StockChangeTypeEntity.use);
 
     final createJson = inventoryItemCreateToJson(
-      const InventoryItemCreateParams(
+      const InventoryItemCreateParamsEntity(
         name: 'Urea',
-        category: InventoryCategory.fertilizer,
+        category: InventoryCategoryEntity.fertilizer,
         quantity: '20',
         unit: 'kg',
         pricePerUnit: '30',
@@ -51,9 +51,9 @@ void main() {
     expect(createJson['category'], 'fertilizer');
 
     final updateJson = inventoryItemUpdateToJson(
-      const InventoryItemUpdateParams(
+      const InventoryItemUpdateParamsEntity(
         name: 'Urea',
-        category: InventoryCategory.fertilizer,
+        category: InventoryCategoryEntity.fertilizer,
         unit: 'kg',
         pricePerUnit: '30',
       ),

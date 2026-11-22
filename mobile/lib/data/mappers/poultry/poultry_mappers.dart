@@ -1,40 +1,40 @@
 import 'package:mobile/data/models/poultry/egg_production_model.dart';
 import 'package:mobile/data/models/poultry/poultry_feeding_model.dart';
 import 'package:mobile/data/models/poultry/poultry_group_model.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/poultry/egg_production.dart';
-import 'package:mobile/domain/entities/poultry/poultry_feeding.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group_write_params.dart';
-import 'package:mobile/domain/entities/poultry/poultry_type.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/poultry/egg_production_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_feeding_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_write_params_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_type_entity.dart';
 
-PoultryType mapPoultryType(String value) => PoultryType.values.firstWhere(
+PoultryTypeEntity mapPoultryType(String value) => PoultryTypeEntity.values.firstWhere(
       (e) => e.name == value,
-      orElse: () => PoultryType.layer,
+      orElse: () => PoultryTypeEntity.layer,
     );
 
-AcquisitionSource mapAcquiredBy(String value) {
+AcquisitionSourceEntity mapAcquiredBy(String value) {
   switch (value) {
     case 'purchased':
-      return AcquisitionSource.purchased;
+      return AcquisitionSourceEntity.purchased;
     case 'born_on_farm':
-      return AcquisitionSource.bornOnFarm;
+      return AcquisitionSourceEntity.bornOnFarm;
     default:
-      return AcquisitionSource.bornOnFarm;
+      return AcquisitionSourceEntity.bornOnFarm;
   }
 }
 
-String poultryTypeToApi(PoultryType value) => value.name;
+String poultryTypeToApi(PoultryTypeEntity value) => value.name;
 
-String acquiredByToApi(AcquisitionSource value) => switch (value) {
-      AcquisitionSource.purchased => 'purchased',
-      AcquisitionSource.bornOnFarm => 'born_on_farm',
+String acquiredByToApi(AcquisitionSourceEntity value) => switch (value) {
+      AcquisitionSourceEntity.purchased => 'purchased',
+      AcquisitionSourceEntity.bornOnFarm => 'born_on_farm',
     };
 
-PoultryGroup mapPoultryGroup(Map<String, dynamic> json) =>
+PoultryGroupEntity mapPoultryGroup(Map<String, dynamic> json) =>
     mapPoultryGroupModel(PoultryGroupModel.fromJson(json));
 
-PoultryGroup mapPoultryGroupModel(PoultryGroupModel model) => PoultryGroup(
+PoultryGroupEntity mapPoultryGroupModel(PoultryGroupModel model) => PoultryGroupEntity(
       id: model.id,
       poultryType: mapPoultryType(model.poultryType),
       name: model.name,
@@ -49,10 +49,10 @@ PoultryGroup mapPoultryGroupModel(PoultryGroupModel model) => PoultryGroup(
       updatedAt: model.updatedAt,
     );
 
-EggProduction mapEgg(Map<String, dynamic> json) =>
+EggProductionEntity mapEgg(Map<String, dynamic> json) =>
     mapEggModel(EggProductionModel.fromJson(json));
 
-EggProduction mapEggModel(EggProductionModel model) => EggProduction(
+EggProductionEntity mapEggModel(EggProductionModel model) => EggProductionEntity(
       id: model.id,
       poultryGroupId: model.poultryGroupId,
       producedAt: model.producedAt,
@@ -63,11 +63,11 @@ EggProduction mapEggModel(EggProductionModel model) => EggProduction(
       createdAt: model.createdAt,
     );
 
-PoultryFeeding mapPoultryFeeding(Map<String, dynamic> json) =>
+PoultryFeedingEntity mapPoultryFeeding(Map<String, dynamic> json) =>
     mapPoultryFeedingModel(PoultryFeedingModel.fromJson(json));
 
-PoultryFeeding mapPoultryFeedingModel(PoultryFeedingModel model) =>
-    PoultryFeeding(
+PoultryFeedingEntity mapPoultryFeedingModel(PoultryFeedingModel model) =>
+    PoultryFeedingEntity(
       id: model.id,
       poultryGroupId: model.poultryGroupId,
       fedAt: model.fedAt,
@@ -78,16 +78,16 @@ PoultryFeeding mapPoultryFeedingModel(PoultryFeedingModel model) =>
       createdAt: model.createdAt,
     );
 
-Map<String, dynamic> poultryGroupWriteToJson(PoultryGroupWriteParams params) => {
+Map<String, dynamic> poultryGroupWriteToJson(PoultryGroupWriteParamsEntity params) => {
       'poultry_type': poultryTypeToApi(params.poultryType),
       'name': params.name,
       'bird_count': params.birdCount,
       'acquired_by': acquiredByToApi(params.acquiredBy),
       'date_acquired': params.dateAcquired,
-      'purchase_date': params.acquiredBy == AcquisitionSource.purchased
+      'purchase_date': params.acquiredBy == AcquisitionSourceEntity.purchased
           ? params.purchaseDate
           : null,
-      'purchase_price': params.acquiredBy == AcquisitionSource.purchased
+      'purchase_price': params.acquiredBy == AcquisitionSourceEntity.purchased
           ? params.purchasePrice
           : null,
       'notes': params.notes,

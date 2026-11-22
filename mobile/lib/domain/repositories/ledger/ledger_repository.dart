@@ -1,11 +1,11 @@
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry.dart';
-import 'package:mobile/domain/entities/ledger/ledger_entry_write_params.dart';
-import 'package:mobile/domain/entities/ledger/ledger_series.dart';
-import 'package:mobile/domain/entities/ledger/period_totals.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_entry_write_params_entity.dart';
+import 'package:mobile/domain/entities/ledger/ledger_series_entity.dart';
+import 'package:mobile/domain/entities/ledger/period_totals_entity.dart';
 
 abstract class LedgerRepository {
-  Future<PagedResult<LedgerEntry>> listEntries({
+  Future<PagedResultEntity<LedgerEntryEntity>> listEntries({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
@@ -13,20 +13,20 @@ abstract class LedgerRepository {
     String? to,
   });
 
-  Future<LedgerEntry> getEntry(String entryId);
+  Future<LedgerEntryEntity> getEntry(String entryId);
 
-  Future<LedgerEntry> createEntry(LedgerEntryWriteParams params);
+  Future<LedgerEntryEntity> createEntry(LedgerEntryWriteParamsEntity params);
 
-  Future<LedgerEntry> updateEntry(String entryId, LedgerEntryWriteParams params);
+  Future<LedgerEntryEntity> updateEntry(String entryId, LedgerEntryWriteParamsEntity params);
 
-  Future<LedgerEntry> archiveEntry(String entryId);
+  Future<LedgerEntryEntity> archiveEntry(String entryId);
 
-  Future<PeriodTotals> getPeriodTotals({
+  Future<PeriodTotalsEntity> getPeriodTotals({
     required String from,
     required String to,
   });
 
-  Future<LedgerSeries> getSeries({
+  Future<LedgerSeriesEntity> getSeries({
     required String from,
     required String to,
     required String grain,

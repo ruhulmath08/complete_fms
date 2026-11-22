@@ -1,1 +1,0 @@
-enum StockChangeType { add, use }

@@ -1,31 +1,31 @@
-import 'package:mobile/domain/entities/common/paged_result.dart';
-import 'package:mobile/domain/entities/poultry/egg_production.dart';
-import 'package:mobile/domain/entities/poultry/poultry_feeding.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group.dart';
-import 'package:mobile/domain/entities/poultry/poultry_group_write_params.dart';
+import 'package:mobile/domain/entities/common/paged_result_entity.dart';
+import 'package:mobile/domain/entities/poultry/egg_production_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_feeding_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_entity.dart';
+import 'package:mobile/domain/entities/poultry/poultry_group_write_params_entity.dart';
 
 abstract class PoultryRepository {
-  Future<PagedResult<PoultryGroup>> listGroups({
+  Future<PagedResultEntity<PoultryGroupEntity>> listGroups({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
   });
 
-  Future<PoultryGroup> getGroup(String groupId);
+  Future<PoultryGroupEntity> getGroup(String groupId);
 
-  Future<PoultryGroup> createGroup(PoultryGroupWriteParams params);
+  Future<PoultryGroupEntity> createGroup(PoultryGroupWriteParamsEntity params);
 
-  Future<PoultryGroup> updateGroup(String groupId, PoultryGroupWriteParams params);
+  Future<PoultryGroupEntity> updateGroup(String groupId, PoultryGroupWriteParamsEntity params);
 
-  Future<PoultryGroup> archiveGroup(String groupId);
+  Future<PoultryGroupEntity> archiveGroup(String groupId);
 
-  Future<PagedResult<EggProduction>> listEggs(
+  Future<PagedResultEntity<EggProductionEntity>> listEggs(
     String groupId, {
     int limit = 50,
     int offset = 0,
   });
 
-  Future<EggProduction> addEgg({
+  Future<EggProductionEntity> addEgg({
     required String groupId,
     required String producedAt,
     required String quantity,
@@ -34,7 +34,7 @@ abstract class PoultryRepository {
     String? note,
   });
 
-  Future<EggProduction> updateEgg({
+  Future<EggProductionEntity> updateEgg({
     required String groupId,
     required String eggId,
     required String producedAt,
@@ -46,13 +46,13 @@ abstract class PoultryRepository {
 
   Future<void> deleteEgg(String groupId, String eggId);
 
-  Future<PagedResult<PoultryFeeding>> listFeedings(
+  Future<PagedResultEntity<PoultryFeedingEntity>> listFeedings(
     String groupId, {
     int limit = 50,
     int offset = 0,
   });
 
-  Future<PoultryFeeding> addFeeding({
+  Future<PoultryFeedingEntity> addFeeding({
     required String groupId,
     required String fedAt,
     required String feedName,
@@ -61,7 +61,7 @@ abstract class PoultryRepository {
     String? note,
   });
 
-  Future<PoultryFeeding> updateFeeding({
+  Future<PoultryFeedingEntity> updateFeeding({
     required String groupId,
     required String feedingId,
     required String fedAt,

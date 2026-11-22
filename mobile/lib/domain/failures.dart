@@ -1,5 +1,5 @@
-class AppFailure implements Exception {
-  AppFailure({required this.code, required this.message});
+class Failure implements Exception {
+  Failure({required this.code, required this.message});
 
   final String code;
   final String message;

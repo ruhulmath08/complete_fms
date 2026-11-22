@@ -1,1 +1,0 @@
-enum LedgerEntryType { income, expense }

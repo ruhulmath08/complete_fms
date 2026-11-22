@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'
-    show GlobalWidgetsLocalizations;
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:material_ui/material_ui.dart';
-import 'package:mobile/l10n/app_localizations_bn.dart';
-import 'package:mobile/l10n/app_localizations_en.dart';
+
+import 'app_localizations_bn.dart';
+import 'app_localizations_en.dart';
 
 // ignore_for_file: type=lint
 
@@ -156,7 +155,7 @@ abstract class AppLocalizations {
   /// No description provided for @loadingLabel.
   ///
   /// In en, this message translates to:
-  /// **'Loading…'**
+  /// **'Please wait, loading…'**
   String get loadingLabel;
 
   /// No description provided for @useMenuHint.
@@ -266,6 +265,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Access your farm records on this device.'**
   String get signInSubtitle;
+
+  /// No description provided for @invalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or password is incorrect.'**
+  String get invalidCredentials;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email format is invalid.'**
+  String get invalidEmail;
+
+  /// No description provided for @fillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all fields.'**
+  String get fillAllFields;
 
   /// No description provided for @signUpSubtitle.
   ///

@@ -91,10 +91,12 @@ presentation/cows/            # UI feature folder (plural OK for screens)
 
 - Domain stays pure Dart: no Flutter, Dio, models, mappers, or datasource/repo implementations
 - One public type per file under `domain/entities/...`; prefer direct imports over barrel exports
+- Domain owns `Failure` and `Result<T>` (`domain/failures.dart`, `domain/result.dart`)
+- Data layer API calls use `safeApiCall` → `Result.success(data)` or `Result.failure`; presentation/use cases fold/`when` the result (auth is the reference; migrate other domains the same way)
 - Data flow: API JSON → `models` → `mappers` → `entities` → repository → use cases → presentation
 - Datasources: declare an abstract class and a `*Impl`; register the abstract in GetIt
 - Multi-source only when needed (e.g. auth): `AuthRemoteDatasource` + `AuthLocalDatasource`; single-source domains keep one `*Datasource` + Impl (no empty local/remote folders)
-- Shared HTTP: `data/datasources/common/api_client.dart` (auth local datasource supplies tokens / refresh)
+- Shared HTTP: `data/network/api_client.dart` (auth local datasource supplies tokens / refresh; connectivity via `NetworkInfo`)
 - Shared paging helpers: `data/models/common/`, `data/repositories/common/`
 - When adding a feature, create matching folders in domain + data + presentation and wire DI — do not leave types in flat `entities/` or `*_api.dart` files
 

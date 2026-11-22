@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/mappers/crop/crops_mappers.dart';
-import 'package:mobile/domain/entities/crop/crop_cycle_write_params.dart';
-import 'package:mobile/domain/entities/crop/expense_category.dart';
+import 'package:mobile/domain/entities/crop/crop_cycle_write_params_entity.dart';
+import 'package:mobile/domain/entities/crop/expense_category_entity.dart';
 
 void main() {
   test('maps crop name JSON', () {
@@ -44,7 +44,7 @@ void main() {
 
     expect(cycle.cropNameId, 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
     expect(cycle.area, '2.500');
-    expect(expense.category, ExpenseCategory.pesticidesAndChemicals);
+    expect(expense.category, ExpenseCategoryEntity.pesticidesAndChemicals);
     expect(expenseCategoryToApi(expense.category), 'pesticides_and_chemicals');
   });
 
@@ -72,7 +72,7 @@ void main() {
 
   test('cropCycleWriteToJson keeps optional nulls', () {
     final json = cropCycleWriteToJson(
-      const CropCycleWriteParams(
+      const CropCycleWriteParamsEntity(
         cropNameId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
         plantedAt: '2024-06-01',
       ),

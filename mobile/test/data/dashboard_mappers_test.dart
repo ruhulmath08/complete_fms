@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/mappers/dashboard/dashboard_mappers.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_series_key.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_key_entity.dart';
 
 void main() {
   test('maps dashboard aggregates with all six series', () {
@@ -31,10 +31,10 @@ void main() {
 
     expect(data.from, '2026-11-09');
     expect(data.timezone, 'Asia/Dhaka');
-    expect(data.series.keys.length, DashboardSeriesKey.values.length);
-    expect(data.pointsFor(DashboardSeriesKey.milk).single.value, '5.5');
-    expect(data.pointsFor(DashboardSeriesKey.henHeadcount).single.value, '100');
-    expect(data.pointsFor(DashboardSeriesKey.cowProduction), isEmpty);
+    expect(data.series.keys.length, DashboardSeriesKeyEntity.values.length);
+    expect(data.pointsFor(DashboardSeriesKeyEntity.milk).single.value, '5.5');
+    expect(data.pointsFor(DashboardSeriesKeyEntity.henHeadcount).single.value, '100');
+    expect(data.pointsFor(DashboardSeriesKeyEntity.cowProduction), isEmpty);
   });
 
   test('missing series default to empty lists', () {
@@ -44,6 +44,6 @@ void main() {
       'timezone': 'Asia/Dhaka',
       'series': <String, dynamic>{},
     });
-    expect(data.pointsFor(DashboardSeriesKey.income), isEmpty);
+    expect(data.pointsFor(DashboardSeriesKeyEntity.income), isEmpty);
   });
 }

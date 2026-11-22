@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:mobile/domain/failures.dart';
 import 'package:mobile/domain/use_cases/auth/auth_usecases.dart';
 import 'package:mobile/infrastructure/di/injection.dart';
 import 'package:mobile/l10n/app_localizations.dart';
+import 'package:mobile/presentation/shared/widgets/async_state_views.dart';
 
 
 
@@ -27,19 +27,22 @@ class _FarmSettingsPageState extends State<FarmSettingsPage> {
   }
 
   Future<void> _load() async {
-    try {
-      final settings = await getIt<GetFarmSettings>()();
-      if (!mounted) return;
-      setState(() {
-        _currency.text = settings.currencyCode;
-        _loading = false;
-      });
-    } on AppFailure catch (e) {
-      setState(() {
-        _error = e.message;
-        _loading = false;
-      });
-    }
+    final result = await getIt<GetFarmSettings>()();
+    if (!mounted) return;
+    result.when(
+      success: (settings) {
+        setState(() {
+          _currency.text = settings.currencyCode;
+          _loading = false;
+        });
+      },
+      failure: (failure) {
+        setState(() {
+          _error = failure.message;
+          _loading = false;
+        });
+      },
+    );
   }
 
   Future<void> _save() async {
@@ -48,18 +51,18 @@ class _FarmSettingsPageState extends State<FarmSettingsPage> {
       _error = null;
       _saved = false;
     });
-    try {
-      final updated = await getIt<UpdateFarmSettings>()(_currency.text.trim());
-      if (!mounted) return;
-      setState(() {
-        _currency.text = updated.currencyCode;
-        _saved = true;
-      });
-    } on AppFailure catch (e) {
-      setState(() => _error = e.message);
-    } finally {
-      if (mounted) setState(() => _saving = false);
-    }
+    final result = await getIt<UpdateFarmSettings>()(_currency.text.trim());
+    if (!mounted) return;
+    result.when(
+      success: (updated) {
+        setState(() {
+          _currency.text = updated.currencyCode;
+          _saved = true;
+        });
+      },
+      failure: (failure) => setState(() => _error = failure.message),
+    );
+    if (mounted) setState(() => _saving = false);
   }
 
   @override
@@ -71,7 +74,7 @@ class _FarmSettingsPageState extends State<FarmSettingsPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_loading) return const LoadingView();
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(

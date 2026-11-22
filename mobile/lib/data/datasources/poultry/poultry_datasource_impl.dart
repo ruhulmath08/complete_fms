@@ -1,86 +1,49 @@
-import 'package:dio/dio.dart';
-import 'package:mobile/data/datasources/common/api_client.dart';
 import 'package:mobile/data/datasources/poultry/poultry_datasource.dart';
+import 'package:mobile/data/network/api_client.dart';
+import 'package:mobile/data/network/api_endpoints.dart';
 
 class PoultryDatasourceImpl implements PoultryDatasource {
   PoultryDatasourceImpl(this._client);
 
   final ApiClient _client;
 
-  Dio get _dio => _client.dio;
-
   @override
   Future<Map<String, dynamic>> listGroups({
     int limit = 100,
     int offset = 0,
     bool includeArchived = false,
-  }) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/poultry-groups',
-        queryParameters: {
-          'limit': limit,
-          'offset': offset,
-          if (includeArchived) 'include_archived': true,
-        },
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  }) {
+    return _client.get(
+      ApiEndpoints.poultryGroups,
+      query: {
+        'limit': limit,
+        'offset': offset,
+        if (includeArchived) 'include_archived': true,
+      },
+    );
   }
 
   @override
-  Future<Map<String, dynamic>> getGroup(String groupId) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId',
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<Map<String, dynamic>> getGroup(String groupId) {
+    return _client.get(ApiEndpoints.poultryGroup(groupId));
   }
 
   @override
-  Future<Map<String, dynamic>> createGroup(Map<String, dynamic> body) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/v1/poultry-groups',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<Map<String, dynamic>> createGroup(Map<String, dynamic> body) {
+    return _client.post(ApiEndpoints.poultryGroups, data: body);
   }
 
   @override
   Future<Map<String, dynamic>> updateGroup(
     String groupId,
     Map<String, dynamic> body,
-  ) async {
-    try {
-      final response = await _dio.patch<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  ) {
+    return _client.patch(ApiEndpoints.poultryGroup(groupId), data: body);
   }
 
   @override
-  Future<Map<String, dynamic>> archiveGroup(String groupId) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId/archive',
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<Map<String, dynamic>> archiveGroup(String groupId) {
+    return _client.post(ApiEndpoints.poultryGroupArchive(groupId));
   }
 
   @override
@@ -88,32 +51,19 @@ class PoultryDatasourceImpl implements PoultryDatasource {
     String groupId, {
     int limit = 50,
     int offset = 0,
-  }) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId/egg-productions',
-        queryParameters: {'limit': limit, 'offset': offset},
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  }) {
+    return _client.get(
+      ApiEndpoints.eggProductions(groupId),
+      query: {'limit': limit, 'offset': offset},
+    );
   }
 
   @override
   Future<Map<String, dynamic>> addEgg(
     String groupId,
     Map<String, dynamic> body,
-  ) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId/egg-productions',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  ) {
+    return _client.post(ApiEndpoints.eggProductions(groupId), data: body);
   }
 
   @override
@@ -121,27 +71,16 @@ class PoultryDatasourceImpl implements PoultryDatasource {
     String groupId,
     String eggId,
     Map<String, dynamic> body,
-  ) async {
-    try {
-      final response = await _dio.patch<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId/egg-productions/$eggId',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  ) {
+    return _client.patch(
+      ApiEndpoints.eggProduction(groupId, eggId),
+      data: body,
+    );
   }
 
   @override
-  Future<void> deleteEgg(String groupId, String eggId) async {
-    try {
-      await _dio.delete<void>(
-        '/api/v1/poultry-groups/$groupId/egg-productions/$eggId',
-      );
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<void> deleteEgg(String groupId, String eggId) {
+    return _client.delete(ApiEndpoints.eggProduction(groupId, eggId));
   }
 
   @override
@@ -149,32 +88,19 @@ class PoultryDatasourceImpl implements PoultryDatasource {
     String groupId, {
     int limit = 50,
     int offset = 0,
-  }) async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId/feedings',
-        queryParameters: {'limit': limit, 'offset': offset},
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  }) {
+    return _client.get(
+      ApiEndpoints.poultryFeedings(groupId),
+      query: {'limit': limit, 'offset': offset},
+    );
   }
 
   @override
   Future<Map<String, dynamic>> addFeeding(
     String groupId,
     Map<String, dynamic> body,
-  ) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId/feedings',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  ) {
+    return _client.post(ApiEndpoints.poultryFeedings(groupId), data: body);
   }
 
   @override
@@ -182,26 +108,15 @@ class PoultryDatasourceImpl implements PoultryDatasource {
     String groupId,
     String feedingId,
     Map<String, dynamic> body,
-  ) async {
-    try {
-      final response = await _dio.patch<Map<String, dynamic>>(
-        '/api/v1/poultry-groups/$groupId/feedings/$feedingId',
-        data: body,
-      );
-      return response.data!;
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  ) {
+    return _client.patch(
+      ApiEndpoints.poultryFeeding(groupId, feedingId),
+      data: body,
+    );
   }
 
   @override
-  Future<void> deleteFeeding(String groupId, String feedingId) async {
-    try {
-      await _dio.delete<void>(
-        '/api/v1/poultry-groups/$groupId/feedings/$feedingId',
-      );
-    } on DioException catch (e) {
-      _client.throwDio(e);
-    }
+  Future<void> deleteFeeding(String groupId, String feedingId) {
+    return _client.delete(ApiEndpoints.poultryFeeding(groupId, feedingId));
   }
 }

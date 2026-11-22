@@ -1,33 +1,33 @@
 import 'package:mobile/data/models/dashboard/dashboard_aggregates_model.dart';
 import 'package:mobile/data/models/dashboard/dashboard_series_point_model.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_aggregates.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_series_key.dart';
-import 'package:mobile/domain/entities/dashboard/dashboard_series_point.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_aggregates_entity.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_key_entity.dart';
+import 'package:mobile/domain/entities/dashboard/dashboard_series_point_entity.dart';
 
-DashboardAggregates mapDashboardAggregates(Map<String, dynamic> json) =>
+DashboardAggregatesEntity mapDashboardAggregates(Map<String, dynamic> json) =>
     mapDashboardAggregatesModel(DashboardAggregatesModel.fromJson(json));
 
-DashboardAggregates mapDashboardAggregatesModel(DashboardAggregatesModel model) {
-  return DashboardAggregates(
+DashboardAggregatesEntity mapDashboardAggregatesModel(DashboardAggregatesModel model) {
+  return DashboardAggregatesEntity(
     from: model.from,
     to: model.to,
     grain: model.grain,
     timezone: model.timezone,
     series: {
-      DashboardSeriesKey.eggProduction: _mapPoints(model.series.eggProduction),
-      DashboardSeriesKey.henHeadcount: _mapPoints(model.series.henHeadcount),
-      DashboardSeriesKey.milk: _mapPoints(model.series.milk),
-      DashboardSeriesKey.cowProduction: _mapPoints(model.series.cowProduction),
-      DashboardSeriesKey.expensesCost: _mapPoints(model.series.expensesCost),
-      DashboardSeriesKey.income: _mapPoints(model.series.income),
+      DashboardSeriesKeyEntity.eggProduction: _mapPoints(model.series.eggProduction),
+      DashboardSeriesKeyEntity.henHeadcount: _mapPoints(model.series.henHeadcount),
+      DashboardSeriesKeyEntity.milk: _mapPoints(model.series.milk),
+      DashboardSeriesKeyEntity.cowProduction: _mapPoints(model.series.cowProduction),
+      DashboardSeriesKeyEntity.expensesCost: _mapPoints(model.series.expensesCost),
+      DashboardSeriesKeyEntity.income: _mapPoints(model.series.income),
     },
   );
 }
 
-List<DashboardSeriesPoint> _mapPoints(List<DashboardSeriesPointModel> points) =>
+List<DashboardSeriesPointEntity> _mapPoints(List<DashboardSeriesPointModel> points) =>
     points
         .map(
-          (p) => DashboardSeriesPoint(
+          (p) => DashboardSeriesPointEntity(
             bucketStart: p.bucketStart,
             value: p.value,
           ),

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/mappers/cow/cows_mappers.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/cow/cow_gender.dart';
-import 'package:mobile/domain/entities/cow/cow_purpose.dart';
-import 'package:mobile/domain/entities/cow/cow_write_params.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_gender_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_write_params_entity.dart';
 
 void main() {
   test('maps cow JSON including acquired_by and image_url', () {
@@ -29,8 +29,8 @@ void main() {
     });
 
     expect(cow.tagNumber, 'C-100');
-    expect(cow.purpose, CowPurpose.milk);
-    expect(cow.acquiredBy, AcquisitionSource.bornOnFarm);
+    expect(cow.purpose, CowPurposeEntity.milk);
+    expect(cow.acquiredBy, AcquisitionSourceEntity.bornOnFarm);
     expect(cow.milkEligible, isTrue);
     expect(cow.weight, '120.5');
     expect(
@@ -62,17 +62,17 @@ void main() {
     });
 
     expect(cow.milkEligible, isFalse);
-    expect(cow.acquiredBy, AcquisitionSource.purchased);
+    expect(cow.acquiredBy, AcquisitionSourceEntity.purchased);
     expect(cow.imageUrl, isNull);
   });
 
   test('cowWriteToJson omits tag_number and clears purchase when born on farm',
       () {
     final json = cowWriteToJson(
-      const CowWriteParams(
-        purpose: CowPurpose.both,
-        gender: CowGender.female,
-        acquiredBy: AcquisitionSource.bornOnFarm,
+      const CowWriteParamsEntity(
+        purpose: CowPurposeEntity.both,
+        gender: CowGenderEntity.female,
+        acquiredBy: AcquisitionSourceEntity.bornOnFarm,
         name: 'Daisy',
         breed: 'Holstein',
         purchaseDate: '2024-01-01',
@@ -90,10 +90,10 @@ void main() {
 
   test('cowWriteToJson keeps purchase fields when purchased', () {
     final json = cowWriteToJson(
-      const CowWriteParams(
-        purpose: CowPurpose.milk,
-        gender: CowGender.female,
-        acquiredBy: AcquisitionSource.purchased,
+      const CowWriteParamsEntity(
+        purpose: CowPurposeEntity.milk,
+        gender: CowGenderEntity.female,
+        acquiredBy: AcquisitionSourceEntity.purchased,
         name: 'Bella',
         breed: 'Jersey',
         purchaseDate: '2024-06-01',

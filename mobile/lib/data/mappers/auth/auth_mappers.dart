@@ -1,14 +1,14 @@
 import 'package:mobile/data/models/auth/auth_tokens_model.dart';
 import 'package:mobile/data/models/auth/farm_settings_model.dart';
 import 'package:mobile/data/models/auth/owner_profile_model.dart';
-import 'package:mobile/domain/entities/auth/auth_tokens.dart';
-import 'package:mobile/domain/entities/auth/farm_settings.dart';
-import 'package:mobile/domain/entities/auth/owner_profile.dart';
+import 'package:mobile/domain/entities/auth/auth_tokens_entity.dart';
+import 'package:mobile/domain/entities/auth/farm_settings_entity.dart';
+import 'package:mobile/domain/entities/auth/owner_profile_entity.dart';
 
-OwnerProfile mapOwnerProfile(Map<String, dynamic> json) =>
+OwnerProfileEntity mapOwnerProfile(Map<String, dynamic> json) =>
     mapOwnerProfileModel(OwnerProfileModel.fromJson(json));
 
-OwnerProfile mapOwnerProfileModel(OwnerProfileModel model) => OwnerProfile(
+OwnerProfileEntity mapOwnerProfileModel(OwnerProfileModel model) => OwnerProfileEntity(
       id: model.id,
       fullName: model.fullName,
       email: model.email,
@@ -20,20 +20,20 @@ OwnerProfile mapOwnerProfileModel(OwnerProfileModel model) => OwnerProfile(
       updatedAt: model.updatedAt,
     );
 
-FarmSettings mapFarmSettings(Map<String, dynamic> json) =>
+FarmSettingsEntity mapFarmSettings(Map<String, dynamic> json) =>
     mapFarmSettingsModel(FarmSettingsModel.fromJson(json));
 
-FarmSettings mapFarmSettingsModel(FarmSettingsModel model) => FarmSettings(
+FarmSettingsEntity mapFarmSettingsModel(FarmSettingsModel model) => FarmSettingsEntity(
       id: model.id,
       ownerId: model.ownerId,
       currencyCode: model.currencyCode,
       updatedAt: model.updatedAt,
     );
 
-AuthTokens mapTokens(Map<String, dynamic> json) =>
+AuthTokensEntity mapTokens(Map<String, dynamic> json) =>
     mapTokensModel(AuthTokensModel.fromJson(json));
 
-AuthTokens mapTokensModel(AuthTokensModel model) => AuthTokens(
+AuthTokensEntity mapTokensModel(AuthTokensModel model) => AuthTokensEntity(
       accessToken: model.accessToken,
       refreshToken: model.refreshToken,
       expiresIn: model.expiresIn,

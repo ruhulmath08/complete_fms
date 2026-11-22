@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/data/mappers/inventory/inventory_mappers.dart';
-import 'package:mobile/domain/entities/inventory/inventory_category.dart';
-import 'package:mobile/domain/entities/inventory/stock_change_type.dart';
+import 'package:mobile/domain/entities/inventory/inventory_category_entity.dart';
+import 'package:mobile/domain/entities/inventory/stock_change_type_entity.dart';
 
 void main() {
   test('maps fertilizer stock update list item', () {
@@ -19,8 +19,8 @@ void main() {
     });
 
     expect(row.itemName, 'Urea');
-    expect(row.itemCategory, InventoryCategory.fertilizer);
-    expect(row.changeType, StockChangeType.use);
+    expect(row.itemCategory, InventoryCategoryEntity.fertilizer);
+    expect(row.changeType, StockChangeTypeEntity.use);
     expect(row.quantityChange, '2.500');
     expect(row.reason, isNull);
   });

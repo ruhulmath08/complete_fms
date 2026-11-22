@@ -9,9 +9,9 @@ import 'package:mobile/infrastructure/theme/app_theme.dart';
 import 'package:mobile/l10n/app_localizations.dart';
 import 'package:mobile/presentation/cows/widgets/cow_form_fields.dart';
 import 'package:mobile/presentation/cows/widgets/cow_image_panel.dart';
-import 'package:mobile/domain/entities/common/acquisition_source.dart';
-import 'package:mobile/domain/entities/cow/cow_gender.dart';
-import 'package:mobile/domain/entities/cow/cow_purpose.dart';
+import 'package:mobile/domain/entities/common/acquisition_source_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_gender_entity.dart';
+import 'package:mobile/domain/entities/cow/cow_purpose_entity.dart';
 
 class CowCreatePage extends StatefulWidget {
   const CowCreatePage({super.key});
@@ -31,9 +31,9 @@ class _CowCreatePageState extends State<CowCreatePage> {
   final _purchasePrice = TextEditingController();
   final _notes = TextEditingController();
 
-  CowPurpose _purpose = CowPurpose.milk;
-  CowGender _gender = CowGender.female;
-  AcquisitionSource _acquiredBy = AcquisitionSource.bornOnFarm;
+  CowPurposeEntity _purpose = CowPurposeEntity.milk;
+  CowGenderEntity _gender = CowGenderEntity.female;
+  AcquisitionSourceEntity _acquiredBy = AcquisitionSourceEntity.bornOnFarm;
   String? _imagePath;
   String? _error;
   bool _saving = false;
@@ -85,7 +85,7 @@ class _CowCreatePageState extends State<CowCreatePage> {
       }
       if (!mounted) return;
       context.go(AppRoutes.cow(cow.id));
-    } on AppFailure catch (e) {
+    } on Failure catch (e) {
       setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _saving = false);

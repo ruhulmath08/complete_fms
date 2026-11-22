@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/domain/failures.dart';
 
 void main() {
-  test('AppFailure exposes stable code and user-facing message', () {
-    final failure = AppFailure(
+  test('Failure exposes stable code and user-facing message', () {
+    final failure = Failure(
       code: 'INVALID_CREDENTIALS',
       message: 'Email or password is incorrect.',
     );
