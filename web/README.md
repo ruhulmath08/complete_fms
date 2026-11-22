@@ -25,7 +25,14 @@ npm install
 npm run dev
 ```
 
-Requires the backend at `VITE_API_BASE_URL` (default `http://localhost:8000`). For demo login data, see [`../backend/README.md`](../backend/README.md) (seed script).
+Requires the backend at `VITE_API_BASE_URL` (default `http://localhost:8000`). Load the demo farm with `python scripts/seed_demo_data.py` in `backend/` (see [`../backend/README.md`](../backend/README.md)).
+
+## Demo account
+
+| Field    | Value                  |
+| -------- | ---------------------- |
+| Email    | `demo@completefms.com` |
+| Password | `Password1`            |
 
 ## Scripts
 
